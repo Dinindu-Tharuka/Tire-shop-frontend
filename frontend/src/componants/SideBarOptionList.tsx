@@ -16,6 +16,7 @@ import { BsBuildings, BsChevronDown } from "react-icons/bs";
 import { PiContactlessPayment } from "react-icons/pi";
 import { RxAvatar } from "react-icons/rx";
 import { SiChase } from "react-icons/si";
+import SignOut from "./SignOut";
 
 const SideBarOptionList = () => {
   const options = [
@@ -36,7 +37,7 @@ const SideBarOptionList = () => {
   ];
 
   const sideBar = options.map((option, index) => (
-    <ListItem padding={5}>
+    <ListItem padding={4}>
       <HStack>
         <Icon key={index} as={icons[index]} />
         <Button variant="link" textAlign="left">
@@ -56,10 +57,11 @@ const SideBarOptionList = () => {
   return (
     <>
       <Show above="lg">
-        <List>{sideBar}</List>
+        <List marginTop={5}>{sideBar}</List>
+
+        <SignOut />
       </Show>
       <Show below="lg">
-        
         <Menu>
           <MenuButton as={Button} rightIcon={<SiChase />}></MenuButton>
           <MenuList>{sideBarBase}</MenuList>

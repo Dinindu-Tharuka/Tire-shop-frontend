@@ -10,15 +10,15 @@ const GridSection = () => {
         base:`"nav" "side" "main"`,
         lg:`"nav nav" "side main"`
     }}>
-      <GridItem area="nav" height={{base:'10vh', lg:'10vh'}} >
+      <GridItem area="nav" height={{base:'10vh', lg:'10vh'}} marginBottom={5}>
         <Navbar/>
       </GridItem>
       
-      <GridItem area="side" height={{base:'10vh', lg:'90vh'}} width={{base:'100vw', lg:'20vw'}}>        
+      <GridItem area="side" height={{base:'10vh', lg:'85vh'}} width={{base:'100vw', lg:'20vw'}}>        
         <SideBarOptionList/>
       </GridItem>
       
-      <GridItem area="main" bg='coral' height={{base:'80vh', lg:'90vh'}} width={{base:'100vw', lg:'80vw'}}>
+      <GridItem area="main" bg='coral' height={{base:'80vh', lg:'85vh'}} width={{base:'100vw', lg:'80vw'}}>
         <MainImage/>
       </GridItem>
     </Grid>

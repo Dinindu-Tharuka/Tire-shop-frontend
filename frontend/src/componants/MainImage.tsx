@@ -1,11 +1,11 @@
-import { Box, Image } from "@chakra-ui/react"
+import { Box, Flex, Image } from "@chakra-ui/react"
 import main_image from '../assets/main.jpeg'
 
 const MainImage = () => {
   return (
-    <Box alignItems='center' justifyContent='center'>
-      <Image height='50vh' src={main_image}/>
-    </Box>
+    <Flex alignItems='center' justifyContent='center' width='100%'>
+      <Image height='80vh' src={main_image}/>
+    </Flex>
   )
 }
 
