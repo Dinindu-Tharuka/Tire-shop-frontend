@@ -1,22 +1,25 @@
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import Navbar from "./Navbar";
+import MainImage from "./MainImage";
+import SideBarOptionList from "./SideBarOptionList";
+
 
 const GridSection = () => {
   return (
     <Grid templateAreas={{
-        base:`"nav" "main"`,
+        base:`"nav" "side" "main"`,
         lg:`"nav nav" "side main"`
     }}>
-      <GridItem area="nav">
+      <GridItem area="nav" height={{base:'10vh', lg:'10vh'}} >
         <Navbar/>
       </GridItem>
-      <Show above="lg">
-        <GridItem area="side">
-          Aside
-        </GridItem>
-      </Show>
-      <GridItem area="main">
-        Main
+      
+      <GridItem area="side" height={{base:'10vh', lg:'90vh'}} width={{base:'100vw', lg:'20vw'}}>        
+        <SideBarOptionList/>
+      </GridItem>
+      
+      <GridItem area="main" bg='coral' height={{base:'80vh', lg:'90vh'}} width={{base:'100vw', lg:'80vw'}}>
+        <MainImage/>
       </GridItem>
     </Grid>
   );
