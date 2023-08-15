@@ -10,10 +10,10 @@ import {
 
 const SignOut = () => {
   return (
-    <Center width="100%" marginTop={10} overflow="hidden">
+    <Center width="100%" marginTop={7}>
       <Flex
         width="90%"
-        height="35vh"
+        height="30vh"
         bg="blue.400"
         alignItems="center"
         flexDir="column"
@@ -25,21 +25,22 @@ const SignOut = () => {
       >
         <VStack>
           <Heading fontSize="2xl">Chamila</Heading>
-          <Heading fontSize="2xl" marginTop={3}>
+          <Heading fontSize="2xl">
             Perera
           </Heading>
         </VStack>
         <VStack>
           <Text>Admin</Text>
           <Button
-            colorScheme="blue"
-            marginTop={2}
+            colorScheme="blue"           
             paddingX={10}
             fontWeight="bold"
             fontSize="xl"
             paddingY={6}
+            marginTop={5}
             borderRadius={20}
             boxShadow='dark-lg'
+            marginBottom={20}
           >
             Sign Out
           </Button>

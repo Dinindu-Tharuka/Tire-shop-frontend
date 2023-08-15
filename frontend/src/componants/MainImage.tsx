@@ -4,7 +4,7 @@ import main_image from '../assets/main.jpeg'
 const MainImage = () => {
   return (
     <Flex alignItems='center' justifyContent='center' width='100%'>
-      <Image height='80vh' src={main_image}/>
+      <Image height='80vh' src={main_image} borderRadius={100}/>
     </Flex>
   )
 }
