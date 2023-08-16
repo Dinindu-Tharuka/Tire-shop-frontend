@@ -1,5 +1,5 @@
-import { Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
-import { Item } from "../../pages/Inventory"
+import { Button, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
+import { Item } from '../../services/item-service'
 
 interface Props{
     items:Item[]
@@ -21,6 +21,8 @@ const ItemTable = ({items}:Props) => {
                     <Th>Valve</Th>
                     <Th>Category</Th>
                     <Th>Supplier</Th>
+                    <Th></Th>
+                    <Th></Th>
                 </Tr>
             </Thead>
             <Tbody>
@@ -35,6 +37,8 @@ const ItemTable = ({items}:Props) => {
                     <Td>{item.vale_type}</Td>
                     <Td>{item.item_category}</Td>
                     <Td>{item.supplier}</Td>
+                    <Td><Button bg='#ffc2b3'>Update</Button></Td>
+                    <Td><Button bg='#f87454'>Delete</Button></Td>
                 </Tr>))}
             </Tbody>
         </Table>
