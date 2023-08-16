@@ -8,18 +8,21 @@ import {
   MenuButton,
   MenuList,
   Show,
+  useColorMode,
 } from "@chakra-ui/react";
-import { AiOutlineHome } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineMenu } from "react-icons/ai";
 import { MdOutlineInventory } from "react-icons/md";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { BsBuildings, BsChevronDown } from "react-icons/bs";
 import { PiContactlessPayment } from "react-icons/pi";
 import { RxAvatar } from "react-icons/rx";
-import { SiChase } from "react-icons/si";
+
 import { RiShutDownLine } from "react-icons/ri";
 import SignOut from "./SignOut";
 
 const SideBarOptionList = () => {
+  const { toggleColorMode, colorMode } = useColorMode();
+
   const options_lg = [
     "Main Dashbord",
     "Invoice",
@@ -57,10 +60,28 @@ const SideBarOptionList = () => {
 
   // Large Screens
   const sideBar = options_lg.map((option, index) => (
-    <ListItem padding={4} _hover={{ background: "coral" }} boxShadow='1px 2px 2px 0 rgba(0, 0, 0, 0.2)' borderRadius={10}>
+    <ListItem
+      key={index}
+      padding={4}
+      _hover={
+        colorMode === "light"
+          ? { background: "#fababb" }
+          : { background: "#3e3d40" }
+      }
+      boxShadow="1px 2px 2px 0 rgba(0, 0, 0, 0.2)"
+      borderRadius={10}
+    >
       <HStack>
-        <Icon color="gray.500" key={index} as={icons_lg[index]} />
-        <Button variant="link" textAlign="left">
+        <Icon
+          color={colorMode === "light" ? "#595959" : "#d9d9d9"}
+          key={index}
+          as={icons_lg[index]}
+        />
+        <Button
+          textColor={colorMode === "light" ? "#595959" : "#d9d9d9"}
+          variant="link"
+          textAlign="left"
+        >
           {option}
         </Button>
       </HStack>
@@ -69,7 +90,7 @@ const SideBarOptionList = () => {
 
   // Base Screen
   const sideBarBase = options_base.map((option, index) => (
-    <HStack padding={5}>
+    <HStack padding={5} key={index}>
       <Icon color="gray.500" key={index} as={icons_base[index]} />
       <Button variant="link" textAlign="left">
         {option}
@@ -80,7 +101,9 @@ const SideBarOptionList = () => {
     <>
       {/* Large Screens */}
       <Show above="lg">
-        <List marginTop={5} paddingX={5}>{sideBar}</List>
+        <List marginTop={5} paddingX={5}>
+          {sideBar}
+        </List>
         {/* Sign Out Box */}
         <SignOut />
       </Show>
@@ -88,7 +111,7 @@ const SideBarOptionList = () => {
       {/* Base Screen */}
       <Show below="lg">
         <Menu>
-          <MenuButton as={Button} rightIcon={<SiChase />}></MenuButton>
+          <MenuButton as={Button} rightIcon={<AiOutlineMenu />}></MenuButton>
           <MenuList>{sideBarBase}</MenuList>
         </Menu>
       </Show>
