@@ -1,20 +1,37 @@
-import { HStack } from "@chakra-ui/react";
+import { HStack, Text} from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Item } from "../../../services/item-service";
+import apiClient from "../../../services/api-client";
 
 interface Props {
   selectedUpdateItem: Item;
+  updatedItem:(data:FieldValues)=>void;
 }
 
-const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
+const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
+    
+    apiClient
+      .put(`/items/${data.item_id}/`, data)
+      .then(res=>{
+        setSuccess('Successfully Updated.')
+        updatedItem(data)
+      })
+      .catch(err => {
+        if (err.message !== "canceled") {
+          setError(err.message);
+        }
+      })
   };
   return (
     <>
+      {error && <Text textColor="#dd0939">{error}</Text>}
+      {success && <Text textColor="#38e17e">{success}</Text>}
+
       <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 h-75">

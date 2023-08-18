@@ -14,13 +14,15 @@ import { Item } from "../../services/item-service";
 import apiClient from "../../services/api-client";
 import { useState } from "react";
 import UpdateItem from "./Drawers/UpdateItem";
+import { FieldValues } from "react-hook-form";
 
 interface Props {
   items: Item[] | undefined;
   onSelectedDeleteItem: (item: Item) => void;
+  updatedItem:(item:FieldValues)=>void;
 }
 
-const ItemTable = ({ items, onSelectedDeleteItem: onSelectedItem }: Props) => {
+const ItemTable = ({ items, onSelectedDeleteItem: onSelectedItem, updatedItem }: Props) => {
   return (
     <TableContainer>
       <Table>
@@ -54,7 +56,7 @@ const ItemTable = ({ items, onSelectedDeleteItem: onSelectedItem }: Props) => {
               <Td>{item.item_category}</Td>
               <Td>{item.supplier}</Td>
               <Td>
-                <UpdateItem selectedUpdateItem={item} />
+                <UpdateItem updatedItem={updatedItem} selectedUpdateItem={item} />
               </Td>
               <Td>
                 <Button

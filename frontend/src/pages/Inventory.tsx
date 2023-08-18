@@ -40,9 +40,24 @@ const Inventory = () => {
           item_category:data.item_category,
           supplier:data.supplier,
         }
-        setItems([createdItem, ...items])
+        setItems([createdItem, ...items])      
         
-        
+    }
+    const onUpdatedItem = (data:FieldValues)=>{
+      const updatedItem : Item= {
+        item_id:data.item_id,
+        name:data.name,
+        size:data.size,
+        brand:data.brand,
+        type:data.type,
+        plyrating:data.plyrating,
+        country:data.country,
+        vale_type:data.vale_type,
+        item_category:data.item_category,
+        supplier:data.supplier,
+      }
+      setItems(items.map(item => item.item_id === updatedItem.item_id? updatedItem:item)
+)
     }
 
   
@@ -67,7 +82,7 @@ const Inventory = () => {
             area='main' 
             height={{base:'10vh', lg:'85vh'}} 
             width={{base:'100vw', lg:'60vw'}}>
-              <ItemTable onSelectedDeleteItem={(item)=>onDelete(item)} items={items}/>
+              <ItemTable updatedItem={onUpdatedItem} onSelectedDeleteItem={(item)=>onDelete(item)} items={items}/>
           </GridItem>
           <GridItem 
             area='aside' 

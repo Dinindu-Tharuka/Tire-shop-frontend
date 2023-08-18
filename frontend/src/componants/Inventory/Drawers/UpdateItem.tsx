@@ -13,12 +13,14 @@ import { useRef, useState } from "react";
 import ItemAddForm from "../Forms/ItemAddForm";
 import { Item } from "../../../services/item-service";
 import UpdateItemForm from "../Forms/UpdateItemForm";
+import { FieldValues } from "react-hook-form";
 
 interface Props {
   selectedUpdateItem: Item;
+  updatedItem:(data:FieldValues)=>void;
 }
 
-const UpdateItem = ({ selectedUpdateItem}: Props) => {
+const UpdateItem = ({ selectedUpdateItem, updatedItem}: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -56,7 +58,7 @@ const UpdateItem = ({ selectedUpdateItem}: Props) => {
           <DrawerHeader>Update {selectedUpdateItem.item_id}</DrawerHeader>
 
           <DrawerBody>
-            <UpdateItemForm selectedUpdateItem={selectedUpdateItem} />
+            <UpdateItemForm updatedItem={updatedItem} selectedUpdateItem={selectedUpdateItem} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

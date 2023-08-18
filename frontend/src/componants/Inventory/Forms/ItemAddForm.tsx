@@ -13,15 +13,14 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const onSubmit = (data: FieldValues) => {
-
-    onCretedItem(data)
+  const onSubmit = (data: FieldValues) => {   
 
     apiClient
       .post("/items/", data)
       .then(res => {
         if (res.status === 200){
           setSuccess('Successfully Created.')
+          onCretedItem(data)
         }
       })
       .catch((err) => {
