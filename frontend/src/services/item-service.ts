@@ -1,4 +1,6 @@
+import { FieldValues } from "react-hook-form";
 import apiClient from "./api-client";
+import create from "./http-service";
 export interface Item{
     item_id:string;
     name:string;
@@ -12,15 +14,7 @@ export interface Item{
     supplier:number;
   }
   
-class ItemService{
-    getAllItems(){
-        const controller = new AbortController();
-        const request =apiClient
-                        .get<Item[]>('/items/', {signal:controller.signal})
 
-        return {request, cancel:()=>controller.abort()}
-    }
-}
 
-export default new ItemService;
+export default create('/items/');
 

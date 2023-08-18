@@ -4,20 +4,22 @@ import ItemTable from "../componants/Inventory/ItemTable"
 import { useEffect, useState } from "react";
 import InventorySidePanel from "../componants/Inventory/InventorySidePanel";
 import ItemService, { Item } from "../services/item-service";
-import apiClient from "../services/api-client";
+
 import { FieldValues } from "react-hook-form";
+import useItems from "../hooks/useItems";
 
 
 
 const Inventory = () => {
-  const [items, setItems] = useState<Item[]>([])
-  const [error, setError] = useState('')
+
+  const {items, error, setError, setItems} = useItems();
+  
 
   const onDelete = (itemSelected:Item)=>{   
     const originalItems = [...items]
-    setItems(items.filter(item=> item.item_id !== itemSelected.item_id)) 
-    apiClient
-        .delete(`items/${itemSelected.item_id}/`)
+    setItems(items.filter(item=> item.item_id !== itemSelected.item_id))
+    
+    ItemService.delete(itemSelected.item_id)
         .catch(error =>{
           setError(error.message)
           setItems(originalItems)
@@ -61,14 +63,7 @@ const Inventory = () => {
     }
 
   
-  useEffect(()=>{
-      const {request, cancel} = ItemService.getAllItems()   
-      request     
-          .then(response=> setItems(response.data))
-          .catch(error=>setError(error.message === 'canceled'? '':error.message));
-
-        return ()=>cancel();
-    }, [])
+  
   return (
     <>
     {/* Errors */}

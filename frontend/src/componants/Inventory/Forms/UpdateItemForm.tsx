@@ -1,8 +1,8 @@
 import { HStack, Text} from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Item } from "../../../services/item-service";
-import apiClient from "../../../services/api-client";
+import ItemService, { Item } from "../../../services/item-service";
+
 
 interface Props {
   selectedUpdateItem: Item;
@@ -15,8 +15,7 @@ const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
   const [success, setSuccess] = useState("");
   const onSubmit = (data: FieldValues) => {
     
-    apiClient
-      .put(`/items/${data.item_id}/`, data)
+    ItemService.update(data, data.item_id)
       .then(res=>{
         setSuccess('Successfully Updated.')
         updatedItem(data)

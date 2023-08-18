@@ -1,8 +1,8 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import apiClient from "../../../services/api-client";
-import { Item } from "../../../services/item-service";
+import ItemService, { Item } from '../../../services/item-service'
+
 
 interface Props {
   onClose: () => void;
@@ -13,10 +13,14 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const onSubmit = (data: FieldValues) => {   
 
-    apiClient
-      .post("/items/", data)
+  
+
+
+
+  const onSubmit = (data: FieldValues) => {   
+    
+    ItemService.create(data)      
       .then(res => {
         if (res.status === 200){
           setSuccess('Successfully Created.')
