@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
 import useCategory from "../../../hooks/Inventory/useCategory";
+import useSupplier from "../../../hooks/Inventory/useSupplier";
 
 interface Props {
   onClose: () => void;
@@ -15,6 +16,7 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
   const [success, setSuccess] = useState("");
 
   const {categories, errorFetchCategory} = useCategory();
+  const {suppliers, errorFetchSupplier} = useSupplier();
 
   const onSubmit = (data: FieldValues) => {
     ItemService.create(data)
@@ -24,10 +26,8 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
           onCretedItem(data);
         }
       })
-      .catch((err) => {
-        if (err.message !== "canceled") {
-          setErrorItemCreate(err.message);
-        }
+      .catch((err) => {       
+          setErrorItemCreate(err.message);        
       });
   };
 
@@ -111,8 +111,7 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
           <div className="mb-3">
             <select {...register("supplier")} className="select w-100 p-2">
               <option>Select Supplier</option>
-              <option value="1">Two</option>
-              <option value="2">Three</option>
+              {suppliers.map(supplier => <option value={supplier.id}>{supplier.name}</option>)}
             </select>
           </div>
         </div>

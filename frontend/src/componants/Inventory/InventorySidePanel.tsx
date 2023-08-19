@@ -14,6 +14,7 @@ import { useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
 import InventoryAddButtonDrawer from "./Drawers/AddButtonDrawer";
 import { FieldValues } from "react-hook-form";
+import AddCategoryDrawer from "./Drawers/AddCategoryDrawer";
 
 interface Props {
   onCreated:(data:FieldValues)=>void;
@@ -25,6 +26,8 @@ const InventorySidePanel = ({onCreated}:Props) => {
   const [categories, setCategories] = useState([]);
 
   const options = ["ADD"];
+
+  
 
   const inventoryMenuList = inventoryList.map((inventory, index) => (
     <Box key={index} width="100%">
@@ -45,14 +48,19 @@ const InventorySidePanel = ({onCreated}:Props) => {
           {inventory}
         </MenuButton>
         <MenuList>
-          {options.map((option, index) => (
-            <InventoryAddButtonDrawer
-              key={index}
-              inventory={inventory}
-              option={option}
-              onCreated={onCreated}
-            />
-          ))}
+          {options.map((option, num) => index === 0 ? <InventoryAddButtonDrawer
+                                                                  key={num}
+                                                                  inventory={inventory}
+                                                                  option={option}
+                                                                  onCreated={onCreated}
+                                                                /> 
+                                        : index === 1 ? <AddCategoryDrawer
+                                                                  key={num}
+                                                                />
+                                        : index === 2 ? <h1>hello</h1> : null
+            
+            
+          )}
         </MenuList>
       </Menu>
     </Box>

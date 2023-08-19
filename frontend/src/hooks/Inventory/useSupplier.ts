@@ -3,17 +3,17 @@ import SupplierService, { Supplier } from "../../services/Inventory/supplier-ser
 
 const useSupplier = () => {
     const [suppliers, setSuppliers] = useState<Supplier[]>([])
-    const [error, setError] = useState('');
+    const [errorFetchSupplier, setErrorFetchSupplier] = useState('');
 
     useEffect(()=>{
         const {request, cancel} = SupplierService.getAll<Supplier>()
         request
           .then(res=>setSuppliers(res.data))
-          .catch(err=> setError(err.message === 'canceled'?'':err.message))
+          .catch(err=> setErrorFetchSupplier(err.message === 'canceled'?'':err.message))
 
         return ()=> cancel();
     }, [])
-  return {suppliers, error, setSuppliers, setError}
+  return {suppliers, errorFetchSupplier, setSuppliers, setErrorFetchSupplier}
 }
 
 export default useSupplier
