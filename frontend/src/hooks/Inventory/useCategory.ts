@@ -4,19 +4,19 @@ import CategoryService,{ Category } from "../../services/Inventory/category-serv
 
 const useCategory = () => {
     const [categories, setCategories] = useState<Category[]>([])
-    const [error, setError] = useState('')
+    const [errorFetchCategory, setErrorFetchCategory] = useState('')
 
     useEffect(()=>{
         const {request, cancel} = CategoryService.getAll<Category>()
 
         request
             .then(res => setCategories(res.data))
-            .catch(error => setError(error.message !== 'canceled'? error.mesage : ''))
+            .catch(error => setErrorFetchCategory(error.message !== 'canceled'? error.mesage : ''))
 
             return ()=> cancel();
         }, [])
 
-        return {categories, error, setCategories, setError}  
+        return {categories, errorFetchCategory, setCategories, setErrorFetchCategory}  
 }
 
 export default useCategory

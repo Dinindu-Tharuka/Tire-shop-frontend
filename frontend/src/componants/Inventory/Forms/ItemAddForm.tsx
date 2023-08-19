@@ -2,6 +2,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
+import useCategory from "../../../hooks/Inventory/useCategory";
 
 interface Props {
   onClose: () => void;
@@ -10,8 +11,10 @@ interface Props {
 
 const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
   const { register, handleSubmit } = useForm();
-  const [error, setError] = useState("");
+  const [errorItemCreate, setErrorItemCreate] = useState("");
   const [success, setSuccess] = useState("");
+
+  const {categories, errorFetchCategory} = useCategory();
 
   const onSubmit = (data: FieldValues) => {
     ItemService.create(data)
@@ -23,14 +26,14 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
       })
       .catch((err) => {
         if (err.message !== "canceled") {
-          setError(err.message);
+          setErrorItemCreate(err.message);
         }
       });
   };
 
   return (
     <>
-      {error && <Text textColor="#dd0939">{error}</Text>}
+      {errorItemCreate && <Text textColor="#dd0939">{errorItemCreate}</Text>}
       {success && <Text textColor="#38e17e">{success}</Text>}
 
       <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
@@ -95,8 +98,7 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
           <div className="mb-3">
             <select {...register("item_category")} className="select w-100 p-2">
               <option>Select Category</option>
-              <option value="1">Two</option>
-              <option value="2">Three</option>
+              {categories.map(category => <option value={category.id}>{category.category_name}</option>)}
             </select>
           </div>
           <div className="mb-3">
@@ -119,7 +121,7 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
             className="btn btn-primary align-self-end btn-lg"
             type="submit"
             onClick={() => {
-              setError("");
+              setErrorItemCreate("");
               setSuccess("");
             }}
           >
