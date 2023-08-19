@@ -12,9 +12,10 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
-import InventoryAddButtonDrawer from "./Drawers/AddButtonDrawer";
+import InventoryAddButtonDrawer from "./Drawers/AddItemDrawer";
 import { FieldValues } from "react-hook-form";
 import AddCategoryDrawer from "./Drawers/AddCategoryDrawer";
+import AddSupplierDrawer from "./Drawers/AddSupplierDrawer";
 
 interface Props {
   onCreated:(data:FieldValues)=>void;
@@ -35,6 +36,8 @@ const InventorySidePanel = ({onCreated}:Props) => {
         <MenuButton
           paddingRight={4}
           height="10vh"
+          onClick={()=>console.log(inventory)
+          }
           width="100%"
           textAlign="left"
           as={Button}
@@ -57,7 +60,7 @@ const InventorySidePanel = ({onCreated}:Props) => {
                                         : index === 1 ? <AddCategoryDrawer
                                                                   key={num}
                                                                 />
-                                        : index === 2 ? <h1>hello</h1> : null
+                                        : index === 2 ? <AddSupplierDrawer/> : null
             
             
           )}
