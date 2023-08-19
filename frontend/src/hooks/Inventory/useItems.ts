@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import ItemService,{ Item } from "../services/item-service"
+import ItemService,{ Item } from "../../services/Inventory/item-service"
 
 
 const useItems = () => {

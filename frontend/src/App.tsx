@@ -1,13 +1,12 @@
-import { Button, ButtonGroup } from '@chakra-ui/react'
-import './App.css'
-import GridSection from './componants/GridSection'
+import "./App.css";
+import GridSection from "./pages/GridSection";
 
 function App() {
-  
-
   return (
-    <GridSection/>
-  )
+    <>
+      <GridSection />
+    </>
+  );
 }
 
-export default App
+export default App;

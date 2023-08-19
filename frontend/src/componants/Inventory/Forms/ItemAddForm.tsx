@@ -1,12 +1,11 @@
 import { HStack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import ItemService, { Item } from '../../../services/item-service'
-
+import ItemService, { Item } from "../../../services/Inventory/item-service";
 
 interface Props {
   onClose: () => void;
-  onCretedItem: (data:FieldValues)=>void;
+  onCretedItem: (data: FieldValues) => void;
 }
 
 const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
@@ -14,24 +13,19 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  
-
-
-
-  const onSubmit = (data: FieldValues) => {   
-    
-    ItemService.create(data)      
-      .then(res => {
-        if (res.status === 200){
-          setSuccess('Successfully Created.')
-          onCretedItem(data)
+  const onSubmit = (data: FieldValues) => {
+    ItemService.create(data)
+      .then((res) => {
+        if (res.status === 200) {
+          setSuccess("Successfully Created.");
+          onCretedItem(data);
         }
       })
       .catch((err) => {
-      if (err.message !== "canceled") {
-        setError(err.message);
-      }
-    });
+        if (err.message !== "canceled") {
+          setError(err.message);
+        }
+      });
   };
 
   return (
@@ -124,9 +118,9 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
           <button
             className="btn btn-primary align-self-end btn-lg"
             type="submit"
-            onClick={()=> {              
-              setError('')
-              setSuccess('')
+            onClick={() => {
+              setError("");
+              setSuccess("");
             }}
           >
             Save

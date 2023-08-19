@@ -1,8 +1,7 @@
-import { Grid, GridItem, Show } from "@chakra-ui/react";
-import Navbar from "./Navbar";
-import MainImage from "./MainImage";
-import SideBarOptionList from "./SideBarOptionList";
-import Inventory from "../pages/Inventory";
+import { Grid, GridItem } from "@chakra-ui/react";
+import Navbar from "../componants/Navbar";
+import SideBarOptionList from "../componants/SideBarOptionList";
+import Inventory from "./Inventory";
 
 const GridSection = () => {
   return (

@@ -11,16 +11,16 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import ItemAddForm from "../Forms/ItemAddForm";
-import { Item } from "../../../services/item-service";
+import { Item } from "../../../services/Inventory/item-service";
 import UpdateItemForm from "../Forms/UpdateItemForm";
 import { FieldValues } from "react-hook-form";
 
 interface Props {
   selectedUpdateItem: Item;
-  updatedItem:(data:FieldValues)=>void;
+  updatedItem: (data: FieldValues) => void;
 }
 
-const UpdateItem = ({ selectedUpdateItem, updatedItem}: Props) => {
+const UpdateItem = ({ selectedUpdateItem, updatedItem }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -58,7 +58,10 @@ const UpdateItem = ({ selectedUpdateItem, updatedItem}: Props) => {
           <DrawerHeader>Update {selectedUpdateItem.item_id}</DrawerHeader>
 
           <DrawerBody>
-            <UpdateItemForm updatedItem={updatedItem} selectedUpdateItem={selectedUpdateItem} />
+            <UpdateItemForm
+              updatedItem={updatedItem}
+              selectedUpdateItem={selectedUpdateItem}
+            />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

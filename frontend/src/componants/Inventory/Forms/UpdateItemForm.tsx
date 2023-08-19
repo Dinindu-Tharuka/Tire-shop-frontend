@@ -1,12 +1,11 @@
-import { HStack, Text} from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import ItemService, { Item } from "../../../services/item-service";
-
+import ItemService, { Item } from "../../../services/Inventory/item-service";
 
 interface Props {
   selectedUpdateItem: Item;
-  updatedItem:(data:FieldValues)=>void;
+  updatedItem: (data: FieldValues) => void;
 }
 
 const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
@@ -14,17 +13,16 @@ const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const onSubmit = (data: FieldValues) => {
-    
     ItemService.update(data, data.item_id)
-      .then(res=>{
-        setSuccess('Successfully Updated.')
-        updatedItem(data)
+      .then((res) => {
+        setSuccess("Successfully Updated.");
+        updatedItem(data);
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.message !== "canceled") {
           setError(err.message);
         }
-      })
+      });
   };
   return (
     <>
@@ -116,14 +114,22 @@ const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
           </div>
           <div className="mb-3">
             <select {...register("item_category")} className="select w-100 p-2">
-              <option>{selectedUpdateItem.item_category !== null ? selectedUpdateItem.item_category :'Select Category'}</option>
+              <option>
+                {selectedUpdateItem.item_category !== null
+                  ? selectedUpdateItem.item_category
+                  : "Select Category"}
+              </option>
               <option value="1">Two</option>
               <option value="2">Three</option>
             </select>
           </div>
           <div className="mb-3">
             <select {...register("supplier")} className="select w-100 p-2">
-              <option >{selectedUpdateItem.item_category !== null ? selectedUpdateItem.item_category :'Select Supplier'}</option>
+              <option>
+                {selectedUpdateItem.item_category !== null
+                  ? selectedUpdateItem.item_category
+                  : "Select Supplier"}
+              </option>
               <option value="1">Two</option>
               <option value="2">Three</option>
             </select>
