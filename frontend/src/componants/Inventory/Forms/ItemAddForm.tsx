@@ -1,4 +1,4 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { Button, HStack, Input, Select, Text, useColorMode } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
@@ -18,6 +18,8 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
   const {categories, errorFetchCategory} = useCategory();
   const {suppliers, errorFetchSupplier} = useSupplier();
 
+  const { toggleColorMode, colorMode } = useColorMode();
+
   const onSubmit = (data: FieldValues) => {
     ItemService.create(data)
       .then((res) => {
@@ -36,88 +38,55 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
       {errorItemCreate && <Text textColor="#dd0939">{errorItemCreate}</Text>}
       {success && <Text textColor="#38e17e">{success}</Text>}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
+      <form color="red" onSubmit={handleSubmit(onSubmit)} className="vh-100">
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 h-75">
-            <input
-              {...register("item_id")}
-              id="id"
-              type="text"
-              className="form-control"
-              placeholder="Item ID"
-            />
+            <Input type="text" placeholder="Item ID" {...register("item_id")}></Input>            
           </div>
           <div className="mb-3">
-            <input
-              {...register("name")}
-              type="text"
-              className="form-control"
-              placeholder="Name"
-            />
+            <Input type="text" placeholder="Name" {...register("name")}></Input>            
           </div>
           <div className="mb-3">
-            <input
-              {...register("size")}
-              type="text"
-              className="form-control"
-              placeholder="Size"
-            />
+          <Input type="text" placeholder="Size" {...register("size")}></Input>            
           </div>
           <div className="mb-3">
-            <input
-              {...register("brand")}
-              type="text"
-              className="form-control"
-              placeholder="Brand"
-            />
+          <Input type="text" placeholder="Brand" {...register("brand")}></Input>
+           
           </div>
           <div className="mb-3">
-            <input
-              {...register("type")}
-              type="text"
-              className="form-control"
-              placeholder="Type"
-            />
+          <Input type="text" placeholder="Type" {...register("type")}></Input>
+            
           </div>
           <div className="mb-3">
-            <input
-              {...register("plyrating")}
-              type="text"
-              className="form-control"
-              placeholder="Plyrating"
-            />
+          <Input type="text" placeholder="Plyrating" {...register("plyrating")}></Input>
+           
           </div>
           <div className="mb-3">
-            <input
-              {...register("country")}
-              type="text"
-              className="form-control"
-              placeholder="Country"
-            />
+          <Input type="text" placeholder="Country" {...register("country")}></Input>            
           </div>
           <div className="mb-3">
-            <select {...register("item_category")} className="select w-100 p-2">
-              <option>Select Category</option>
+            <Select {...register("item_category")} placeholder="Select Category">              
               {categories.map(category => <option value={category.id}>{category.category_name}</option>)}
-            </select>
+            </Select>
+          
+            
           </div>
           <div className="mb-3">
-            <select {...register("vale_type")} className="select w-100 p-2">
+            <Select {...register("vale_type")} >
               <option value="Not selected">Valve Type</option>
               <option value="Long Valve">Long Valve</option>
               <option value="Short Valve">Short Valve</option>
-            </select>
+            </Select>
           </div>
           <div className="mb-3">
-            <select {...register("supplier")} className="select w-100 p-2">
-              <option>Select Supplier</option>
+            <Select {...register("supplier")} placeholder="Select Supplier">              
               {suppliers.map(supplier => <option value={supplier.id}>{supplier.name}</option>)}
-            </select>
+            </Select>
           </div>
         </div>
         <HStack justifyContent="space-between">
-          <button
-            className="btn btn-primary align-self-end btn-lg"
+          <Button
+            
             type="submit"
             onClick={() => {
               setErrorItemCreate("");
@@ -125,7 +94,7 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
             }}
           >
             Save
-          </button>
+          </Button>
         </HStack>
       </form>
     </>

@@ -22,13 +22,13 @@ const AddCategoryDrawer = () => {
     <>
       <Button
         variant="link"
-        textAlign="left"
-        bg="#aaa1a1"
-        textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
+        textAlign="left"        
+        textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}        
+        bg={colorMode === 'light'? '#e3a99c':''} 
         _hover={
-          colorMode === "light"
-            ? { background: "#3e3d40 " }
-            : { background: "#fababb" }
+            colorMode === "light"
+              ? { background: "#f1cac1" }
+              : { background: "#766f6f" }
         }
         width="100%"
         height="8vh"

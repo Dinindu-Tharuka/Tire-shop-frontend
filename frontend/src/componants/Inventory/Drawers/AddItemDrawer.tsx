@@ -14,12 +14,11 @@ import ItemAddForm from "../Forms/ItemAddForm";
 import { FieldValues } from "react-hook-form";
 
 interface Props {
-  inventory: string;
-  option: string;
+  inventory: string;  
   onCreated: (item:FieldValues)=>void;
 }
 
-const InventoryAddButtonDrawer = ({ inventory, option, onCreated }: Props) => {
+const InventoryAddButtonDrawer = ({ inventory, onCreated }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -31,19 +30,19 @@ const InventoryAddButtonDrawer = ({ inventory, option, onCreated }: Props) => {
     <>
       <Button
         variant="link"
-        textAlign="left"
-        bg="#aaa1a1"
+        textAlign="left"        
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
+        bg={colorMode === 'light'? '#e3a99c':''} 
         _hover={
-          colorMode === "light"
-            ? { background: "#3e3d40 " }
-            : { background: "#fababb" }
+            colorMode === "light"
+              ? { background: "#f1cac1" }
+              : { background: "#766f6f" }
         }
         width="100%"
         height="8vh"
         onClick={onOpen}
       >
-        {option}
+        Add
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -54,7 +53,7 @@ const InventoryAddButtonDrawer = ({ inventory, option, onCreated }: Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add {inventory}</DrawerHeader>
+          <DrawerHeader >Add Item</DrawerHeader>
 
           <DrawerBody>
             <ItemAddForm onCretedItem={onCreated} onClose={onCloseDrawer} />

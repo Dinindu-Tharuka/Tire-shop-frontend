@@ -54,7 +54,6 @@ const InventorySidePanel = ({onCreated}:Props) => {
           {options.map((option, num) => index === 0 ? <InventoryAddButtonDrawer
                                                                   key={num}
                                                                   inventory={inventory}
-                                                                  option={option}
                                                                   onCreated={onCreated}
                                                                 /> 
                                         : index === 1 ? <AddCategoryDrawer

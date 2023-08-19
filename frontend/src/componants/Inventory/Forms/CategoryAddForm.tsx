@@ -1,4 +1,4 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { Button, HStack, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import  categoryService, { Category } from "../../../services/Inventory/category-service";
@@ -33,19 +33,17 @@ const CategoryAddForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 h-75">
-            <input
+            <Input
               {...register("category_name")}
-              type="text"
-              className="form-control"
+              type="text"              
               placeholder="Category Name"
             />
           </div>    
           
           <div className="mb-3">
-            <input
+            <Input
               {...register("description")}
-              type="text"
-              className="form-control"
+              type="text"              
               placeholder="Description"
             />
           </div>
@@ -54,8 +52,7 @@ const CategoryAddForm = () => {
           
         </div>
         <HStack justifyContent="space-between">
-          <button
-            className="btn btn-primary align-self-end btn-lg"
+          <Button            
             type="submit"
             onClick={() => {
               setErrorCategoryCreate("");
@@ -63,7 +60,7 @@ const CategoryAddForm = () => {
             }}
           >
             Save
-          </button>
+          </Button>
         </HStack>
       </form>
     </>
