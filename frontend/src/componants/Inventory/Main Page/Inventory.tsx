@@ -10,16 +10,17 @@ import useItems from "../../../hooks/Inventory/useItems";
 import ItemCategoryTable from "../Category/ItemCategoryTable";
 import categoryService, { Category } from "../../../services/Inventory/category-service";
 import useCategory from "../../../hooks/Inventory/useCategory";
+import SupplierTable from "../Supplier/SupplierTable";
+import useSupplier from "../../../hooks/Inventory/useSupplier";
 
 const Inventory = () => {
   const { items, setItems, error, setError } = useItems();
-  const {
-    categories,
-    setCategories,
-    errorFetchCategory,
-    setErrorFetchCategory,
-  } = useCategory();
+  const { categories, setCategories, errorFetchCategory, setErrorFetchCategory} = useCategory();
+  const { suppliers, setSuppliers, errorFetchSupplier, setErrorFetchSupplier } = useSupplier();
 
+
+
+  // Category
   const onCreatedCategory = (category: Category) => {
     setCategories([category, ...categories]);
   };
@@ -42,6 +43,8 @@ const Inventory = () => {
   const onUpdateCategory = (category:Category)=>{
     setCategories(categories.map((cat => cat.id === category.id? category:cat)))
   }
+
+  // Item
 
   const onDeleteItem = (itemSelected: Item) => {
     const originalItems = [...items];
@@ -113,10 +116,12 @@ const Inventory = () => {
             onSelectedDeleteItem={(item) => onDeleteItem(item)}
             items={items}
           /> */}
-          <ItemCategoryTable 
+          {/* <ItemCategoryTable 
               onUpdatedCategory={onUpdateCategory}  
               onDeleteCategory={onDeleteCategory} 
-              categories={categories} />
+              categories={categories} /> */}
+
+            <SupplierTable suppliers={suppliers}/>
         </GridItem>
         <GridItem
           area="aside"

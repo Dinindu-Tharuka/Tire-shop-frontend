@@ -11,7 +11,6 @@ import {
 import categoryService, {
   Category,
 } from "../../../services/Inventory/category-service";
-import { useState } from "react";
 import UpdateCategoryDrawer from "./UpdateCategoryDrawer";
 
 interface Props {
