@@ -10,17 +10,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import ItemAddForm from "../Forms/ItemAddForm";
-import { Item } from "../../../services/Inventory/item-service";
-import UpdateItemForm from "../Forms/UpdateItemForm";
+import ItemAddForm from "../Item/ItemAddForm";
 import { FieldValues } from "react-hook-form";
+import SupplierAddForm from "./SupplierAddForm";
 
-interface Props {
-  selectedUpdateItem: Item;
-  updatedItem: (data: FieldValues) => void;
-}
-
-const UpdateItem = ({ selectedUpdateItem, updatedItem }: Props) => {
+const AddSupplierDrawer = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -28,23 +22,24 @@ const UpdateItem = ({ selectedUpdateItem, updatedItem }: Props) => {
   const onCloseDrawer = () => {
     onClose();
   };
+
   return (
     <>
       <Button
         variant="link"
-        bg="#ffc2b3"
-        padding={3}
+        textAlign="left"
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
+        bg={colorMode === "light" ? "#e3a99c" : ""}
         _hover={
           colorMode === "light"
-            ? { background: "#3e3d40 " }
-            : { background: "#fababb" }
+            ? { background: "#f1cac1" }
+            : { background: "#766f6f" }
         }
-        //   width="100%"
-        //   height="8vh"
+        width="100%"
+        height="8vh"
         onClick={onOpen}
       >
-        Update
+        Add
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -55,13 +50,10 @@ const UpdateItem = ({ selectedUpdateItem, updatedItem }: Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Update {selectedUpdateItem.item_id}</DrawerHeader>
+          <DrawerHeader>Add Supplier</DrawerHeader>
 
           <DrawerBody>
-            <UpdateItemForm
-              updatedItem={updatedItem}
-              selectedUpdateItem={selectedUpdateItem}
-            />
+            <SupplierAddForm />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -69,4 +61,4 @@ const UpdateItem = ({ selectedUpdateItem, updatedItem }: Props) => {
   );
 };
 
-export default UpdateItem;
+export default AddSupplierDrawer;

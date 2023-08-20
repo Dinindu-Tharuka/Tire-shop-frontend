@@ -1,20 +1,17 @@
 import {
   Button,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
-  useStatStyles,
 } from "@chakra-ui/react";
-import { Item } from "../../services/Inventory/item-service";
-import apiClient from "../../services/api-client";
-import { useState } from "react";
-import UpdateItem from "./Drawers/UpdateItem";
+import { Item } from "../../../services/Inventory/item-service";
+
 import { FieldValues } from "react-hook-form";
+import UpdateItem from "./UpdateItemDrawer";
 
 interface Props {
   items: Item[] | undefined;
@@ -25,8 +22,8 @@ interface Props {
 const ItemTable = ({
   items,
   onSelectedDeleteItem: onSelectedItem,
-  updatedItem,
-}: Props) => {
+  updatedItem}: Props) => {
+
   return (
     <TableContainer>
       <Table>

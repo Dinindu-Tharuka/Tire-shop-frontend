@@ -10,27 +10,26 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import ItemAddForm from "../Forms/ItemAddForm";
+import ItemAddForm from "../Item/ItemAddForm";
 import { FieldValues } from "react-hook-form";
-import SupplierAddForm from "../Forms/SupplierAddForm";
+import CategoryAddForm from "./CategoryAddForm";
+import { Category } from "../../../services/Inventory/category-service";
 
+interface Props {
+  createdCategory: (category: Category) => void;
+}
 
-const AddSupplierDrawer = () => {
+const AddCategoryDrawer = ({ createdCategory }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-
-  const onCloseDrawer = () => {
-    onClose();
-  };
-
   return (
     <>
       <Button
         variant="link"
-        textAlign="left"        
+        textAlign="left"
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
-        bg={colorMode === 'light'? '#e3a99c':''} 
+        bg={colorMode === "light" ? "#e3a99c" : ""}
         _hover={
           colorMode === "light"
             ? { background: "#f1cac1" }
@@ -44,22 +43,22 @@ const AddSupplierDrawer = () => {
       </Button>
       <Drawer
         isOpen={isOpen}
-        placement="right"        
+        placement="right"
         onClose={onClose}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add Supplier</DrawerHeader>
+          <DrawerHeader>Add Category</DrawerHeader>
 
           <DrawerBody>
-            <SupplierAddForm/>
+            <CategoryAddForm onCreatedCategory={createdCategory} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default AddSupplierDrawer
+export default AddCategoryDrawer;

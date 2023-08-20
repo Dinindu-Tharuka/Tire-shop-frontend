@@ -1,4 +1,4 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { Button, HStack, Text, useColorMode } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
@@ -12,6 +12,9 @@ const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const {toggleColorMode, colorMode} = useColorMode();
+
   const onSubmit = (data: FieldValues) => {
     ItemService.update(data, data.item_id)
       .then((res) => {
@@ -136,13 +139,13 @@ const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
           </div>
         </div>
         <HStack justifyContent="space-between">
-          <button
+          <Button
             onClick={() => {}}
-            className="btn btn-primary align-self-end btn-lg"
+            bg={colorMode === 'light'? '#e3a99c':'#575757'}
             type="submit"
           >
             Save
-          </button>
+          </Button>
         </HStack>
       </form>
     </>

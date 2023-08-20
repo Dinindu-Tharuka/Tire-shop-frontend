@@ -10,12 +10,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import ItemAddForm from "../Forms/ItemAddForm";
+import ItemAddForm from "./ItemAddForm";
 import { FieldValues } from "react-hook-form";
 
 interface Props {
-  inventory: string;  
-  onCreated: (item:FieldValues)=>void;
+  inventory: string;
+  onCreated: (item: FieldValues) => void;
 }
 
 const InventoryAddButtonDrawer = ({ inventory, onCreated }: Props) => {
@@ -30,13 +30,13 @@ const InventoryAddButtonDrawer = ({ inventory, onCreated }: Props) => {
     <>
       <Button
         variant="link"
-        textAlign="left"        
+        textAlign="left"
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
-        bg={colorMode === 'light'? '#e3a99c':''} 
+        bg={colorMode === "light" ? "#e3a99c" : ""}
         _hover={
-            colorMode === "light"
-              ? { background: "#f1cac1" }
-              : { background: "#766f6f" }
+          colorMode === "light"
+            ? { background: "#f1cac1" }
+            : { background: "#766f6f" }
         }
         width="100%"
         height="8vh"
@@ -53,7 +53,7 @@ const InventoryAddButtonDrawer = ({ inventory, onCreated }: Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader >Add Item</DrawerHeader>
+          <DrawerHeader>Add Item</DrawerHeader>
 
           <DrawerBody>
             <ItemAddForm onCretedItem={onCreated} onClose={onCloseDrawer} />

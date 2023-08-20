@@ -1,33 +1,46 @@
-import { Button, HStack, Input, Text } from "@chakra-ui/react";
+import { Button, HStack, Input, Text, useColorMode } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import  categoryService, { Category } from "../../../services/Inventory/category-service";
+import categoryService, {
+  Category,
+} from "../../../services/Inventory/category-service";
+import useCategory from "../../../hooks/Inventory/useCategory";
 
+interface Props {
+  onCreatedCategory: (category: Category) => void;
+}
 
-
-const CategoryAddForm = () => {
+const CategoryAddForm = ({ onCreatedCategory }: Props) => {
   const { register, handleSubmit } = useForm();
-  
+
   const [errorCategoryCreate, setErrorCategoryCreate] = useState("");
   const [success, setSuccess] = useState("");
+  const { toggleColorMode, colorMode } = useColorMode();
 
-  const onSubmit = (data:FieldValues)=>{
+  const onSubmit = (data: FieldValues) => {
+    const createdCategory: Category = {
+      id: data.id,
+      category_name: data.category_name,
+      description: data.description,
+    };
+
+    onCreatedCategory(createdCategory);
 
     categoryService
       .create(data)
-      .then(res=>{
-        if (res.status === 200){
-          setSuccess('Successfully Created...')
+      .then((res) => {
+        if (res.status === 200) {
+          setSuccess("Successfully Created...");
         }
       })
-      .catch(err=> setErrorCategoryCreate(err.message))
-
-  }
-
+      .catch((err) => setErrorCategoryCreate(err.message));
+  };
 
   return (
     <>
-      {errorCategoryCreate && <Text textColor="#dd0939">{errorCategoryCreate}</Text>}
+      {errorCategoryCreate && (
+        <Text textColor="#dd0939">{errorCategoryCreate}</Text>
+      )}
       {success && <Text textColor="#38e17e">{success}</Text>}
 
       <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
@@ -35,25 +48,23 @@ const CategoryAddForm = () => {
           <div className="mb-3 h-75">
             <Input
               {...register("category_name")}
-              type="text"              
+              type="text"
               placeholder="Category Name"
             />
-          </div>    
-          
+          </div>
+
           <div className="mb-3">
             <Input
               {...register("description")}
-              type="text"              
+              type="text"
               placeholder="Description"
             />
           </div>
-          
-          
-          
         </div>
         <HStack justifyContent="space-between">
-          <Button            
+          <Button
             type="submit"
+            bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
               setErrorCategoryCreate("");
               setSuccess("");
@@ -64,7 +75,7 @@ const CategoryAddForm = () => {
         </HStack>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default CategoryAddForm
+export default CategoryAddForm;

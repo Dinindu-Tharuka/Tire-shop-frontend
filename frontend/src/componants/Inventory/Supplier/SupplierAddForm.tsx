@@ -67,6 +67,7 @@ const SupplierAddForm = () => {
         </div>
         <HStack justifyContent="space-between">
           <Button
+          bg={colorMode === 'light'? '#e3a99c':'#575757'}
           type="submit"          
           onClick={() => {
             setErrorSupplierCreate("");

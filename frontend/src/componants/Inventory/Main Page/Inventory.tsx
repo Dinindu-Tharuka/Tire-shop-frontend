@@ -1,15 +1,18 @@
 import { Grid, GridItem, Text } from "@chakra-ui/react";
 
-import ItemTable from "../componants/Inventory/ItemTable";
+import ItemTable from "../Item/ItemTable";
 import { useEffect, useState } from "react";
-import InventorySidePanel from "../componants/Inventory/InventorySidePanel";
-import ItemService, { Item } from "../services/Inventory/item-service";
+import InventorySidePanel from "../SidePanel/InventorySidePanel";
+import ItemService, { Item } from "../../../services/Inventory/item-service";
 
 import { FieldValues } from "react-hook-form";
-import useItems from "../hooks/Inventory/useItems";
+import useItems from "../../../hooks/Inventory/useItems";
+import ItemCategoryTable from "../Category/ItemCategoryTable";
+import { Category } from "../../../services/Inventory/category-service";
 
 const Inventory = () => {
   const { items, error, setError, setItems } = useItems();
+  const [createdCategory, setCreatedCategory] = useState<Category>();
 
   const onDelete = (itemSelected: Item) => {
     const originalItems = [...items];
@@ -36,6 +39,7 @@ const Inventory = () => {
     };
     setItems([createdItem, ...items]);
   };
+
   const onUpdatedItem = (data: FieldValues) => {
     const updatedItem: Item = {
       item_id: data.item_id,
@@ -78,13 +82,17 @@ const Inventory = () => {
             onSelectedDeleteItem={(item) => onDelete(item)}
             items={items}
           />
+          {/* <ItemCategoryTable createdCategory={createdCategory} /> */}
         </GridItem>
         <GridItem
           area="aside"
           height={{ base: "10vh", lg: "85vh" }}
           width={{ base: "100vw", lg: "15vw" }}
         >
-          <InventorySidePanel onCreated={onCreatedItem} />
+          <InventorySidePanel
+            onCretedCategory={(category) => setCreatedCategory(category)}
+            onCreated={onCreatedItem}
+          />
         </GridItem>
       </Grid>
     </>
