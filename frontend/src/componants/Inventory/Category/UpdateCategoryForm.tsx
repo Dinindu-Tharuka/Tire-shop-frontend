@@ -6,39 +6,39 @@ import categoryService, {
 } from "../../../services/Inventory/category-service";
 
 interface Props {
-  onCreatedCategory: (category: Category) => void;
+  updateCategory: Category;
+  onUpdatedCategory:(category:Category)=>void
 }
 
-const CategoryAddForm = ({ onCreatedCategory }: Props) => {
+const UpdateCategoryForm = ({updateCategory,onUpdatedCategory} : Props) => {
   const { register, handleSubmit } = useForm();
 
-  const [errorCategoryCreate, setErrorCategoryCreate] = useState("");
+  const [errorCategoryUpdate, setErrorCategoryUpdate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
   const onSubmit = (data: FieldValues) => {
-    
-    const createdCategory: Category = {
-      id: data.id,
+    const updated: Category = {
+      id: updateCategory.id,
       category_name: data.category_name,
       description: data.description,
     };
-    
-    categoryService
-    .create(data)
-    .then((res) => {
-      if (res.status === 200) {
-        setSuccess("Successfully Created...");        
-        onCreatedCategory(res.data);
-        }
-      })
-      .catch((err) => setErrorCategoryCreate(err.message));
-  };
 
+    onUpdatedCategory(updated)
+       
+
+    categoryService
+      .update(updated, `${updated.id}`)
+      .then((res) =>{
+        setSuccess(res.status === 202 ? "Successfully Updated." : "")    
+      }
+      )
+      .catch((err) => setErrorCategoryUpdate(err.message));
+  };
   return (
     <>
-      {errorCategoryCreate && (
-        <Text textColor="#dd0939">{errorCategoryCreate}</Text>
+      {errorCategoryUpdate && (
+        <Text textColor="#dd0939">{errorCategoryUpdate}</Text>
       )}
       {success && <Text textColor="#38e17e">{success}</Text>}
 
@@ -49,6 +49,7 @@ const CategoryAddForm = ({ onCreatedCategory }: Props) => {
               {...register("category_name")}
               type="text"
               placeholder="Category Name"
+              defaultValue={updateCategory.category_name}
             />
           </div>
 
@@ -57,6 +58,7 @@ const CategoryAddForm = ({ onCreatedCategory }: Props) => {
               {...register("description")}
               type="text"
               placeholder="Description"
+              defaultValue={updateCategory.description}
             />
           </div>
         </div>
@@ -65,7 +67,7 @@ const CategoryAddForm = ({ onCreatedCategory }: Props) => {
             type="submit"
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
-              setErrorCategoryCreate("");
+              setErrorCategoryUpdate("");
               setSuccess("");
             }}
           >
@@ -77,4 +79,4 @@ const CategoryAddForm = ({ onCreatedCategory }: Props) => {
   );
 };
 
-export default CategoryAddForm;
+export default UpdateCategoryForm;

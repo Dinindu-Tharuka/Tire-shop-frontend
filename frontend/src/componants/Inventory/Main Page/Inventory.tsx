@@ -8,19 +8,50 @@ import ItemService, { Item } from "../../../services/Inventory/item-service";
 import { FieldValues } from "react-hook-form";
 import useItems from "../../../hooks/Inventory/useItems";
 import ItemCategoryTable from "../Category/ItemCategoryTable";
-import { Category } from "../../../services/Inventory/category-service";
+import categoryService, { Category } from "../../../services/Inventory/category-service";
+import useCategory from "../../../hooks/Inventory/useCategory";
 
 const Inventory = () => {
-  const { items, error, setError, setItems } = useItems();
-  const [createdCategory, setCreatedCategory] = useState<Category>();
+  const { items, setItems, error, setError } = useItems();
+  const {
+    categories,
+    setCategories,
+    errorFetchCategory,
+    setErrorFetchCategory,
+  } = useCategory();
 
-  const onDelete = (itemSelected: Item) => {
+  const onCreatedCategory = (category: Category) => {
+    setCategories([category, ...categories]);
+  };
+
+  const onDeleteCategory = (category:Category)=>{
+  
+    const originalCategories = [...categories];
+    setCategories(categories.filter((cat) => cat.id !== category.id));
+
+    console.log(category);
+    
+
+    categoryService
+      .delete(`${category.id}`)
+      .catch((err) => {        
+        setCategories(originalCategories);
+    });
+
+  }
+  const onUpdateCategory = (category:Category)=>{
+    setCategories(categories.map((cat => cat.id === category.id? category:cat)))
+  }
+
+  const onDeleteItem = (itemSelected: Item) => {
     const originalItems = [...items];
     setItems(items.filter((item) => item.item_id !== itemSelected.item_id));
 
-    ItemService.delete(itemSelected.item_id).catch((error) => {
-      setError(error.message);
-      setItems(originalItems);
+    ItemService
+      .delete(itemSelected.item_id)
+      .catch((error) => {
+        setError(error.message);
+        setItems(originalItems);
     });
   };
 
@@ -77,12 +108,15 @@ const Inventory = () => {
           height={{ base: "10vh", lg: "85vh" }}
           width={{ base: "100vw", lg: "60vw" }}
         >
-          <ItemTable
+          {/* <ItemTable
             updatedItem={onUpdatedItem}
-            onSelectedDeleteItem={(item) => onDelete(item)}
+            onSelectedDeleteItem={(item) => onDeleteItem(item)}
             items={items}
-          />
-          {/* <ItemCategoryTable createdCategory={createdCategory} /> */}
+          /> */}
+          <ItemCategoryTable 
+              onUpdatedCategory={onUpdateCategory}  
+              onDeleteCategory={onDeleteCategory} 
+              categories={categories} />
         </GridItem>
         <GridItem
           area="aside"
@@ -90,7 +124,7 @@ const Inventory = () => {
           width={{ base: "100vw", lg: "15vw" }}
         >
           <InventorySidePanel
-            onCretedCategory={(category) => setCreatedCategory(category)}
+            onCretedCategory={(category) => onCreatedCategory(category)}
             onCreated={onCreatedItem}
           />
         </GridItem>

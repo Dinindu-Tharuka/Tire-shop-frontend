@@ -8,33 +8,21 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import UpdateItem from "../Item/UpdateItemDrawer";
-import useCategory from "../../../hooks/Inventory/useCategory";
 import categoryService, {
   Category,
 } from "../../../services/Inventory/category-service";
 import { useState } from "react";
+import UpdateCategoryDrawer from "./UpdateCategoryDrawer";
 
 interface Props {
-  createdCategory?: Category | null;
+  categories: Category[];
+  onDeleteCategory: (category: Category) => void;
+  onUpdatedCategory: (category:Category)=> void;
 }
 
-const ItemCategoryTable = ({ createdCategory }: Props) => {
-  const [error, setError] = useState("");
-  const { categories, setCategories, errorFetchCategory } = useCategory();
-
-  const onDelete = (cat: Category) => {
-    const originalCategories = [...categories];
-    setCategories(categories.filter((cate) => cate.id !== cat.id));
-
-    categoryService.delete(`${cat.id}`).catch((err) => {
-      setError(err.message);
-      setCategories(originalCategories);
-    });
-  };
+const ItemCategoryTable = ({ categories, onDeleteCategory, onUpdatedCategory }: Props) => {
   return (
     <>
-      {error === ""}
       <TableContainer>
         <Table>
           <Thead>
@@ -54,14 +42,13 @@ const ItemCategoryTable = ({ createdCategory }: Props) => {
                 <Td>{category.description}</Td>
 
                 <Td>
-                  {/* <UpdateItem */}
-                  {/* selectedUpdateItem={category} */}
-                  {/* /> */}
+                  <UpdateCategoryDrawer onUpdatedCategory={onUpdatedCategory
+                  } updateCategory={category} />
                 </Td>
                 <Td>
                   <Button
                     padding={4}
-                    onClick={() => onDelete(category)}
+                    onClick={() => onDeleteCategory(category)}
                     bg="#f87454"
                   >
                     Delete

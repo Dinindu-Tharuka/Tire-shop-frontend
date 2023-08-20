@@ -122,7 +122,7 @@ const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
                   ? selectedUpdateItem.item_category
                   : "Select Category"}
               </option>
-              <option value="1">Two</option>
+              
               <option value="2">Three</option>
             </select>
           </div>

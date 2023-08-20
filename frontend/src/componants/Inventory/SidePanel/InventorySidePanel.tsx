@@ -60,7 +60,7 @@ const InventorySidePanel = ({ onCreated, onCretedCategory }: Props) => {
             ) : index === 1 ? (
               <AddCategoryDrawer createdCategory={onCretedCategory} key={num} />
             ) : index === 2 ? (
-              <AddSupplierDrawer />
+              <AddSupplierDrawer key={num} />
             ) : null
           )}
         </MenuList>

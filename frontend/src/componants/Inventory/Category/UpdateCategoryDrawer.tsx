@@ -10,35 +10,34 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import CategoryAddForm from "./CategoryAddForm";
+import UpdateCategoryForm from "./UpdateCategoryForm";
 import { Category } from "../../../services/Inventory/category-service";
 
 interface Props {
-  createdCategory: (category: Category) => void;
-  
+  updateCategory: Category;
+  onUpdatedCategory:(category:Category)=>void;
 }
 
-const AddCategoryDrawer = ({ createdCategory }: Props) => {
+const UpdateCategoryDrawer = ({ updateCategory, onUpdatedCategory }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
+
   return (
     <>
       <Button
         variant="link"
-        textAlign="left"
+        bg="#ffc2b3"
+        padding={3}
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
-        bg={colorMode === "light" ? "#e3a99c" : ""}
         _hover={
           colorMode === "light"
-            ? { background: "#f1cac1" }
-            : { background: "#766f6f" }
+            ? { background: "#3e3d40 " }
+            : { background: "#fababb" }
         }
-        width="100%"
-        height="8vh"
         onClick={onOpen}
       >
-        Add
+        Update
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -49,10 +48,13 @@ const AddCategoryDrawer = ({ createdCategory }: Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add Category</DrawerHeader>
+          <DrawerHeader>Update Category</DrawerHeader>
 
           <DrawerBody>
-            <CategoryAddForm onCreatedCategory={createdCategory} />
+            <UpdateCategoryForm
+              updateCategory={updateCategory}
+              onUpdatedCategory={onUpdatedCategory}
+            />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -60,4 +62,4 @@ const AddCategoryDrawer = ({ createdCategory }: Props) => {
   );
 };
 
-export default AddCategoryDrawer;
+export default UpdateCategoryDrawer;
