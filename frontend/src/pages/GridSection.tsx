@@ -2,6 +2,8 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import Navbar from "../componants/Navbar";
 import SideBarOptionList from "../componants/SideBarOptionList";
 import Inventory from "../componants/Inventory/Main Page/Inventory";
+import MainImage from "../componants/MainImage";
+import { Outlet } from "react-router-dom";
 
 const GridSection = () => {
   return (
@@ -32,7 +34,9 @@ const GridSection = () => {
         height={{ base: "80vh", lg: "85vh" }}
         width={{ base: "100vw", lg: "80vw" }}
       >
-        <Inventory />
+        {/* <Inventory /> */}
+        {/* <MainImage/> */}
+        <Outlet/>
       </GridItem>
     </Grid>
   );

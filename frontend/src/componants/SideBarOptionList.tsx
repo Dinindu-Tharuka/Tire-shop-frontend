@@ -19,6 +19,7 @@ import { RxAvatar } from "react-icons/rx";
 
 import { RiShutDownLine } from "react-icons/ri";
 import SignOut from "./SignOut";
+import { Link } from "react-router-dom";
 
 const SideBarOptionList = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -26,20 +27,37 @@ const SideBarOptionList = () => {
   const options_lg = [
     "Main Dashbord",
     "Invoice",
-    "Add Inventory",
+    "Inventory",
     "Rebuilt Section",
     "GRN",
     "Registration",
   ];
+  const links_lg = [
+    '/',
+    '/',
+    '/inventory',
+    '/',
+    '/',
+    '/',
+  ]
   const options_base = [
     "Main Dashbord",
     "Invoice",
-    "Add Inventory",
+    "Inventory",
     "Rebuilt Section",
     "GRN",
     "Registration",
     "Sign out",
   ];
+  const links_base = [
+    '/',
+    '/',
+    '/inventory',
+    '/',
+    '/',
+    '/',
+  ]
+
   const icons_lg = [
     AiOutlineHome,
     LiaFileInvoiceDollarSolid,
@@ -82,7 +100,7 @@ const SideBarOptionList = () => {
           variant="link"
           textAlign="left"
         >
-          {option}
+          <Link to={links_lg[index]}>{option}</Link>
         </Button>
       </HStack>
     </ListItem>
@@ -92,8 +110,8 @@ const SideBarOptionList = () => {
   const sideBarBase = options_base.map((option, index) => (
     <HStack padding={5} key={index}>
       <Icon color="gray.500" key={index} as={icons_base[index]} />
-      <Button variant="link" textAlign="left">
-        {option}
+      <Button variant="link" textAlign="left">        
+        <Link to={links_base[index]}>{option}</Link>
       </Button>
     </HStack>
   ));

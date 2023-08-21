@@ -17,13 +17,14 @@ import { FieldValues } from "react-hook-form";
 import AddCategoryDrawer from "../Category/AddCategoryDrawer";
 import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
 import { Category } from "../../../services/Inventory/category-service";
+import { Supplier } from "../../../services/Inventory/supplier-service";
 
 interface Props {
   onCreated: (data: FieldValues) => void;
   onCretedCategory: (category: Category) => void;
 }
 
-const InventorySidePanel = ({ onCreated, onCretedCategory }: Props) => {
+const InventorySidePanel = ({ onCreated, onCretedCategory}: Props) => {
   const inventoryList = ["Item", "Item Category", "Supplier"];
   const { toggleColorMode, colorMode } = useColorMode();
   const [categories, setCategories] = useState([]);
@@ -60,7 +61,7 @@ const InventorySidePanel = ({ onCreated, onCretedCategory }: Props) => {
             ) : index === 1 ? (
               <AddCategoryDrawer createdCategory={onCretedCategory} key={num} />
             ) : index === 2 ? (
-              <AddSupplierDrawer key={num} />
+              <AddSupplierDrawer/>
             ) : null
           )}
         </MenuList>

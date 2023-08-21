@@ -1,7 +1,9 @@
 import { Button, HStack, Input, Text, useColorMode } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import supplierService from "../../../services/Inventory/supplier-service";
+import supplierService, { Supplier } from "../../../services/Inventory/supplier-service";
+import SupplierContext from "../../../Contexts/SupplierContext";
+
 
 const SupplierAddForm = () => {
     const { register, handleSubmit } = useForm();
@@ -9,12 +11,19 @@ const SupplierAddForm = () => {
     const [errorSupplierCreate, setErrorSupplierCreate] = useState("");
     const [success, setSuccess] = useState("");
     const {toggleColorMode, colorMode} = useColorMode();
+
+    const {suppliers, setSuppliers} = useContext(SupplierContext)
   
-    const onSubmit = (data:FieldValues)=>{
+    const onSubmit = (data:FieldValues)=>{     
   
      supplierService
         .create(data)
-        .then(res=> setSuccess(res.status === 200? 'Successefully Created.':''))
+        .then(res=> {
+          if (res.status == 200){
+            setSuccess('Successefully Created.')
+            setSuppliers([res.data, ...suppliers])
+          }
+        })
         .catch(error => setErrorSupplierCreate(error.message))
   
     }

@@ -7,6 +7,8 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 
 import theme from "./theme";
+import { RouterProvider } from "react-router-dom";
+import routes from "./Routes/routes";
 
 const queryClient = new QueryClient();
 
@@ -15,7 +17,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <App />
+        <RouterProvider router={routes} />
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>

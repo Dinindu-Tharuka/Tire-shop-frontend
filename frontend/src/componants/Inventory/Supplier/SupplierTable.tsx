@@ -8,16 +8,27 @@ import {
     Thead,
     Tr,
   } from "@chakra-ui/react";
+import UpdateSupplierDrawer from "./UpdateSupplierDrawer";
+import { useContext } from "react";
+import SupplierContext from "../../../Contexts/SupplierContext";
+import SupplierService ,{ Supplier } from "../../../services/Inventory/supplier-service";
 
-import { Supplier } from "../../../services/Inventory/supplier-service";
 
-  interface Props {
-    suppliers: Supplier[];
-    // onDeleteSupplier: (supplier: Supplier) => void;
-    // onUpdatedSupplier: (supplier:Supplier)=> void;
+
+const SupplierTable = () => {
+
+  const {suppliers, setSuppliers} = useContext(SupplierContext)
+
+  const onDeleteSupplier = (supplier:Supplier)=>{
+    const originalSuppliers= [...suppliers]
+
+    setSuppliers(suppliers.filter((sup)=> sup.id !== supplier.id))
+
+    SupplierService
+      .delete(`${supplier.id}`)
+      .catch(err => setSuppliers(originalSuppliers))
+
   }
-
-const SupplierTable = ({ suppliers }: Props) => {
   return (
     <>
       <TableContainer>
@@ -35,22 +46,21 @@ const SupplierTable = ({ suppliers }: Props) => {
             </Tr>
           </Thead>
           <Tbody>
-            {suppliers?.map((suppier, index) => (
-              <Tr key={suppier.id}>
+            {suppliers?.map((supplier, index) => (
+              <Tr key={supplier.id}>
                 <Td>{index + 1}</Td>
-                <Td>{suppier.name}</Td>
-                <Td>{suppier.address}</Td>
-                <Td>{suppier.telephone}</Td>
-                <Td>{suppier.mobile}</Td>
-                <Td>{suppier.email}</Td>
+                <Td>{supplier.name}</Td>
+                <Td>{supplier.address}</Td>
+                <Td>{supplier.telephone}</Td>
+                <Td>{supplier.mobile}</Td>
+                <Td>{supplier.email}</Td>
                 <Td>
-                  {/* <UpdateCategoryDrawer onUpdatedCategory={onUpdatedCategory
-                  } updateCategory={suppier} /> */}
+                  <UpdateSupplierDrawer selecedSupplier={supplier}/>
                 </Td>
                 <Td>
                   <Button
                     padding={4}
-                    // onClick={() => onDeleteSupplier(suppier)}
+                    onClick={() => onDeleteSupplier(supplier)}
                     bg="#f87454"
                   >
                     Delete

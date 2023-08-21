@@ -12,6 +12,10 @@ import categoryService, { Category } from "../../../services/Inventory/category-
 import useCategory from "../../../hooks/Inventory/useCategory";
 import SupplierTable from "../Supplier/SupplierTable";
 import useSupplier from "../../../hooks/Inventory/useSupplier";
+import SupplierService ,{ Supplier } from "../../../services/Inventory/supplier-service";
+
+import { Outlet } from "react-router-dom";
+import SupplierContext from "../../../Contexts/SupplierContext";
 
 const Inventory = () => {
   const { items, setItems, error, setError } = useItems();
@@ -29,8 +33,6 @@ const Inventory = () => {
   
     const originalCategories = [...categories];
     setCategories(categories.filter((cat) => cat.id !== category.id));
-
-    console.log(category);
     
 
     categoryService
@@ -95,7 +97,8 @@ const Inventory = () => {
   };
 
   return (
-    <>
+   
+    <SupplierContext.Provider value={ {suppliers, setSuppliers}}>
       {/* Errors */}
       {error && <Text textColor="#e60000">{error}</Text>}
 
@@ -116,12 +119,14 @@ const Inventory = () => {
             onSelectedDeleteItem={(item) => onDeleteItem(item)}
             items={items}
           /> */}
-          {/* <ItemCategoryTable 
+          <ItemCategoryTable 
               onUpdatedCategory={onUpdateCategory}  
               onDeleteCategory={onDeleteCategory} 
-              categories={categories} /> */}
-
-            <SupplierTable suppliers={suppliers}/>
+              categories={categories} />
+            
+            {/* <SupplierTable/> */}
+            
+              {/* <Outlet/> */}
         </GridItem>
         <GridItem
           area="aside"
@@ -134,7 +139,8 @@ const Inventory = () => {
           />
         </GridItem>
       </Grid>
-    </>
+    </SupplierContext.Provider>
+ 
   );
 };
 

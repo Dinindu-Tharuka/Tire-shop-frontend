@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import SupplierService, { Supplier } from "../../services/Inventory/supplier-service"
 
 const useSupplier = () => {

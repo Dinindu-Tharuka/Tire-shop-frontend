@@ -9,38 +9,35 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import ItemAddForm from "../Item/ItemAddForm";
-import { FieldValues } from "react-hook-form";
-import SupplierAddForm from "./SupplierAddForm";
+import { useRef } from "react";
+import UpdateSupplierForm from "./UpdateSupplierForm";
 import { Supplier } from "../../../services/Inventory/supplier-service";
 
+interface Props {
+  selecedSupplier: Supplier;
+}
 
-
-const AddSupplierDrawer = () => {
+const UpdateSupplierDrawer = ({
+  selecedSupplier
+}: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-
-
-
   return (
     <>
       <Button
         variant="link"
-        textAlign="left"
+        bg="#ffc2b3"
+        padding={3}
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
-        bg={colorMode === "light" ? "#e3a99c" : ""}
         _hover={
           colorMode === "light"
-            ? { background: "#f1cac1" }
-            : { background: "#766f6f" }
+            ? { background: "#3e3d40 " }
+            : { background: "#fababb" }
         }
-        width="100%"
-        height="8vh"
         onClick={onOpen}
       >
-        Add
+        Update
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -51,10 +48,12 @@ const AddSupplierDrawer = () => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add Supplier</DrawerHeader>
+          <DrawerHeader>Update Category</DrawerHeader>
 
           <DrawerBody>
-            <SupplierAddForm/>
+            <UpdateSupplierForm
+              selectedSupplier={selecedSupplier}
+            />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -62,4 +61,4 @@ const AddSupplierDrawer = () => {
   );
 };
 
-export default AddSupplierDrawer;
+export default UpdateSupplierDrawer;
