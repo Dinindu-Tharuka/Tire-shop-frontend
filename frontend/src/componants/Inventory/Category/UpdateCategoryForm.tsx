@@ -1,21 +1,23 @@
 import { Button, HStack, Input, Text, useColorMode } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import categoryService, {
   Category,
 } from "../../../services/Inventory/category-service";
+import ItemCategoryContext from "../../../Contexts/CategoryContext";
 
 interface Props {
   updateCategory: Category;
-  onUpdatedCategory:(category:Category)=>void
 }
 
-const UpdateCategoryForm = ({updateCategory,onUpdatedCategory} : Props) => {
+const UpdateCategoryForm = ({updateCategory } : Props) => {
   const { register, handleSubmit } = useForm();
 
   const [errorCategoryUpdate, setErrorCategoryUpdate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
+
+  const {categories, setCategories} = useContext(ItemCategoryContext)
 
   const onSubmit = (data: FieldValues) => {
     const updated: Category = {
@@ -24,13 +26,14 @@ const UpdateCategoryForm = ({updateCategory,onUpdatedCategory} : Props) => {
       description: data.description,
     };
 
-    onUpdatedCategory(updated)
+   
        
 
     categoryService
       .update(updated, `${updated.id}`)
       .then((res) =>{
         setSuccess(res.status === 202 ? "Successfully Updated." : "")    
+        setCategories(categories.map((cat => cat.id === updated.id? updated:cat)))
       }
       )
       .catch((err) => setErrorCategoryUpdate(err.message));

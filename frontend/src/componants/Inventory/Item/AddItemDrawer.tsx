@@ -13,19 +13,14 @@ import { useRef, useState } from "react";
 import ItemAddForm from "./ItemAddForm";
 import { FieldValues } from "react-hook-form";
 
-interface Props {
-  inventory: string;
-  onCreated: (item: FieldValues) => void;
-}
 
-const InventoryAddButtonDrawer = ({ inventory, onCreated }: Props) => {
+
+const InventoryAddButtonDrawer = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
-  const onCloseDrawer = () => {
-    onClose();
-  };
+ 
   return (
     <>
       <Button
@@ -56,7 +51,7 @@ const InventoryAddButtonDrawer = ({ inventory, onCreated }: Props) => {
           <DrawerHeader>Add Item</DrawerHeader>
 
           <DrawerBody>
-            <ItemAddForm onCretedItem={onCreated} onClose={onCloseDrawer} />
+            <ItemAddForm/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

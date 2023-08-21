@@ -13,12 +13,9 @@ import { useRef, useState } from "react";
 import CategoryAddForm from "./CategoryAddForm";
 import { Category } from "../../../services/Inventory/category-service";
 
-interface Props {
-  createdCategory: (category: Category) => void;
-  
-}
 
-const AddCategoryDrawer = ({ createdCategory }: Props) => {
+
+const AddCategoryDrawer = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -52,7 +49,7 @@ const AddCategoryDrawer = ({ createdCategory }: Props) => {
           <DrawerHeader>Add Category</DrawerHeader>
 
           <DrawerBody>
-            <CategoryAddForm onCreatedCategory={createdCategory} />
+            <CategoryAddForm/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

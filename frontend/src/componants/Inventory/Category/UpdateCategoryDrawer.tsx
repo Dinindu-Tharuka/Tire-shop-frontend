@@ -15,10 +15,9 @@ import { Category } from "../../../services/Inventory/category-service";
 
 interface Props {
   updateCategory: Category;
-  onUpdatedCategory:(category:Category)=>void;
 }
 
-const UpdateCategoryDrawer = ({ updateCategory, onUpdatedCategory }: Props) => {
+const UpdateCategoryDrawer = ({ updateCategory}: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -53,7 +52,6 @@ const UpdateCategoryDrawer = ({ updateCategory, onUpdatedCategory }: Props) => {
           <DrawerBody>
             <UpdateCategoryForm
               updateCategory={updateCategory}
-              onUpdatedCategory={onUpdatedCategory}
             />
           </DrawerBody>
         </DrawerContent>

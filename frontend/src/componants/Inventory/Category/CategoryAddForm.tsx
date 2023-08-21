@@ -1,20 +1,21 @@
 import { Button, HStack, Input, Text, useColorMode } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import categoryService, {
   Category,
 } from "../../../services/Inventory/category-service";
+import ItemCategoryContext from "../../../Contexts/CategoryContext";
 
-interface Props {
-  onCreatedCategory: (category: Category) => void;
-}
 
-const CategoryAddForm = ({ onCreatedCategory }: Props) => {
+
+const CategoryAddForm = () => {
   const { register, handleSubmit } = useForm();
 
   const [errorCategoryCreate, setErrorCategoryCreate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
+
+  const {categories, setCategories} = useContext(ItemCategoryContext)
 
   const onSubmit = (data: FieldValues) => {
     
@@ -29,7 +30,7 @@ const CategoryAddForm = ({ onCreatedCategory }: Props) => {
     .then((res) => {
       if (res.status === 200) {
         setSuccess("Successfully Created...");        
-        onCreatedCategory(res.data);
+        setCategories([res.data, ...categories]);
         }
       })
       .catch((err) => setErrorCategoryCreate(err.message));

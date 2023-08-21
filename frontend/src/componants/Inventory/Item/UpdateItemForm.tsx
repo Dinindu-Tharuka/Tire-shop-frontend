@@ -1,25 +1,30 @@
 import { Button, HStack, Text, useColorMode } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
+import ItemContext from "../../../Contexts/ItemContext";
 
 interface Props {
   selectedUpdateItem: Item;
-  updatedItem: (data: FieldValues) => void;
 }
 
-const UpdateItemForm = ({ selectedUpdateItem, updatedItem }: Props) => {
+const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
   const {toggleColorMode, colorMode} = useColorMode();
+
+  const {items, setItems} = useContext(ItemContext)
 
   const onSubmit = (data: FieldValues) => {
     ItemService.update(data, data.item_id)
       .then((res) => {
         setSuccess("Successfully Updated.");
-        updatedItem(data);
+        setItems(
+          items.map((item) =>
+            item.item_id === res.data.item_id ? res.data : item
+          )
+        )
       })
       .catch((err) => {
         if (err.message !== "canceled") {

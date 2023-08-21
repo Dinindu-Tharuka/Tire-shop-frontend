@@ -8,21 +8,28 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Item } from "../../../services/Inventory/item-service";
 
 import { FieldValues } from "react-hook-form";
 import UpdateItem from "./UpdateItemDrawer";
+import { useContext } from "react";
+import ItemContext from "../../../Contexts/ItemContext";
+import ItemService, { Item } from "../../../services/Inventory/item-service";
 
-interface Props {
-  items: Item[] | undefined;
-  onSelectedDeleteItem: (item: Item) => void;
-  updatedItem: (item: FieldValues) => void;
-}
 
-const ItemTable = ({
-  items,
-  onSelectedDeleteItem: onSelectedItem,
-  updatedItem}: Props) => {
+const ItemTable = () => {
+
+    const {items, setItems} = useContext(ItemContext)
+
+    const onDeleteItem = (itemSelected: Item) => {
+      const originalItems = [...items];
+      setItems(items.filter((item) => item.item_id !== itemSelected.item_id));
+  
+      ItemService
+        .delete(itemSelected.item_id)
+        .catch((error) => {
+          setItems(originalItems);
+      });
+    };
 
   return (
     <TableContainer>
@@ -58,14 +65,14 @@ const ItemTable = ({
               <Td>{item.supplier}</Td>
               <Td>
                 <UpdateItem
-                  updatedItem={updatedItem}
+                  
                   selectedUpdateItem={item}
                 />
               </Td>
               <Td>
                 <Button
                   padding={4}
-                  onClick={() => onSelectedItem(item)}
+                  onClick={() => onDeleteItem(item)}
                   bg="#f87454"
                 >
                   Delete

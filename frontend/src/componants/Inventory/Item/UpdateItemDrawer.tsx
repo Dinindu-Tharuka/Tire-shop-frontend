@@ -16,11 +16,11 @@ import UpdateItemForm from "./UpdateItemForm";
 import { FieldValues } from "react-hook-form";
 
 interface Props {
-  selectedUpdateItem: Item;
-  updatedItem: (data: FieldValues) => void;
+  selectedUpdateItem: Item
+  
 }
 
-const UpdateItem = ({ selectedUpdateItem, updatedItem }: Props) => {
+const UpdateItem = ({ selectedUpdateItem }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -55,11 +55,10 @@ const UpdateItem = ({ selectedUpdateItem, updatedItem }: Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Update {selectedUpdateItem.item_id}</DrawerHeader>
+          <DrawerHeader>Update</DrawerHeader>
 
           <DrawerBody>
             <UpdateItemForm
-              updatedItem={updatedItem}
               selectedUpdateItem={selectedUpdateItem}
             />
           </DrawerBody>

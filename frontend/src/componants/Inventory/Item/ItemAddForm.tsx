@@ -1,16 +1,14 @@
 import { Button, HStack, Input, Select, Text, useColorMode } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
 import useCategory from "../../../hooks/Inventory/useCategory";
 import useSupplier from "../../../hooks/Inventory/useSupplier";
+import ItemContext from "../../../Contexts/ItemContext";
 
-interface Props {
-  onClose: () => void;
-  onCretedItem: (data: FieldValues) => void;
-}
 
-const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
+
+const ItemAddForm = () => {
   const { register, handleSubmit } = useForm();
   const [errorItemCreate, setErrorItemCreate] = useState("");
   const [success, setSuccess] = useState("");
@@ -20,12 +18,14 @@ const ItemAddForm = ({ onClose, onCretedItem }: Props) => {
 
   const { toggleColorMode, colorMode } = useColorMode();
 
+  const {items, setItems} = useContext(ItemContext)
+
   const onSubmit = (data: FieldValues) => {
     ItemService.create(data)
       .then((res) => {
         if (res.status === 200) {
           setSuccess("Successfully Created.");
-          onCretedItem(data);
+          setItems([res.data, ...items]);
         }
       })
       .catch((err) => {       

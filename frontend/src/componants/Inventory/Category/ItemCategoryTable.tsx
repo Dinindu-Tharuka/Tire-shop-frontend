@@ -12,14 +12,28 @@ import categoryService, {
   Category,
 } from "../../../services/Inventory/category-service";
 import UpdateCategoryDrawer from "./UpdateCategoryDrawer";
+import { useContext } from "react";
+import ItemCategoryContext from "../../../Contexts/CategoryContext";
 
-interface Props {
-  categories: Category[];
-  onDeleteCategory: (category: Category) => void;
-  onUpdatedCategory: (category:Category)=> void;
-}
 
-const ItemCategoryTable = ({ categories, onDeleteCategory, onUpdatedCategory }: Props) => {
+const ItemCategoryTable = () => {
+
+  const {categories, setCategories} = useContext(ItemCategoryContext)
+
+  const onDeleteCategory = (category:Category)=>{
+  
+    const originalCategories = [...categories];
+    setCategories(categories.filter((cat) => cat.id !== category.id));
+    
+
+    categoryService
+      .delete(`${category.id}`)
+      .catch((err) => {        
+        setCategories(originalCategories);
+    });
+
+  }
+
   return (
     <>
       <TableContainer>
@@ -41,8 +55,7 @@ const ItemCategoryTable = ({ categories, onDeleteCategory, onUpdatedCategory }: 
                 <Td>{category.description}</Td>
 
                 <Td>
-                  <UpdateCategoryDrawer onUpdatedCategory={onUpdatedCategory
-                  } updateCategory={category} />
+                  <UpdateCategoryDrawer updateCategory={category} />
                 </Td>
                 <Td>
                   <Button
