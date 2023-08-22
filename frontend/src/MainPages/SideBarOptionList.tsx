@@ -18,7 +18,7 @@ import { PiContactlessPayment } from "react-icons/pi";
 import { RxAvatar } from "react-icons/rx";
 
 import { RiShutDownLine } from "react-icons/ri";
-import SignOut from "./SignOut";
+import SignOut from "../componants/SignOut";
 import { Link } from "react-router-dom";
 
 const SideBarOptionList = () => {
@@ -32,14 +32,7 @@ const SideBarOptionList = () => {
     "GRN",
     "Registration",
   ];
-  const links_lg = [
-    '/',
-    '/',
-    '/inventory',
-    '/',
-    '/',
-    '/',
-  ]
+  const links_lg = ["/", "/", "/inventory", "/", "/", "/registration"];
   const options_base = [
     "Main Dashbord",
     "Invoice",
@@ -49,14 +42,7 @@ const SideBarOptionList = () => {
     "Registration",
     "Sign out",
   ];
-  const links_base = [
-    '/',
-    '/',
-    '/inventory',
-    '/',
-    '/',
-    '/',
-  ]
+  const links_base = ["/", "/", "/inventory", "/", "/", "/"];
 
   const icons_lg = [
     AiOutlineHome,
@@ -110,7 +96,7 @@ const SideBarOptionList = () => {
   const sideBarBase = options_base.map((option, index) => (
     <HStack padding={5} key={index}>
       <Icon color="gray.500" key={index} as={icons_base[index]} />
-      <Button variant="link" textAlign="left">        
+      <Button variant="link" textAlign="left">
         <Link to={links_base[index]}>{option}</Link>
       </Button>
     </HStack>

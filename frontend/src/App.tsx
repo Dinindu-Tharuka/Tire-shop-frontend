@@ -1,5 +1,5 @@
 import "./App.css";
-import GridSection from "./pages/GridSection";
+import GridSection from "./MainPages/GridSection";
 
 function App() {
   return (
