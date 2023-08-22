@@ -55,12 +55,12 @@ const Inventory = () => {
               height={{ base: "10vh", lg: "85vh" }}
               width={{ base: "100vw", lg: "60vw" }}
             >
-              <ItemTable/>
+              {/* <ItemTable/> */}
               {/* <ItemCategoryTable /> */}
                 
                 {/* <SupplierTable/> */}
                 
-                  {/* <Outlet/> */}
+                  <Outlet/>
             </GridItem>
             <GridItem
               area="aside"

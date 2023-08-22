@@ -18,6 +18,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <QueryClientProvider client={queryClient}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <RouterProvider router={routes} />
+        {/* <App/> */}
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>
