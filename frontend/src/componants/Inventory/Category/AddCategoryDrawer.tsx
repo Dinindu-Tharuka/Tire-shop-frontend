@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import CategoryAddForm from "./CategoryAddForm";
-import { Category } from "../../../services/Inventory/category-service";
 
 
 

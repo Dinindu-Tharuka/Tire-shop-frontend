@@ -8,8 +8,6 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-
-import { FieldValues } from "react-hook-form";
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext } from "react";
 import ItemContext from "../../../Contexts/ItemContext";

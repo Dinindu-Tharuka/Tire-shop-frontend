@@ -1,40 +1,18 @@
 import { Grid, GridItem, Text } from "@chakra-ui/react";
-
-import ItemTable from "../Item/ItemTable";
-import { useEffect, useState } from "react";
 import InventorySidePanel from "../SidePanel/InventorySidePanel";
-import ItemService, { Item } from "../../../services/Inventory/item-service";
-
-import { FieldValues } from "react-hook-form";
 import useItems from "../../../hooks/Inventory/useItems";
-import ItemCategoryTable from "../Category/ItemCategoryTable";
-import categoryService, { Category } from "../../../services/Inventory/category-service";
 import useCategory from "../../../hooks/Inventory/useCategory";
-import SupplierTable from "../Supplier/SupplierTable";
 import useSupplier from "../../../hooks/Inventory/useSupplier";
-import SupplierService ,{ Supplier } from "../../../services/Inventory/supplier-service";
-
 import { Outlet } from "react-router-dom";
 import SupplierContext from "../../../Contexts/SupplierContext";
 import ItemCategoryContext from "../../../Contexts/CategoryContext";
 import ItemContext from "../../../Contexts/ItemContext";
 
 const Inventory = () => {
-  const { items, setItems, error, setError } = useItems();
-  const { categories, setCategories, errorFetchCategory, setErrorFetchCategory} = useCategory();
-  const { suppliers, setSuppliers, errorFetchSupplier, setErrorFetchSupplier } = useSupplier();
+  const { items, setItems, error} = useItems();
+  const { categories, setCategories} = useCategory();
+  const { suppliers, setSuppliers} = useSupplier();
 
-
-
- 
-
-
-  // Item
-
-  
-
-
-  
 
   return (
     <ItemContext.Provider value={{ items, setItems }}>
@@ -54,11 +32,7 @@ const Inventory = () => {
               area="main"
               height={{ base: "10vh", lg: "85vh" }}
               width={{ base: "100vw", lg: "60vw" }}
-            >
-              {/* <ItemTable/> */}
-              {/* <ItemCategoryTable /> */}
-                
-                {/* <SupplierTable/> */}
+            >  
                 
                   <Outlet/>
             </GridItem>

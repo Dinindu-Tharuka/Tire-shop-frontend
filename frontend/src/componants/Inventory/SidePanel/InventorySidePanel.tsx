@@ -11,14 +11,10 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
 import InventoryAddButtonDrawer from "../Item/AddItemDrawer";
-import { FieldValues } from "react-hook-form";
 import AddCategoryDrawer from "../Category/AddCategoryDrawer";
 import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
-import { Category } from "../../../services/Inventory/category-service";
-import { Supplier } from "../../../services/Inventory/supplier-service";
 import { Link } from "react-router-dom";
 
 
@@ -26,7 +22,6 @@ const InventorySidePanel = () => {
   const inventoryList = ["Item", "Category", "Supplier"];
   const inventory_links = ['', 'categories', 'suppliers']
   const { toggleColorMode, colorMode } = useColorMode();
-  const [categories, setCategories] = useState([]);
 
   const options = ["ADD"];
 
