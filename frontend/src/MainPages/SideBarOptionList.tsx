@@ -26,13 +26,14 @@ const SideBarOptionList = () => {
 
   const options_lg = [
     "Main Dashbord",
+    "Customer",
     "Invoice",
     "Inventory",
     "Rebuilt Section",
     "GRN",
     "Registration",
   ];
-  const links_lg = ["/", "/", "/inventory", "/", "/", "/registration"];
+  const links_lg = ["/", "/customer","/", "/inventory", "/", "/", "/registration"];
   const options_base = [
     "Main Dashbord",
     "Invoice",

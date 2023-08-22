@@ -6,6 +6,7 @@ import ItemTable from "../componants/Inventory/Item/ItemTable";
 import ItemCategoryTable from "../componants/Inventory/Category/ItemCategoryTable";
 import SupplierTable from "../componants/Inventory/Supplier/SupplierTable";
 import RegistraionMainPage from "../Registration/MainPage/RegistrationMainPage";
+import CustomerMainPage from "../Customer/MainPage/CustomerMainPage";
 
 const routes = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const routes = createBrowserRouter([
           { path: "suppliers", element: <SupplierTable /> },
         ],
       },
+      {path: 'customer', element: <CustomerMainPage/>},
       { path: "registration", element: <RegistraionMainPage /> },
     ],
   },

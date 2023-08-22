@@ -3,6 +3,8 @@ import { useState, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
 import ItemContext from "../../../Contexts/ItemContext";
+import useCategory from "../../../hooks/Inventory/useCategory";
+import useSupplier from "../../../hooks/Inventory/useSupplier";
 
 interface Props {
   selectedUpdateItem: Item;
@@ -13,6 +15,9 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const {toggleColorMode, colorMode} = useColorMode();
+
+  const {categories} = useCategory();
+  const {suppliers} = useSupplier();
 
   const {items, setItems} = useContext(ItemContext)
 
@@ -124,22 +129,26 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
             <select {...register("item_category")} className="select w-100 p-2">
               <option>
                 {selectedUpdateItem.item_category !== null
-                  ? selectedUpdateItem.item_category
+                  ? categories.find(category => category.id === selectedUpdateItem.item_category)?.category_name
                   : "Select Category"}
               </option>
               
-              <option value="2">Three</option>
+              {categories.map((category, index) => <option key={index} value="2">{category.category_name}</option>)}
             </select>
           </div>
           <div className="mb-3">
             <select {...register("supplier")} className="select w-100 p-2">
               <option>
-                {selectedUpdateItem.item_category !== null
-                  ? selectedUpdateItem.item_category
+                {selectedUpdateItem.supplier !== null
+                  ? suppliers.find(course => course.id === selectedUpdateItem.supplier)?.name
                   : "Select Supplier"}
               </option>
-              <option value="1">Two</option>
-              <option value="2">Three</option>
+              {suppliers.map((supplier, index) =>  
+                  <option 
+                      key={index} 
+                      value={supplier.id}
+                      >{supplier.name}
+                  </option>)}
             </select>
           </div>
         </div>
