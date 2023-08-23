@@ -12,8 +12,8 @@ import {
     useColorMode,
   } from "@chakra-ui/react";
   import { AiOutlineDown } from "react-icons/ai";
-import { RiH1 } from "react-icons/ri";
   import { Link } from "react-router-dom";
+import CustomerDrawer from "../Customer/CustomerDrawer";
 const CustomerSidePanel = () => {
     
   const customerOptions = ["Customer", "Vehicle" ];
@@ -53,7 +53,7 @@ const CustomerSidePanel = () => {
          
         </MenuButton>
         <MenuList>
-          <h1>add</h1>
+          <CustomerDrawer/>
         </MenuList>
       </Menu>
     </Flex>

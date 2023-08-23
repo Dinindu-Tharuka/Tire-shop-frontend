@@ -4,18 +4,18 @@ import CustomerService, { Customer } from "../../services/Customer/customer-serv
 
 const useCustomer = () => {
     const [customers, setCustomers] = useState<Customer[]>([])
-    const [customerFetchError, setCustomerFetchError] = useState('')
+    const [errorCustomerFetch, setErrorCustomerFetch] = useState('')
 
     useEffect(()=>{
         const {request, cancel} = CustomerService.getAll<Customer>()
 
         request
             .then(res => setCustomers(res.data))
-            .catch(err => setCustomerFetchError(err.message !== 'canceled'? err.message : ''))
+            .catch(err => setErrorCustomerFetch(err.message !== 'canceled'? err.message : ''))
         return ()=> cancel();
     }, [])
 
-    return {customers, setCustomers, customerFetchError, setCustomerFetchError}
+    return {customers, setCustomers, errorCustomerFetch, setErrorCustomerFetch}
 
 }
 

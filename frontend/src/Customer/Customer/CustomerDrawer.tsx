@@ -10,6 +10,7 @@ import {
     useDisclosure,
   } from "@chakra-ui/react";
   import { useRef, useState } from "react";
+import CustomerAddForm from "./CustomerAddForm";
 
 const CustomerDrawer = () => {
     const { toggleColorMode, colorMode } = useColorMode();
@@ -45,7 +46,7 @@ const CustomerDrawer = () => {
           <DrawerHeader>Add Category</DrawerHeader>
 
           <DrawerBody>
-            
+            <CustomerAddForm/>            
           </DrawerBody>
         </DrawerContent>
       </Drawer>

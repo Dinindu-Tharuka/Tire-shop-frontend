@@ -3,10 +3,10 @@ import React from "react";
 import { Vehicle } from "../../services/Customer/vehicle-service";
 
 interface VehicleContextType{
-    categories:Vehicle[];
-    setCategories:Dispatch<SetStateAction<Vehicle[]>>
+    vehicles:Vehicle[];
+    setVehicles:Dispatch<SetStateAction<Vehicle[]>>
 }
 
-const ItemCategoryContext = React.createContext<VehicleContextType>({} as VehicleContextType)
+const VehicleContext = React.createContext<VehicleContextType>({} as VehicleContextType)
 
-export default ItemCategoryContext;
+export default VehicleContext;

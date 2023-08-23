@@ -4,17 +4,17 @@ import VehicleService, { Vehicle } from "../../services/Customer/vehicle-service
 
 const useVehicles = () => {
     const [vehicles, setVehicles] = useState<Vehicle[]>([])
-    const [vehicleFetchError, setVehicleFetchError] = useState('')
+    const [errorVehicleFetch, setErrorVehicleFetch] = useState('')
 
     useEffect(()=>{
         const {request, cancel} = VehicleService.getAll<Vehicle>()
 
         request
             .then(res => setVehicles(res.data))
-            .catch(err => setVehicleFetchError(err.message !== 'canceled'? err.message : ''))
+            .catch(err => setErrorVehicleFetch(err.message !== 'canceled'? err.message : ''))
  
-    })
-  return {vehicles, setVehicles, vehicleFetchError, setVehicleFetchError}
+    }, [])
+  return {vehicles, setVehicles, errorVehicleFetch, setErrorVehicleFetch}
 }
 
 export default useVehicles

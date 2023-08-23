@@ -59,8 +59,8 @@ const ItemCategoryTable = () => {
                 </Td>
                 <Td>
                   <Button
-                    padding={4}
                     onClick={() => onDeleteCategory(category)}
+                    padding={4}
                     bg="#f87454"
                   >
                     Delete

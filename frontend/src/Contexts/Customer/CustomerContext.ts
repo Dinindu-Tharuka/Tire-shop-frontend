@@ -3,10 +3,10 @@ import React from "react";
 import { Customer } from "../../services/Customer/customer-service";
 
 interface CustomerContextType{
-    categories:Customer[];
-    setCategories:Dispatch<SetStateAction<Customer[]>>
+    customers:Customer[];
+    setCustomers:Dispatch<SetStateAction<Customer[]>>
 }
 
-const ItemCategoryContext = React.createContext<CustomerContextType>({} as CustomerContextType)
+const CustomerContext = React.createContext<CustomerContextType>({} as CustomerContextType)
 
-export default ItemCategoryContext;
+export default CustomerContext;
