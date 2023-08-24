@@ -10,14 +10,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { Customer } from "../../services/Customer/customer-service";
-import UpdateCustomerForm from "./UpdateCustomerForm";
+import CustomerAddForm from "./CustomerAddForm";
 
-interface Props {
-  onSelectedCustomer: Customer;
-}
-
-const UpdateCustomerDrawer = ({ onSelectedCustomer }: Props) => {
+const CustomerAddDrawer = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -25,17 +20,19 @@ const UpdateCustomerDrawer = ({ onSelectedCustomer }: Props) => {
     <>
       <Button
         variant="link"
-        bg="#ffc2b3"
-        padding={3}
+        textAlign="left"
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
+        bg={colorMode === "light" ? "#e3a99c" : ""}
         _hover={
           colorMode === "light"
-            ? { background: "#3e3d40 " }
-            : { background: "#fababb" }
+            ? { background: "#f1cac1" }
+            : { background: "#766f6f" }
         }
+        width="100%"
+        height="8vh"
         onClick={onOpen}
       >
-        Update
+        Add
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -46,10 +43,10 @@ const UpdateCustomerDrawer = ({ onSelectedCustomer }: Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Update Customer</DrawerHeader>
+          <DrawerHeader>Add Customer</DrawerHeader>
 
           <DrawerBody>
-            <UpdateCustomerForm onSelectedCustomer={onSelectedCustomer} />
+            <CustomerAddForm />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -57,4 +54,4 @@ const UpdateCustomerDrawer = ({ onSelectedCustomer }: Props) => {
   );
 };
 
-export default UpdateCustomerDrawer;
+export default CustomerAddDrawer;

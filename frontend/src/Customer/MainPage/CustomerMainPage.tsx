@@ -6,6 +6,7 @@ import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import VehicleContext from "../../Contexts/Customer/VehicleContext";
 import CustomerTable from "../Customer/CustomerTable";
+import VehicleTable from "../Vehicle/VehicleTable";
 
 
 const CustomerMainPage = () => {
@@ -25,7 +26,8 @@ const CustomerMainPage = () => {
                 height={{ base: "10vh", lg: "85vh" }}
                 width={{ base: "100vw", lg: "60vw" }}
               >  
-              <CustomerTable/>
+              {/* <CustomerTable/> */}
+              <VehicleTable/>
                   
                   {/* <Outlet/> */}
               </GridItem>
@@ -35,6 +37,7 @@ const CustomerMainPage = () => {
                 width={{ base: "100vw", lg: "15vw" }}
               >
                 <CustomerSidePanel/>
+                
               </GridItem>
       </Grid>
     </CustomerContext.Provider>

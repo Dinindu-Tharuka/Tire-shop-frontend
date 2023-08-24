@@ -32,7 +32,7 @@ const UpdateCategoryForm = ({updateCategory } : Props) => {
     categoryService
       .update(updated, `${updated.id}`)
       .then((res) =>{
-        setSuccess(res.status === 202 ? "Successfully Updated." : "")    
+        setSuccess("Successfully Updated.")    
         setCategories(categories.map((cat => cat.id === updated.id? updated:cat)))
       }
       )

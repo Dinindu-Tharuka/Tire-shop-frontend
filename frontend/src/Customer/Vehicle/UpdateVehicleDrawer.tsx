@@ -10,29 +10,34 @@ import {
     useDisclosure,
   } from "@chakra-ui/react";
   import { useRef, useState } from "react";
-import CustomerAddForm from "./CustomerAddForm";
+import UpdateVehicleForm from "./UpdateVehicleForm";
+import { Vehicle } from "../../services/Customer/vehicle-service";
+ 
+  
+  interface Props {
+    onSelectedVehicle: Vehicle;
+  }
+  
 
-const CustomerDrawer = () => {
+const UpdateVehicleDrawer = ({ onSelectedVehicle}: Props) => {
     const { toggleColorMode, colorMode } = useColorMode();
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const btnRef = useRef(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef(null);
   return (
     <>
       <Button
         variant="link"
-        textAlign="left"
+        bg="#ffc2b3"
+        padding={3}
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
-        bg={colorMode === "light" ? "#e3a99c" : ""}
         _hover={
           colorMode === "light"
-            ? { background: "#f1cac1" }
-            : { background: "#766f6f" }
+            ? { background: "#3e3d40 " }
+            : { background: "#fababb" }
         }
-        width="100%"
-        height="8vh"
         onClick={onOpen}
       >
-        Add
+        Update
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -43,10 +48,10 @@ const CustomerDrawer = () => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add Category</DrawerHeader>
+          <DrawerHeader>Update Vehicle</DrawerHeader>
 
           <DrawerBody>
-            <CustomerAddForm/>            
+            <UpdateVehicleForm onSelectedVehicle={onSelectedVehicle} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -54,4 +59,4 @@ const CustomerDrawer = () => {
   )
 }
 
-export default CustomerDrawer
+export default UpdateVehicleDrawer

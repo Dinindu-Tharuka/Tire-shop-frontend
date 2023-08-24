@@ -10,7 +10,6 @@ import {
   } from "@chakra-ui/react";
 import { useContext } from "react";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
-import CustomerDrawer from "./CustomerDrawer";
 import CustomerService, { Customer } from "../../services/Customer/customer-service";
 import UpdateCustomerDrawer from "./UpdateCustomerDrawer";
   
@@ -20,7 +19,7 @@ const CustomerTable = () => {
 
     const onDeleteCustomer = (customer:Customer)=>{
       const originalCustomers = [...customers]
-      setCustomers([customer, ...customers])
+      setCustomers(customers.filter(cu => cu.id !== customer.id))
       
       CustomerService
         .delete(`${customer.id}`)
