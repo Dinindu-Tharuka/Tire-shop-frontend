@@ -10,11 +10,11 @@ import VehicleTable from "../Vehicle/VehicleTable";
 
 
 const CustomerMainPage = () => {
-  const {customers, setCustomers, errorCustomerFetch, setErrorCustomerFetch} = useCustomer();
-  const {vehicles, setVehicles, errorVehicleFetch, setErrorVehicleFetch} = useVehicles()
+  const {customers, setCustomers, nextUrl, previousUrl, setFilterParams, filterParams} = useCustomer();
+  const {vehicles, setVehicles} = useVehicles()
   return (
     <VehicleContext.Provider value={{vehicles, setVehicles}}>
-    <CustomerContext.Provider value={{ customers, setCustomers }}>
+    <CustomerContext.Provider value={{ customers, setCustomers, nextUrl, previousUrl, setFilterParams, filterParams }}>
       <Grid
               templateAreas={{
                 lg: `"main aside"`,
@@ -26,8 +26,8 @@ const CustomerMainPage = () => {
                 height={{ base: "10vh", lg: "85vh" }}
                 width={{ base: "100vw", lg: "60vw" }}
               >  
-              {/* <CustomerTable/> */}
-              <VehicleTable/>
+              <CustomerTable/>
+              {/* <VehicleTable/> */}
                   
                   {/* <Outlet/> */}
               </GridItem>

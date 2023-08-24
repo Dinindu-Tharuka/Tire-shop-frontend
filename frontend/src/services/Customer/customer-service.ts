@@ -1,4 +1,5 @@
-import create from "../http-service";
+
+import createPagination from "../http-pagination-service";
 
 
 export interface Customer{
@@ -9,5 +10,12 @@ export interface Customer{
     mobile:string;
     email:string;
 }
+export interface CustomerPageStructure{
+    count:number;
+    next:string | null;
+    previous:string | null;
+    results:Customer[]
+}
 
-export default create('/customers/')
+
+export default createPagination('/customers/')

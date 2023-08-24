@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import VehicleService, { Vehicle } from "../../services/Customer/vehicle-service"
+import VehicleService, { Vehicle} from "../../services/Customer/vehicle-service"
+
 
 
 const useVehicles = () => {
@@ -10,11 +11,14 @@ const useVehicles = () => {
         const {request, cancel} = VehicleService.getAll<Vehicle>()
 
         request
-            .then(res => setVehicles(res.data))
+            .then(res => {
+              setVehicles(res.data)
+              
+            })
             .catch(err => setErrorVehicleFetch(err.message !== 'canceled'? err.message : ''))
  
     }, [])
-  return {vehicles, setVehicles, errorVehicleFetch, setErrorVehicleFetch}
+  return {vehicles, setVehicles}
 }
 
 export default useVehicles

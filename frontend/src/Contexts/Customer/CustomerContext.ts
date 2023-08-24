@@ -4,7 +4,11 @@ import { Customer } from "../../services/Customer/customer-service";
 
 interface CustomerContextType{
     customers:Customer[];
-    setCustomers:Dispatch<SetStateAction<Customer[]>>
+    setCustomers:Dispatch<SetStateAction<Customer[]>>;
+    nextUrl:string|null;
+    previousUrl:string|null;
+    setFilterParams:Dispatch<SetStateAction<string | null>>;
+    filterParams:string | null
 }
 
 const CustomerContext = React.createContext<CustomerContextType>({} as CustomerContextType)

@@ -1,17 +1,17 @@
 import apiClient from "./api-client";
 
-  
-class HttpService{
+
+class HttpServicePagination{
     endpoint:string;
 
     constructor(endpoint:string){
         this.endpoint = endpoint
     }
 
-    getAll<T>(){
+    getAll<T>(filter:string | null){
         const controller = new AbortController();
         const request =apiClient
-                        .get<T[]>(`${this.endpoint}`, {signal:controller.signal})
+                        .get<T>(`${this.endpoint}${filter}`, {signal:controller.signal})
 
         return {request, cancel:()=>controller.abort()}
     }
@@ -28,6 +28,6 @@ class HttpService{
         return apiClient.put(`${this.endpoint}${id}/`, entity)
     }
 }
-const create = (endpoint:string)=>new HttpService(endpoint)
+const createPagination = (endpoint:string)=>new HttpServicePagination(endpoint)
 
-export default create;
+export default createPagination;

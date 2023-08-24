@@ -4,7 +4,7 @@ import { Vehicle } from "../../services/Customer/vehicle-service";
 
 interface VehicleContextType{
     vehicles:Vehicle[];
-    setVehicles:Dispatch<SetStateAction<Vehicle[]>>
+    setVehicles:Dispatch<SetStateAction<Vehicle[]>>;
 }
 
 const VehicleContext = React.createContext<VehicleContextType>({} as VehicleContextType)
