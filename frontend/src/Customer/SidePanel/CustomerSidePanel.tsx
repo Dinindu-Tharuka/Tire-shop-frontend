@@ -1,4 +1,9 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Box,
   Button,
   Flex,
@@ -20,31 +25,37 @@ const CustomerSidePanel = () => {
   const customerOptionLinks = ["", "categories", "suppliers"];
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const customerMenuList = customerOptions.map((option, index) => (
-    <Flex key={index} width="100%" justifyContent="space-between">      
-      <Menu>
-        <MenuButton
-          paddingRight={4}
-          height="8vh"
-          textAlign="left"
-          width='100%'
-          as={Button}
-          rightIcon={<AiOutlineDown />}
-          bg={colorMode === 'light'? '#e3a99c':''}
-          _hover={
-            colorMode === "light"
-              ? { background: "#fababb" }
-              : { background: "#3e3d40" }
-          }
-        >{option}</MenuButton>
-        <MenuList height="8vh" bg={colorMode === 'light'?'#e3a99c':''} >{index === 0 ? <CustomerAddDrawer /> : ''}</MenuList>
-      </Menu>
-    </Flex>
-  ));
+  const customerMenuList = customerOptions.map((option, index) => {
+    return (
+      <Flex key={index} width="100%" justifyContent="space-between">
+        <Accordion
+          allowToggle
+          bg={colorMode === "light" ? "#e3a99c" : ""}
+          width="100%"
+          borderRadius={10}
+
+        >
+          <AccordionItem >
+            <h2>
+              <AccordionButton >
+                <Box as="span" flex="1" textAlign="left">
+                  <Text  fontWeight="bold"> Customer</Text>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4} bg={colorMode === "light" ? "#f1cac1" : ""}>
+              {index === 0 ? <CustomerAddDrawer /> : ""}
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </Flex>
+    );
+  });
   return (
-    <Box >
+    <Box>
       <Show above="lg">
-        <VStack >{customerMenuList}</VStack>
+        <VStack>{customerMenuList}</VStack>
       </Show>
       <Show below="lg">
         <HStack>{customerMenuList}</HStack>
