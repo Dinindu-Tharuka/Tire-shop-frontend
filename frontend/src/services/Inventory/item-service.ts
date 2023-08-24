@@ -1,3 +1,4 @@
+import createPagination from "../http-pagination-service";
 import create from "../http-service";
 export interface Item{
     item_id:string;
@@ -11,8 +12,15 @@ export interface Item{
     item_category:number;
     supplier:number;
   }
+
+export interface ItemPageStructure{
+  count:number;
+  next:string | null;
+  previous:string | null;
+  results:Item[]
+}
   
 
 
-export default create('/items/');
+export default createPagination('/items/');
 

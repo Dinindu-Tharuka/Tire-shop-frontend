@@ -9,15 +9,63 @@ import ItemCategoryContext from "../../../Contexts/CategoryContext";
 import ItemContext from "../../../Contexts/ItemContext";
 
 const Inventory = () => {
-  const { items, setItems, error} = useItems();
-  const { categories, setCategories} = useCategory();
-  const { suppliers, setSuppliers} = useSupplier();
-
+  const {
+    items,
+    setItems,
+    nextItemPageUrl,
+    previousItemPageUrl,
+    filterItemPageParams,
+    setFilterItemPageParams,
+    error,
+  } = useItems();
+  const {
+    categories,
+    setCategories,
+    nextCategoryUrl,
+    previousCategoryUrl,
+    filterCategoryParams,
+    setFilterCategoryParams,
+  } = useCategory();
+  const {
+    suppliers,
+    setSuppliers,
+    nextSupplierUrl,
+    previousSupplierUrl,
+    filterSupplierParams,
+    setFilterSupplierParams,
+  } = useSupplier();
 
   return (
-    <ItemContext.Provider value={{ items, setItems }}>
-      <ItemCategoryContext.Provider value={{ categories,setCategories }}>
-        <SupplierContext.Provider value={ {suppliers, setSuppliers}}>
+    <ItemContext.Provider
+      value={{
+        items,
+        setItems,
+        nextItemPageUrl,
+        previousItemPageUrl,
+        filterItemPageParams,
+        setFilterItemPageParams,
+      }}
+    >
+      <ItemCategoryContext.Provider
+        value={{
+          categories,
+          setCategories,
+          nextCategoryUrl,
+          previousCategoryUrl,
+          filterCategoryParams,
+          setFilterCategoryParams,
+        }}
+      >
+        <SupplierContext.Provider
+          value={{
+            suppliers,
+            setSuppliers,
+            nextSupplierUrl,
+            previousSupplierUrl,
+            filterSupplierParams,
+            setFilterSupplierParams,
+          }}
+        >
           {/* Errors */}
           {error && <Text textColor="#e60000">{error}</Text>}
 
@@ -32,24 +80,20 @@ const Inventory = () => {
               area="main"
               height={{ base: "10vh", lg: "85vh" }}
               width={{ base: "100vw", lg: "60vw" }}
-            >  
-                
-                  <Outlet/>
+            >
+              <Outlet />
             </GridItem>
             <GridItem
               area="aside"
               height={{ base: "10vh", lg: "85vh" }}
               width={{ base: "100vw", lg: "15vw" }}
             >
-              <InventorySidePanel
-              />
+              <InventorySidePanel />
             </GridItem>
           </Grid>
         </SupplierContext.Provider>
       </ItemCategoryContext.Provider>
     </ItemContext.Provider>
-    
- 
   );
 };
 

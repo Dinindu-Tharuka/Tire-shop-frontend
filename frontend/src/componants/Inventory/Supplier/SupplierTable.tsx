@@ -1,5 +1,7 @@
 import {
     Button,
+    Flex,
+    HStack,
     Table,
     TableContainer,
     Tbody,
@@ -7,22 +9,25 @@ import {
     Th,
     Thead,
     Tr,
+    useColorMode,
   } from "@chakra-ui/react";
 import UpdateSupplierDrawer from "./UpdateSupplierDrawer";
 import { useContext } from "react";
 import SupplierContext from "../../../Contexts/SupplierContext";
 import SupplierService ,{ Supplier } from "../../../services/Inventory/supplier-service";
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import getSupplierCutUrl from "../Cut Url/supplier-url-cut";
 
 
 
 const SupplierTable = () => {
-
-  const {suppliers, setSuppliers} = useContext(SupplierContext)
+  const {toggleColorMode, colorMode} = useColorMode();
+  const {suppliers, setSuppliers, nextSupplierUrl, previousSupplierUrl, filterSupplierParams, setFilterSupplierParams} = useContext(SupplierContext)
 
   const onDeleteSupplier = (supplier:Supplier)=>{
     const originalSuppliers= [...suppliers]
 
-    setSuppliers(suppliers.filter((sup)=> sup.id !== supplier.id))
+    setSuppliers(suppliers.filter((sup)=> sup.id !== supplier.id))    
 
     SupplierService
       .delete(`${supplier.id}`)
@@ -30,12 +35,11 @@ const SupplierTable = () => {
 
   }
   return (
-    <>
+    <Flex alignItems='center' flexDir='column'>
       <TableContainer>
         <Table>
           <Thead>
             <Tr>
-              <Th>ID</Th>
               <Th>Name</Th>
               <Th>Address</Th>
               <Th>Telephone</Th>
@@ -48,7 +52,7 @@ const SupplierTable = () => {
           <Tbody>
             {suppliers?.map((supplier, index) => (
               <Tr key={supplier.id}>
-                <Td>{index + 1}</Td>
+                
                 <Td>{supplier.name}</Td>
                 <Td>{supplier.address}</Td>
                 <Td>{supplier.telephone}</Td>
@@ -71,7 +75,18 @@ const SupplierTable = () => {
           </Tbody>
         </Table>
       </TableContainer>
-    </>
+
+      <HStack>
+          <Button 
+            colorScheme={colorMode === 'light'?'blackAlpha':'whiteAlpha'}
+            onClick={() => setFilterSupplierParams(getSupplierCutUrl(previousSupplierUrl) + "")}
+          ><IoIosArrowDropleftCircle/></Button>
+          <Button
+            colorScheme={colorMode === 'light'?'blackAlpha':'whiteAlpha'}
+            onClick={() => setFilterSupplierParams(getSupplierCutUrl(nextSupplierUrl) + "")}
+          ><IoIosArrowDroprightCircle/></Button>
+      </HStack> 
+    </Flex>
   )
 }
 

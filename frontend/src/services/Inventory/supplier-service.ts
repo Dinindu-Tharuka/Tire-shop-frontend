@@ -1,3 +1,4 @@
+import createPagination from "../http-pagination-service";
 import create from "../http-service";
 
 export interface Supplier{
@@ -9,4 +10,11 @@ export interface Supplier{
     email:string;
 }
 
-export default create('/suppliers/')
+export interface SupplierPageStructure{
+    count:number;
+    next:string | null;
+    previous:string | null;
+    results:Supplier[]
+  }
+
+export default createPagination('/suppliers/')

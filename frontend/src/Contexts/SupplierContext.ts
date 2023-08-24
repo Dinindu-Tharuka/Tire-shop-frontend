@@ -5,6 +5,10 @@ import { Supplier } from "../services/Inventory/supplier-service";
 interface SupplierContextType {
     suppliers:Supplier[];
     setSuppliers:Dispatch<SetStateAction<Supplier[]>>;
+    nextSupplierUrl:string|null;
+    previousSupplierUrl:string|null;
+    filterSupplierParams:string | null;
+    setFilterSupplierParams:Dispatch<SetStateAction<string | null>>;
 }
 
 

@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Flex,
+  HStack,
   Table,
   TableContainer,
   Tbody,
@@ -14,6 +15,7 @@ import {
   Th,
   Thead,
   Tr,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
@@ -34,6 +36,7 @@ const CustomerTable = () => {
     setFilterParams,
     filterParams,
   } = useContext(CustomerContext);
+  const {toggleColorMode, colorMode} = useColorMode();
 
   const onDeleteCustomer = (customer: Customer) => {
     const originalCustomers = [...customers];
@@ -106,29 +109,16 @@ const CustomerTable = () => {
           </Table>
         </TableContainer>
 
-        <nav aria-label="Page navigation example">
-          <ul className="pagination">
-            <li className="page-item">
-              <a
-                className="page-link"
-                href="#"
-                onClick={() => setFilterParams(getCutUrl(previousUrl) + "")}
-              >
-                <IoIosArrowDropleftCircle/>
-              </a>
-            </li>
-            
-            <li className="page-item">
-              <a
-                className="page-link"
-                href="#"
-                onClick={() => setFilterParams(getCutUrl(nextUrl) + "")}
-              >
-                <IoIosArrowDroprightCircle />
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <HStack>
+          <Button 
+            colorScheme={colorMode === 'light'?'blackAlpha':'whiteAlpha'}
+            onClick={() => setFilterParams(getCutUrl(previousUrl) + "")}
+          ><IoIosArrowDropleftCircle/></Button>
+          <Button
+            colorScheme={colorMode === 'light'?'blackAlpha':'whiteAlpha'}
+            onClick={() => setFilterParams(getCutUrl(nextUrl) + "")}
+          ><IoIosArrowDroprightCircle/></Button>
+        </HStack>        
 
       </Flex>
     </>

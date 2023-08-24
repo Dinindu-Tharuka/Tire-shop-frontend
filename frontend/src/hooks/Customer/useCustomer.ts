@@ -12,9 +12,7 @@ const useCustomer = () => {
         const {request, cancel} = CustomerService.getAll<CustomerPageStructure>(filterParams)
 
         request
-            .then(res => {
-                console.log(res.data)
-                
+            .then(res => {              
                 setCustomers(res.data.results)
                 setNextUrl(res.data.next)
                 setPreviousUrl(res.data.previous)
