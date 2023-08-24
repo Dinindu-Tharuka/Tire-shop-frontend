@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text } from "@chakra-ui/react";
+import { Grid, GridItem, Text, useColorMode } from "@chakra-ui/react";
 import InventorySidePanel from "../SidePanel/InventorySidePanel";
 import useItems from "../../../hooks/Inventory/useItems";
 import useCategory from "../../../hooks/Inventory/useCategory";
@@ -9,6 +9,7 @@ import ItemCategoryContext from "../../../Contexts/CategoryContext";
 import ItemContext from "../../../Contexts/ItemContext";
 
 const Inventory = () => {
+  const {toggleColorMode, colorMode} = useColorMode();
   const {
     items,
     setItems,
@@ -87,6 +88,10 @@ const Inventory = () => {
               area="aside"
               height={{ base: "10vh", lg: "85vh" }}
               width={{ base: "100vw", lg: "15vw" }}
+              boxShadow='dark-lg'
+              borderRadius={30}
+              padding={5}
+              bg={colorMode === 'light'?'#ca5c4f':''}
             >
               <InventorySidePanel />
             </GridItem>
