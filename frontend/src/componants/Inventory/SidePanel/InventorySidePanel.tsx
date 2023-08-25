@@ -19,7 +19,7 @@ import {
 import { AiOutlineDown } from "react-icons/ai";
 import InventoryAddButtonDrawer from "../Item/AddItemDrawer";
 import AddCategoryDrawer from "../Category/AddCategoryDrawer";
-import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
+import AddSupplierDrawer from "../../../Registration/Supplier/AddSupplierDrawer";
 import { Link } from "react-router-dom";
 
 const InventorySidePanel = () => {

@@ -27,14 +27,7 @@ const Inventory = () => {
     filterCategoryParams,
     setFilterCategoryParams,
   } = useCategory();
-  const {
-    suppliers,
-    setSuppliers,
-    nextSupplierUrl,
-    previousSupplierUrl,
-    filterSupplierParams,
-    setFilterSupplierParams,
-  } = useSupplier();
+  
 
   return (
     <ItemContext.Provider
@@ -57,16 +50,7 @@ const Inventory = () => {
           setFilterCategoryParams,
         }}
       >
-        <SupplierContext.Provider
-          value={{
-            suppliers,
-            setSuppliers,
-            nextSupplierUrl,
-            previousSupplierUrl,
-            filterSupplierParams,
-            setFilterSupplierParams,
-          }}
-        >
+        
           {/* Errors */}
           {error && <Text textColor="#e60000">{error}</Text>}
 
@@ -96,7 +80,6 @@ const Inventory = () => {
               <InventorySidePanel />
             </GridItem>
           </Grid>
-        </SupplierContext.Provider>
       </ItemCategoryContext.Provider>
     </ItemContext.Provider>
   );

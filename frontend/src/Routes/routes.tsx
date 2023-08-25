@@ -4,7 +4,7 @@ import Inventory from "../componants/Inventory/Main Page/Inventory";
 import MainImage from "../componants/MainImage";
 import ItemTable from "../componants/Inventory/Item/ItemTable";
 import ItemCategoryTable from "../componants/Inventory/Category/ItemCategoryTable";
-import SupplierTable from "../componants/Inventory/Supplier/SupplierTable";
+import SupplierTable from "../Registration/Supplier/SupplierTable";
 import RegistraionMainPage from "../Registration/MainPage/RegistrationMainPage";
 import CustomerMainPage from "../Customer/MainPage/CustomerMainPage";
 
@@ -20,11 +20,14 @@ const routes = createBrowserRouter([
         children: [
           { path: "", element: <ItemTable /> },
           { path: "categories", element: <ItemCategoryTable /> },
-          { path: "suppliers", element: <SupplierTable /> },
         ],
       },
-      {path: 'customer', element: <CustomerMainPage/>},
-      { path: "registration", element: <RegistraionMainPage /> },
+      { path: "customer", element: <CustomerMainPage /> },
+      {
+        path: "registration",
+        element: <RegistraionMainPage />,
+        children: [{ path: "suppliers", element: <SupplierTable /> }],
+      },
     ],
   },
 ]);

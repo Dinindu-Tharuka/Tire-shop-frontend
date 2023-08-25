@@ -11,15 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import UpdateSupplierForm from "./UpdateSupplierForm";
-import { Supplier } from "../../../services/Inventory/supplier-service";
+import { Supplier } from "../../services/Inventory/supplier-service";
 
 interface Props {
   selecedSupplier: Supplier;
 }
 
-const UpdateSupplierDrawer = ({
-  selecedSupplier
-}: Props) => {
+const UpdateSupplierDrawer = ({ selecedSupplier }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -51,9 +49,7 @@ const UpdateSupplierDrawer = ({
           <DrawerHeader>Update Category</DrawerHeader>
 
           <DrawerBody>
-            <UpdateSupplierForm
-              selectedSupplier={selecedSupplier}
-            />
+            <UpdateSupplierForm selectedSupplier={selecedSupplier} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

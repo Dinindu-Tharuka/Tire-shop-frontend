@@ -22,7 +22,7 @@ import CustomerAddDrawer from "../Customer/CustomerAddDrawer";
 import VehicleAddDrawer from "../Vehicle/VehicleAddDrawer";
 const CustomerSidePanel = () => {
   const customerOptions = ["Customer"];
-  const customerOptionLinks = ["", "categories", "suppliers"];
+  const customerOptionLinks = ["", "categories"];
   const { toggleColorMode, colorMode } = useColorMode();
 
   const customerMenuList = customerOptions.map((option, index) => {
