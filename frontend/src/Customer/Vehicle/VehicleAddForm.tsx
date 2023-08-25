@@ -5,6 +5,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import VehicleService, { Vehicle } from "../../services/Customer/vehicle-service";
 import VehicleContext from "../../Contexts/Customer/VehicleContext";
+import SelectedCustomerContext from "../../Contexts/Customer/SelectedCustomerContex";
 
 const VehicleAddForm = () => {
   const { register, handleSubmit } = useForm();
@@ -15,6 +16,8 @@ const VehicleAddForm = () => {
 
   const {vehicles, setVehicles} = useContext(VehicleContext)
   const {customers} = useContext(CustomerContext)
+  const {selectedCustomer} = useContext(SelectedCustomerContext)
+
 
   const onCreate = (data: FieldValues) => {   
 
@@ -73,6 +76,7 @@ const VehicleAddForm = () => {
 
           <div className="mb-3 h-75">
             <Select {...register("customer")}>
+              <option>{selectedCustomer.name}</option>
               {customers.map( cus=> <option value={cus.id}>{cus.name}</option>)}
 
             </Select>

@@ -17,7 +17,7 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import CustomerService, {
   Customer,
@@ -26,8 +26,10 @@ import UpdateCustomerDrawer from "./UpdateCustomerDrawer";
 import VehicleAccoringView from "../Vehicle/VehicleAccoringView";
 import getCutUrl from "../GetCuUrl";
 import {IoIosArrowDropleftCircle, IoIosArrowDroprightCircle} from 'react-icons/io'
+import SelectedCustomerContext from "../../Contexts/Customer/SelectedCustomerContex";
 
 const CustomerTable = () => {
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer>({} as Customer)
   const {
     customers,
     setCustomers,
@@ -73,7 +75,7 @@ const CustomerTable = () => {
                     <Accordion allowToggle>
                       <AccordionItem>
                         <h2>
-                          <AccordionButton>
+                          <AccordionButton onClick={()=> setSelectedCustomer(customer)}>
                             <Box as="span" flex="1" textAlign="left">
                               Vehicles
                             </Box>
@@ -81,7 +83,9 @@ const CustomerTable = () => {
                           </AccordionButton>
                         </h2>
                         <AccordionPanel pb={4}>
+                          <SelectedCustomerContext.Provider value={{selectedCustomer, setSelectedCustomer}}>
                           <VehicleAccoringView customer_id={customer.id} />
+                          </SelectedCustomerContext.Provider>
                         </AccordionPanel>
                       </AccordionItem>
                     </Accordion>

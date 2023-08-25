@@ -37,7 +37,7 @@ const InventorySidePanel = () => {
         width="100%"
         borderRadius={10}
       >
-        <AccordionItem>
+        <AccordionItem borderRadius={10}>
           <h2>
             <AccordionButton>
               <Box as="span" flex="1" textAlign="left">

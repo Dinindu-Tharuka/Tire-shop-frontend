@@ -35,9 +35,9 @@ const CustomerSidePanel = () => {
           borderRadius={10}
 
         >
-          <AccordionItem >
+          <AccordionItem borderRadius={10}>
             <h2>
-              <AccordionButton >
+              <AccordionButton>
                 <Box as="span" flex="1" textAlign="left">
                   <Text  fontWeight="bold"> Customer</Text>
                 </Box>
