@@ -24,7 +24,7 @@ import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
 
 const RegistrationSidePanel = () => {
   const registerList = ["User", "Employee", "Supplier"];
-  const inventory_links = ["", "categories", "suppliers"];
+  const inventory_links = ["", "employees", "suppliers"];
   const { toggleColorMode, colorMode } = useColorMode();
 
   const options = ["ADD"];

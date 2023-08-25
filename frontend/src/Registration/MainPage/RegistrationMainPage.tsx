@@ -1,9 +1,11 @@
-import { Grid, GridItem } from '@chakra-ui/react'
-import React from 'react'
-import RegistrationSidePanel from '../SidePanel/RegistrationSidePanel'
-import { Outlet } from 'react-router-dom'
-import useSupplier from '../../hooks/Inventory/useSupplier'
-import SupplierContext from '../../Contexts/SupplierContext'
+import { Grid, GridItem } from "@chakra-ui/react";
+import React from "react";
+import RegistrationSidePanel from "../SidePanel/RegistrationSidePanel";
+import { Outlet } from "react-router-dom";
+import useSupplier from "../../hooks/Inventory/useSupplier";
+import SupplierContext from "../../Contexts/Inventory/SupplierContext";
+import useEmployee from "../../hooks/Registration/useEmployee";
+import EmployeeContext from "../../Contexts/Registration/EmployeeContecxt";
 
 const RegistraionMainPage = () => {
   const {
@@ -14,44 +16,64 @@ const RegistraionMainPage = () => {
     filterSupplierParams,
     setFilterSupplierParams,
   } = useSupplier();
+
+  const {
+    employees,
+    setEmployees,
+    nextEmployeeUrl,
+    previousEmployeeUrl,
+    filterEmployeeParams,
+    setFilterEmployeeParams,
+  } = useEmployee();
+
+  console.log(employees);
+  
+
   return (
-    <SupplierContext.Provider
-          value={{
-            suppliers,
-            setSuppliers,
-            nextSupplierUrl,
-            previousSupplierUrl,
-            filterSupplierParams,
-            setFilterSupplierParams,
+    <EmployeeContext.Provider
+      value={{
+        employees,
+        setEmployees,
+        nextEmployeeUrl,
+        previousEmployeeUrl,
+        filterEmployeeParams,
+        setFilterEmployeeParams,
+      }}
+    >
+      <SupplierContext.Provider
+        value={{
+          suppliers,
+          setSuppliers,
+          nextSupplierUrl,
+          previousSupplierUrl,
+          filterSupplierParams,
+          setFilterSupplierParams,
+        }}
+      >
+        <Grid
+          templateAreas={{
+            lg: `"main aside"`,
+            base: `"aside" "main"`,
           }}
         >
-    <Grid
-            templateAreas={{
-              lg: `"main aside"`,
-              base: `"aside" "main"`,
-            }}
+          <GridItem
+            area="main"
+            height={{ base: "10vh", lg: "85vh" }}
+            width={{ base: "100vw", lg: "60vw" }}
           >
-            <GridItem
-              area="main"
-              height={{ base: "10vh", lg: "85vh" }}
-              width={{ base: "100vw", lg: "60vw" }}
-            >  
+            <Outlet />
+          </GridItem>
+          <GridItem
+            area="aside"
+            height={{ base: "10vh", lg: "85vh" }}
+            width={{ base: "100vw", lg: "15vw" }}
+          >
+            <RegistrationSidePanel />
+          </GridItem>
+        </Grid>
+      </SupplierContext.Provider>
+    </EmployeeContext.Provider>
+  );
+};
 
-            <Outlet/>
-                
-                  
-            </GridItem>
-            <GridItem
-              area="aside"
-              height={{ base: "10vh", lg: "85vh" }}
-              width={{ base: "100vw", lg: "15vw" }}
-            >
-              <RegistrationSidePanel/>
-              
-            </GridItem>
-          </Grid>
-          </SupplierContext.Provider>
-  )
-}
-
-export default RegistraionMainPage
+export default RegistraionMainPage;

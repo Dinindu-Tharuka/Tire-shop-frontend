@@ -4,7 +4,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import supplierService, {
   Supplier,
 } from "../../services/Inventory/supplier-service";
-import SupplierContext from "../../Contexts/SupplierContext";
+import SupplierContext from "../../Contexts/Inventory/SupplierContext";
 
 const SupplierAddForm = () => {
   const { register, handleSubmit } = useForm();

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import UpdateSupplierDrawer from "./UpdateSupplierDrawer";
 import { useContext } from "react";
-import SupplierContext from "../../Contexts/SupplierContext";
+import SupplierContext from "../../Contexts/Inventory/SupplierContext";
 import SupplierService, {
   Supplier,
 } from "../../services/Inventory/supplier-service";
@@ -21,7 +21,7 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import getSupplierCutUrl from "../../componants/Inventory/Cut Url/supplier-url-cut";
+import getSupplierCutUrl from "../Cut URLs/supplier-url-cut";
 
 const SupplierTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();

@@ -23,8 +23,8 @@ import AddSupplierDrawer from "../../../Registration/Supplier/AddSupplierDrawer"
 import { Link } from "react-router-dom";
 
 const InventorySidePanel = () => {
-  const inventoryList = ["Item", "Category", "Supplier"];
-  const inventory_links = ["", "categories", "suppliers"];
+  const inventoryList = ["Item", "Category"];
+  const inventory_links = ["", "categories"];
   const { toggleColorMode, colorMode } = useColorMode();
 
   const options = ["ADD"];
@@ -54,8 +54,6 @@ const InventorySidePanel = () => {
                 <InventoryAddButtonDrawer key={num} />
               ) : index === 1 ? (
                 <AddCategoryDrawer key={num} />
-              ) : index === 2 ? (
-                <AddSupplierDrawer key={num} />
               ) : null
             )}
           </AccordionPanel>

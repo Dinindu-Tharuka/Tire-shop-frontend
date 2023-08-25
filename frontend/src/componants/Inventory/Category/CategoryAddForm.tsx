@@ -4,9 +4,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import categoryService, {
   Category,
 } from "../../../services/Inventory/category-service";
-import ItemCategoryContext from "../../../Contexts/CategoryContext";
-
-
+import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
 
 const CategoryAddForm = () => {
   const { register, handleSubmit } = useForm();
@@ -15,22 +13,21 @@ const CategoryAddForm = () => {
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const {categories, setCategories} = useContext(ItemCategoryContext)
+  const { categories, setCategories } = useContext(ItemCategoryContext);
 
   const onSubmit = (data: FieldValues) => {
-    
     const createdCategory: Category = {
       id: data.id,
       category_name: data.category_name,
       description: data.description,
     };
-    
+
     categoryService
-    .create(data)
-    .then((res) => {
-      if (res.status === 200) {
-        setSuccess("Successfully Created...");        
-        setCategories([res.data, ...categories]);
+      .create(data)
+      .then((res) => {
+        if (res.status === 200) {
+          setSuccess("Successfully Created...");
+          setCategories([res.data, ...categories]);
         }
       })
       .catch((err) => setErrorCategoryCreate(err.message));

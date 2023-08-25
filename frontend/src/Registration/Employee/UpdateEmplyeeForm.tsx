@@ -1,48 +1,44 @@
 import { Button, HStack, Input, Text, useColorMode } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import Supplierservice, { Supplier } from "../../services/Inventory/supplier-service";
-import SupplierContext from "../../Contexts/Inventory/SupplierContext";
-
+import EmployeeService, {
+  Employee,
+} from "../../services/Registration/employee-service";
+import EmployeeContext from "../../Contexts/Registration/EmployeeContecxt";
 
 interface Props {
-  selectedSupplier: Supplier;
+  selectedEmployee: Employee;
 }
 
-const UpdateSupplierForm = ({
-  selectedSupplier,
-
-}: Props) => {
+const UpdateEmplyeeForm = ({ selectedEmployee }: Props) => {
   const { register, handleSubmit } = useForm();
 
   const [errorCategoryUpdate, setErrorCategoryUpdate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const {suppliers, setSuppliers} = useContext(SupplierContext)
+  const { employees, setEmployees } = useContext(EmployeeContext);
 
   const onSubmit = (data: FieldValues) => {
-    const updated: Supplier = {
-      id: selectedSupplier.id,
+    const updated: Employee = {
+      id: selectedEmployee.id,
+      nic: data.nic,
       name: data.name,
       address: data.address,
       telephone: data.telephone,
-      mobile: data.mobile,
-      email: data.email,
+      designation: data.designation,
     };
-    
 
-    Supplierservice
-      .update(updated, `${updated.id}`)
-      .then(res => {
-        if (res.status === 202){
-          setSuccess('Successfully Updated.')
-          setSuppliers(suppliers.map((sup)=> sup.id === updated.id? updated:sup))
+    EmployeeService.update(updated, `${updated.id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          setSuccess("Successfully Updated.");
+          setEmployees(
+            employees.map((sup) => (sup.id === updated.id ? updated : sup))
+          );
         }
       })
-      .catch(err => setErrorCategoryUpdate('Not Successfully Updated.'))
-
-
+      .catch((err) => setErrorCategoryUpdate("Not Successfully Updated."));
   };
   return (
     <>
@@ -55,10 +51,19 @@ const UpdateSupplierForm = ({
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 h-75">
             <Input
+              {...register("nic")}
+              type="text"
+              placeholder="Name"
+              defaultValue={selectedEmployee.nic}
+            />
+          </div>
+
+          <div className="mb-3 h-75">
+            <Input
               {...register("name")}
               type="text"
               placeholder="Name"
-              defaultValue={selectedSupplier.name}
+              defaultValue={selectedEmployee.name}
             />
           </div>
 
@@ -67,33 +72,26 @@ const UpdateSupplierForm = ({
               {...register("address")}
               type="text"
               placeholder="Adress"
-              defaultValue={selectedSupplier.address}
-            />
-          </div>
-          <div className="mb-3">
-            <Input
-              {...register("mobile")}
-              type="text"
-              placeholder="Mobile"
-              defaultValue={selectedSupplier.mobile}
+              defaultValue={selectedEmployee.address}
             />
           </div>
           <div className="mb-3">
             <Input
               {...register("telephone")}
               type="text"
-              placeholder="Telephone"
-              defaultValue={selectedSupplier.telephone}
+              placeholder="Mobile"
+              defaultValue={selectedEmployee.telephone}
             />
           </div>
           <div className="mb-3">
             <Input
-              {...register("email")}
+              {...register("designation")}
               type="text"
-              placeholder="Email"
-              defaultValue={selectedSupplier.email}
+              placeholder="Telephone"
+              defaultValue={selectedEmployee.designation}
             />
           </div>
+          
         </div>
         <HStack justifyContent="space-between">
           <Button
@@ -112,4 +110,4 @@ const UpdateSupplierForm = ({
   );
 };
 
-export default UpdateSupplierForm;
+export default UpdateEmplyeeForm;

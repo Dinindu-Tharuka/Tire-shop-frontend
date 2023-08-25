@@ -16,12 +16,15 @@ import categoryService, {
 } from "../../../services/Inventory/category-service";
 import UpdateCategoryDrawer from "./UpdateCategoryDrawer";
 import { useContext } from "react";
-import ItemCategoryContext from "../../../Contexts/CategoryContext";
+import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
 import getCategoryCutUrl from "../Cut Url/category-url-cut";
-import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from "react-icons/io";
 
 const ItemCategoryTable = () => {
-  const {toggleColorMode, colorMode} = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
   const {
     categories,
     setCategories,
@@ -41,7 +44,7 @@ const ItemCategoryTable = () => {
   };
 
   return (
-    <Flex alignItems='center' flexDir='column'>
+    <Flex alignItems="center" flexDir="column">
       <TableContainer>
         <Table>
           <Thead>
@@ -77,15 +80,23 @@ const ItemCategoryTable = () => {
       </TableContainer>
 
       <HStack>
-          <Button 
-            colorScheme={colorMode === 'light'?'blackAlpha':'whiteAlpha'}
-            onClick={() => setFilterCategoryParams(getCategoryCutUrl(previousCategoryUrl) + "")}
-          ><IoIosArrowDropleftCircle/></Button>
-          <Button
-            colorScheme={colorMode === 'light'?'blackAlpha':'whiteAlpha'}
-            onClick={() => setFilterCategoryParams(getCategoryCutUrl(nextCategoryUrl) + "")}
-          ><IoIosArrowDroprightCircle/></Button>
-      </HStack>   
+        <Button
+          colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
+          onClick={() =>
+            setFilterCategoryParams(getCategoryCutUrl(previousCategoryUrl) + "")
+          }
+        >
+          <IoIosArrowDropleftCircle />
+        </Button>
+        <Button
+          colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
+          onClick={() =>
+            setFilterCategoryParams(getCategoryCutUrl(nextCategoryUrl) + "")
+          }
+        >
+          <IoIosArrowDroprightCircle />
+        </Button>
+      </HStack>
     </Flex>
   );
 };

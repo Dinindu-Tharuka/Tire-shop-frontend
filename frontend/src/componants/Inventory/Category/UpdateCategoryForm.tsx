@@ -4,20 +4,20 @@ import { FieldValues, useForm } from "react-hook-form";
 import categoryService, {
   Category,
 } from "../../../services/Inventory/category-service";
-import ItemCategoryContext from "../../../Contexts/CategoryContext";
+import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
 
 interface Props {
   updateCategory: Category;
 }
 
-const UpdateCategoryForm = ({updateCategory } : Props) => {
+const UpdateCategoryForm = ({ updateCategory }: Props) => {
   const { register, handleSubmit } = useForm();
 
   const [errorCategoryUpdate, setErrorCategoryUpdate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const {categories, setCategories} = useContext(ItemCategoryContext)
+  const { categories, setCategories } = useContext(ItemCategoryContext);
 
   const onSubmit = (data: FieldValues) => {
     const updated: Category = {
@@ -26,16 +26,14 @@ const UpdateCategoryForm = ({updateCategory } : Props) => {
       description: data.description,
     };
 
-   
-       
-
     categoryService
       .update(updated, `${updated.id}`)
-      .then((res) =>{
-        setSuccess("Successfully Updated.")    
-        setCategories(categories.map((cat => cat.id === updated.id? updated:cat)))
-      }
-      )
+      .then((res) => {
+        setSuccess("Successfully Updated.");
+        setCategories(
+          categories.map((cat) => (cat.id === updated.id ? updated : cat))
+        );
+      })
       .catch((err) => setErrorCategoryUpdate(err.message));
   };
   return (

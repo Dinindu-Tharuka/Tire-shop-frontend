@@ -2,7 +2,7 @@ import { Button, HStack, Text, useColorMode } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
-import ItemContext from "../../../Contexts/ItemContext";
+import ItemContext from "../../../Contexts/Inventory/ItemContext";
 import useCategory from "../../../hooks/Inventory/useCategory";
 import useSupplier from "../../../hooks/Inventory/useSupplier";
 
@@ -14,12 +14,12 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const {toggleColorMode, colorMode} = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
 
-  const {categories} = useCategory();
-  const {suppliers} = useSupplier();
+  const { categories } = useCategory();
+  const { suppliers } = useSupplier();
 
-  const {items, setItems} = useContext(ItemContext)
+  const { items, setItems } = useContext(ItemContext);
 
   const onSubmit = (data: FieldValues) => {
     ItemService.update(data, data.item_id)
@@ -29,7 +29,7 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
           items.map((item) =>
             item.item_id === res.data.item_id ? res.data : item
           )
-        )
+        );
       })
       .catch((err) => {
         if (err.message !== "canceled") {
@@ -129,33 +129,41 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
             <select {...register("item_category")} className="select w-100 p-2">
               <option>
                 {selectedUpdateItem.item_category !== null
-                  ? categories.find(category => category.id === selectedUpdateItem.item_category)?.category_name
+                  ? categories.find(
+                      (category) =>
+                        category.id === selectedUpdateItem.item_category
+                    )?.category_name
                   : "Select Category"}
               </option>
-              
-              {categories.map((category, index) => <option key={index} value="2">{category.category_name}</option>)}
+
+              {categories.map((category, index) => (
+                <option key={index} value="2">
+                  {category.category_name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-3">
             <select {...register("supplier")} className="select w-100 p-2">
               <option>
                 {selectedUpdateItem.supplier !== null
-                  ? suppliers.find(course => course.id === selectedUpdateItem.supplier)?.name
+                  ? suppliers.find(
+                      (course) => course.id === selectedUpdateItem.supplier
+                    )?.name
                   : "Select Supplier"}
               </option>
-              {suppliers.map((supplier, index) =>  
-                  <option 
-                      key={index} 
-                      value={supplier.id}
-                      >{supplier.name}
-                  </option>)}
+              {suppliers.map((supplier, index) => (
+                <option key={index} value={supplier.id}>
+                  {supplier.name}
+                </option>
+              ))}
             </select>
           </div>
         </div>
         <HStack justifyContent="space-between">
           <Button
             onClick={() => {}}
-            bg={colorMode === 'light'? '#e3a99c':'#575757'}
+            bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             type="submit"
           >
             Save

@@ -13,9 +13,12 @@ import {
 } from "@chakra-ui/react";
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext } from "react";
-import ItemContext from "../../../Contexts/ItemContext";
+import ItemContext from "../../../Contexts/Inventory/ItemContext";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
-import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from "react-icons/io";
 import getItemCutUrl from "../Cut Url/item-url-cut";
 
 const ItemTable = () => {
@@ -28,7 +31,7 @@ const ItemTable = () => {
     setFilterItemPageParams,
   } = useContext(ItemContext);
 
-  const {toggleColorMode, colorMode} = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
 
   const onDeleteItem = (itemSelected: Item) => {
     const originalItems = [...items];
@@ -40,7 +43,7 @@ const ItemTable = () => {
   };
 
   return (
-    <Flex alignItems='center' flexDir='column'>
+    <Flex alignItems="center" flexDir="column">
       <TableContainer>
         <Table>
           <Thead>
