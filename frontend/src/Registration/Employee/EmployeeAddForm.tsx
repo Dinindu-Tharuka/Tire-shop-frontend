@@ -6,11 +6,9 @@ import EmployeeService, {
 } from "../../services/Registration/employee-service";
 import EmployeeContext from "../../Contexts/Registration/EmployeeContecxt";
 
-interface Props {
-  selectedEmployee: Employee;
-}
 
-const EmployeeAddForm = ({selectedEmployee}:Props) => {
+
+const EmployeeAddForm = () => {
 
     const { register, handleSubmit } = useForm();
 
@@ -25,7 +23,7 @@ const EmployeeAddForm = ({selectedEmployee}:Props) => {
     
         EmployeeService.create(data)
           .then((res) => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               setSuccess("Successfully Created.");
               setEmployees([res.data, ...employees]);
             }
@@ -45,8 +43,7 @@ const EmployeeAddForm = ({selectedEmployee}:Props) => {
             <Input
               {...register("nic")}
               type="text"
-              placeholder="Name"
-              defaultValue={selectedEmployee.nic}
+              placeholder="NIC"
             />
           </div>
 
@@ -55,7 +52,6 @@ const EmployeeAddForm = ({selectedEmployee}:Props) => {
               {...register("name")}
               type="text"
               placeholder="Name"
-              defaultValue={selectedEmployee.name}
             />
           </div>
 
@@ -64,23 +60,20 @@ const EmployeeAddForm = ({selectedEmployee}:Props) => {
               {...register("address")}
               type="text"
               placeholder="Adress"
-              defaultValue={selectedEmployee.address}
             />
           </div>
           <div className="mb-3">
             <Input
               {...register("telephone")}
               type="text"
-              placeholder="Mobile"
-              defaultValue={selectedEmployee.telephone}
+              placeholder="Telephone"
             />
           </div>
           <div className="mb-3">
             <Input
               {...register("designation")}
               type="text"
-              placeholder="Telephone"
-              defaultValue={selectedEmployee.designation}
+              placeholder="Designation"
             />
           </div>
           

@@ -17,7 +17,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { AiOutlineDown } from "react-icons/ai";
-import InventoryAddButtonDrawer from "../Item/AddItemDrawer";
+import AddItemDrawer from "../Item/AddItemDrawer";
 import AddCategoryDrawer from "../Category/AddCategoryDrawer";
 import AddSupplierDrawer from "../../../Registration/Supplier/AddSupplierDrawer";
 import { Link } from "react-router-dom";
@@ -51,7 +51,7 @@ const InventorySidePanel = () => {
           <AccordionPanel pb={4} bg={colorMode === "light" ? "#f1cac1" : ""}>
             {options.map((option, num) =>
               index === 0 ? (
-                <InventoryAddButtonDrawer key={num} />
+                <AddItemDrawer key={num} />
               ) : index === 1 ? (
                 <AddCategoryDrawer key={num} />
               ) : null

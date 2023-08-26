@@ -19,7 +19,7 @@ const SupplierAddForm = () => {
     supplierService
       .create(data)
       .then((res) => {
-        if (res.status == 200) {
+        if (res.status == 201) {
           setSuccess("Successefully Created.");
           setSuppliers([res.data, ...suppliers]);
         }

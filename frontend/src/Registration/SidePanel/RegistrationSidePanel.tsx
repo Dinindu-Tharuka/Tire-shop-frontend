@@ -18,9 +18,13 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineDown } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import InventoryAddButtonDrawer from "../../componants/Inventory/Item/AddItemDrawer";
+import AddItemDrawer from "../../componants/Inventory/Item/AddItemDrawer";
 import AddCategoryDrawer from "../../componants/Inventory/Category/AddCategoryDrawer";
 import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
+import EmployeeAddForm from "../Employee/EmployeeAddForm";
+import ServiceAddForm from "../Services/ServiceAddForm";
+import AddServiceDrawer from "../Services/AddServiceDrawer";
+import AddEmployeeDrawer from "../Employee/AddEmployeeDrawer";
 
 const RegistrationSidePanel = () => {
   const registerList = ["User", "Employees", "Suppliers", "Services"];
@@ -51,11 +55,13 @@ const RegistrationSidePanel = () => {
           <AccordionPanel pb={4} bg={colorMode === "light" ? "#f1cac1" : ""}>
             {options.map((option, num) =>
               index === 0 ? (
-                <InventoryAddButtonDrawer key={num} />
+                <AddItemDrawer key={num} />
               ) : index === 1 ? (
-                <AddCategoryDrawer key={num} />
+                <AddEmployeeDrawer key={num} />
               ) : index === 2 ? (
                 <AddSupplierDrawer key={num} />
+              ) : index === 3 ? (
+                <AddServiceDrawer />
               ) : null
             )}
           </AccordionPanel>

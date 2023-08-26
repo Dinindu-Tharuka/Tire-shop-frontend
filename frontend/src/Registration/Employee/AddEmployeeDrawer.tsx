@@ -10,13 +10,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import ItemAddForm from "./ItemAddForm";
+import EmployeeAddForm from "./EmployeeAddForm";
 
-const AddItemDrawer = () => {
+const AddEmployeeDrawer = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-
   return (
     <>
       <Button
@@ -44,10 +43,9 @@ const AddItemDrawer = () => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add Item</DrawerHeader>
-
+          <DrawerHeader>Add Employee</DrawerHeader>
           <DrawerBody>
-            <ItemAddForm />
+            <EmployeeAddForm />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -55,4 +53,4 @@ const AddItemDrawer = () => {
   );
 };
 
-export default AddItemDrawer;
+export default AddEmployeeDrawer;
