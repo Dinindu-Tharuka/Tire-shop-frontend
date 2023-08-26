@@ -20,6 +20,8 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import getItemCutUrl from "../Cut Url/item-url-cut";
+import DeleteCategory from "../Category/DeleteCategory";
+import ItemDelete from "./ItemDelete";
 
 const ItemTable = () => {
   const {
@@ -79,13 +81,7 @@ const ItemTable = () => {
                   <UpdateItem selectedUpdateItem={item} />
                 </Td>
                 <Td>
-                  <Button
-                    padding={4}
-                    onClick={() => onDeleteItem(item)}
-                    bg="#f87454"
-                  >
-                    Delete
-                  </Button>
+                  <ItemDelete selectedDeleteItem={item}/>
                 </Td>
               </Tr>
             ))}

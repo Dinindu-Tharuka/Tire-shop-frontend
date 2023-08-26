@@ -22,6 +22,7 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
+import DeleteCategory from "./DeleteCategory";
 
 const ItemCategoryTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -65,13 +66,7 @@ const ItemCategoryTable = () => {
                   <UpdateCategoryDrawer updateCategory={category} />
                 </Td>
                 <Td>
-                  <Button
-                    onClick={() => onDeleteCategory(category)}
-                    padding={4}
-                    bg="#f87454"
-                  >
-                    Delete
-                  </Button>
+                  <DeleteCategory selectedDeleteCategory={category}/>
                 </Td>
               </Tr>
             ))}

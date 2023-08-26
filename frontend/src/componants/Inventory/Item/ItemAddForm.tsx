@@ -28,7 +28,7 @@ const ItemAddForm = () => {
   const onSubmit = (data: FieldValues) => {
     ItemService.create(data)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 201) {
           setSuccess("Successfully Created.");
           setItems([res.data, ...items]);
         }

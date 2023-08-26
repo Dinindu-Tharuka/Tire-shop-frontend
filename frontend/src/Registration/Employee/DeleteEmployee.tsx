@@ -70,7 +70,7 @@ const DeleteEmployee = ({selectedDeleteEmployee}:Props) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Employee
+              Delete Employee {selectedDeleteEmployee.name}
             </AlertDialogHeader>
 
             <AlertDialogBody>

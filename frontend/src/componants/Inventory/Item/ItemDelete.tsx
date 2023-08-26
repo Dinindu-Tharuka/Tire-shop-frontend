@@ -11,49 +11,50 @@ import {
   } from "@chakra-ui/react";
   import React, { useContext } from "react";
   import { useRef } from "react";
-import SupplierService, { Supplier } from "../../services/Inventory/supplier-service";
-import SupplierContext from "../../Contexts/Inventory/SupplierContext";
+import ItemService, { Item } from "../../../services/Inventory/item-service";
+import ItemContext from "../../../Contexts/Inventory/ItemContext";
   
   interface Props{
-      selectedDeleteSupplier:Supplier
+      selectedDeleteItem:Item
   }
 
-const DeleteSupplier = ({selectedDeleteSupplier}:Props) => {
+const ItemDelete = ({selectedDeleteItem}:Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef(null);
-  const deleteToast = useToast()
-
-  const { suppliers, setSuppliers } = useContext(SupplierContext);
-
-  const onDeleteSupplier = (supplier: Supplier) => {
-    const originalSuppliers = [...suppliers];
-
-    setSuppliers(suppliers.filter((sup) => sup.id !== supplier.id));
-
-    SupplierService
-      .delete(`${supplier.id}`)
-      .then(res => {
-        if (res.status === 204){
+    const cancelRef = useRef(null);
+    const deleteToast = useToast()
+  
+    const { items, setItems } = useContext(ItemContext);
+  
+    const onDeleteSupplier = (item: Item) => {
+      const originalItems = [...items];
+      const name = 'Item'
+  
+      setItems(items.filter((it) => it.item_id !== item.item_id));
+  
+      ItemService
+        .delete(`${item.item_id}`)
+        .then(res => {
+          if (res.status === 204){
+          deleteToast({
+            title: `${name}`,
+              description: `${name} successfully deleted.`,
+              status: 'success',
+              duration: 2000,
+              isClosable: true,
+          })}
+        })
+        .catch((err) =>{
+        setItems(originalItems)
+  
         deleteToast({
-          title: 'Supplier',
-            description: "Supplier successfully deleted.",
-            status: 'success',
+          title: 'Error',
+            description: `${name} not successfully deleted.`,
+            status: 'error',
             duration: 2000,
             isClosable: true,
         })}
-      })
-      .catch((err) =>{
-      setSuppliers(originalSuppliers)
-
-      deleteToast({
-        title: 'Error',
-          description: "Supplier not successfully deleted.",
-          status: 'error',
-          duration: 2000,
-          isClosable: true,
-      })}
-    );
-  };  
+      );
+    };
   return (
     <>
     <Button bg='#f87454' onClick={onOpen}>
@@ -68,7 +69,7 @@ const DeleteSupplier = ({selectedDeleteSupplier}:Props) => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Delete Supplier {selectedDeleteSupplier.name}
+            Delete Supplier {selectedDeleteItem.name}
           </AlertDialogHeader>
 
           <AlertDialogBody>
@@ -81,7 +82,7 @@ const DeleteSupplier = ({selectedDeleteSupplier}:Props) => {
             </Button>
             <Button colorScheme="red" onClick={()=>{
               onClose()
-              onDeleteSupplier(selectedDeleteSupplier)
+              onDeleteSupplier(selectedDeleteItem)
               }}  ml={3}>
               Delete
             </Button>
@@ -93,4 +94,4 @@ const DeleteSupplier = ({selectedDeleteSupplier}:Props) => {
   )
 }
 
-export default DeleteSupplier
+export default ItemDelete
