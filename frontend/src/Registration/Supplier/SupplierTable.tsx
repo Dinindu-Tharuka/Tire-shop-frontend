@@ -13,10 +13,10 @@ import {
 } from "@chakra-ui/react";
 import UpdateSupplierDrawer from "./UpdateSupplierDrawer";
 import { useContext } from "react";
-import SupplierContext from "../../Contexts/Inventory/SupplierContext";
+import SupplierContext from "../../Contexts/Registration/SupplierContext";
 import SupplierService, {
   Supplier,
-} from "../../services/Inventory/supplier-service";
+} from "../../services/Registration/supplier-service";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -71,7 +71,7 @@ const SupplierTable = () => {
                   <UpdateSupplierDrawer selecedSupplier={supplier} />
                 </Td>
                 <Td>
-                  <DeleteSupplier selectedDeleteSupplier={supplier}/>
+                  <DeleteSupplier selectedDeleteSupplier={supplier} />
                 </Td>
               </Tr>
             ))}

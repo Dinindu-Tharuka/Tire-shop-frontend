@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import SupplierService, { Supplier, SupplierPageStructure } from "../../services/Inventory/supplier-service"
+import SupplierService, { Supplier, SupplierPageStructure } from "../../services/Registration/supplier-service"
 
 const useSupplier = () => {
     const [suppliers, setSuppliers] = useState<Supplier[]>([])

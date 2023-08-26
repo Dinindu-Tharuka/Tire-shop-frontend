@@ -23,8 +23,8 @@ import AddCategoryDrawer from "../../componants/Inventory/Category/AddCategoryDr
 import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
 
 const RegistrationSidePanel = () => {
-  const registerList = ["User", "Employee", "Supplier"];
-  const inventory_links = ["", "employees", "suppliers"];
+  const registerList = ["User", "Employees", "Suppliers", "Services"];
+  const inventory_links = ["", "employees", "suppliers", "services"];
   const { toggleColorMode, colorMode } = useColorMode();
 
   const options = ["ADD"];

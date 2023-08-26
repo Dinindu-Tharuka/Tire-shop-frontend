@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import UpdateSupplierForm from "./UpdateSupplierForm";
-import { Supplier } from "../../services/Inventory/supplier-service";
+import { Supplier } from "../../services/Registration/supplier-service";
 
 interface Props {
   selecedSupplier: Supplier;

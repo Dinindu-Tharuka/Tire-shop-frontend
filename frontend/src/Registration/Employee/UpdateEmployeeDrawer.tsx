@@ -1,24 +1,24 @@
 import {
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
-    DrawerHeader,
-    DrawerOverlay,
-    useColorMode,
-    useDisclosure,
-  } from "@chakra-ui/react";
-  import { useRef } from "react";
-  import { Supplier } from "../../services/Inventory/supplier-service";
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  useColorMode,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useRef } from "react";
+import { Supplier } from "../../services/Registration/supplier-service";
 import { Employee } from "../../services/Registration/employee-service";
 import UpdateEmplyeeForm from "./UpdateEmplyeeForm";
-  
-  interface Props {
-    selecedEmployee: Employee;
-  }
 
-const UpdateEmployeeDrawer = ({selecedEmployee}:Props) => {
+interface Props {
+  selecedEmployee: Employee;
+}
+
+const UpdateEmployeeDrawer = ({ selecedEmployee }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -50,7 +50,7 @@ const UpdateEmployeeDrawer = ({selecedEmployee}:Props) => {
           <DrawerHeader>Update Employee</DrawerHeader>
 
           <DrawerBody>
-            <UpdateEmplyeeForm selectedEmployee={selecedEmployee}/>
+            <UpdateEmplyeeForm selectedEmployee={selecedEmployee} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

@@ -2,9 +2,9 @@ import { Grid, GridItem, Text, useColorMode } from "@chakra-ui/react";
 import InventorySidePanel from "../SidePanel/InventorySidePanel";
 import useItems from "../../../hooks/Inventory/useItems";
 import useCategory from "../../../hooks/Inventory/useCategory";
-import useSupplier from "../../../hooks/Inventory/useSupplier";
+import useSupplier from "../../../hooks/Registration/useSupplier";
 import { Outlet } from "react-router-dom";
-import SupplierContext from "../../../Contexts/Inventory/SupplierContext";
+import SupplierContext from "../../../Contexts/Registration/SupplierContext";
 import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
 

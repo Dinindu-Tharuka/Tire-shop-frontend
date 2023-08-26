@@ -4,7 +4,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
 import useCategory from "../../../hooks/Inventory/useCategory";
-import useSupplier from "../../../hooks/Inventory/useSupplier";
+import useSupplier from "../../../hooks/Registration/useSupplier";
 
 interface Props {
   selectedUpdateItem: Item;

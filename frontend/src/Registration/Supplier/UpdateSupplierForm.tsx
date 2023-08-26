@@ -1,25 +1,23 @@
 import { Button, HStack, Input, Text, useColorMode } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import Supplierservice, { Supplier } from "../../services/Inventory/supplier-service";
-import SupplierContext from "../../Contexts/Inventory/SupplierContext";
-
+import Supplierservice, {
+  Supplier,
+} from "../../services/Registration/supplier-service";
+import SupplierContext from "../../Contexts/Registration/SupplierContext";
 
 interface Props {
   selectedSupplier: Supplier;
 }
 
-const UpdateSupplierForm = ({
-  selectedSupplier,
-
-}: Props) => {
+const UpdateSupplierForm = ({ selectedSupplier }: Props) => {
   const { register, handleSubmit } = useForm();
 
   const [errorCategoryUpdate, setErrorCategoryUpdate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const {suppliers, setSuppliers} = useContext(SupplierContext)
+  const { suppliers, setSuppliers } = useContext(SupplierContext);
 
   const onSubmit = (data: FieldValues) => {
     const updated: Supplier = {
@@ -30,19 +28,17 @@ const UpdateSupplierForm = ({
       mobile: data.mobile,
       email: data.email,
     };
-    
 
-    Supplierservice
-      .update(updated, `${updated.id}`)
-      .then(res => {
-        if (res.status === 202){
-          setSuccess('Successfully Updated.')
-          setSuppliers(suppliers.map((sup)=> sup.id === updated.id? updated:sup))
+    Supplierservice.update(updated, `${updated.id}`)
+      .then((res) => {
+        if (res.status === 202) {
+          setSuccess("Successfully Updated.");
+          setSuppliers(
+            suppliers.map((sup) => (sup.id === updated.id ? updated : sup))
+          );
         }
       })
-      .catch(err => setErrorCategoryUpdate('Not Successfully Updated.'))
-
-
+      .catch((err) => setErrorCategoryUpdate("Not Successfully Updated."));
   };
   return (
     <>

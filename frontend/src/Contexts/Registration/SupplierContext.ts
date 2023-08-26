@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { Supplier } from "../../services/Inventory/supplier-service";
+import { Supplier } from "../../services/Registration/supplier-service";
 
 
 interface SupplierContextType {
