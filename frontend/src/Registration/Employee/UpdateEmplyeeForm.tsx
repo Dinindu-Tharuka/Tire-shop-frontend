@@ -102,7 +102,7 @@ const UpdateEmplyeeForm = ({ selectedEmployee }: Props) => {
               setSuccess("");
             }}
           >
-            Save
+            Update
           </Button>
         </HStack>
       </form>

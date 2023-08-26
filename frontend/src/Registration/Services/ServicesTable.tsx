@@ -21,6 +21,8 @@ import {
 
 import ServiceContext from "../../Contexts/Registration/ServiceContext";
 import getServiceCutUrl from "../Cut URLs/service-cut-url";
+import ServiceDelete from "./ServiceDelete";
+import UpdateServiceDrawer from "./UpdateServiceDrawer";
   
 
 const ServicesTable = () => {
@@ -51,10 +53,10 @@ const ServicesTable = () => {
                 <Td>{service.description}</Td>
                 <Td>{service.service_value}</Td>                
                 <Td>
-                  {/* <UpdateEmployeeDrawer selecedEmployee={employee}/> */}
+                  <UpdateServiceDrawer selecedService={service}/>
                 </Td>
                 <Td>
-                  {/* <DeleteEmployee selectedDeleteEmployee={employee}/> */}
+                  <ServiceDelete selectedDeleteService={service}/>
                 </Td>
               </Tr>
             ))}
