@@ -22,6 +22,7 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import getSupplierCutUrl from "../Cut URLs/supplier-url-cut";
+import DeleteSupplier from "./DeleteSupplier";
 
 const SupplierTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -70,13 +71,7 @@ const SupplierTable = () => {
                   <UpdateSupplierDrawer selecedSupplier={supplier} />
                 </Td>
                 <Td>
-                  <Button
-                    padding={4}
-                    onClick={() => onDeleteSupplier(supplier)}
-                    bg="#f87454"
-                  >
-                    Delete
-                  </Button>
+                  <DeleteSupplier selectedDeleteSupplier={supplier}/>
                 </Td>
               </Tr>
             ))}

@@ -35,13 +35,14 @@ const DeleteEmployee = ({selectedDeleteEmployee}:Props) => {
     EmployeeService
       .delete(`${employee.id}`)
       .then(res => {
+        if (res.status === 204){
         deleteToast({
           title: 'Employee',
             description: "Employee successfully deleted.",
             status: 'success',
             duration: 2000,
             isClosable: true,
-        })
+        })}
       })
       .catch((err) =>{
       setEmployees(originalSuppliers)
