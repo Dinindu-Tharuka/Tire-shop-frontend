@@ -23,7 +23,7 @@ import {
 
 const BillingSidePanel = () => {
     const billingList = ["Invoice", "Rebuilt", "GRN"];
-  const billing_links = ["", "rebuilt", "grn"];
+  const billing_links = ["", "rebuilt", "stock-invoice"];
   const { toggleColorMode, colorMode } = useColorMode();
 
   const options = ["ADD"];

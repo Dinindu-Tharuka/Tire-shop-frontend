@@ -11,6 +11,7 @@ import EmployeeTable from "../Registration/Employee/EmployeeTable";
 import ServicesTable from "../Registration/Services/ServicesTable";
 import BillingMainPage from "../Billing/MainPage/BillingMainPage";
 import BillTable from "../Billing/Bill/BillTable";
+import StockInvoiceTable from "../Billing/StockInvoice/StockInvoiceTable";
 
 const routes = createBrowserRouter([
   {
@@ -39,7 +40,10 @@ const routes = createBrowserRouter([
       {
         path: "billing",
         element: <BillingMainPage />,
-        children: [{ path: "", element: <BillTable /> }],
+        children: [
+          { path: "", element: <BillTable /> },
+          { path: "stock-invoice", element: <StockInvoiceTable /> },
+        ],
       },
     ],
   },

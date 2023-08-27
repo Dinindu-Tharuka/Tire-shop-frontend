@@ -9,10 +9,14 @@ const useStockInvoice = () => {
     const [previousStockInvoiceUrl, setPreviousStockInvoiceUrl] = useState<string | null>('')
     const [filterStockInvoiceParams, setFilterStockInvoiceParams] = useState<string | null>('')
 
+ 
+    
+
     useEffect(()=>{
         const {request, cancel} = StockInvoiceService.getAll<StockInvoicePageStructure>(filterStockInvoiceParams)
         request
           .then(res=>{
+            
             setStockInvoices(res.data.results)
             setNextStockInvoiceUrl(res.data.next)
             setPreviousStockInvoiceUrl(res.data.previous)
