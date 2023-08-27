@@ -10,6 +10,7 @@ import {
     useDisclosure,
   } from "@chakra-ui/react";
   import { useRef, useState } from "react";
+import BillAddForm from "./BillAddForm";
   
 
 const BillAddDrawer = () => {
@@ -47,7 +48,7 @@ const BillAddDrawer = () => {
           <DrawerHeader>Add Bill</DrawerHeader>
 
           <DrawerBody>
-            {/* <CustomerAddForm /> */}
+            <BillAddForm/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
