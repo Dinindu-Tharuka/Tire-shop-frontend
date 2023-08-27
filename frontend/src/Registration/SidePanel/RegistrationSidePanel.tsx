@@ -28,12 +28,12 @@ import AddEmployeeDrawer from "../Employee/AddEmployeeDrawer";
 
 const RegistrationSidePanel = () => {
   const registerList = ["User", "Employees", "Suppliers", "Services"];
-  const inventory_links = ["", "employees", "suppliers", "services"];
+  const register_links = ["", "employees", "suppliers", "services"];
   const { toggleColorMode, colorMode } = useColorMode();
 
   const options = ["ADD"];
 
-  const inventoryMenuList = registerList.map((inventory, index) => (
+  const registerMenuList = registerList.map((reg, index) => (
     <Flex key={index} width="100%" justifyContent="space-between">
       <Accordion
         allowToggle
@@ -45,8 +45,8 @@ const RegistrationSidePanel = () => {
           <h2>
             <AccordionButton>
               <Box as="span" flex="1" textAlign="left">
-                <Link to={inventory_links[index]}>
-                  <Text fontWeight="bold">{inventory}</Text>
+                <Link to={register_links[index]}>
+                  <Text fontWeight="bold">{reg}</Text>
                 </Link>
               </Box>
               <AccordionIcon />
@@ -73,10 +73,10 @@ const RegistrationSidePanel = () => {
   return (
     <Box>
       <Show above="lg">
-        <VStack>{inventoryMenuList}</VStack>
+        <VStack>{registerMenuList}</VStack>
       </Show>
       <Show below="lg">
-        <HStack>{inventoryMenuList}</HStack>
+        <HStack>{registerMenuList}</HStack>
       </Show>
     </Box>
   );

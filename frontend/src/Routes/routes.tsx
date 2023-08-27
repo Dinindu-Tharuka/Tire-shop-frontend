@@ -9,6 +9,8 @@ import RegistraionMainPage from "../Registration/MainPage/RegistrationMainPage";
 import CustomerMainPage from "../Customer/MainPage/CustomerMainPage";
 import EmployeeTable from "../Registration/Employee/EmployeeTable";
 import ServicesTable from "../Registration/Services/ServicesTable";
+import BillingMainPage from "../Billing/MainPage/BillingMainPage";
+import InvoiceTable from "../Billing/Invoice/InvoiceTable";
 
 const routes = createBrowserRouter([
   {
@@ -32,6 +34,13 @@ const routes = createBrowserRouter([
           { path: "suppliers", element: <SupplierTable /> },
           { path: "employees", element: <EmployeeTable /> },
           { path: "services", element: <ServicesTable /> },
+        ],
+      },
+      {
+        path: "billing",
+        element: <BillingMainPage />,
+        children: [
+          { path: "", element: <InvoiceTable /> },
         ],
       },
     ],
