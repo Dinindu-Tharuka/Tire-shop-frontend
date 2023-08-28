@@ -10,18 +10,17 @@ import {
     useDisclosure,
   } from "@chakra-ui/react";
   import { useRef, useState } from "react";
-import { StockInvoice } from "../../services/Stock/stock-invoice-service";
-import UpdateStockInvoiceForm from "./UpdateStockInvoiceForm";
+import { StockItem } from "../../services/Stock/stock-item-service";
+import UpdateStockItemForm from "./UpdateStockItemForm";
   
   interface Props {
-    selectedUpdateStockInvoice: StockInvoice
-    
+    selectedStockItem: StockItem;
   }
 
-const UpdateStockInvoiceDrawer = ({selectedUpdateStockInvoice}:Props) => {
-  const { toggleColorMode, colorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef(null);
+const UpdateStockItemDrawer = ({selectedStockItem}:Props) => {
+    const { toggleColorMode, colorMode } = useColorMode();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const btnRef = useRef(null);
   return (
     <>
       <Button
@@ -34,31 +33,29 @@ const UpdateStockInvoiceDrawer = ({selectedUpdateStockInvoice}:Props) => {
             ? { background: "#3e3d40 " }
             : { background: "#fababb" }
         }
-        //   width="100%"
-        //   height="8vh"
         onClick={onOpen}
       >
         Update
       </Button>
       <Drawer
         isOpen={isOpen}
-        placement="right"
+        placement="left"
         onClose={onClose}
         finalFocusRef={btnRef}
-        size='full'
+        size='sm'
       >
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Update Stock Invoice {selectedUpdateStockInvoice.invoice_no}</DrawerHeader>
+          <DrawerHeader>Update Stock Item</DrawerHeader>
 
           <DrawerBody>
-            <UpdateStockInvoiceForm seletedStockInvoice={selectedUpdateStockInvoice}/>
+            <UpdateStockItemForm selectedStockItem={selectedStockItem}/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
-  );
-};
+  )
+}
 
-export default UpdateStockInvoiceDrawer;
+export default UpdateStockItemDrawer

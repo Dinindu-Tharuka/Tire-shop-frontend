@@ -26,6 +26,8 @@ import useItems from "../../hooks/Inventory/useItems";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import StockItemDelete from "../StockItem/StockItemDelete";
+import UpdateStockItemDrawer from "../StockItem/UpdateStockItemDrawer";
+import StockAddItemDrawer from "../StockItem/StockAddItemDrawer";
 
 interface Props {
   seletedStockInvoice: StockInvoice;
@@ -33,19 +35,6 @@ interface Props {
 
 const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
   const { register, handleSubmit, control } = useForm<StockInvoice>();
-  
-
-  // setStockItems(stockItems.filter(item => item.stock_item_invoice === seletedStockInvoice.invoice_no))
-
-
-  // const {
-  //   fields: stockItemArray,
-  //   append: stockItemAppend,
-  //   remove: stockItemRemove,
-  // } = useFieldArray({
-  //   name: "stockitems",
-  //   control,
-  // });
 
   const [errorStockInvoiceCreate, setStockinvoiceCreate] = useState("");
   const [success, setSuccess] = useState("");
@@ -56,10 +45,14 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
   const { suppliers } = useSupplier();
 
   const onSubmit = (data: StockInvoice) => {
-    StockInvoiceService.update(data, seletedStockInvoice.invoice_no)
+    const newly = {...data, invoice_no:seletedStockInvoice.invoice_no, stockitems:[]}
+    console.log(newly);
+    
+    
+    StockInvoiceService.update(newly, seletedStockInvoice.invoice_no)
       .then((res) => {
         setSuccess("Successfully Updated.");
-        setStockInvoices([res.data, ...stockInvoices]);
+        setStockInvoices(stockInvoices.map(invoice => invoice.invoice_no === res.data.invoice_no ? res.data: invoice));
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -84,7 +77,7 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
             </div>
             <div className="mb-3">
               <Select {...register("supplier")} className="select p-2">
-                <option>
+                <option value={seletedStockInvoice.supplier}>
                   {seletedStockInvoice.supplier
                     ? suppliers.find(
                         (sup) => sup.id === seletedStockInvoice.supplier
@@ -97,6 +90,7 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
                   </option>
                 ))}
               </Select>
+              <StockAddItemDrawer selectedStockInvoice={seletedStockInvoice}/>
             </div>
           </div>
 
@@ -106,6 +100,7 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
               <TableCaption>Stock Items List</TableCaption>
               <Thead>
                 <Tr>
+                  <Th></Th>
                   <Th></Th>
                   <Th>Item</Th>
                   <Th>Retail Price</Th>
@@ -120,6 +115,7 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
               <Tbody>
                 {stockItems.filter(item => item.stock_item_invoice === seletedStockInvoice.invoice_no).map(item => 
                 <Tr>
+                  <Td><UpdateStockItemDrawer selectedStockItem={item}/></Td>
                   <Td><StockItemDelete selectedStockItem={item}/></Td>
                   <Td>{item.item}</Td>
                   <Td>{item.retail_price}</Td>

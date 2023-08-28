@@ -21,6 +21,7 @@ import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import getStockInvoiceCutUrl from "../Cut URLs/stock-invoice-cut-url";
 import StockInvoiceDelete from "./StockInvoiceDelete";
 import UpdateStockInvoiceDrawer from "./UpdateStockInvoiceDrawer";
+import useSupplier from "../../hooks/Registration/useSupplier";
 
 const StockInvoiceTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -32,6 +33,8 @@ const StockInvoiceTable = () => {
     filterStockInvoiceParams,
     setFilterStockInvoiceParams,
   } = useContext(StockInvoiceContext);
+
+  const {suppliers} = useSupplier();
 
 
   return (
@@ -62,7 +65,7 @@ const StockInvoiceTable = () => {
                 <Td>{invoice.date}</Td>
                 <Td>{invoice.total_amount}</Td>
                 <Td>{invoice.total_discount}</Td>
-                <Td>{invoice.supplier}</Td>
+                <Td>{suppliers.find(sup => sup.id === invoice.supplier)?.name}</Td>
               </Tr>
             ))}
           </Tbody>

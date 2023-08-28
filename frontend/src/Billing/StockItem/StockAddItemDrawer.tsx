@@ -10,16 +10,16 @@ import {
     useDisclosure,
   } from "@chakra-ui/react";
   import { useRef, useState } from "react";
+import StockAddItemForm from "./StockAddItemForm";
 import { StockInvoice } from "../../services/Stock/stock-invoice-service";
-import UpdateStockInvoiceForm from "./UpdateStockInvoiceForm";
-  
-  interface Props {
-    selectedUpdateStockInvoice: StockInvoice
-    
-  }
 
-const UpdateStockInvoiceDrawer = ({selectedUpdateStockInvoice}:Props) => {
-  const { toggleColorMode, colorMode } = useColorMode();
+interface Props{
+    selectedStockInvoice:StockInvoice
+}
+
+
+const StockAddItemDrawer = ({ selectedStockInvoice }:Props) => {
+    const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
   return (
@@ -34,31 +34,29 @@ const UpdateStockInvoiceDrawer = ({selectedUpdateStockInvoice}:Props) => {
             ? { background: "#3e3d40 " }
             : { background: "#fababb" }
         }
-        //   width="100%"
-        //   height="8vh"
         onClick={onOpen}
       >
-        Update
+        Add Item
       </Button>
       <Drawer
         isOpen={isOpen}
-        placement="right"
+        placement="left"
         onClose={onClose}
         finalFocusRef={btnRef}
-        size='full'
+        size='sm'
       >
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Update Stock Invoice {selectedUpdateStockInvoice.invoice_no}</DrawerHeader>
+          <DrawerHeader>Add Stock Item</DrawerHeader>
 
           <DrawerBody>
-            <UpdateStockInvoiceForm seletedStockInvoice={selectedUpdateStockInvoice}/>
+            <StockAddItemForm seletedInvoice={selectedStockInvoice}/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
-  );
-};
+  )
+}
 
-export default UpdateStockInvoiceDrawer;
+export default StockAddItemDrawer
