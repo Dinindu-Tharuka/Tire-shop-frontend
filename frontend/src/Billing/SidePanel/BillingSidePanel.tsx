@@ -18,6 +18,8 @@ import {
   } from "@chakra-ui/react";
   import { AiOutlineDown } from "react-icons/ai";
   import { Link } from "react-router-dom";
+import StockAddDrawer from "../StockInvoice/StockAddDrawer";
+import BillAddDrawer from "../Bill/BillAddDrawer";
   
  
 
@@ -48,17 +50,15 @@ const BillingSidePanel = () => {
             </AccordionButton>
           </h2>
           <AccordionPanel pb={4} bg={colorMode === "light" ? "#f1cac1" : ""}>
-            {/* {options.map((option, num) =>
+            {options.map((option, num) =>
               index === 0 ? (
-                <AddItemDrawer key={num} />
+                <BillAddDrawer key={num} />
               ) : index === 1 ? (
-                <AddEmployeeDrawer key={num} />
+                <StockAddDrawer key={num} />
               ) : index === 2 ? (
-                <AddSupplierDrawer key={num} />
-              ) : index === 3 ? (
-                <AddServiceDrawer />
+                <StockAddDrawer key={num} />
               ) : null
-            )} */}
+            )}
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

@@ -33,7 +33,7 @@ const BillAddDrawer = () => {
         onClick={onOpen}
         
       >
-        Show
+        Add
       </Button>
       <Drawer
         isOpen={isOpen}

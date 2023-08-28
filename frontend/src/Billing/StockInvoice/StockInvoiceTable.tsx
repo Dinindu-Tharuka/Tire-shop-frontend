@@ -39,8 +39,8 @@ const StockInvoiceTable = () => {
         <Table>
           <Thead>
             <Tr>
-              {/* <Th></Th>
-              <Th></Th> */}
+              {/* <Th></Th> */}
+              <Th></Th>
               <Th>Bill No</Th>
               <Th>Date</Th>
               <Th>Total Amount</Th>

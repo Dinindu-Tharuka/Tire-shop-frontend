@@ -26,6 +26,8 @@ const ItemAddForm = () => {
   const { items, setItems } = useContext(ItemContext);
 
   const onSubmit = (data: FieldValues) => {
+    console.log('Item', data);
+    
     ItemService.create(data)
       .then((res) => {
         if (res.status === 201) {
