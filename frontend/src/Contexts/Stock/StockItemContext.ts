@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import React from "react";
 import { StockItem } from "../../services/Stock/stock-item-service";
 
+
 interface StockItemContextType{
     stockItems:StockItem[];
     setStockItems:Dispatch<SetStateAction<StockItem[]>>;    

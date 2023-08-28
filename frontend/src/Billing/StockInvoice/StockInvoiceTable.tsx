@@ -20,6 +20,7 @@ import { useContext } from "react";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import getStockInvoiceCutUrl from "../Cut URLs/stock-invoice-cut-url";
 import StockInvoiceDelete from "./StockInvoiceDelete";
+import UpdateStockInvoiceDrawer from "./UpdateStockInvoiceDrawer";
 
 const StockInvoiceTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -39,7 +40,7 @@ const StockInvoiceTable = () => {
         <Table>
           <Thead>
             <Tr>
-              {/* <Th></Th> */}
+              <Th></Th>
               <Th></Th>
               <Th>Bill No</Th>
               <Th>Date</Th>
@@ -51,9 +52,9 @@ const StockInvoiceTable = () => {
           <Tbody>
             {stockInvoices?.map((invoice, index) => (
               <Tr key={index}>
-                {/* <Th>
-                  <BillAddDrawer />
-                </Th> */}
+                <Th>
+                  <UpdateStockInvoiceDrawer selectedUpdateStockInvoice={invoice}/>
+                </Th>
                 <Th>
                   <StockInvoiceDelete selectedStockInvoice={invoice}/>
                 </Th>

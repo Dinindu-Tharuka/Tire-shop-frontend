@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import StockItemService, { StockItem } from "../../services/Stock/stock-item-service";
+import StockItemService,{ StockItem } from "../../services/Stock/stock-item-service";
 
 
 const useStockItem = () => {

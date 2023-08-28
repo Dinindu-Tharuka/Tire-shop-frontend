@@ -1,17 +1,5 @@
 import createPagination from "../http-pagination-service";
-
-export interface StockItem{
-    id:number;
-    item:number;
-    retail_price:number;
-    date:string;
-    stock_item_invoice:number;
-    cost:number;
-    selling_price:number;
-    discount:number;
-    qty:number;
-    sold_qty:number;
-}
+import { StockItem } from "./stock-item-service";
 
 export interface StockInvoice{
     invoice_no:string;

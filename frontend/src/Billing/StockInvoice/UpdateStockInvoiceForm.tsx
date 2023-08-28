@@ -4,48 +4,61 @@ import {
   HStack,
   Input,
   Select,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
   useColorMode,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
-import { FieldValues, useForm, useFieldArray } from "react-hook-form";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import { IoAddCircle } from "react-icons/io5";
 import StockInvoiceService, {
-  StockInvoice,
+  StockInvoice
 } from "../../services/Stock/stock-invoice-service";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import useItems from "../../hooks/Inventory/useItems";
 import useSupplier from "../../hooks/Registration/useSupplier";
-import { StockItem } from "../../services/Stock/stock-item-service";
+import StockItemContext from "../../Contexts/Stock/StockItemContext";
+import StockItemDelete from "../StockItem/StockItemDelete";
 
-const StockAddForm = () => {
-  const { register, handleSubmit, control } = useForm<StockInvoice>({
-    defaultValues: {},
-  });
+interface Props {
+  seletedStockInvoice: StockInvoice;
+}
 
-  const {
-    fields: stockItemArray,
-    append: stockItemAppend,
-    remove: stockItemRemove,
-  } = useFieldArray({
-    name: "stockitems",
-    control,
-  });
+const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
+  const { register, handleSubmit, control } = useForm<StockInvoice>();
+  
+
+  // setStockItems(stockItems.filter(item => item.stock_item_invoice === seletedStockInvoice.invoice_no))
+
+
+  // const {
+  //   fields: stockItemArray,
+  //   append: stockItemAppend,
+  //   remove: stockItemRemove,
+  // } = useFieldArray({
+  //   name: "stockitems",
+  //   control,
+  // });
 
   const [errorStockInvoiceCreate, setStockinvoiceCreate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { stockInvoices, setStockInvoices } = useContext(StockInvoiceContext);
-  const { items } = useItems();
+  const { setStockItems,  stockItems } = useContext(StockItemContext);
   const { suppliers } = useSupplier();
 
   const onSubmit = (data: StockInvoice) => {
-
-
-    StockInvoiceService.create(data)
+    StockInvoiceService.update(data, seletedStockInvoice.invoice_no)
       .then((res) => {
-        setSuccess(res.status === 201 ? "Successfully Created." : "");
+        setSuccess("Successfully Updated.");
         setStockInvoices([res.data, ...stockInvoices]);
       })
       .catch((err) => setStockinvoiceCreate(err.message));
@@ -65,11 +78,19 @@ const StockAddForm = () => {
                 {...register("invoice_no")}
                 type="text"
                 placeholder="Bill No"
+                defaultValue={seletedStockInvoice.invoice_no}
+                disabled
               />
             </div>
             <div className="mb-3">
               <Select {...register("supplier")} className="select p-2">
-                <option>Select Supplier</option>
+                <option>
+                  {seletedStockInvoice.supplier
+                    ? suppliers.find(
+                        (sup) => sup.id === seletedStockInvoice.supplier
+                      )?.name
+                    : "Select Supplier"}
+                </option>
                 {suppliers.map((sup, index) => (
                   <option className="mt-3" key={index} value={sup.id}>
                     {sup.name}
@@ -77,12 +98,47 @@ const StockAddForm = () => {
                 ))}
               </Select>
             </div>
-
-            
           </div>
 
           {/* Add Stock items */}
-          <div className="mb-3">
+          {seletedStockInvoice.stockitems.length !== 0 && <TableContainer>
+            <Table variant="simple">
+              <TableCaption>Stock Items List</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th></Th>
+                  <Th>Item</Th>
+                  <Th>Retail Price</Th>
+                  <Th >Date</Th>
+                  <Th >Cost</Th>
+                  <Th >Selling Price</Th>
+                  <Th >Discount</Th>
+                  <Th>QTY</Th>
+                  <Th>Sold Qty</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {stockItems.filter(item => item.stock_item_invoice === seletedStockInvoice.invoice_no).map(item => 
+                <Tr>
+                  <Td><StockItemDelete selectedStockItem={item}/></Td>
+                  <Td>{item.item}</Td>
+                  <Td>{item.retail_price}</Td>
+                  <Td>{item.date}</Td>
+                  <Td>{item.cost}</Td>
+                  <Td>{item.selling_price}</Td>
+                  <Td>{item.discount}</Td>
+                  <Td>{item.qty}</Td>
+                  <Td>{item.sold_qty}</Td>
+                </Tr>
+                  
+                  )}
+              </Tbody>
+            </Table>
+          </TableContainer>}
+          {/* Add Stock items */}
+
+          {/* Add Stock items */}
+          {/* <div className="mb-3">
             {stockItemArray.map((field, index) => (
               <Flex>
                 <Flex>
@@ -104,14 +160,14 @@ const StockAddForm = () => {
                   />
                 </Flex>
                 <Flex>
-                  {/* <Select
+                  <Select
                     {...register(`stockitems.${index}.stock_item_invoice`)}
                     className="select w-100 p-2"
                   >
                     <option key={index} value="2">
                       seleted Invoice
                     </option>
-                  </Select> */}
+                  </Select>
 
                   <Input
                     type="number"
@@ -166,15 +222,16 @@ const StockAddForm = () => {
               </Button>
               <IoAddCircle />
             </Flex>
-          </div>
+          </div> */}
 
-
+          {/* Add Items */}
 
           <div className="w-25">
-          <div className="mb-3">
+            <div className="mb-3">
               <Input
                 {...register("total_amount")}
                 type="number"
+                defaultValue={seletedStockInvoice.total_amount}
                 placeholder="Total Amount"
               />
             </div>
@@ -183,12 +240,11 @@ const StockAddForm = () => {
               <Input
                 {...register("total_discount")}
                 type="number"
+                defaultValue={seletedStockInvoice.total_discount}
                 placeholder="Total Discount"
               />
             </div>
-
           </div>
-
         </div>
         <HStack justifyContent="space-between">
           <Button
@@ -199,7 +255,7 @@ const StockAddForm = () => {
               setSuccess("");
             }}
           >
-            Save
+            Update
           </Button>
         </HStack>
       </form>
@@ -207,4 +263,4 @@ const StockAddForm = () => {
   );
 };
 
-export default StockAddForm;
+export default UpdateStockInvoiceForm;

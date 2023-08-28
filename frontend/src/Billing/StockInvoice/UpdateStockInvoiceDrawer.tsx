@@ -1,29 +1,27 @@
 import {
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
-  useColorMode,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { Item } from "../../../services/Inventory/item-service";
-import UpdateItemForm from "./UpdateItemForm";
-
-interface Props {
-  selectedUpdateItem: Item
+    Button,
+    Drawer,
+    DrawerBody,
+    DrawerCloseButton,
+    DrawerContent,
+    DrawerHeader,
+    DrawerOverlay,
+    useColorMode,
+    useDisclosure,
+  } from "@chakra-ui/react";
+  import { useRef, useState } from "react";
+import { StockInvoice } from "../../services/Stock/stock-invoice-service";
+import UpdateStockInvoiceForm from "./UpdateStockInvoiceForm";
   
-}
+  interface Props {
+    selectedUpdateStockInvoice: StockInvoice
+    
+  }
 
-const UpdateItem = ({ selectedUpdateItem }: Props) => {
+const UpdateStockInvoiceDrawer = ({selectedUpdateStockInvoice}:Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-
- 
   return (
     <>
       <Button
@@ -47,16 +45,15 @@ const UpdateItem = ({ selectedUpdateItem }: Props) => {
         placement="right"
         onClose={onClose}
         finalFocusRef={btnRef}
+        size='full'
       >
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Update</DrawerHeader>
+          <DrawerHeader>Update {selectedUpdateStockInvoice.invoice_no}</DrawerHeader>
 
           <DrawerBody>
-            <UpdateItemForm
-              selectedUpdateItem={selectedUpdateItem}
-            />
+            <UpdateStockInvoiceForm seletedStockInvoice={selectedUpdateStockInvoice}/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -64,4 +61,4 @@ const UpdateItem = ({ selectedUpdateItem }: Props) => {
   );
 };
 
-export default UpdateItem;
+export default UpdateStockInvoiceDrawer;
