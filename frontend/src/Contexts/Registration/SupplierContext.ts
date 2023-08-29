@@ -9,6 +9,10 @@ interface SupplierContextType {
     previousSupplierUrl:string|null;
     filterSupplierParams:string | null;
     setFilterSupplierParams:Dispatch<SetStateAction<string | null>>;
+    suppliersCount:number;
+    isLoadingSupplierPage:boolean;
+    errorFetchSupplier:string;
+    setErrorFetchSupplier:Dispatch<SetStateAction<string>>;
 }
 
 

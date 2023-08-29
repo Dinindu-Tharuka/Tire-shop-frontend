@@ -12,6 +12,7 @@ import {
 import { useRef } from "react";
 import UpdateSupplierForm from "./UpdateSupplierForm";
 import { Supplier } from "../../services/Registration/supplier-service";
+import { PADDING_UPDATE_DRAWER_BUTTON } from "../../Constants/Constants";
 
 interface Props {
   selecedSupplier: Supplier;
@@ -26,7 +27,7 @@ const UpdateSupplierDrawer = ({ selecedSupplier }: Props) => {
       <Button
         variant="link"
         bg="#ffc2b3"
-        padding={3}
+        padding={PADDING_UPDATE_DRAWER_BUTTON}
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
         _hover={
           colorMode === "light"

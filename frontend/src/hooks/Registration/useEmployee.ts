@@ -32,7 +32,7 @@ const useEmployee = () => {
             return ()=> cancel();
         }, [filterEmployeeParams])
 
-        return {employees, setEmployees, nextEmployeeUrl, previousEmployeeUrl, filterEmployeeParams, setFilterEmployeeParams, errorFetchEmployee, isLoadingEmployees, employeeCount}
+        return {employees, setEmployees, nextEmployeeUrl, previousEmployeeUrl, filterEmployeeParams, setFilterEmployeeParams, errorFetchEmployee, isLoadingEmployees, employeeCount, setErrorFetchEmployee}
 }
   
 

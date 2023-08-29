@@ -12,6 +12,7 @@ import {
 import { useRef, useState } from "react";
 import { Customer } from "../../services/Customer/customer-service";
 import UpdateCustomerForm from "./UpdateCustomerForm";
+import { PADDING_UPDATE_DRAWER_BUTTON } from "../../Constants/Constants";
 
 interface Props {
   onSelectedCustomer: Customer;
@@ -26,7 +27,7 @@ const UpdateCustomerDrawer = ({ onSelectedCustomer }: Props) => {
       <Button
         variant="link"
         bg="#ffc2b3"
-        padding={2.5}
+        padding={PADDING_UPDATE_DRAWER_BUTTON}
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
         _hover={
           colorMode === "light"

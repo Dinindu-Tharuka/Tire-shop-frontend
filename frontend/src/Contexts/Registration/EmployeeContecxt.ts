@@ -12,6 +12,7 @@ interface EmployeeContextType{
     errorFetchEmployee:string;
     isLoadingEmployees:boolean;
     employeeCount:number;
+    setErrorFetchEmployee:Dispatch<SetStateAction<string>>;
 }
 
 const EmployeeContext = React.createContext<EmployeeContextType>({} as EmployeeContextType)

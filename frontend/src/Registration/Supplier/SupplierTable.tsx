@@ -10,9 +10,11 @@ import {
   Thead,
   Tr,
   useColorMode,
+  Text,
+  Spinner
 } from "@chakra-ui/react";
 import UpdateSupplierDrawer from "./UpdateSupplierDrawer";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
 import SupplierService, {
   Supplier,
@@ -22,30 +24,30 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import DeleteSupplier from "./DeleteSupplier";
-import getCutUrl from "../../services/pagination-cut-link";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
 
 const SupplierTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
+  const [pageNum, setPageNum] = useState(1)
   const {
     suppliers,
     setSuppliers,
     nextSupplierUrl,
     previousSupplierUrl,
-    filterSupplierParams,
+    setErrorFetchSupplier,
     setFilterSupplierParams,
+    errorFetchSupplier,
+    isLoadingSupplierPage,
+    suppliersCount
   } = useContext(SupplierContext);
 
-  const onDeleteSupplier = (supplier: Supplier) => {
-    const originalSuppliers = [...suppliers];
+  const numOfPages = Math.ceil(suppliersCount / MAXIMUM_PAGES_PER_PAGE);
 
-    setSuppliers(suppliers.filter((sup) => sup.id !== supplier.id));
-
-    SupplierService.delete(`${supplier.id}`).catch((err) =>
-      setSuppliers(originalSuppliers)
-    );
-  };
+  if (isLoadingSupplierPage)
+    return <Spinner/>
   return (
     <Flex alignItems="center" flexDir="column">
+      {errorFetchSupplier && <Text textColor='red'>Unable to fetch data from the internet.</Text>}
       <TableContainer>
         <Table>
           <Thead>
@@ -82,17 +84,25 @@ const SupplierTable = () => {
       <HStack>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          isDisabled={pageNum === 1? true:false}
+          onClick={() =>{
             setFilterSupplierParams(getCutUrl(previousSupplierUrl, 'suppliers') + "")
-          }
+            setPageNum(pageNum - 1)
+            setErrorFetchSupplier('')
+          }}
         >
           <IoIosArrowDropleftCircle />
         </Button>
+        <Text fontWeight='semibold'>page {pageNum} of {numOfPages}</Text>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          isDisabled={pageNum === numOfPages? true:false}
+          onClick={() =>{
             setFilterSupplierParams(getCutUrl(nextSupplierUrl, 'suppliers') + "")
-          }
+            setPageNum(pageNum + 1)
+            setErrorFetchSupplier('')
+
+          }}
         >
           <IoIosArrowDroprightCircle />
         </Button>

@@ -1,0 +1,1 @@
+export const PADDING_UPDATE_DRAWER_BUTTON = 2.5

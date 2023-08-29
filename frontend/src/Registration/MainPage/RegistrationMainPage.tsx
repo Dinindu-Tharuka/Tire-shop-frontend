@@ -18,6 +18,10 @@ const RegistraionMainPage = () => {
     previousSupplierUrl,
     filterSupplierParams,
     setFilterSupplierParams,
+    errorFetchSupplier,
+    isLoadingSupplierPage,
+    suppliersCount,
+    setErrorFetchSupplier
   } = useSupplier();
   const {
     services,
@@ -40,7 +44,8 @@ const RegistraionMainPage = () => {
     setFilterEmployeeParams,
     errorFetchEmployee,
     isLoadingEmployees,
-    employeeCount
+    employeeCount,
+    setErrorFetchEmployee
 
   } = useEmployee();
 
@@ -68,7 +73,8 @@ const RegistraionMainPage = () => {
           setFilterEmployeeParams,
           errorFetchEmployee,
           isLoadingEmployees,
-          employeeCount
+          employeeCount,
+          setErrorFetchEmployee
         }}
       >
         <SupplierContext.Provider
@@ -79,6 +85,10 @@ const RegistraionMainPage = () => {
             previousSupplierUrl,
             filterSupplierParams,
             setFilterSupplierParams,
+            suppliersCount,
+            isLoadingSupplierPage,
+            errorFetchSupplier,
+            setErrorFetchSupplier
           }}
         >
           <Grid

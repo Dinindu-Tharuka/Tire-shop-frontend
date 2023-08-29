@@ -36,7 +36,8 @@ const EmployeeTable = () => {
     isLoadingEmployees,
     setFilterEmployeeParams,
     errorFetchEmployee,
-    employeeCount
+    employeeCount,
+    setErrorFetchEmployee
   } = useContext(EmployeeContext);
 
   const numOfPages = Math.ceil(employeeCount / MAXIMUM_PAGES_PER_PAGE)
@@ -88,6 +89,7 @@ const EmployeeTable = () => {
           onClick={() =>{
             setFilterEmployeeParams(getCutUrl(previousEmployeeUrl, 'employees') + "")
             setCurrentPageNum(currentPageNum - 1)
+            setErrorFetchEmployee('')
           }}
         >
           <IoIosArrowDropleftCircle />
@@ -99,6 +101,7 @@ const EmployeeTable = () => {
           onClick={() =>{
             setFilterEmployeeParams(getCutUrl(nextEmployeeUrl, 'employees') + "")
             setCurrentPageNum(currentPageNum + 1)
+            setErrorFetchEmployee('')
           }}
         >
           <IoIosArrowDroprightCircle />
