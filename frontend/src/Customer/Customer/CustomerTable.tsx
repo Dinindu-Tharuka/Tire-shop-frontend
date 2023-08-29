@@ -31,7 +31,7 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import SelectedCustomerContext from "../../Contexts/Customer/SelectedCustomerContex";
-import getCutUrl from "../../services/pagination-cut-link";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
 
 const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer>(
@@ -51,7 +51,7 @@ const CustomerTable = () => {
     customerCount
   } = useContext(CustomerContext);
 
-  const numOfPages = Math.ceil(customerCount / 7);
+  const numOfPages = Math.ceil(customerCount / MAXIMUM_PAGES_PER_PAGE);
 
   
   const { toggleColorMode, colorMode } = useColorMode();

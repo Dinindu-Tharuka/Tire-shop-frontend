@@ -33,6 +33,8 @@ const BillingMainPage = () => {
     setFilterStockInvoiceParams,
     isLoadingInvoices,
     errorFetchStockInvoice,
+    setErrorFetchStockInvoice,
+    invoicesCount
   } = useStockInvoice();
 
   const { stockItems, setStockItems } = useStockItem();
@@ -46,6 +48,9 @@ const BillingMainPage = () => {
         filterStockInvoiceParams,
         setFilterStockInvoiceParams,
         isLoadingInvoices,
+        errorFetchStockInvoice,
+        setErrorFetchStockInvoice,
+        invoicesCount
       }}
     >
       <StockItemContext.Provider value={{ stockItems, setStockItems }}>

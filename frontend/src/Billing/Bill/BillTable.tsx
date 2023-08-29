@@ -22,7 +22,7 @@ import BillContext from "../../Contexts/Bill/BillContext";
 import { useContext, useState } from "react";
 import BillDelete from "./BillDelete";
 import BillAddDrawer from "./BillAddDrawer";
-import getCutUrl from "../../services/pagination-cut-link";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -33,10 +33,11 @@ const BillTable = () => {
     previousBillPageUrl,
     setFilterBillPageParams,
     isLoadingBills,
-    billCount
+    billCount,
+    billFetchError
   } = useContext(BillContext);
 
-  const numOfpages = Math.ceil(billCount/7)
+  const numOfpages = Math.ceil(billCount/ MAXIMUM_PAGES_PER_PAGE)
 
   
   if (isLoadingBills)
@@ -44,7 +45,8 @@ const BillTable = () => {
 
   return (
     <>
-    <Flex alignItems="center" flexDir="column">      
+    <Flex alignItems="center" flexDir="column">    
+    {billFetchError && <Text textColor='red'>Unable to fetch data from the internet.</Text>}  
       <TableContainer>
         <Table>
           <Thead>

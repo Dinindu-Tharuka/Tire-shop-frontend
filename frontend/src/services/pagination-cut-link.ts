@@ -5,4 +5,6 @@ const getCutUrl = (url :string | null, section:string) => {
     return url?.slice(totalIndex)        
 }
 
+export const MAXIMUM_PAGES_PER_PAGE = 7
+
 export default getCutUrl

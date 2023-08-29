@@ -22,7 +22,7 @@ import {
 } from "react-icons/io";
 import DeleteCategory from "../Category/DeleteCategory";
 import ItemDelete from "./ItemDelete";
-import getCutUrl from "../../../services/pagination-cut-link";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../../services/pagination-cut-link";
 
 const ItemTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -37,7 +37,7 @@ const ItemTable = () => {
     itemCount,
   } = useContext(ItemContext);
 
-  const numOfPages = Math.ceil(itemCount / 7);
+  const numOfPages = Math.ceil(itemCount / MAXIMUM_PAGES_PER_PAGE);
 
   const { toggleColorMode, colorMode } = useColorMode();
 

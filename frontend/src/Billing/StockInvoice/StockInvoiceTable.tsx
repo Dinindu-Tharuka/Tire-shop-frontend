@@ -11,30 +11,37 @@ import {
   Thead,
   Tr,
   useColorMode,
+  Text,
 } from "@chakra-ui/react";
 
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import StockInvoiceDelete from "./StockInvoiceDelete";
 import UpdateStockInvoiceDrawer from "./UpdateStockInvoiceDrawer";
 import useSupplier from "../../hooks/Registration/useSupplier";
-import getCutUrl from "../../services/pagination-cut-link";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
 
 const StockInvoiceTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
+  const [currentPageNum, setCurrentPageNum] = useState(1)
   const {
     stockInvoices,
     nextStockInvoiceUrl,
     previousStockInvoiceUrl,
     setFilterStockInvoiceParams,
     isLoadingInvoices,
+    errorFetchStockInvoice,
+    invoicesCount
   } = useContext(StockInvoiceContext);
 
   const {suppliers} = useSupplier();
+  const numOfPages = Math.ceil(invoicesCount/MAXIMUM_PAGES_PER_PAGE)
+  console.log(invoicesCount);
+  
 
   if (isLoadingInvoices)
     return <Spinner/>
@@ -42,6 +49,7 @@ const StockInvoiceTable = () => {
 
   return (
     <Flex alignItems="center" flexDir="column">
+      {errorFetchStockInvoice && <Text textColor='red'>Unable to fetch data from the internet.</Text>}
       <TableContainer>
         <Table>
           <Thead>
@@ -78,21 +86,27 @@ const StockInvoiceTable = () => {
       <HStack>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          isDisabled = {currentPageNum === 1 ? true:false}
+          onClick={() =>{
             setFilterStockInvoiceParams(
               getCutUrl(previousStockInvoiceUrl, 'stock-items-invoices') + ""
+
             )
-          }
+            setCurrentPageNum(currentPageNum - 1 )
+          }}
         >
           <IoIosArrowDropleftCircle />
         </Button>
+        <Text fontWeight='semibold'>page {currentPageNum} of {numOfPages}</Text>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          isDisabled = {currentPageNum === numOfPages ? true:false}
+          onClick={() =>{
             setFilterStockInvoiceParams(
               getCutUrl(nextStockInvoiceUrl, 'stock-items-invoices') + ""
             )
-          }
+            setCurrentPageNum(currentPageNum + 1)
+          }}
         >
           <IoIosArrowDroprightCircle />
         </Button>

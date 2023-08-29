@@ -23,7 +23,7 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import DeleteCategory from "./DeleteCategory";
-import getCutUrl from "../../../services/pagination-cut-link";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../../services/pagination-cut-link";
 
 const CategoryTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -38,7 +38,7 @@ const CategoryTable = () => {
     categoryCount,
   } = useContext(ItemCategoryContext);
 
-  const numOfPages = Math.ceil(categoryCount / 7)
+  const numOfPages = Math.ceil(categoryCount / MAXIMUM_PAGES_PER_PAGE)
 
   if (errorFetchCategory)
     return <Text textColor="red">Unable to fetch data from the internet.</Text>;

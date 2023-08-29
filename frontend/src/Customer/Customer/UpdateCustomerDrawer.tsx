@@ -26,7 +26,7 @@ const UpdateCustomerDrawer = ({ onSelectedCustomer }: Props) => {
       <Button
         variant="link"
         bg="#ffc2b3"
-        padding={3}
+        padding={2.5}
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
         _hover={
           colorMode === "light"
