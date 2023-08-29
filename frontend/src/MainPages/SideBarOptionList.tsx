@@ -29,19 +29,31 @@ const SideBarOptionList = () => {
     "Customer",
     "Billing",
     "Inventory",
-    "Rebuilt Section",    
     "Registration",
   ];
-  const links_lg = ["/", "/customer","/billing", "/inventory", "/", "/registration"];
+  const links_lg = [
+    "/",
+    "/customer",
+    "/billing",
+    "/inventory",
+    "/registration",
+  ];
   const options_base = [
     "Main Dashbord",
+    "Customer",
     "Billing",
     "Inventory",
-    "Rebuilt Section",    
     "Registration",
     "Sign out",
   ];
-  const links_base = ["/", "/", "/inventory", "/", "/", "/"];
+  const links_base = [
+    "/",
+    "/customer",
+    "/billing",
+    "/inventory",
+    "/registration",
+    "/",
+  ];
 
   const icons_lg = [
     AiOutlineHome,
@@ -58,7 +70,6 @@ const SideBarOptionList = () => {
     BsBuildings,
     PiContactlessPayment,
     RxAvatar,
-    RiShutDownLine,
   ];
 
   // Large Screens

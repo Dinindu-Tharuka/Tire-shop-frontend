@@ -24,12 +24,17 @@ import CustomerService, {
 } from "../../services/Customer/customer-service";
 import UpdateCustomerDrawer from "./UpdateCustomerDrawer";
 import VehicleAccoringView from "../Vehicle/VehicleAccoringView";
-import getCutUrl from "../GetCuUrl";
-import {IoIosArrowDropleftCircle, IoIosArrowDroprightCircle} from 'react-icons/io'
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from "react-icons/io";
 import SelectedCustomerContext from "../../Contexts/Customer/SelectedCustomerContex";
+import getCutUrl from "../../services/pagination-cut-link";
 
 const CustomerTable = () => {
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer>({} as Customer)
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer>(
+    {} as Customer
+  );
   const {
     customers,
     setCustomers,
@@ -38,7 +43,7 @@ const CustomerTable = () => {
     setFilterParams,
     filterParams,
   } = useContext(CustomerContext);
-  const {toggleColorMode, colorMode} = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
 
   const onDeleteCustomer = (customer: Customer) => {
     const originalCustomers = [...customers];
@@ -50,9 +55,7 @@ const CustomerTable = () => {
   };
   return (
     <>
-      <Flex alignItems='center' flexDir='column'>
-        
-    
+      <Flex alignItems="center" flexDir="column">
         <TableContainer>
           <Table>
             <Thead>
@@ -75,7 +78,9 @@ const CustomerTable = () => {
                     <Accordion allowToggle>
                       <AccordionItem>
                         <h2>
-                          <AccordionButton onClick={()=> setSelectedCustomer(customer)}>
+                          <AccordionButton
+                            onClick={() => setSelectedCustomer(customer)}
+                          >
                             <Box as="span" flex="1" textAlign="left">
                               Vehicles
                             </Box>
@@ -83,8 +88,10 @@ const CustomerTable = () => {
                           </AccordionButton>
                         </h2>
                         <AccordionPanel pb={4}>
-                          <SelectedCustomerContext.Provider value={{selectedCustomer, setSelectedCustomer}}>
-                          <VehicleAccoringView customer_id={customer.id} />
+                          <SelectedCustomerContext.Provider
+                            value={{ selectedCustomer, setSelectedCustomer }}
+                          >
+                            <VehicleAccoringView customer_id={customer.id} />
                           </SelectedCustomerContext.Provider>
                         </AccordionPanel>
                       </AccordionItem>
@@ -114,16 +121,19 @@ const CustomerTable = () => {
         </TableContainer>
 
         <HStack>
-          <Button 
-            colorScheme={colorMode === 'light'?'blackAlpha':'whiteAlpha'}
-            onClick={() => setFilterParams(getCutUrl(previousUrl) + "")}
-          ><IoIosArrowDropleftCircle/></Button>
           <Button
-            colorScheme={colorMode === 'light'?'blackAlpha':'whiteAlpha'}
-            onClick={() => setFilterParams(getCutUrl(nextUrl) + "")}
-          ><IoIosArrowDroprightCircle/></Button>
-        </HStack>        
-
+            colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
+            onClick={() => setFilterParams(getCutUrl(previousUrl, 'customers') + "")}
+          >
+            <IoIosArrowDropleftCircle />
+          </Button>
+          <Button
+            colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
+            onClick={() => setFilterParams(getCutUrl(nextUrl, 'customers') + "")}
+          >
+            <IoIosArrowDroprightCircle />
+          </Button>
+        </HStack>
       </Flex>
     </>
   );

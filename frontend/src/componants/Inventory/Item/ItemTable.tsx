@@ -19,9 +19,9 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import getItemCutUrl from "../Cut Url/item-url-cut";
 import DeleteCategory from "../Category/DeleteCategory";
 import ItemDelete from "./ItemDelete";
+import getCutUrl from "../../../services/pagination-cut-link";
 
 const ItemTable = () => {
   const {
@@ -93,7 +93,7 @@ const ItemTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterItemPageParams(getItemCutUrl(previousItemPageUrl) + "")
+            setFilterItemPageParams(getCutUrl(previousItemPageUrl, 'items') + "")
           }
         >
           <IoIosArrowDropleftCircle />
@@ -101,7 +101,7 @@ const ItemTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterItemPageParams(getItemCutUrl(nextItemPageUrl) + "")
+            setFilterItemPageParams(getCutUrl(nextItemPageUrl, 'items') + "")
           }
         >
           <IoIosArrowDroprightCircle />

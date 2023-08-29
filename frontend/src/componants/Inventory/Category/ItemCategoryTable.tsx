@@ -17,12 +17,12 @@ import categoryService, {
 import UpdateCategoryDrawer from "./UpdateCategoryDrawer";
 import { useContext } from "react";
 import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
-import getCategoryCutUrl from "../Cut Url/category-url-cut";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import DeleteCategory from "./DeleteCategory";
+import getCutUrl from "../../../services/pagination-cut-link";
 
 const ItemCategoryTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -78,7 +78,7 @@ const ItemCategoryTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterCategoryParams(getCategoryCutUrl(previousCategoryUrl) + "")
+            setFilterCategoryParams(getCutUrl(previousCategoryUrl, 'item-categories') + "")
           }
         >
           <IoIosArrowDropleftCircle />
@@ -86,7 +86,7 @@ const ItemCategoryTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterCategoryParams(getCategoryCutUrl(nextCategoryUrl) + "")
+            setFilterCategoryParams(getCutUrl(nextCategoryUrl, 'item-categories') + "")
           }
         >
           <IoIosArrowDroprightCircle />

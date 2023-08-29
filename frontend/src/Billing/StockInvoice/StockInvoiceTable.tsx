@@ -18,10 +18,10 @@ import {
 } from "react-icons/io";
 import { useContext } from "react";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
-import getStockInvoiceCutUrl from "../Cut URLs/stock-invoice-cut-url";
 import StockInvoiceDelete from "./StockInvoiceDelete";
 import UpdateStockInvoiceDrawer from "./UpdateStockInvoiceDrawer";
 import useSupplier from "../../hooks/Registration/useSupplier";
+import getCutUrl from "../../services/pagination-cut-link";
 
 const StockInvoiceTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -77,7 +77,7 @@ const StockInvoiceTable = () => {
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
             setFilterStockInvoiceParams(
-              getStockInvoiceCutUrl(previousStockInvoiceUrl) + ""
+              getCutUrl(previousStockInvoiceUrl, 'stock-items-invoices') + ""
             )
           }
         >
@@ -87,7 +87,7 @@ const StockInvoiceTable = () => {
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
             setFilterStockInvoiceParams(
-              getStockInvoiceCutUrl(nextStockInvoiceUrl) + ""
+              getCutUrl(nextStockInvoiceUrl, 'stock-items-invoices') + ""
             )
           }
         >

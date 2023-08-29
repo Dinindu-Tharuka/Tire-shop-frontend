@@ -18,9 +18,9 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import EmployeeContext from "../../Contexts/Registration/EmployeeContecxt";
-import getEmployeeCutUrl from "../Cut URLs/employee-url-cut";
 import DeleteEmployee from "./DeleteEmployee";
 import UpdateEmployeeDrawer from "./UpdateEmployeeDrawer";
+import getCutUrl from "../../services/pagination-cut-link";
 
 const EmployeeTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -73,7 +73,7 @@ const EmployeeTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterEmployeeParams(getEmployeeCutUrl(previousEmployeeUrl) + "")
+            setFilterEmployeeParams(getCutUrl(previousEmployeeUrl, 'employees') + "")
           }
         >
           <IoIosArrowDropleftCircle />
@@ -81,7 +81,7 @@ const EmployeeTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterEmployeeParams(getEmployeeCutUrl(nextEmployeeUrl) + "")
+            setFilterEmployeeParams(getCutUrl(nextEmployeeUrl, 'employees') + "")
           }
         >
           <IoIosArrowDroprightCircle />

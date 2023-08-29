@@ -20,9 +20,9 @@ import {
   } from "react-icons/io";
 
 import ServiceContext from "../../Contexts/Registration/ServiceContext";
-import getServiceCutUrl from "../Cut URLs/service-cut-url";
 import ServiceDelete from "./ServiceDelete";
 import UpdateServiceDrawer from "./UpdateServiceDrawer";
+import getCutUrl from "../../services/pagination-cut-link";
   
 
 const ServicesTable = () => {
@@ -68,7 +68,7 @@ const ServicesTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterServiceParams(getServiceCutUrl(previousServiceUrl) + "")
+            setFilterServiceParams(getCutUrl(previousServiceUrl, 'services') + "")
           }
         >
           <IoIosArrowDropleftCircle />
@@ -76,7 +76,7 @@ const ServicesTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterServiceParams(getServiceCutUrl(nextServiceUrl) + "")
+            setFilterServiceParams(getCutUrl(nextServiceUrl, 'services') + "")
           }
         >
           <IoIosArrowDroprightCircle />

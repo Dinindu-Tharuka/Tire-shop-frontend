@@ -21,8 +21,8 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import getSupplierCutUrl from "../Cut URLs/supplier-url-cut";
 import DeleteSupplier from "./DeleteSupplier";
+import getCutUrl from "../../services/pagination-cut-link";
 
 const SupplierTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -83,7 +83,7 @@ const SupplierTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterSupplierParams(getSupplierCutUrl(previousSupplierUrl) + "")
+            setFilterSupplierParams(getCutUrl(previousSupplierUrl, 'suppliers') + "")
           }
         >
           <IoIosArrowDropleftCircle />
@@ -91,7 +91,7 @@ const SupplierTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterSupplierParams(getSupplierCutUrl(nextSupplierUrl) + "")
+            setFilterSupplierParams(getCutUrl(nextSupplierUrl, 'suppliers') + "")
           }
         >
           <IoIosArrowDroprightCircle />

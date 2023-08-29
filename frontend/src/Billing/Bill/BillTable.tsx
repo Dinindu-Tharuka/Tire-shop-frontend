@@ -18,9 +18,9 @@ import {
 } from "react-icons/io";
 import BillContext from "../../Contexts/Bill/BillContext";
 import { useContext } from "react";
-import getBillCutUrl from "../Cut URLs/bill-cut-url";
 import BillDelete from "./BillDelete";
 import BillAddDrawer from "./BillAddDrawer";
+import getCutUrl from "../../services/pagination-cut-link";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -33,14 +33,6 @@ const BillTable = () => {
     setFilterBillPageParams,
   } = useContext(BillContext);
 
-  // const onDeleteCategory = (category: Category) => {
-  //   const originalCategories = [...categories];
-  //   setCategories(categories.filter((cat) => cat.id !== category.id));
-
-  //   categoryService.delete(`${category.id}`).catch((err) => {
-  //     setCategories(originalCategories);
-  //   });
-  // };
   return (
     <Flex alignItems="center" flexDir="column">
       <TableContainer>
@@ -61,10 +53,10 @@ const BillTable = () => {
             {bills?.map((bill, index) => (
               <Tr key={index}>
                 <Th>
-                  <BillAddDrawer/>                  
+                  <BillAddDrawer />
                 </Th>
                 <Th>
-                  <BillDelete selectedDeleteBill={bill}/>
+                  <BillDelete selectedDeleteBill={bill} />
                 </Th>
                 <Td>{bill.invoice_id}</Td>
                 <Td>{bill.customer}</Td>
@@ -82,7 +74,7 @@ const BillTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterBillPageParams(getBillCutUrl(previousBillPageUrl) + "")
+            setFilterBillPageParams(getCutUrl(previousBillPageUrl, 'bills') + '')
           }
         >
           <IoIosArrowDropleftCircle />
@@ -90,7 +82,7 @@ const BillTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterBillPageParams(getBillCutUrl(nextBillPageUrl) + "")
+            setFilterBillPageParams(getCutUrl(nextBillPageUrl, 'bills') + '')
           }
         >
           <IoIosArrowDroprightCircle />
