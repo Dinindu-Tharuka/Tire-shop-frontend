@@ -8,6 +8,8 @@ import {
   Button,
   Flex,
   HStack,
+  Text,
+  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -35,14 +37,23 @@ const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer>(
     {} as Customer
   );
+
+  const [pageNum, setPageNum] = useState(1)
   const {
     customers,
     setCustomers,
     nextUrl,
     previousUrl,
     setFilterParams,
-    filterParams,
+    errorCustomerFetch,
+    setErrorCustomerFetch,
+    isLoadingCustomer,
+    customerCount
   } = useContext(CustomerContext);
+
+  const numOfPages = Math.ceil(customerCount / 7);
+
+  
   const { toggleColorMode, colorMode } = useColorMode();
 
   const onDeleteCustomer = (customer: Customer) => {
@@ -53,9 +64,14 @@ const CustomerTable = () => {
       setCustomers([...originalCustomers])
     );
   };
+  
+
+  if(isLoadingCustomer)
+    return <Spinner/>
   return (
     <>
       <Flex alignItems="center" flexDir="column">
+        {errorCustomerFetch && <Text textColor='red'>Unable to fetch data from the internet.</Text>}
         <TableContainer>
           <Table>
             <Thead>
@@ -123,13 +139,25 @@ const CustomerTable = () => {
         <HStack>
           <Button
             colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-            onClick={() => setFilterParams(getCutUrl(previousUrl, 'customers') + "")}
+            isDisabled={pageNum === 1? true:false}
+            onClick={() => {
+              setFilterParams(getCutUrl(previousUrl, 'customers') + "")
+              setErrorCustomerFetch('')
+              setPageNum(pageNum - 1)
+            }}
+            
           >
             <IoIosArrowDropleftCircle />
           </Button>
+          <Text fontWeight='semibold'>page {pageNum} of {numOfPages}</Text>
           <Button
             colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-            onClick={() => setFilterParams(getCutUrl(nextUrl, 'customers') + "")}
+            isDisabled={pageNum === numOfPages? true:false}
+            onClick={
+              () => {setFilterParams(getCutUrl(nextUrl, 'customers') + "")
+              setPageNum(pageNum + 1)
+              setErrorCustomerFetch('')
+            }}
           >
             <IoIosArrowDroprightCircle />
           </Button>

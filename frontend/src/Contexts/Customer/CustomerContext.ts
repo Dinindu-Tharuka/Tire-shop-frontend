@@ -8,7 +8,11 @@ interface CustomerContextType{
     nextUrl:string|null;
     previousUrl:string|null;
     setFilterParams:Dispatch<SetStateAction<string | null>>;
-    filterParams:string | null
+    filterParams:string | null;
+    errorCustomerFetch:string;
+    setErrorCustomerFetch:Dispatch<SetStateAction<string>>;
+    isLoadingCustomer:boolean;
+    customerCount:number;
 }
 
 const CustomerContext = React.createContext<CustomerContextType>({} as CustomerContextType)
