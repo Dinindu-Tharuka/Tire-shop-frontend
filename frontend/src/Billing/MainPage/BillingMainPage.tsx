@@ -1,4 +1,4 @@
-import { Grid, GridItem, useColorMode } from "@chakra-ui/react";
+import { Grid, GridItem, useColorMode, Text } from "@chakra-ui/react";
 import React from "react";
 import BillingSidePanel from "../SidePanel/BillingSidePanel";
 import BillContext from "../../Contexts/Bill/BillContext";
@@ -19,6 +19,8 @@ const BillingMainPage = () => {
     previousBillPageUrl,
     filterBillPageParams,
     setFilterBillPageParams,
+    billFetchError,
+    isLoadingBills,
   } = useBill();
 
   const {
@@ -28,9 +30,9 @@ const BillingMainPage = () => {
     previousStockInvoiceUrl,
     filterStockInvoiceParams,
     setFilterStockInvoiceParams,
+    isLoadingInvoices,
+    errorFetchStockInvoice,
   } = useStockInvoice();
-
-  
 
   const { stockItems, setStockItems } = useStockItem();
   return (
@@ -42,6 +44,7 @@ const BillingMainPage = () => {
         previousStockInvoiceUrl,
         filterStockInvoiceParams,
         setFilterStockInvoiceParams,
+        isLoadingInvoices,
       }}
     >
       <StockItemContext.Provider value={{ stockItems, setStockItems }}>
@@ -53,6 +56,8 @@ const BillingMainPage = () => {
             previousBillPageUrl,
             filterBillPageParams,
             setFilterBillPageParams,
+            billFetchError,
+            isLoadingBills,
           }}
         >
           <Grid
@@ -66,6 +71,10 @@ const BillingMainPage = () => {
               height={{ base: "10vh", lg: "85vh" }}
               width={{ base: "100vw", lg: "60vw" }}
             >
+              {
+                (billFetchError || errorFetchStockInvoice) &&
+                (bills.length === 0 || stockInvoices.length === 0) && 
+                (<Text textColor="red">Unable to fetch data from the internet</Text>)}
               <Outlet />
             </GridItem>
             <GridItem

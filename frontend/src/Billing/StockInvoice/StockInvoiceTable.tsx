@@ -2,6 +2,7 @@ import {
   Button,
   Flex,
   HStack,
+  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -27,14 +28,16 @@ const StockInvoiceTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const {
     stockInvoices,
-    setStockInvoices,
     nextStockInvoiceUrl,
     previousStockInvoiceUrl,
-    filterStockInvoiceParams,
     setFilterStockInvoiceParams,
+    isLoadingInvoices,
   } = useContext(StockInvoiceContext);
 
   const {suppliers} = useSupplier();
+
+  if (isLoadingInvoices)
+    return <Spinner/>
 
 
   return (

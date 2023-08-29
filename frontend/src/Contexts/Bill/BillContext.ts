@@ -8,7 +8,9 @@ interface BillContextType{
     nextBillPageUrl:string|null;
     previousBillPageUrl:string|null;
     setFilterBillPageParams:Dispatch<SetStateAction<string | null>>;
-    filterBillPageParams:string | null
+    filterBillPageParams:string | null;
+    billFetchError:string;
+    isLoadingBills:boolean;
 }
 
 const BillContext = React.createContext<BillContextType>({} as BillContextType)

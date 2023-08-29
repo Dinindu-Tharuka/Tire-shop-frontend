@@ -10,6 +10,8 @@ import {
   Thead,
   Tr,
   useColorMode,
+  Text,
+  Spinner
 } from "@chakra-ui/react";
 
 import {
@@ -26,15 +28,21 @@ const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const {
     bills,
-    setBills,
     nextBillPageUrl,
     previousBillPageUrl,
-    filterBillPageParams,
     setFilterBillPageParams,
+    isLoadingBills,
   } = useContext(BillContext);
 
+  
+  if (isLoadingBills)
+    return <Spinner/>
+
   return (
+    <>
     <Flex alignItems="center" flexDir="column">
+      
+      
       <TableContainer>
         <Table>
           <Thead>
@@ -48,6 +56,8 @@ const BillTable = () => {
               <Th>Suc Total</Th>
               <Th>Customer Item Value</Th>
             </Tr>
+            
+
           </Thead>
           <Tbody>
             {bills?.map((bill, index) => (
@@ -89,6 +99,7 @@ const BillTable = () => {
         </Button>
       </HStack>
     </Flex>
+    </>
   );
 };
 

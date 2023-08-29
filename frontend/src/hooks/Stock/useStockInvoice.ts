@@ -8,11 +8,10 @@ const useStockInvoice = () => {
     const [nextStockInvoiceUrl, setNextStockInvoiceUrl] = useState<string | null>('')
     const [previousStockInvoiceUrl, setPreviousStockInvoiceUrl] = useState<string | null>('')
     const [filterStockInvoiceParams, setFilterStockInvoiceParams] = useState<string | null>('')
-
- 
-    
+    const [isLoadingInvoices, setIsLoadingInvoices] = useState(false)    
 
     useEffect(()=>{
+      setIsLoadingInvoices(true)
         const {request, cancel} = StockInvoiceService.getAll<StockInvoicePageStructure>(filterStockInvoiceParams)
         request
           .then(res=>{
@@ -20,12 +19,16 @@ const useStockInvoice = () => {
             setStockInvoices(res.data.results)
             setNextStockInvoiceUrl(res.data.next)
             setPreviousStockInvoiceUrl(res.data.previous)
+            setIsLoadingInvoices(false)
           })
-          .catch(err=> setErrorFetchStockInvoice(err.message === 'canceled'?'':err.message))
+          .catch(err=> {
+            setErrorFetchStockInvoice(err.message === 'canceled'?'':err.message)
+            setIsLoadingInvoices(false)
+          })
 
         return ()=> cancel();
     }, [filterStockInvoiceParams])
-  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, nextStockInvoiceUrl, previousStockInvoiceUrl, filterStockInvoiceParams, setFilterStockInvoiceParams}
+  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, nextStockInvoiceUrl, previousStockInvoiceUrl, filterStockInvoiceParams, setFilterStockInvoiceParams, isLoadingInvoices}
 }
 
 export default useStockInvoice

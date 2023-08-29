@@ -9,6 +9,7 @@ interface StockInvoiceContextType{
     previousStockInvoiceUrl:string|null;
     filterStockInvoiceParams:string | null
     setFilterStockInvoiceParams:Dispatch<SetStateAction<string | null>>;
+    isLoadingInvoices:boolean;
 }
 
 const StockInvoiceContext = React.createContext<StockInvoiceContextType>({} as StockInvoiceContextType)
