@@ -3,7 +3,7 @@ import GridSection from "../MainPages/GridSection";
 import Inventory from "../componants/Inventory/Main Page/Inventory";
 import MainImage from "../componants/MainImage";
 import ItemTable from "../componants/Inventory/Item/ItemTable";
-import ItemCategoryTable from "../componants/Inventory/Category/ItemCategoryTable";
+import CategoryTable from "../componants/Inventory/Category/CategoryTable";
 import SupplierTable from "../Registration/Supplier/SupplierTable";
 import RegistraionMainPage from "../Registration/MainPage/RegistrationMainPage";
 import CustomerMainPage from "../Customer/MainPage/CustomerMainPage";
@@ -24,7 +24,7 @@ const routes = createBrowserRouter([
         element: <Inventory />,
         children: [
           { path: "", element: <ItemTable /> },
-          { path: "categories", element: <ItemCategoryTable /> },
+          { path: "categories", element: <CategoryTable /> },
         ],
       },
       { path: "customer", element: <CustomerMainPage /> },

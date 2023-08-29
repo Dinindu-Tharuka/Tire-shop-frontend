@@ -32,7 +32,8 @@ const Inventory = () => {
     setFilterCategoryParams,
     isLoadingCategories,
     errorFetchCategory,
-    setErrorFetchCategory  
+    setErrorFetchCategory,
+    categoryCount  
     
   } = useCategory();
 
@@ -53,7 +54,7 @@ const Inventory = () => {
         isLoadingItems,
         setError,
         error,
-        itemCount
+        itemCount,
       }}
     >
       <ItemCategoryContext.Provider
@@ -66,7 +67,8 @@ const Inventory = () => {
           setFilterCategoryParams,
           isLoadingCategories,
           setErrorFetchCategory,
-          errorFetchCategory
+          errorFetchCategory,
+          categoryCount
         }}
       >
         

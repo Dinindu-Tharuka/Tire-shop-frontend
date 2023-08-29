@@ -25,23 +25,23 @@ import {
 import DeleteCategory from "./DeleteCategory";
 import getCutUrl from "../../../services/pagination-cut-link";
 
-const ItemCategoryTable = () => {
-  const [pageNum , setPAgeNum] = useState(0)
+const CategoryTable = () => {
+  const [currentPageNum, setCurrentPageNum] = useState(1);
   const { toggleColorMode, colorMode } = useColorMode();
   const {
     categories,
-    setCategories,
     nextCategoryUrl,
     previousCategoryUrl,
     setFilterCategoryParams,
     errorFetchCategory,
-    setErrorFetchCategory
+    setErrorFetchCategory,
+    categoryCount,
   } = useContext(ItemCategoryContext);
 
-
+  const numOfPages = Math.ceil(categoryCount / 7)
 
   if (errorFetchCategory)
-    return <Text textColor='red'>Unable to fetch data from the internet.</Text>
+    return <Text textColor="red">Unable to fetch data from the internet.</Text>;
 
   return (
     <Flex alignItems="center" flexDir="column">
@@ -65,7 +65,7 @@ const ItemCategoryTable = () => {
                   <UpdateCategoryDrawer updateCategory={category} />
                 </Td>
                 <Td>
-                  <DeleteCategory selectedDeleteCategory={category}/>
+                  <DeleteCategory selectedDeleteCategory={category} />
                 </Td>
               </Tr>
             ))}
@@ -77,22 +77,27 @@ const ItemCategoryTable = () => {
         <Button
           disabled={false}
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>{
-            setFilterCategoryParams(getCutUrl(previousCategoryUrl, 'item-categories') + "")
-            setErrorFetchCategory('')
-            console.log(previousCategoryUrl);
-            
+          isDisabled = {currentPageNum === 1 ? true:false}
+          onClick={() => {
+            setFilterCategoryParams(
+              getCutUrl(previousCategoryUrl, "item-categories") + ""
+            );
+            setErrorFetchCategory("");
+            setCurrentPageNum(currentPageNum - 1)
           }}
         >
           <IoIosArrowDropleftCircle />
         </Button>
+        <Text fontWeight='semibold'>page {currentPageNum} of {numOfPages}</Text>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>{
-            setFilterCategoryParams(getCutUrl(nextCategoryUrl, 'item-categories') + "")
-            setErrorFetchCategory('')
-            console.log(nextCategoryUrl);
-            
+          isDisabled = {currentPageNum === numOfPages ? true:false}
+          onClick={() => {
+            setFilterCategoryParams(
+              getCutUrl(nextCategoryUrl, "item-categories") + ""
+            );
+            setErrorFetchCategory("");
+            setCurrentPageNum(currentPageNum + 1)
           }}
         >
           <IoIosArrowDroprightCircle />
@@ -102,4 +107,4 @@ const ItemCategoryTable = () => {
   );
 };
 
-export default ItemCategoryTable;
+export default CategoryTable;
