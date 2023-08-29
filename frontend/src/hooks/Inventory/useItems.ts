@@ -9,6 +9,7 @@ const useItems = () => {
     const [previousItemPageUrl, setPreviousItemPageUrl] = useState<string | null>('')
     const [filterItemPageParams, setFilterItemPageParams] = useState<string | null>('')
     const [isLoadingItems, setIsLoadingItems] = useState(false)
+    const [itemCount, setItemCount] = useState(0)
     
 
 
@@ -21,18 +22,17 @@ const useItems = () => {
                 setnextItemPageUrl(res.data.next)
                 setPreviousItemPageUrl(res.data.previous)
                 setIsLoadingItems(false)
+                setItemCount(res.data.count)
             })
             .catch(error=>{
-                setError(error.message === 'canceled'? '':error.message)
-               
-                
+                setError(error.message === 'canceled'? '':error.message)                
                 setIsLoadingItems(false)
             });
   
           return ()=>cancel();
       }, [filterItemPageParams])
 
-    return {items, setItems, nextItemPageUrl, previousItemPageUrl, filterItemPageParams, setFilterItemPageParams, error, isLoadingItems, setError}
+    return {items, setItems, nextItemPageUrl, previousItemPageUrl, filterItemPageParams, setFilterItemPageParams, error, isLoadingItems, setError, itemCount}
   
 }
 

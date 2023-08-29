@@ -12,7 +12,8 @@ interface ItemContextType{
     setFilterItemPageParams:Dispatch<SetStateAction<string | null>>;
     isLoadingItems:boolean,
     setError:Dispatch<SetStateAction<string>>;
-    error:string
+    error:string;
+    itemCount:number;
 }
 
 const ItemContext = React.createContext<ItemContextType>({} as ItemContextType)

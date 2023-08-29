@@ -20,7 +20,8 @@ const Inventory = () => {
     setFilterItemPageParams,
     isLoadingItems,
     error,
-    setError    
+    setError,
+    itemCount    
   } = useItems();
   const {
     categories,
@@ -51,7 +52,8 @@ const Inventory = () => {
         setFilterItemPageParams,
         isLoadingItems,
         setError,
-        error
+        error,
+        itemCount
       }}
     >
       <ItemCategoryContext.Provider

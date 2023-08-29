@@ -10,10 +10,10 @@ import {
   Thead,
   Tr,
   useColorMode,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import UpdateItem from "./UpdateItemDrawer";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
 import ItemService, { Item } from "../../../services/Inventory/item-service";
 import {
@@ -25,6 +25,7 @@ import ItemDelete from "./ItemDelete";
 import getCutUrl from "../../../services/pagination-cut-link";
 
 const ItemTable = () => {
+  const [currentPageNum, setCurrentPageNum] = useState(1);
   const {
     items,
     setItems,
@@ -32,9 +33,11 @@ const ItemTable = () => {
     previousItemPageUrl,
     setError,
     setFilterItemPageParams,
-    error
+    error,
+    itemCount,
   } = useContext(ItemContext);
-  
+
+  const numOfPages = Math.ceil(itemCount / 7);
 
   const { toggleColorMode, colorMode } = useColorMode();
 
@@ -47,11 +50,10 @@ const ItemTable = () => {
     });
   };
   if (error)
-    return <Text textColor='red'>Unable to fetch data from the internet.</Text>
+    return <Text textColor="red">Unable to fetch data from the internet.</Text>;
 
   return (
     <Flex alignItems="center" flexDir="column">
-      
       <TableContainer>
         <Table>
           <Thead>
@@ -87,7 +89,7 @@ const ItemTable = () => {
                   <UpdateItem selectedUpdateItem={item} />
                 </Td>
                 <Td>
-                  <ItemDelete selectedDeleteItem={item}/>
+                  <ItemDelete selectedDeleteItem={item} />
                 </Td>
               </Tr>
             ))}
@@ -98,22 +100,26 @@ const ItemTable = () => {
       <HStack>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>{
-            setFilterItemPageParams(getCutUrl(previousItemPageUrl, 'items') + "")
-            setError('')
-          }
-          }
+          isDisabled={currentPageNum === 1 ? true:false}
+          onClick={() => {
+            setFilterItemPageParams(
+              getCutUrl(previousItemPageUrl, "items") + ""
+            );
+            setCurrentPageNum(currentPageNum - 1);
+            setError("");
+          }}
         >
           <IoIosArrowDropleftCircle />
         </Button>
+        <Text fontWeight='semibold'>page {currentPageNum} of {numOfPages}</Text>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
-            {
-              setFilterItemPageParams(getCutUrl(nextItemPageUrl, 'items') + "")
-              setError('')
-          }
-          }
+          isDisabled={currentPageNum === numOfPages ? true:false}
+          onClick={() => {
+            setFilterItemPageParams(getCutUrl(nextItemPageUrl, "items") + "");
+            setCurrentPageNum(currentPageNum + 1);
+            setError("");
+          }}
         >
           <IoIosArrowDroprightCircle />
         </Button>
