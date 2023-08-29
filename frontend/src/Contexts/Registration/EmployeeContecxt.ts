@@ -9,6 +9,9 @@ interface EmployeeContextType{
     previousEmployeeUrl:string|null;
     filterEmployeeParams:string | null
     setFilterEmployeeParams:Dispatch<SetStateAction<string | null>>;
+    errorFetchEmployee:string;
+    isLoadingEmployees:boolean;
+    employeeCount:number;
 }
 
 const EmployeeContext = React.createContext<EmployeeContextType>({} as EmployeeContextType)

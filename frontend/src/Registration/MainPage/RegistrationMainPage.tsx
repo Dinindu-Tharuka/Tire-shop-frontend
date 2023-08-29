@@ -35,9 +35,11 @@ const RegistraionMainPage = () => {
     previousEmployeeUrl,
     filterEmployeeParams,
     setFilterEmployeeParams,
-  } = useEmployee();
+    errorFetchEmployee,
+    isLoadingEmployees,
+    employeeCount
 
-  console.log(employees);
+  } = useEmployee();
 
   return (
     <ServiceContext.Provider
@@ -58,6 +60,9 @@ const RegistraionMainPage = () => {
           previousEmployeeUrl,
           filterEmployeeParams,
           setFilterEmployeeParams,
+          errorFetchEmployee,
+          isLoadingEmployees,
+          employeeCount
         }}
       >
         <SupplierContext.Provider

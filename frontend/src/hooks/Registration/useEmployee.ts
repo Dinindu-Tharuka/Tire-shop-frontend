@@ -8,8 +8,12 @@ const useEmployee = () => {
     const [nextEmployeeUrl, setNextEmployeeUrl] = useState<string | null>('')
     const [previousEmployeeUrl, setPreviousEmployeeUrl] = useState<string | null>('')
     const [filterEmployeeParams, setFilterEmployeeParams] = useState<string | null>('')
+    const [isLoadingEmployees, setIsLoadingEmployees] = useState(false)
+    const [employeeCount, setEmployeeCount] =useState(0)
+
 
     useEffect(()=>{
+        setIsLoadingEmployees(true)
         const {request, cancel} = EmployeeService.getAll<EmployeePageStructure>(filterEmployeeParams)
 
         request
@@ -17,13 +21,18 @@ const useEmployee = () => {
                 setEmployees(res.data.results)
                 setNextEmployeeUrl(res.data.next)
                 setPreviousEmployeeUrl(res.data.previous)
+                setIsLoadingEmployees(false)
+                setEmployeeCount(res.data.count)
             })
-            .catch(error => setErrorFetchEmployee(error.message !== 'canceled'? error.mesage : ''))
+            .catch(error => {
+                setErrorFetchEmployee(error.message !== 'canceled'? error.mesage : '')
+                setIsLoadingEmployees(false)
+            })
 
             return ()=> cancel();
         }, [filterEmployeeParams])
 
-        return {employees, setEmployees, nextEmployeeUrl, previousEmployeeUrl, filterEmployeeParams, setFilterEmployeeParams}
+        return {employees, setEmployees, nextEmployeeUrl, previousEmployeeUrl, filterEmployeeParams, setFilterEmployeeParams, errorFetchEmployee, isLoadingEmployees, employeeCount}
 }
   
 
