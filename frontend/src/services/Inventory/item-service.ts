@@ -19,7 +19,6 @@ export interface ItemPageStructure{
   previous:string | null;
   results:Item[]
 }
-  
 
 
 export default createPagination('/items/');

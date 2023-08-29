@@ -2,6 +2,7 @@ import {
   Button,
   Flex,
   HStack,
+  Text,
   Table,
   TableContainer,
   Tbody,
@@ -15,7 +16,7 @@ import categoryService, {
   Category,
 } from "../../../services/Inventory/category-service";
 import UpdateCategoryDrawer from "./UpdateCategoryDrawer";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
 import {
   IoIosArrowDropleftCircle,
@@ -25,6 +26,7 @@ import DeleteCategory from "./DeleteCategory";
 import getCutUrl from "../../../services/pagination-cut-link";
 
 const ItemCategoryTable = () => {
+  const [pageNum , setPAgeNum] = useState(0)
   const { toggleColorMode, colorMode } = useColorMode();
   const {
     categories,
@@ -32,17 +34,14 @@ const ItemCategoryTable = () => {
     nextCategoryUrl,
     previousCategoryUrl,
     setFilterCategoryParams,
-    filterCategoryParams,
+    errorFetchCategory,
+    setErrorFetchCategory
   } = useContext(ItemCategoryContext);
 
-  const onDeleteCategory = (category: Category) => {
-    const originalCategories = [...categories];
-    setCategories(categories.filter((cat) => cat.id !== category.id));
 
-    categoryService.delete(`${category.id}`).catch((err) => {
-      setCategories(originalCategories);
-    });
-  };
+
+  if (errorFetchCategory)
+    return <Text textColor='red'>Unable to fetch data from the internet.</Text>
 
   return (
     <Flex alignItems="center" flexDir="column">
@@ -76,18 +75,25 @@ const ItemCategoryTable = () => {
 
       <HStack>
         <Button
+          disabled={false}
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          onClick={() =>{
             setFilterCategoryParams(getCutUrl(previousCategoryUrl, 'item-categories') + "")
-          }
+            setErrorFetchCategory('')
+            console.log(previousCategoryUrl);
+            
+          }}
         >
           <IoIosArrowDropleftCircle />
         </Button>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          onClick={() =>{
             setFilterCategoryParams(getCutUrl(nextCategoryUrl, 'item-categories') + "")
-          }
+            setErrorFetchCategory('')
+            console.log(nextCategoryUrl);
+            
+          }}
         >
           <IoIosArrowDroprightCircle />
         </Button>

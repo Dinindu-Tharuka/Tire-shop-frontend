@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, useColorMode } from "@chakra-ui/react";
+import { Grid, GridItem, Spinner, Text, useColorMode, useToast } from "@chakra-ui/react";
 import InventorySidePanel from "../SidePanel/InventorySidePanel";
 import useItems from "../../../hooks/Inventory/useItems";
 import useCategory from "../../../hooks/Inventory/useCategory";
@@ -10,6 +10,7 @@ import ItemContext from "../../../Contexts/Inventory/ItemContext";
 
 const Inventory = () => {
   const { toggleColorMode, colorMode } = useColorMode();
+  const toast = useToast()
   const {
     items,
     setItems,
@@ -17,7 +18,9 @@ const Inventory = () => {
     previousItemPageUrl,
     filterItemPageParams,
     setFilterItemPageParams,
+    isLoadingItems,
     error,
+    setError    
   } = useItems();
   const {
     categories,
@@ -26,7 +29,16 @@ const Inventory = () => {
     previousCategoryUrl,
     filterCategoryParams,
     setFilterCategoryParams,
+    isLoadingCategories,
+    errorFetchCategory,
+    setErrorFetchCategory  
+    
   } = useCategory();
+
+
+  
+
+  
 
   return (
     <ItemContext.Provider
@@ -37,6 +49,9 @@ const Inventory = () => {
         previousItemPageUrl,
         filterItemPageParams,
         setFilterItemPageParams,
+        isLoadingItems,
+        setError,
+        error
       }}
     >
       <ItemCategoryContext.Provider
@@ -47,10 +62,12 @@ const Inventory = () => {
           previousCategoryUrl,
           filterCategoryParams,
           setFilterCategoryParams,
+          isLoadingCategories,
+          setErrorFetchCategory,
+          errorFetchCategory
         }}
       >
-        {/* Errors */}
-        {error && <Text textColor="#e60000">{error}</Text>}
+        
 
         {/* Grid */}
         <Grid
@@ -64,6 +81,9 @@ const Inventory = () => {
             height={{ base: "10vh", lg: "85vh" }}
             width={{ base: "100vw", lg: "60vw" }}
           >
+            {(isLoadingCategories || isLoadingItems ) && <Spinner/>}
+            
+            
             <Outlet />
           </GridItem>
           <GridItem

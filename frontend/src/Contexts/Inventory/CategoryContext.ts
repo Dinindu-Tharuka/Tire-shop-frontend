@@ -9,6 +9,9 @@ interface ItemCategoryContextType{
     previousCategoryUrl:string|null;
     filterCategoryParams:string | null
     setFilterCategoryParams:Dispatch<SetStateAction<string | null>>;
+    isLoadingCategories:boolean;
+    errorFetchCategory:string;
+    setErrorFetchCategory:Dispatch<SetStateAction<string>>;
 }
 
 const ItemCategoryContext = React.createContext<ItemCategoryContextType>({} as ItemCategoryContextType)

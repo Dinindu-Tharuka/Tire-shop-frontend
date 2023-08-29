@@ -8,8 +8,9 @@ const useCategory = () => {
     const [nextCategoryUrl, setNextCategoryUrl] = useState<string | null>('')
     const [previousCategoryUrl, setpreviousCategoryUrl] = useState<string | null>('')
     const [filterCategoryParams, setFilterCategoryParams] = useState<string | null>('')
-
+    const [isLoadingCategories, setIsLoadingCategories] = useState(false)
     useEffect(()=>{
+        setIsLoadingCategories(true)
         const {request, cancel} = CategoryService.getAll<CategoryPageStructure>(filterCategoryParams)
 
         request
@@ -17,13 +18,18 @@ const useCategory = () => {
                 setCategories(res.data.results)
                 setNextCategoryUrl(res.data.next)
                 setpreviousCategoryUrl(res.data.previous)
+                setIsLoadingCategories(false)
             })
-            .catch(error => setErrorFetchCategory(error.message !== 'canceled'? error.mesage : ''))
+            .catch(error => {
+                setErrorFetchCategory(error.message !== 'canceled'? error.message : '' )
+                setIsLoadingCategories(false)
+                
+            })
 
             return ()=> cancel();
         }, [filterCategoryParams])
 
-        return {categories, errorFetchCategory, setCategories, nextCategoryUrl, previousCategoryUrl, filterCategoryParams, setFilterCategoryParams}  
+        return {categories, errorFetchCategory, setCategories, nextCategoryUrl, previousCategoryUrl, filterCategoryParams, setFilterCategoryParams, isLoadingCategories, setErrorFetchCategory}  
 }
 
 export default useCategory

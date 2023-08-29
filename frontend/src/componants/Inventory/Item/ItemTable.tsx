@@ -10,6 +10,7 @@ import {
   Thead,
   Tr,
   useColorMode,
+  Text
 } from "@chakra-ui/react";
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext } from "react";
@@ -29,9 +30,11 @@ const ItemTable = () => {
     setItems,
     nextItemPageUrl,
     previousItemPageUrl,
-    filterItemPageParams,
+    setError,
     setFilterItemPageParams,
+    error
   } = useContext(ItemContext);
+  
 
   const { toggleColorMode, colorMode } = useColorMode();
 
@@ -43,9 +46,12 @@ const ItemTable = () => {
       setItems(originalItems);
     });
   };
+  if (error)
+    return <Text textColor='red'>Unable to fetch data from the internet.</Text>
 
   return (
     <Flex alignItems="center" flexDir="column">
+      
       <TableContainer>
         <Table>
           <Thead>
@@ -92,8 +98,10 @@ const ItemTable = () => {
       <HStack>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          onClick={() =>{
             setFilterItemPageParams(getCutUrl(previousItemPageUrl, 'items') + "")
+            setError('')
+          }
           }
         >
           <IoIosArrowDropleftCircle />
@@ -101,7 +109,10 @@ const ItemTable = () => {
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           onClick={() =>
-            setFilterItemPageParams(getCutUrl(nextItemPageUrl, 'items') + "")
+            {
+              setFilterItemPageParams(getCutUrl(nextItemPageUrl, 'items') + "")
+              setError('')
+          }
           }
         >
           <IoIosArrowDroprightCircle />

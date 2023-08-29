@@ -10,6 +10,9 @@ interface ItemContextType{
     previousItemPageUrl:string|null;
     filterItemPageParams:string | null
     setFilterItemPageParams:Dispatch<SetStateAction<string | null>>;
+    isLoadingItems:boolean,
+    setError:Dispatch<SetStateAction<string>>;
+    error:string
 }
 
 const ItemContext = React.createContext<ItemContextType>({} as ItemContextType)
