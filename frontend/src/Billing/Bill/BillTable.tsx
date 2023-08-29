@@ -19,20 +19,24 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import BillContext from "../../Contexts/Bill/BillContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import BillDelete from "./BillDelete";
 import BillAddDrawer from "./BillAddDrawer";
 import getCutUrl from "../../services/pagination-cut-link";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
+  const [ currentPage, setCurrentPage] = useState(1)
   const {
     bills,
     nextBillPageUrl,
     previousBillPageUrl,
     setFilterBillPageParams,
     isLoadingBills,
+    billCount
   } = useContext(BillContext);
+
+  const numOfpages = Math.ceil(billCount/7)
 
   
   if (isLoadingBills)
@@ -40,9 +44,7 @@ const BillTable = () => {
 
   return (
     <>
-    <Flex alignItems="center" flexDir="column">
-      
-      
+    <Flex alignItems="center" flexDir="column">      
       <TableContainer>
         <Table>
           <Thead>
@@ -83,17 +85,22 @@ const BillTable = () => {
       <HStack>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          isDisabled={currentPage === 1 ? true:false}
+          onClick={() =>{
             setFilterBillPageParams(getCutUrl(previousBillPageUrl, 'bills') + '')
-          }
+            setCurrentPage(currentPage - 1)
+          }}
         >
           <IoIosArrowDropleftCircle />
         </Button>
+        <Text fontWeight='semibold'>page {currentPage} of {numOfpages}</Text>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          isDisabled={currentPage === numOfpages ? true:false}
+          onClick={() =>{
             setFilterBillPageParams(getCutUrl(nextBillPageUrl, 'bills') + '')
-          }
+            setCurrentPage(currentPage + 1)
+          }}
         >
           <IoIosArrowDroprightCircle />
         </Button>

@@ -9,6 +9,7 @@ const useBill = () => {
     const [previousBillPageUrl, setPreviousBillPageUrl] = useState<string | null>('')
     const [filterBillPageParams, setFilterBillPageParams] = useState<string | null>('')
     const [isLoadingBills, setIsLoadingBills] = useState(false)
+    const [billCount, setBillCount] = useState(0)
     
     
 
@@ -22,6 +23,7 @@ const useBill = () => {
                 setnextBillPageUrl(res.data.next)
                 setPreviousBillPageUrl(res.data.previous)
                 setIsLoadingBills(false)
+                setBillCount(res.data.count)
             })
             .catch(error=>{
                 setBillFetchError(error.message === 'canceled'? '':error.message)
@@ -31,7 +33,7 @@ const useBill = () => {
           return ()=>cancel();
       }, [filterBillPageParams])
 
-    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills}
+    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills, billCount}
   
 }
 

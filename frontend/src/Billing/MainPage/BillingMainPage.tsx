@@ -21,6 +21,7 @@ const BillingMainPage = () => {
     setFilterBillPageParams,
     billFetchError,
     isLoadingBills,
+    billCount
   } = useBill();
 
   const {
@@ -58,6 +59,7 @@ const BillingMainPage = () => {
             setFilterBillPageParams,
             billFetchError,
             isLoadingBills,
+            billCount
           }}
         >
           <Grid
