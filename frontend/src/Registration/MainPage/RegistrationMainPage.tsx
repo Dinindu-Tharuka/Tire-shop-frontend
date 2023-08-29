@@ -26,6 +26,9 @@ const RegistraionMainPage = () => {
     previousServiceUrl,
     filterServiceParams,
     setFilterServiceParams,
+    isLaodingServicePage,
+    errorFetchService,
+    servicesCount
   } = useService();
 
   const {
@@ -50,6 +53,9 @@ const RegistraionMainPage = () => {
         previousServiceUrl,
         filterServiceParams,
         setFilterServiceParams,
+        isLaodingServicePage,
+        servicesCount,
+        errorFetchService
       }}
     >
       <EmployeeContext.Provider

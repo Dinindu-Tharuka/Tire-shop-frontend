@@ -9,6 +9,9 @@ interface ServiceContextType{
     previousServiceUrl:string|null;
     filterServiceParams:string | null
     setFilterServiceParams:Dispatch<SetStateAction<string | null>>;
+    isLaodingServicePage:boolean;
+    servicesCount:number;
+    errorFetchService:string;
 }
 
 const ServiceContext = React.createContext<ServiceContextType>({} as ServiceContextType)

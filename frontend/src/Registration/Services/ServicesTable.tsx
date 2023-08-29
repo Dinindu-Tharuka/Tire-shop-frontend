@@ -11,8 +11,9 @@ import {
     Thead,
     Tr,
     useColorMode,
+    Text
   } from "@chakra-ui/react";
-  import { useContext } from "react";
+  import { useContext, useState } from "react";
   
   import {
     IoIosArrowDropleftCircle,
@@ -22,21 +23,28 @@ import {
 import ServiceContext from "../../Contexts/Registration/ServiceContext";
 import ServiceDelete from "./ServiceDelete";
 import UpdateServiceDrawer from "./UpdateServiceDrawer";
-import getCutUrl from "../../services/pagination-cut-link";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
   
 
 const ServicesTable = () => {
     const { toggleColorMode, colorMode } = useColorMode();
+    const [currentPageNum, setCurrentPageNum] = useState(1)
   const {
     services,
     setServices,
     nextServiceUrl,
     previousServiceUrl,
-    filterServiceParams,
+    isLaodingServicePage,
+    errorFetchService,
+    servicesCount,
     setFilterServiceParams,
   } = useContext(ServiceContext);
+
+  const numOfPages = Math.ceil(servicesCount / MAXIMUM_PAGES_PER_PAGE)
+
   return (
     <Flex alignItems="center" flexDir="column">
+      {errorFetchService && <Text textColor='red'>Unable to fetch data from the internet.</Text>}
       <TableContainer>
         <Table>
           <Thead>
@@ -67,17 +75,22 @@ const ServicesTable = () => {
       <HStack>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          isDisabled={currentPageNum === 1 ? true:false}
+          onClick={() =>{
             setFilterServiceParams(getCutUrl(previousServiceUrl, 'services') + "")
-          }
+            setCurrentPageNum(currentPageNum - 1)
+          }}
         >
           <IoIosArrowDropleftCircle />
         </Button>
+        <Text fontWeight='semibold'>page {currentPageNum} of {numOfPages}</Text>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          onClick={() =>
+          isDisabled={currentPageNum === numOfPages ? true:false}
+          onClick={() =>{
             setFilterServiceParams(getCutUrl(nextServiceUrl, 'services') + "")
-          }
+            setCurrentPageNum(currentPageNum + 1)
+          }}
         >
           <IoIosArrowDroprightCircle />
         </Button>
