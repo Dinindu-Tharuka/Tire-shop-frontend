@@ -1,10 +1,11 @@
-import { Button, HStack, Input, Text, useColorMode,FormLabel, Flex } from "@chakra-ui/react";
+import { Button, HStack, Input, Text, useColorMode,FormLabel, Flex, Select } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import StockItemService, {
   StockItem,
 } from "../../services/Stock/stock-item-service";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
+import useItems from "../../hooks/Inventory/useItems";
 
 interface Props {
   selectedStockItem: StockItem;
@@ -12,6 +13,7 @@ interface Props {
 
 const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
   const { register, handleSubmit } = useForm<StockItem>();
+  const {items} = useItems()
 
   const [errorStockItemUpdate, setErrorStockItemUpdate] = useState("");
   const [success, setSuccess] = useState("");
@@ -25,12 +27,14 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
 
     
     
-    StockItemService.update(newly, `${selectedStockItem.id}`)
+    StockItemService.update(newly, `${selectedStockItem.id}`)    
       .then((res) => {
         setSuccess(res.status === 200 ? "Updated Successfully" : "");
-        stockItems.map((item) =>
+        console.log(res);
+        
+        setStockItems(stockItems.map((item) =>
           item.id === selectedStockItem.id ? res.data : item
-        );
+        ))
       })
       .catch((err) => setErrorStockItemUpdate(err.message));
   };
@@ -45,13 +49,15 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 h-75 d-flex justify-content-between">            
             <FormLabel> Item </FormLabel>
-            <Input
-              {...register("item")}
-              type="text"
-              placeholder="Item"
-              defaultValue={selectedStockItem.item}
-              width='50%'
-            />
+            
+            <Select {...register("item")} className="select p-2" required width='50%'>
+              <option value={selectedStockItem.id}>{selectedStockItem.item}</option>
+              {items.map((item, index) => (
+                <option className="mt-3" key={index} value={item.item_id}>
+                  {item.name}
+                </option>
+              ))}
+            </Select>
 
           </div>
 

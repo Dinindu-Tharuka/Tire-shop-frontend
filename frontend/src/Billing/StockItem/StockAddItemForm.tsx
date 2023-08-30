@@ -49,7 +49,9 @@ const StockAddItemForm = ({ seletedInvoice }: Props) => {
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 h-75 d-flex justify-content-between">
             <FormLabel> Item </FormLabel>
-            <Select {...register("item")} className="select p-2">
+            <Select {...register("item")} className="select p-2" width='50%'>
+              <option value="">Select Item</option>
+        
               {items.map((item, index) => (
                 <option className="mt-3" key={index} value={item.item_id}>
                   {item.name}
