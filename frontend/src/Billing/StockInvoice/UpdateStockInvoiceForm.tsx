@@ -19,10 +19,10 @@ import { useContext, useState } from "react";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import { IoAddCircle } from "react-icons/io5";
 import StockInvoiceService, {
-  StockInvoice
+  StockInvoice,
 } from "../../services/Stock/stock-invoice-service";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
-import useItems from "../../hooks/Inventory/useItems";
+import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import StockItemDelete from "../StockItem/StockItemDelete";
@@ -41,18 +41,25 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { stockInvoices, setStockInvoices } = useContext(StockInvoiceContext);
-  const { setStockItems,  stockItems } = useContext(StockItemContext);
+  const { setStockItems, stockItems } = useContext(StockItemContext);
   const { suppliers } = useSupplier();
 
   const onSubmit = (data: StockInvoice) => {
-    const newly = {...data, invoice_no:seletedStockInvoice.invoice_no, stockitems:[]}
+    const newly = {
+      ...data,
+      invoice_no: seletedStockInvoice.invoice_no,
+      stockitems: [],
+    };
     console.log(newly);
-    
-    
+
     StockInvoiceService.update(newly, seletedStockInvoice.invoice_no)
       .then((res) => {
         setSuccess("Successfully Updated.");
-        setStockInvoices(stockInvoices.map(invoice => invoice.invoice_no === res.data.invoice_no ? res.data: invoice));
+        setStockInvoices(
+          stockInvoices.map((invoice) =>
+            invoice.invoice_no === res.data.invoice_no ? res.data : invoice
+          )
+        );
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -90,47 +97,58 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
                   </option>
                 ))}
               </Select>
-              <StockAddItemDrawer selectedStockInvoice={seletedStockInvoice}/>
+              <StockAddItemDrawer selectedStockInvoice={seletedStockInvoice} />
             </div>
           </div>
 
           {/* Add Stock items */}
-          {seletedStockInvoice.stockitems.length !== 0 && <TableContainer>
-            <Table variant="simple">
-              <TableCaption>Stock Items List</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th></Th>
-                  <Th></Th>
-                  <Th>Item</Th>
-                  <Th>Retail Price</Th>
-                  <Th >Date</Th>
-                  <Th >Cost</Th>
-                  <Th >Selling Price</Th>
-                  <Th >Discount</Th>
-                  <Th>QTY</Th>
-                  <Th>Sold Qty</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {stockItems.filter(item => item.stock_item_invoice === seletedStockInvoice.invoice_no).map(item => 
-                <Tr>
-                  <Td><UpdateStockItemDrawer selectedStockItem={item}/></Td>
-                  <Td><StockItemDelete selectedStockItem={item}/></Td>
-                  <Td>{item.item}</Td>
-                  <Td>{item.retail_price}</Td>
-                  <Td>{item.date}</Td>
-                  <Td>{item.cost}</Td>
-                  <Td>{item.selling_price}</Td>
-                  <Td>{item.discount}</Td>
-                  <Td>{item.qty}</Td>
-                  <Td>{item.sold_qty}</Td>
-                </Tr>
-                  
-                  )}
-              </Tbody>
-            </Table>
-          </TableContainer>}
+          {seletedStockInvoice.stockitems.length !== 0 && (
+            <TableContainer>
+              <Table variant="simple">
+                <TableCaption>Stock Items List</TableCaption>
+                <Thead>
+                  <Tr>
+                    <Th></Th>
+                    <Th></Th>
+                    <Th>Item</Th>
+                    <Th>Retail Price</Th>
+                    <Th>Date</Th>
+                    <Th>Cost</Th>
+                    <Th>Selling Price</Th>
+                    <Th>Discount</Th>
+                    <Th>QTY</Th>
+                    <Th>Sold Qty</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {stockItems
+                    .filter(
+                      (item) =>
+                        item.stock_item_invoice ===
+                        seletedStockInvoice.invoice_no
+                    )
+                    .map((item) => (
+                      <Tr>
+                        <Td>
+                          <UpdateStockItemDrawer selectedStockItem={item} />
+                        </Td>
+                        <Td>
+                          <StockItemDelete selectedStockItem={item} />
+                        </Td>
+                        <Td>{item.item}</Td>
+                        <Td>{item.retail_price}</Td>
+                        <Td>{item.date}</Td>
+                        <Td>{item.cost}</Td>
+                        <Td>{item.selling_price}</Td>
+                        <Td>{item.discount}</Td>
+                        <Td>{item.qty}</Td>
+                        <Td>{item.sold_qty}</Td>
+                      </Tr>
+                    ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          )}
           {/* Add Stock items */}
 
           {/* Add Stock items */}

@@ -10,12 +10,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { Item } from "../../../services/Inventory/item-service";
+import { Item } from "../../../services/Inventory/item-page-service";
 import UpdateItemForm from "./UpdateItemForm";
 
 interface Props {
-  selectedUpdateItem: Item
-  
+  selectedUpdateItem: Item;
 }
 
 const UpdateItem = ({ selectedUpdateItem }: Props) => {
@@ -23,7 +22,6 @@ const UpdateItem = ({ selectedUpdateItem }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
- 
   return (
     <>
       <Button
@@ -54,9 +52,7 @@ const UpdateItem = ({ selectedUpdateItem }: Props) => {
           <DrawerHeader>Update</DrawerHeader>
 
           <DrawerBody>
-            <UpdateItemForm
-              selectedUpdateItem={selectedUpdateItem}
-            />
+            <UpdateItemForm selectedUpdateItem={selectedUpdateItem} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

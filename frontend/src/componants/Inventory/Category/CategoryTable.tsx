@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import categoryService, {
   Category,
-} from "../../../services/Inventory/category-service";
+} from "../../../services/Inventory/category-page-service";
 import UpdateCategoryDrawer from "./UpdateCategoryDrawer";
 import { useContext, useState } from "react";
 import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
@@ -23,7 +23,9 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import DeleteCategory from "./DeleteCategory";
-import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../../services/pagination-cut-link";
+import getCutUrl, {
+  MAXIMUM_PAGES_PER_PAGE,
+} from "../../../services/pagination-cut-link";
 
 const CategoryTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -38,7 +40,7 @@ const CategoryTable = () => {
     categoryCount,
   } = useContext(ItemCategoryContext);
 
-  const numOfPages = Math.ceil(categoryCount / MAXIMUM_PAGES_PER_PAGE)
+  const numOfPages = Math.ceil(categoryCount / MAXIMUM_PAGES_PER_PAGE);
 
   if (errorFetchCategory)
     return <Text textColor="red">Unable to fetch data from the internet.</Text>;
@@ -77,27 +79,29 @@ const CategoryTable = () => {
         <Button
           disabled={false}
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          isDisabled = {currentPageNum === 1 ? true:false}
+          isDisabled={currentPageNum === 1 ? true : false}
           onClick={() => {
             setFilterCategoryParams(
               getCutUrl(previousCategoryUrl, "item-categories") + ""
             );
             setErrorFetchCategory("");
-            setCurrentPageNum(currentPageNum - 1)
+            setCurrentPageNum(currentPageNum - 1);
           }}
         >
           <IoIosArrowDropleftCircle />
         </Button>
-        <Text fontWeight='semibold'>page {currentPageNum} of {numOfPages}</Text>
+        <Text fontWeight="semibold">
+          page {currentPageNum} of {numOfPages}
+        </Text>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          isDisabled = {currentPageNum === numOfPages ? true:false}
+          isDisabled={currentPageNum === numOfPages ? true : false}
           onClick={() => {
             setFilterCategoryParams(
               getCutUrl(nextCategoryUrl, "item-categories") + ""
             );
             setErrorFetchCategory("");
-            setCurrentPageNum(currentPageNum + 1)
+            setCurrentPageNum(currentPageNum + 1);
           }}
         >
           <IoIosArrowDroprightCircle />

@@ -23,7 +23,7 @@ import BillServices, {
   PaymentCredit,
   PaymentCreditCard,
 } from "../../services/Billing/bill-service";
-import useItems from "../../hooks/Inventory/useItems";
+import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import useStockItem from "../../hooks/Stock/useStockItems";
 import { PADDING_UPDATE_DRAWER_BUTTON } from "../../Constants/Constants";
@@ -33,6 +33,7 @@ import PaymentCashInput from "./Payments/PaymentCashInput";
 import PaymentChequeInput from "./Payments/PaymentChequeInput";
 import PaymentCreditCardInput from "./Payments/PaymentCreditCardInput";
 import PaymentCreditInput from "./Payments/PaymentCreditInput";
+import useItems from "../../hooks/Inventory/useItems";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -79,13 +80,14 @@ const BillAddForm = () => {
 
   const { bills, setBills } = useContext(BillContext);
   const { items } = useItems();
+  console.log('ites', items);
+  
   const { customers } = useCustomer();
   const { stockItems } = useStockItem();
   const { services } = useService();
   const { employees } = useEmployee();
 
   const onSubmit = (data: Bill) => {
-    console.log("form", data);
 
     BillServices.create(data)
       .then((res) => {
@@ -129,8 +131,7 @@ const BillAddForm = () => {
                     {...register(`bill_items.${index}.item`)}
                     className="select w-100 p-2"
                     marginRight={10}
-                    onChange={(event)=>setSelectedItem(event.target.value)
-                    }
+                    onChange={(event) => setSelectedItem(event.target.value)}
                   >
                     <option value="">Select Item</option>
                     {items.map((item, index) => (
@@ -144,18 +145,20 @@ const BillAddForm = () => {
                     className="select w-100 p-2"
                   >
                     <option value="">Select Stock Item</option>
-                    {stockItems.filter((item)=> item.item === selectedItem).map((stockItem, index) => (
-                      <option
-                        key={index}
-                        value={stockItem.id}
-                        className="w-100"
-                      >
-                        <div className="d-flex justify-content-between w-100 ">
-                          <Text>{stockItem.item}</Text>
-                          <Text>({stockItem.qty})</Text>
-                        </div>
-                      </option>
-                    ))}
+                    {stockItems
+                      .filter((item) => item.item === selectedItem)
+                      .map((stockItem, index) => (
+                        <option
+                          key={index}
+                          value={stockItem.id}
+                          className="w-100"
+                        >
+                          <div className="d-flex justify-content-between w-100 ">
+                            <Text>{stockItem.item}</Text>
+                            <Text>({stockItem.qty})</Text>
+                          </div>
+                        </option>
+                      ))}
                   </Select>
                 </Flex>
                 <Flex>
@@ -268,7 +271,7 @@ const BillAddForm = () => {
                     type="number"
                     className=""
                   />
-{/* 
+                  {/* 
                   <Select
                     {...register(`bill_payments.${index}.payment_methods`)}
                     className="select p-2"
@@ -285,16 +288,15 @@ const BillAddForm = () => {
                   </Select> */}
                 </Flex>
                 <VStack align="start">
-                  
-                    <HStack>
-                      <PaymentCashInput
-                        field={field}
-                        control={control}
-                        indexMain={index}
-                        register={register}
-                      />
-                    </HStack>
-                  
+                  <HStack>
+                    <PaymentCashInput
+                      field={field}
+                      control={control}
+                      indexMain={index}
+                      register={register}
+                    />
+                  </HStack>
+
                   <HStack>
                     <PaymentChequeInput
                       field={field}

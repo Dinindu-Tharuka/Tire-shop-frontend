@@ -15,14 +15,18 @@ import {
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext, useState } from "react";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
-import ItemService, { Item } from "../../../services/Inventory/item-service";
+import ItemService, {
+  Item,
+} from "../../../services/Inventory/item-page-service";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import DeleteCategory from "../Category/DeleteCategory";
 import ItemDelete from "./ItemDelete";
-import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../../services/pagination-cut-link";
+import getCutUrl, {
+  MAXIMUM_PAGES_PER_PAGE,
+} from "../../../services/pagination-cut-link";
 
 const ItemTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -100,7 +104,7 @@ const ItemTable = () => {
       <HStack>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          isDisabled={currentPageNum === 1 ? true:false}
+          isDisabled={currentPageNum === 1 ? true : false}
           onClick={() => {
             setFilterItemPageParams(
               getCutUrl(previousItemPageUrl, "items") + ""
@@ -111,10 +115,12 @@ const ItemTable = () => {
         >
           <IoIosArrowDropleftCircle />
         </Button>
-        <Text fontWeight='semibold'>page {currentPageNum} of {numOfPages}</Text>
+        <Text fontWeight="semibold">
+          page {currentPageNum} of {numOfPages}
+        </Text>
         <Button
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          isDisabled={currentPageNum === numOfPages ? true:false}
+          isDisabled={currentPageNum === numOfPages ? true : false}
           onClick={() => {
             setFilterItemPageParams(getCutUrl(nextItemPageUrl, "items") + "");
             setCurrentPageNum(currentPageNum + 1);

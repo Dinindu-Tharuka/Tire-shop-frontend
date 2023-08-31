@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import CategoryService,{ Category, CategoryPageStructure } from "../../services/Inventory/category-service"
+import CategoryService,{ Category, CategoryPageStructure } from "../../services/Inventory/category-page-service"
 
 
-const useCategory = () => {
+const useCategoryPagination = () => {
     const [categories, setCategories] = useState<Category[]>([])
     const [errorFetchCategory, setErrorFetchCategory] = useState('')
     const [nextCategoryUrl, setNextCategoryUrl] = useState<string | null>('')
@@ -34,4 +34,4 @@ const useCategory = () => {
         return {categories, errorFetchCategory, setCategories, nextCategoryUrl, previousCategoryUrl, filterCategoryParams, setFilterCategoryParams, isLoadingCategories, setErrorFetchCategory, categoryCount}  
 }
 
-export default useCategory
+export default useCategoryPagination

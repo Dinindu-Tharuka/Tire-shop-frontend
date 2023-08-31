@@ -1,6 +1,6 @@
 import { Grid, GridItem, Text, useColorMode } from "@chakra-ui/react";
 import CustomerSidePanel from "../SidePanel/CustomerSidePanel";
-import useCategory from "../../hooks/Inventory/useCategory";
+import useCategoryPagination from "../../hooks/Inventory/useCategoryPage";
 import useVehicles from "../../hooks/Customer/useVehicles";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import useCustomer from "../../hooks/Customer/useCustomer";
@@ -19,7 +19,7 @@ const CustomerMainPage = () => {
     errorCustomerFetch,
     setErrorCustomerFetch,
     isLoadingCustomer,
-    customerCount
+    customerCount,
   } = useCustomer();
   const { vehicles, setVehicles } = useVehicles();
   const { toggleColorMode, colorMode } = useColorMode();
@@ -36,7 +36,7 @@ const CustomerMainPage = () => {
           errorCustomerFetch,
           setErrorCustomerFetch,
           isLoadingCustomer,
-          customerCount
+          customerCount,
         }}
       >
         <Grid

@@ -11,13 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import UpdateCategoryForm from "./UpdateCategoryForm";
-import { Category } from "../../../services/Inventory/category-service";
+import { Category } from "../../../services/Inventory/category-page-service";
 
 interface Props {
   updateCategory: Category;
 }
 
-const UpdateCategoryDrawer = ({ updateCategory}: Props) => {
+const UpdateCategoryDrawer = ({ updateCategory }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -50,9 +50,7 @@ const UpdateCategoryDrawer = ({ updateCategory}: Props) => {
           <DrawerHeader>Update Category</DrawerHeader>
 
           <DrawerBody>
-            <UpdateCategoryForm
-              updateCategory={updateCategory}
-            />
+            <UpdateCategoryForm updateCategory={updateCategory} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

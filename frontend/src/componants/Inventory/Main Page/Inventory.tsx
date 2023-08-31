@@ -1,7 +1,14 @@
-import { Grid, GridItem, Spinner, Text, useColorMode, useToast } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  Spinner,
+  Text,
+  useColorMode,
+  useToast,
+} from "@chakra-ui/react";
 import InventorySidePanel from "../SidePanel/InventorySidePanel";
-import useItems from "../../../hooks/Inventory/useItems";
-import useCategory from "../../../hooks/Inventory/useCategory";
+import useItemsPagination from "../../../hooks/Inventory/useItemsPage";
+import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
 import useSupplier from "../../../hooks/Registration/useSupplier";
 import { Outlet } from "react-router-dom";
 import SupplierContext from "../../../Contexts/Registration/SupplierContext";
@@ -10,7 +17,7 @@ import ItemContext from "../../../Contexts/Inventory/ItemContext";
 
 const Inventory = () => {
   const { toggleColorMode, colorMode } = useColorMode();
-  const toast = useToast()
+  const toast = useToast();
   const {
     items,
     setItems,
@@ -21,8 +28,8 @@ const Inventory = () => {
     isLoadingItems,
     error,
     setError,
-    itemCount    
-  } = useItems();
+    itemCount,
+  } = useItemsPagination();
   const {
     categories,
     setCategories,
@@ -33,14 +40,8 @@ const Inventory = () => {
     isLoadingCategories,
     errorFetchCategory,
     setErrorFetchCategory,
-    categoryCount  
-    
-  } = useCategory();
-
-
-  
-
-  
+    categoryCount,
+  } = useCategoryPagination();
 
   return (
     <ItemContext.Provider
@@ -68,11 +69,9 @@ const Inventory = () => {
           isLoadingCategories,
           setErrorFetchCategory,
           errorFetchCategory,
-          categoryCount
+          categoryCount,
         }}
       >
-        
-
         {/* Grid */}
         <Grid
           templateAreas={{
@@ -85,9 +84,8 @@ const Inventory = () => {
             height={{ base: "10vh", lg: "85vh" }}
             width={{ base: "100vw", lg: "60vw" }}
           >
-            {(isLoadingCategories || isLoadingItems ) && <Spinner/>}
-            
-            
+            {(isLoadingCategories || isLoadingItems) && <Spinner />}
+
             <Outlet />
           </GridItem>
           <GridItem

@@ -1,9 +1,11 @@
 import { Button, HStack, Text, useColorMode } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import ItemService, { Item } from "../../../services/Inventory/item-service";
+import ItemService, {
+  Item,
+} from "../../../services/Inventory/item-page-service";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
-import useCategory from "../../../hooks/Inventory/useCategory";
+import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
 import useSupplier from "../../../hooks/Registration/useSupplier";
 
 interface Props {
@@ -16,7 +18,7 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const { categories } = useCategory();
+  const { categories } = useCategoryPagination();
   const { suppliers } = useSupplier();
 
   const { items, setItems } = useContext(ItemContext);

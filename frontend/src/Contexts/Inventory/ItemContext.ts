@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Item } from "../../services/Inventory/item-service";
+import { Item } from "../../services/Inventory/item-page-service";
 import React from "react";
 
 

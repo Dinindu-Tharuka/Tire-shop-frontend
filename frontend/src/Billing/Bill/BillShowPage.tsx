@@ -58,7 +58,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
       </TableContainer>
 
       {/* Items List  */}
-      {seletedBill.bill_services.length !== 0 && <TableContainer width="50%">
+      {seletedBill.bill_items.length !== 0 && <TableContainer width="50%">
         <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
           Item List
         </Text>

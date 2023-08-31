@@ -8,8 +8,10 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import ItemService, { Item } from "../../../services/Inventory/item-service";
-import useCategory from "../../../hooks/Inventory/useCategory";
+import ItemService, {
+  Item,
+} from "../../../services/Inventory/item-page-service";
+import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
 import useSupplier from "../../../hooks/Registration/useSupplier";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
 
@@ -18,7 +20,7 @@ const ItemAddForm = () => {
   const [errorItemCreate, setErrorItemCreate] = useState("");
   const [success, setSuccess] = useState("");
 
-  const { categories, errorFetchCategory } = useCategory();
+  const { categories, errorFetchCategory } = useCategoryPagination();
   const { suppliers, errorFetchSupplier } = useSupplier();
 
   const { toggleColorMode, colorMode } = useColorMode();
@@ -26,8 +28,8 @@ const ItemAddForm = () => {
   const { items, setItems } = useContext(ItemContext);
 
   const onSubmit = (data: FieldValues) => {
-    console.log('Item', data);
-    
+    console.log("Item", data);
+
     ItemService.create(data)
       .then((res) => {
         if (res.status === 201) {

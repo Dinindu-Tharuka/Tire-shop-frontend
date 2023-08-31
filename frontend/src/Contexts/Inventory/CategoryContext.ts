@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Category } from "../../services/Inventory/category-service";
+import { Category } from "../../services/Inventory/category-page-service";
 import React from "react";
 
 interface ItemCategoryContextType{

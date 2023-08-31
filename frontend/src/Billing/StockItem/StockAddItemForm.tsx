@@ -15,7 +15,7 @@ import StockItemService, {
 } from "../../services/Stock/stock-item-service";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import { StockInvoice } from "../../services/Stock/stock-invoice-service";
-import useItems from "../../hooks/Inventory/useItems";
+import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 
 interface Props {
   seletedInvoice: StockInvoice;
@@ -26,11 +26,10 @@ const StockAddItemForm = ({ seletedInvoice }: Props) => {
   const [errorStockItemUpdate, setErrorStockItemUpdate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
-  const { items } = useItems();
+  const { items } = useItemsPagination();
   const { setStockItems, stockItems } = useContext(StockItemContext);
   const onUpdate = (data: StockItem) => {
-    
-  const newly = { ...data, stock_item_invoice: seletedInvoice.invoice_no };
+    const newly = { ...data, stock_item_invoice: seletedInvoice.invoice_no };
     StockItemService.create(newly)
       .then((res) => {
         setSuccess(res.status === 201 ? "Created Successfully" : "");
@@ -49,9 +48,9 @@ const StockAddItemForm = ({ seletedInvoice }: Props) => {
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 h-75 d-flex justify-content-between">
             <FormLabel> Item </FormLabel>
-            <Select {...register("item")} className="select p-2" width='50%'>
+            <Select {...register("item")} className="select p-2" width="50%">
               <option value="">Select Item</option>
-        
+
               {items.map((item, index) => (
                 <option className="mt-3" key={index} value={item.item_id}>
                   {item.name}

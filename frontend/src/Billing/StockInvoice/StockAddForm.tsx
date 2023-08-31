@@ -14,7 +14,7 @@ import StockInvoiceService, {
   StockInvoice,
 } from "../../services/Stock/stock-invoice-service";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
-import useItems from "../../hooks/Inventory/useItems";
+import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import { StockItem } from "../../services/Stock/stock-item-service";
 
@@ -37,13 +37,12 @@ const StockAddForm = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { stockInvoices, setStockInvoices } = useContext(StockInvoiceContext);
-  const { items } = useItems();
+  const { items } = useItemsPagination();
   const { suppliers } = useSupplier();
 
   const onSubmit = (data: StockInvoice) => {
-
     console.log(data);
-    
+
     StockInvoiceService.create(data)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
@@ -78,8 +77,6 @@ const StockAddForm = () => {
                 ))}
               </Select>
             </div>
-
-            
           </div>
 
           {/* Add Stock items */}
@@ -105,8 +102,6 @@ const StockAddForm = () => {
                   />
                 </Flex>
                 <Flex>
-                  
-
                   <Input
                     type="number"
                     {...register(`stockitems.${index}.cost`)}
@@ -124,9 +119,8 @@ const StockAddForm = () => {
                     {...register(`stockitems.${index}.discount`)}
                     placeholder="Discount"
                   />
-                 
+
                   <Input
-                  
                     type="number"
                     {...register(`stockitems.${index}.qty`)}
                     placeholder="QTY"
@@ -162,10 +156,8 @@ const StockAddForm = () => {
             </Flex>
           </div>
 
-
-
           <div className="w-25">
-          <div className="mb-3">
+            <div className="mb-3">
               <Input
                 {...register("total_amount")}
                 type="number"
@@ -180,9 +172,7 @@ const StockAddForm = () => {
                 placeholder="Total Discount"
               />
             </div>
-
           </div>
-
         </div>
         <HStack justifyContent="space-between">
           <Button

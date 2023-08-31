@@ -1,11 +1,20 @@
-import { Button, HStack, Input, Text, useColorMode,FormLabel, Flex, Select } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Input,
+  Text,
+  useColorMode,
+  FormLabel,
+  Flex,
+  Select,
+} from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import StockItemService, {
   StockItem,
 } from "../../services/Stock/stock-item-service";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
-import useItems from "../../hooks/Inventory/useItems";
+import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 
 interface Props {
   selectedStockItem: StockItem;
@@ -13,7 +22,7 @@ interface Props {
 
 const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
   const { register, handleSubmit } = useForm<StockItem>();
-  const {items} = useItems()
+  const { items } = useItemsPagination();
 
   const [errorStockItemUpdate, setErrorStockItemUpdate] = useState("");
   const [success, setSuccess] = useState("");
@@ -22,19 +31,21 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
   const { setStockItems, stockItems } = useContext(StockItemContext);
 
   const onUpdate = (data: StockItem) => {
+    const newly = {
+      ...data,
+      stock_item_invoice: selectedStockItem.stock_item_invoice,
+    };
 
-    const newly = { ...data, stock_item_invoice:selectedStockItem.stock_item_invoice}
-
-    
-    
-    StockItemService.update(newly, `${selectedStockItem.id}`)    
+    StockItemService.update(newly, `${selectedStockItem.id}`)
       .then((res) => {
         setSuccess(res.status === 200 ? "Updated Successfully" : "");
         console.log(res);
-        
-        setStockItems(stockItems.map((item) =>
-          item.id === selectedStockItem.id ? res.data : item
-        ))
+
+        setStockItems(
+          stockItems.map((item) =>
+            item.id === selectedStockItem.id ? res.data : item
+          )
+        );
       })
       .catch((err) => setErrorStockItemUpdate(err.message));
   };
@@ -47,82 +58,88 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
 
       <form onSubmit={handleSubmit(onUpdate)} className="vh-100">
         <div className="d-flex flex-column justify-content-between">
-          <div className="mb-3 h-75 d-flex justify-content-between">            
+          <div className="mb-3 h-75 d-flex justify-content-between">
             <FormLabel> Item </FormLabel>
-            
-            <Select {...register("item")} className="select p-2" required width='50%'>
-              <option value={selectedStockItem.id}>{selectedStockItem.item}</option>
+
+            <Select
+              {...register("item")}
+              className="select p-2"
+              required
+              width="50%"
+            >
+              <option value={selectedStockItem.id}>
+                {selectedStockItem.item}
+              </option>
               {items.map((item, index) => (
                 <option className="mt-3" key={index} value={item.item_id}>
                   {item.name}
                 </option>
               ))}
             </Select>
-
           </div>
 
           <div className="mb-3 d-flex justify-content-between">
-          <FormLabel whiteSpace='nowrap'> Retail Price </FormLabel>  
+            <FormLabel whiteSpace="nowrap"> Retail Price </FormLabel>
             <Input
               {...register("retail_price")}
               type="text"
               placeholder="Retail Price"
               defaultValue={selectedStockItem.retail_price}
-              width='50%'
+              width="50%"
             />
           </div>
-          
+
           <div className="mb-3 d-flex justify-content-between">
-          <FormLabel>Cost</FormLabel>
+            <FormLabel>Cost</FormLabel>
             <Input
               {...register("cost")}
               type="text"
               placeholder="Cost"
               defaultValue={selectedStockItem.cost}
-              width='50%'
+              width="50%"
             />
           </div>
           <div className="mb-3 d-flex justify-content-between">
-          <FormLabel whiteSpace='nowrap'>Selling Price</FormLabel>
+            <FormLabel whiteSpace="nowrap">Selling Price</FormLabel>
             <Input
               {...register("selling_price")}
               type="text"
               placeholder="Selling Price"
               defaultValue={selectedStockItem.selling_price}
-              width='50%'
+              width="50%"
             />
           </div>
 
           <div className="mb-3 d-flex justify-content-between">
-          <FormLabel>Discount</FormLabel>
+            <FormLabel>Discount</FormLabel>
             <Input
               {...register("discount")}
               type="text"
               placeholder="Discount"
               defaultValue={selectedStockItem.discount}
-              width='50%'
+              width="50%"
             />
           </div>
 
           <div className="mb-3 d-flex justify-content-between">
-          <FormLabel>Qty</FormLabel>
+            <FormLabel>Qty</FormLabel>
             <Input
               {...register("qty")}
               type="text"
               placeholder="Qty"
               defaultValue={selectedStockItem.qty}
-              width='50%'
+              width="50%"
             />
           </div>
 
           <div className="mb-3 d-flex justify-content-between">
-          <FormLabel whiteSpace='nowrap'>Sold Qty</FormLabel>
+            <FormLabel whiteSpace="nowrap">Sold Qty</FormLabel>
             <Input
               {...register("sold_qty")}
               type="text"
               placeholder="Sold Qty"
               defaultValue={selectedStockItem.sold_qty}
-              width='50%'
+              width="50%"
             />
           </div>
         </div>

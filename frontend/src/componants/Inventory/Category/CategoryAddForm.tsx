@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import categoryService, {
   Category,
-} from "../../../services/Inventory/category-service";
+} from "../../../services/Inventory/category-page-service";
 import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
 
 const CategoryAddForm = () => {
