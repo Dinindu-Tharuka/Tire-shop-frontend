@@ -27,14 +27,14 @@ const PaymentCreditInput = ({register, indexMain, control, field}:Props) => {
       <Flex>
         <Flex>
           {fields.map((field, creditIndex) => (
-            <VStack>
+            <VStack align='start'>
               <Input
                 {...register(
                   `bill_payments.${indexMain}.payments_credit.${creditIndex}.bill_payment`
                 )}
-                placeholder="Bill"
+                placeholder="ID"
                 type="number"
-                value='111'
+                defaultValue={creditIndex + 1}
               />
               <Input
                 {...register(
@@ -51,12 +51,12 @@ const PaymentCreditInput = ({register, indexMain, control, field}:Props) => {
                 type="number"
               />              
               
-              
+              <label>Due Date</label>
               <Input
                 {...register(
                   `bill_payments.${indexMain}.payments_credit.${creditIndex}.due_date`
                 )}
-                placeholder="Cheque Date"
+                
                 type='date'
               />
               {(

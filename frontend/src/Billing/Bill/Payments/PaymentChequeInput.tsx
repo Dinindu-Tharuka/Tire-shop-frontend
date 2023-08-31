@@ -27,7 +27,7 @@ const PaymentChequeInput = ({register, indexMain, control, field}:Props) => {
       <Flex>
         <Flex>
           {fields.map((field, chequeIndex) => (
-            <VStack>
+            <VStack align='start'>
               <Input
                 {...register(
                   `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.bill_payment`
@@ -71,6 +71,7 @@ const PaymentChequeInput = ({register, indexMain, control, field}:Props) => {
                 placeholder="Branch"
                 type="text"
               />
+              <label>Cheque Date</label>
               <Input
                 {...register(
                   `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.cheque_date`

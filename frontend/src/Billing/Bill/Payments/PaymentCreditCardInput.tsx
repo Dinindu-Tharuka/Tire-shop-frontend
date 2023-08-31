@@ -32,7 +32,7 @@ const PaymentCreditCardInput = ({ register, indexMain, control, field}:Props) =>
                 {...register(
                   `bill_payments.${indexMain}.payments_credit_card.${creditCardIndex}.bill_payment`
                 )}
-                placeholder="Bill"
+                placeholder="ID"
                 type="number"
                 defaultValue={creditCardIndex + 1}
               />
