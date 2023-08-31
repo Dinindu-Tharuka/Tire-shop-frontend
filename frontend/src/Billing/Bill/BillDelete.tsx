@@ -34,7 +34,8 @@ const BillDelete = ({selectedDeleteBill}:Props) => {
       BillService
         .delete(`${seletedBill.invoice_id}`)
         .then(res => {
-          console.log(res.data)
+          console.log(res.data);
+          
           
           if (res.status === 204){
           deleteToast({

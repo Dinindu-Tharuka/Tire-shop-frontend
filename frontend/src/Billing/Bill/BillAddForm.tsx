@@ -35,8 +35,7 @@ import PaymentCreditCardInput from "./Payments/PaymentCreditCardInput";
 import PaymentCreditInput from "./Payments/PaymentCreditInput";
 
 const BillAddForm = () => {
-  const DEFAULT_ID = 11111;
-  const [selectedPaymentMethod, setselectedPaymentMethod] = useState("");
+  const [selectedItem, setSelectedItem] = useState("");
   const { register, handleSubmit, control } = useForm<Bill>();
 
   const paymentMethods = [
@@ -130,6 +129,8 @@ const BillAddForm = () => {
                     {...register(`bill_items.${index}.item`)}
                     className="select w-100 p-2"
                     marginRight={10}
+                    onChange={(event)=>setSelectedItem(event.target.value)
+                    }
                   >
                     <option value="">Select Item</option>
                     {items.map((item, index) => (
@@ -142,8 +143,8 @@ const BillAddForm = () => {
                     {...register(`bill_items.${index}.stock_item`)}
                     className="select w-100 p-2"
                   >
-                    <option value="">Select Stock Items</option>
-                    {stockItems.map((stockItem, index) => (
+                    <option value="">Select Stock Item</option>
+                    {stockItems.filter((item)=> item.item === selectedItem).map((stockItem, index) => (
                       <option
                         key={index}
                         value={stockItem.id}
@@ -151,7 +152,7 @@ const BillAddForm = () => {
                       >
                         <div className="d-flex justify-content-between w-100 ">
                           <Text>{stockItem.item}</Text>
-                          <Text>{stockItem.qty}</Text>
+                          <Text>({stockItem.qty})</Text>
                         </div>
                       </option>
                     ))}

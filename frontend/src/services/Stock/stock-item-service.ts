@@ -2,7 +2,7 @@ import create from "../http-service";
 
 export interface StockItem{
     id:number;
-    item:number;
+    item:string;
     retail_price:number;
     date:string;
     stock_item_invoice:string;

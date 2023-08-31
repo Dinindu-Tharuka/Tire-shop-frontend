@@ -23,6 +23,8 @@ import { useContext, useState } from "react";
 import BillDelete from "./BillDelete";
 import BillAddDrawer from "./BillAddDrawer";
 import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
+import useCustomer from "../../hooks/Customer/useCustomer";
+import BillShowDrawer from "./BillShowDrawer";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -38,6 +40,7 @@ const BillTable = () => {
   } = useContext(BillContext);
 
   const numOfpages = Math.ceil(billCount/ MAXIMUM_PAGES_PER_PAGE)
+  const {customers} = useCustomer()
 
   
   if (isLoadingBills)
@@ -66,14 +69,12 @@ const BillTable = () => {
           <Tbody>
             {bills?.map((bill, index) => (
               <Tr key={index}>
-                <Th>
-                  <BillAddDrawer />
-                </Th>
+                <Th><BillShowDrawer selectedBill={bill}/></Th>
                 <Th>
                   <BillDelete selectedDeleteBill={bill} />
                 </Th>
                 <Td>{bill.invoice_id}</Td>
-                <Td>{bill.customer}</Td>
+                <Td>{customers.find(customer => customer.id === bill.customer)?.name}</Td>
                 <Td>{bill.date}</Td>
                 <Td>{bill.discount_amount}</Td>
                 <Td>{bill.sub_total}</Td>
