@@ -34,7 +34,7 @@ const PaymentCreditCardInput = ({ register, indexMain, control, field}:Props) =>
                 )}
                 placeholder="Bill"
                 type="number"
-                value='111'
+                defaultValue={creditCardIndex + 1}
               />
               <Input
                 {...register(
