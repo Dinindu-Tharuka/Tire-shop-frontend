@@ -45,10 +45,11 @@ const BillAddDrawer = () => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add Bill</DrawerHeader>
+          <DrawerHeader>Add Customer Bill</DrawerHeader>
 
           <DrawerBody>
             <BillAddForm/>
+           
           </DrawerBody>
         </DrawerContent>
       </Drawer>

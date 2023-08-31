@@ -1,10 +1,12 @@
 import {
   Button,
+  Checkbox,
   Flex,
   HStack,
   Input,
   Select,
   Text,
+  VStack,
   useColorMode,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
@@ -14,15 +16,36 @@ import { IoAddCircle } from "react-icons/io5";
 import BillServices, {
   Bill,
   BillItem,
+  BillPayment,
   BillService,
+  PaymentCash,
+  PaymentCheque,
+  PaymentCredit,
+  PaymentCreditCard,
 } from "../../services/Billing/bill-service";
-import ItemContext from "../../Contexts/Inventory/ItemContext";
 import useItems from "../../hooks/Inventory/useItems";
+import useCustomer from "../../hooks/Customer/useCustomer";
+import useStockItem from "../../hooks/Stock/useStockItems";
+import { PADDING_UPDATE_DRAWER_BUTTON } from "../../Constants/Constants";
+import useService from "../../hooks/Registration/useService";
+import useEmployee from "../../hooks/Registration/useEmployee";
+import PaymentCashInput from "./Payments/PaymentCashInput";
+import PaymentChequeInput from "./Payments/PaymentChequeInput";
+import PaymentCreditCardInput from "./Payments/PaymentCreditCardInput";
+import PaymentCreditInput from "./Payments/PaymentCreditInput";
 
 const BillAddForm = () => {
-  const { register, handleSubmit, control } = useForm<Bill>({
-    defaultValues: {},
-  });
+  const DEFAULT_ID = 11111;
+  const [selectedPaymentMethod, setselectedPaymentMethod] = useState("");
+  const { register, handleSubmit, control } = useForm<Bill>();
+
+  const paymentMethods = [
+    ["Cash", "cash"],
+    ["Cheque", "cheque"],
+    ["Credit Card", "credit_card"],
+    ["Credit", "credit"],
+    ["Multiple Option", "multiple"],
+  ];
 
   const {
     fields: itemsArray,
@@ -42,15 +65,29 @@ const BillAddForm = () => {
     control,
   });
 
+  const {
+    fields: paymentsArray,
+    append: paymentAppend,
+    remove: paymentRemove,
+  } = useFieldArray({
+    name: "bill_payments",
+    control,
+  });
+
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { bills, setBills } = useContext(BillContext);
   const { items } = useItems();
-
+  const { customers } = useCustomer();
+  const { stockItems } = useStockItem();
+  const { services } = useService();
+  const { employees } = useEmployee();
 
   const onSubmit = (data: Bill) => {
+    console.log("form", data);
+
     BillServices.create(data)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfullt Created." : "");
@@ -65,7 +102,7 @@ const BillAddForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
         <div className="d-flex flex-column justify-content-between">
-          <div className="mb-3 h-75">
+          <div className="mb-3 w-25">
             <Input
               {...register("invoice_id")}
               type="text"
@@ -73,12 +110,15 @@ const BillAddForm = () => {
             />
           </div>
 
-          <div className="mb-3">
-            <Input
-              {...register("customer")}
-              type="text"
-              placeholder="Customer"
-            />
+          <div className="mb-3 w-25">
+            <Select {...register("customer")} className="select p-2">
+              <option>Select Customer</option>
+              {customers.map((customer, index) => (
+                <option className="mt-3" key={index} value={customer.id}>
+                  {customer.name}
+                </option>
+              ))}
+            </Select>
           </div>
 
           {/* Add Items */}
@@ -86,28 +126,36 @@ const BillAddForm = () => {
             {itemsArray.map((field, index) => (
               <Flex>
                 <Flex>
-                  
                   <Select
                     {...register(`bill_items.${index}.item`)}
                     className="select w-100 p-2"
-                  >                   
-
+                    marginRight={10}
+                  >
+                    <option value="">Select Item</option>
                     {items.map((item, index) => (
-                      <option key={index} value="2">
+                      <option key={index} value={item.item_id}>
                         {item.name}
                       </option>
                     ))}
                   </Select>
-                  <Input
-                    type="text"
+                  <Select
                     {...register(`bill_items.${index}.stock_item`)}
-                    placeholder="Stock Item"
-                  />
-                  {/* <Input
-                    type="text"
-                    {...register(`bill_items.${index}.bill`)}
-                    placeholder="Bill"
-                  /> */}
+                    className="select w-100 p-2"
+                  >
+                    <option value="">Select Stock Items</option>
+                    {stockItems.map((stockItem, index) => (
+                      <option
+                        key={index}
+                        value={stockItem.id}
+                        className="w-100"
+                      >
+                        <div className="d-flex justify-content-between w-100 ">
+                          <Text>{stockItem.item}</Text>
+                          <Text>{stockItem.qty}</Text>
+                        </div>
+                      </option>
+                    ))}
+                  </Select>
                 </Flex>
                 <Flex>
                   <Input
@@ -130,7 +178,7 @@ const BillAddForm = () => {
                   {index > 0 && (
                     <Button
                       bg="#f87454"
-                      padding={3}
+                      padding={2.5}
                       type="button"
                       onClick={() => itemRemove(index)}
                     >
@@ -141,7 +189,12 @@ const BillAddForm = () => {
               </Flex>
             ))}
             <Flex alignItems="center">
-              <Button type="button" onClick={() => itemAppend({} as BillItem)}>
+              <Button
+                type="button"
+                onClick={() => {
+                  itemAppend({} as BillItem);
+                }}
+              >
                 Add Item
               </Button>
               <IoAddCircle />
@@ -153,28 +206,36 @@ const BillAddForm = () => {
             {serviceArray.map((field, index) => (
               <Flex>
                 <Flex>
-                  <Input
-                    type="text"
+                  <Select
                     {...register(`bill_services.${index}.service`)}
-                    placeholder="Item"
-                  />
-                  <Input
-                    type="text"
+                    className="select p-2"
+                  >
+                    <option>Select Service</option>
+                    {services.map((service, index) => (
+                      <option className="mt-3" key={index} value={service.id}>
+                        {service.description}
+                      </option>
+                    ))}
+                  </Select>
+
+                  <Select
                     {...register(`bill_services.${index}.employee`)}
-                    placeholder="Stock Item"
-                  />
-                  <Input
-                    type="text"
-                    {...register(`bill_services.${index}.bill`)}
-                    placeholder="Bill"
-                  />
+                    className="select p-2"
+                  >
+                    <option>Select Employee</option>
+                    {employees.map((employee, index) => (
+                      <option className="mt-3" key={index} value={employee.id}>
+                        {employee.name}
+                      </option>
+                    ))}
+                  </Select>
                 </Flex>
 
                 <Flex>
                   {index > 0 && (
                     <Button
                       bg="#f87454"
-                      padding={3}
+                      padding={2.5}
                       type="button"
                       onClick={() => serviceRemove(index)}
                     >
@@ -195,21 +256,114 @@ const BillAddForm = () => {
             </Flex>
           </div>
 
+          {/* Add Payments */}
           <div className="mb-3">
+            {paymentsArray.map((field, index) => (
+              <Flex>
+                <Flex>
+                  <Input
+                    {...register(`bill_payments.${index}.discount`)}
+                    placeholder="Discount"
+                    type="number"
+                    className=""
+                  />
+{/* 
+                  <Select
+                    {...register(`bill_payments.${index}.payment_methods`)}
+                    className="select p-2"
+                    onChange={(event) =>
+                      setselectedPaymentMethod(event.target.value)
+                    }
+                  >
+                    <option>Payment Method</option>
+                    {paymentMethods.map((method, index) => (
+                      <option className="mt-3" key={index} value={method[1]}>
+                        {method[0]}
+                      </option>
+                    ))}
+                  </Select> */}
+                </Flex>
+                <VStack align="start">
+                  
+                    <HStack>
+                      <PaymentCashInput
+                        field={field}
+                        control={control}
+                        indexMain={index}
+                        register={register}
+                      />
+                    </HStack>
+                  
+                  <HStack>
+                    <PaymentChequeInput
+                      field={field}
+                      control={control}
+                      indexMain={index}
+                      register={register}
+                    />
+                  </HStack>
+                  <HStack>
+                    <PaymentCreditCardInput
+                      field={field}
+                      control={control}
+                      indexMain={index}
+                      register={register}
+                    />
+                  </HStack>
+                  <HStack>
+                    <PaymentCreditInput
+                      field={field}
+                      control={control}
+                      indexMain={index}
+                      register={register}
+                    />
+                  </HStack>
+                </VStack>
+
+                <Flex>
+                  {index > 0 && (
+                    <Button
+                      bg="#f87454"
+                      padding={2.5}
+                      type="button"
+                      onClick={() => paymentRemove(index)}
+                    >
+                      Remove
+                    </Button>
+                  )}
+                </Flex>
+              </Flex>
+            ))}
+            <Flex alignItems="center">
+              <Button
+                type="button"
+                onClick={() => {
+                  paymentAppend({
+                    ...({} as BillPayment),
+                  } as BillPayment);
+                }}
+              >
+                Add Payment
+              </Button>
+              <IoAddCircle />
+            </Flex>
+          </div>
+
+          <div className="mb-3 w-25">
             <Input
               {...register("discount_amount")}
               type="number"
               placeholder="Discount Amount"
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-3 w-25">
             <Input
               {...register("sub_total")}
               type="number"
               placeholder="Sub Total"
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-3 w-25">
             <Input
               {...register("custome_item_value")}
               type="text"

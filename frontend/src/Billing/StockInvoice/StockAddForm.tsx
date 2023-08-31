@@ -42,7 +42,8 @@ const StockAddForm = () => {
 
   const onSubmit = (data: StockInvoice) => {
 
-
+    console.log(data);
+    
     StockInvoiceService.create(data)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
@@ -104,14 +105,7 @@ const StockAddForm = () => {
                   />
                 </Flex>
                 <Flex>
-                  {/* <Select
-                    {...register(`stockitems.${index}.stock_item_invoice`)}
-                    className="select w-100 p-2"
-                  >
-                    <option key={index} value="2">
-                      seleted Invoice
-                    </option>
-                  </Select> */}
+                  
 
                   <Input
                     type="number"

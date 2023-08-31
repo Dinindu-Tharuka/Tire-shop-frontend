@@ -25,7 +25,7 @@ export interface PaymentCash{
     amount:number;
 }
 
-export interface BillCheque{
+export interface PaymentCheque{
     id:number;
     bill_payment:number;
     date:string;
@@ -37,7 +37,7 @@ export interface BillCheque{
     cheque_date:string;
 }
 
-export interface BillCreditCard{
+export interface PaymentCreditCard{
     id:number;
     bill_payment:number;
     date:string;
@@ -45,7 +45,7 @@ export interface BillCreditCard{
     amount:number;
 }
 
-export interface BillCredit{
+export interface PaymentCredit{
     id:number;
     bill_payment:number;
     date:string;
@@ -61,9 +61,9 @@ export interface BillPayment{
     discount:number;
     payment_methods:string;
     payments_cash:PaymentCash[];
-    payment_cheques:BillCheque[];
-    payments_credit_card:BillCreditCard[];
-    payments_credit:BillCredit[]
+    payment_cheques:PaymentCheque[];
+    payments_credit_card:PaymentCreditCard[];
+    payments_credit:PaymentCredit[]
 }
 
 export interface Bill{

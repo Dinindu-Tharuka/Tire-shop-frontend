@@ -40,7 +40,7 @@ const StockInvoiceTable = () => {
 
   const {suppliers} = useSupplier();
   const numOfPages = Math.ceil(invoicesCount/MAXIMUM_PAGES_PER_PAGE)
-  console.log(invoicesCount);
+  
   
 
   if (isLoadingInvoices)
