@@ -34,10 +34,16 @@ import PaymentChequeInput from "./Payments/PaymentChequeInput";
 import PaymentCreditCardInput from "./Payments/PaymentCreditCardInput";
 import PaymentCreditInput from "./Payments/PaymentCreditInput";
 import useItems from "../../hooks/Inventory/useItems";
+import StockItemContext from "../../Contexts/Stock/StockItemContext";
+import { StockItem } from "../../services/Stock/stock-item-service";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
-  const { register, handleSubmit, control } = useForm<Bill>();
+  const [selectedStockItemCount, setSelectedStockItemCount] = useState<number | undefined>(0)
+  const { register, handleSubmit, control, formState : {errors} } = useForm<Bill>();
+
+  
+  
 
   const paymentMethods = [
     ["Cash", "cash"],
@@ -80,19 +86,30 @@ const BillAddForm = () => {
 
   const { bills, setBills } = useContext(BillContext);
   const { items } = useItems();
-  console.log('ites', items);
   
   const { customers } = useCustomer();
-  const { stockItems } = useStockItem();
   const { services } = useService();
   const { employees } = useEmployee();
+  const { stockItems, setStockItems} = useContext(StockItemContext)
+  
 
   const onSubmit = (data: Bill) => {
 
+    console.log(data);
+
+    const newStockItem = {
+      
+    }
+    
+ 
     BillServices.create(data)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfullt Created." : "");
         setBills([res.data, ...bills]);
+        // const changedStockItem = stockItems.find(item => item.id === res.data.stock_item)
+        // if (changedStockItem){
+        // const newStockItem : StockItem = {...changedStockItem, qty:}
+        // setStockItems(stockItems.map(item => item.id === res.data.stock_item ? newStockItem : item))}
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -105,10 +122,11 @@ const BillAddForm = () => {
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 w-25">
             <Input
-              {...register("invoice_id")}
+              {...register("invoice_id", {required:'Bill number is required.'})}
               type="text"
               placeholder="Bill No"
             />
+            <Text textColor='red.600'>{errors.invoice_id?.message}</Text>
           </div>
 
           <div className="mb-3 w-25">
@@ -120,6 +138,7 @@ const BillAddForm = () => {
                 </option>
               ))}
             </Select>
+            
           </div>
 
           {/* Add Items */}
@@ -131,20 +150,29 @@ const BillAddForm = () => {
                     {...register(`bill_items.${index}.item`)}
                     className="select w-100 p-2"
                     marginRight={10}
-                    onChange={(event) => setSelectedItem(event.target.value)}
+                    onChange={(event) => {
+                      
+                      setSelectedItem(event.target.value)
+                    }}
                   >
                     <option value="">Select Item</option>
                     {items.map((item, index) => (
                       <option key={index} value={item.item_id}>
-                        {item.name}
+                        {item.item_id}
                       </option>
                     ))}
                   </Select>
                   <Select
+                  width='30vw'
                     {...register(`bill_items.${index}.stock_item`)}
-                    className="select w-100 p-2"
+                    className="select w-100 p-2"  
+                    onChange={(e)=>{
+                      setSelectedStockItemCount(stockItems.find(item => item.id === parseInt(e.target.value))?.qty)
+                      
+                      
+                    }}  
                   >
-                    <option value="">Select Stock Item</option>
+                    <option >Stock Item</option>
                     {stockItems
                       .filter((item) => item.item === selectedItem)
                       .map((stockItem, index) => (
@@ -158,15 +186,26 @@ const BillAddForm = () => {
                             <Text>({stockItem.qty})</Text>
                           </div>
                         </option>
+                        
                       ))}
                   </Select>
                 </Flex>
                 <Flex>
+                  <Flex flexDir='column' width='40vw'>
                   <Input
                     type="number"
-                    {...register(`bill_items.${index}.qty`)}
+                    {...register(`bill_items.${index}.qty`, {validate:(fieldValue)=>{
+                      
+                      if (selectedStockItemCount)
+                      return fieldValue <= selectedStockItemCount || 'Item counts not valid'
+                    }})}
                     placeholder="QTY"
                   />
+                  <Text textColor='red.600'>{errors.bill_items && errors.bill_items[index]?.qty?.message }</Text>
+                  </Flex>
+                  
+                 
+                  
                   <Input
                     type="number"
                     {...register(`bill_items.${index}.customer_discount`)}
@@ -178,8 +217,9 @@ const BillAddForm = () => {
                     placeholder="Customer Price"
                   />
                 </Flex>
+                
                 <Flex>
-                  {index > 0 && (
+                  
                     <Button
                       bg="#f87454"
                       padding={2.5}
@@ -188,10 +228,11 @@ const BillAddForm = () => {
                     >
                       Remove
                     </Button>
-                  )}
+                 
                 </Flex>
               </Flex>
             ))}
+            
             <Flex alignItems="center">
               <Button
                 type="button"

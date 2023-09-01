@@ -17,6 +17,7 @@ import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import { StockItem } from "../../services/Stock/stock-item-service";
+import useItems from "../../hooks/Inventory/useItems";
 
 const StockAddForm = () => {
   const { register, handleSubmit, control } = useForm<StockInvoice>({
@@ -37,7 +38,7 @@ const StockAddForm = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { stockInvoices, setStockInvoices } = useContext(StockInvoiceContext);
-  const { items } = useItemsPagination();
+  const { items } = useItems();
   const { suppliers } = useSupplier();
 
   const onSubmit = (data: StockInvoice) => {
@@ -91,7 +92,7 @@ const StockAddForm = () => {
                     <option>Select Item</option>
                     {items.map((item, index) => (
                       <option className="mt-3" key={index} value={item.item_id}>
-                        {item.name}
+                        {item.item_id}
                       </option>
                     ))}
                   </Select>

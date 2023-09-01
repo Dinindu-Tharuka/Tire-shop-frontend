@@ -13,6 +13,7 @@ import BillingMainPage from "../Billing/MainPage/BillingMainPage";
 import BillTable from "../Billing/Bill/BillTable";
 import StockInvoiceTable from "../Billing/StockInvoice/StockInvoiceTable";
 import RebuiltMainPage from "../Billing/Rebuilt/MainPage/RebuiltMainPage";
+import Login from "../Authentication/Login";
 
 const routes = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const routes = createBrowserRouter([
       },
     ],
   },
+  {
+    path:"/login",
+    element: <Login/>
+  }
 ]);
 
 export default routes;

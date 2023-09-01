@@ -12,6 +12,8 @@ import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 const BillingMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
+  
+
   const {
     bills,
     setBills,
@@ -78,10 +80,7 @@ const BillingMainPage = () => {
               height={{ base: "10vh", lg: "85vh" }}
               width={{ base: "100vw", lg: "60vw" }}
             >
-              {
-                (billFetchError || errorFetchStockInvoice) &&
-                (bills.length === 0 || stockInvoices.length === 0) && 
-                (<Text textColor="red">Unable to fetch data from the internet</Text>)}
+              
               <Outlet />
             </GridItem>
             <GridItem
