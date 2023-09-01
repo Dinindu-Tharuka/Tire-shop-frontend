@@ -8,9 +8,19 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
+import { Link, Navigate } from "react-router-dom";
 
 const SignOut = () => {
   const {toggleColorMode, colorMode} = useColorMode();
+  const signOut = ()=>{
+    console.log('Sign out');
+    console.log(localStorage.getItem('access'));
+    
+    
+   localStorage.removeItem('access')
+   localStorage.removeItem('refresh')
+
+  }
   return (
     <Center width="100%" marginTop={7}>
       <Flex
@@ -44,8 +54,11 @@ const SignOut = () => {
             borderRadius={20}
             boxShadow='dark-lg'
             marginBottom={20}
+            onClick={signOut}
           >
+            <Link to='/login' >
             Sign Out
+            </Link>
           </Button>
         </VStack>
       </Flex>

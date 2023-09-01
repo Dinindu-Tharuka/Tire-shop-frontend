@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import apiClient from "../services/api-client";
 import axios from "axios";
 import { Button, Input, useColorMode } from "@chakra-ui/react";
 import createTokens from "../services/http-service-token";
 import TokenService, { Token } from "../services/Authentication/token-service";
+import { Navigate } from "react-router-dom";
 
 export interface LoginForm {
   username: string;
@@ -14,9 +15,19 @@ export interface LoginForm {
 const Login = () => {
   const { register, handleSubmit } = useForm<LoginForm>();  
   const { toggleColorMode, colorMode } = useColorMode();
+  const [accessToken, setAccessToken] = useState<string | null>('')
+
+  useEffect(()=>{
+    setAccessToken(localStorage.getItem('access'))
+
+  },[])
+
+
+  if (accessToken)
+    return <Navigate to='/'/>
 
   const onSubmitForm = (data: LoginForm)=>{
-    console.log('Login Data', data);
+ 
 
    TokenService
         .getTokens<Token>(data)
@@ -25,6 +36,8 @@ const Login = () => {
             localStorage.clear()
             localStorage.setItem('access', res.data.access)
             localStorage.setItem('refresh', res.data.refresh)
+            setAccessToken(res.data.access)
+            
         }
         )
     

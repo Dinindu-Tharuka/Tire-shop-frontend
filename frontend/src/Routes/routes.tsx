@@ -14,45 +14,52 @@ import BillTable from "../Billing/Bill/BillTable";
 import StockInvoiceTable from "../Billing/StockInvoice/StockInvoiceTable";
 import RebuiltMainPage from "../Billing/Rebuilt/MainPage/RebuiltMainPage";
 import Login from "../Authentication/Login";
+import PrivateRoutes from "./PrivateRoutes";
 
 const routes = createBrowserRouter([
-  {
-    path: "/",
-    element: <GridSection />,
-    children: [
-      { index: true, element: <MainImage /> },
-      {
-        path: "inventory",
-        element: <Inventory />,
-        children: [
-          { path: "", element: <ItemTable /> },
-          { path: "categories", element: <CategoryTable /> },
-        ],
-      },
-      { path: "customer", element: <CustomerMainPage /> },
-      {
-        path: "registration",
-        element: <RegistraionMainPage />,
-        children: [
-          { path: "suppliers", element: <SupplierTable /> },
-          { path: "employees", element: <EmployeeTable /> },
-          { path: "services", element: <ServicesTable /> },
-        ],
-      },
-      {
-        path: "billing",
-        element: <BillingMainPage />,
-        children: [
-          { path: "", element: <BillTable /> },
-          { path: "rebuilt", element: <RebuiltMainPage /> },
-          { path: "stock-invoice", element: <StockInvoiceTable /> },
-        ],
-      },
-    ],
-  },
+  
   {
     path:"/login",
     element: <Login/>
+  },
+  {
+    element: <PrivateRoutes/>,
+    children:[
+      {
+        path: "/",
+        element: <GridSection />,
+        children: [
+          { index: true, element: <MainImage /> },
+          {
+            path: "inventory",
+            element: <Inventory />,
+            children: [
+              { path: "", element: <ItemTable /> },
+              { path: "categories", element: <CategoryTable /> },
+            ],
+          },
+          { path: "customer", element: <CustomerMainPage /> },
+          {
+            path: "registration",
+            element: <RegistraionMainPage />,
+            children: [
+              { path: "suppliers", element: <SupplierTable /> },
+              { path: "employees", element: <EmployeeTable /> },
+              { path: "services", element: <ServicesTable /> },
+            ],
+          },
+          {
+            path: "billing",
+            element: <BillingMainPage />,
+            children: [
+              { path: "", element: <BillTable /> },
+              { path: "rebuilt", element: <RebuiltMainPage /> },
+              { path: "stock-invoice", element: <StockInvoiceTable /> },
+            ],
+          },
+        ],
+      },
+    ]
   }
 ]);
 
