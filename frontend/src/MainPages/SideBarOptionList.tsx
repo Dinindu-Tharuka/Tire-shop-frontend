@@ -20,6 +20,7 @@ import { RxAvatar } from "react-icons/rx";
 import { RiShutDownLine } from "react-icons/ri";
 import SignOut from "../componants/SignOut";
 import { Link } from "react-router-dom";
+import { MouseEventHandler } from "react";
 
 const SideBarOptionList = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -52,7 +53,7 @@ const SideBarOptionList = () => {
     "/billing",
     "/inventory",
     "/registration",
-    "/",
+    "/login",
   ];
 
   const icons_lg = [
@@ -71,6 +72,15 @@ const SideBarOptionList = () => {
     PiContactlessPayment,
     RxAvatar,
   ];
+
+  //Sign Out
+  const signout = (option:string)=>{
+    if (option == 'Sign out'){
+      localStorage.clear()
+    }
+      
+
+  }
 
   // Large Screens
   const sideBar = options_lg.map((option, index) => (
@@ -107,7 +117,7 @@ const SideBarOptionList = () => {
     <HStack padding={5} key={index}>
       <Icon color="gray.500" key={index} as={icons_base[index]} />
       <Button variant="link" textAlign="left">
-        <Link to={links_base[index]}>{option}</Link>
+        <Link to={links_base[index]} onClick={()=>signout(option)}>{option}</Link>
       </Button>
     </HStack>
   ));

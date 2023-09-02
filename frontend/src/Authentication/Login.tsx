@@ -28,8 +28,8 @@ const Login = () => {
       localStorage.clear()
       localStorage.setItem("access", res.data.access);
       localStorage.setItem("refresh", res.data.refresh);
-      setAccessToken(res.data.access);
       window.location.reload()
+      setAccessToken(res.data.access);
       
     });
   };
