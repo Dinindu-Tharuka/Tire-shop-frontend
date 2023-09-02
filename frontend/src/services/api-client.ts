@@ -2,8 +2,9 @@ import axios, {AxiosError, AxiosRequestConfig, CanceledError, InternalAxiosReque
 import dayjs from 'dayjs';
 import jwtDecode from 'jwt-decode';
 import apiClientBase from './api-client-base';
+import { useEffect, useState } from 'react';
 
-interface User{    
+export interface User{    
         token_type: string;
         exp: number,
         iat: number,
@@ -12,15 +13,25 @@ interface User{
       
 }
 
+const access = localStorage.getItem('access') ? localStorage.getItem('access') : null
+
 const axiosInstance =  axios.create({
     baseURL:'http://127.0.0.1:8000/api',
     headers:{
-        Authorization:`Bearer ${localStorage.getItem('access')}`
+        Authorization:`Bearer ${access}`
     }
    
+   
 })
-const onRequest = (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
-    const access_token = localStorage.getItem('access')    
+const onRequest =(config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig>  => {
+    let access_token = localStorage.getItem('access')
+    if (!access_token){
+        access_token = (localStorage.getItem('access'));
+        config.headers.Authorization = `Bearer ${access_token}`
+    }
+    console.log('acces_token111',access_token);
+    
+    // const access_token = localStorage.getItem('access')    
     const refresh_token = localStorage.getItem('refresh')    
     const user:User = jwtDecode(access_token ? access_token : '')
     const isExpired = dayjs.unix(user?.exp).diff(dayjs()) < 1;

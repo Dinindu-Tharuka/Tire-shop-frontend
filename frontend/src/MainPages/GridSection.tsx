@@ -4,14 +4,24 @@ import SideBarOptionList from "./SideBarOptionList";
 import Inventory from "../componants/Inventory/Main Page/Inventory";
 import MainImage from "../componants/MainImage";
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import TokenContext from "../Contexts/Auth/TokenContex";
 
 const GridSection = () => {
+  const [access, setAccess] = useState<string | null>('')
+  const [refresh, setRefresh] = useState('')
+
+  
+
+  
   return (
+    <TokenContext.Provider value={{access, setAccess, refresh, setRefresh}}>
     <Grid
       templateAreas={{
         base: `"nav" "side" "main"`,
         lg: `"nav nav" "side main"`,
       }}
+      
     >
       <GridItem
         area="nav"
@@ -37,6 +47,7 @@ const GridSection = () => {
         <Outlet />
       </GridItem>
     </Grid>
+    </TokenContext.Provider>
   );
 };
 

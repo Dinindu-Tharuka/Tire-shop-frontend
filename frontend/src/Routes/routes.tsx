@@ -15,12 +15,13 @@ import StockInvoiceTable from "../Billing/StockInvoice/StockInvoiceTable";
 import RebuiltMainPage from "../Billing/Rebuilt/MainPage/RebuiltMainPage";
 import Login from "../Authentication/Login";
 import PrivateRoutes from "./PrivateRoutes";
+import LoginPage from "../Authentication/LoginPage";
 
 const routes = createBrowserRouter([
   
   {
     path:"/login",
-    element: <Login/>
+    element: <LoginPage/>
   },
   {
     element: <PrivateRoutes/>,

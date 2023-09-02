@@ -13,54 +13,49 @@ export interface LoginForm {
 }
 
 const Login = () => {
-  const { register, handleSubmit } = useForm<LoginForm>();  
+  const { register, handleSubmit } = useForm<LoginForm>();
   const { toggleColorMode, colorMode } = useColorMode();
-  const [accessToken, setAccessToken] = useState<string | null>('')
+  const [accessToken, setAccessToken] = useState<string | null>("");
 
-  useEffect(()=>{
-    setAccessToken(localStorage.getItem('access'))
+  useEffect(() => {
+    setAccessToken(localStorage.getItem("access"));
+  }, []);
 
-  },[])
+  if (accessToken) return <Navigate to="/" />;
 
-
-  if (accessToken)
-    return <Navigate to='/'/>
-
-  const onSubmitForm = (data: LoginForm)=>{
- 
-
-   TokenService
-        .getTokens<Token>(data)
-        .then(res => {
-            console.log(res.data)
-            localStorage.clear()
-            localStorage.setItem('access', res.data.access)
-            localStorage.setItem('refresh', res.data.refresh)
-            setAccessToken(res.data.access)
-            
-        }
-        )
-    
-    
-        
-  } 
-
-
+  const onSubmitForm =(data: LoginForm) => {
+    TokenService.getTokens<Token>(data).then((res) => {
+      localStorage.clear()
+      localStorage.setItem("access", res.data.access);
+      localStorage.setItem("refresh", res.data.refresh);
+      setAccessToken(res.data.access);
+      window.location.reload()
+      
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <div className="mb-3 h-75">
-        <Input {...register("username")} type="text" placeholder="Username" />
+        <Input
+          {...register("username")}
+          borderColor="#ea6262"
+          type="text"
+          placeholder="Username"
+          bg='whiteAlpha.800'
+        />
       </div>
       <div className="mb-3 h-75">
         <Input
           {...register("password")}
           type="password"
           placeholder="Password"
+          borderColor="#ea6262"
+          bg='whiteAlpha.800'
         />
       </div>
 
-      <Button type="submit" bg={colorMode === "light" ? "#e3a99c" : "#575757"}>
+      <Button type="submit" bg="#dd0939">
         Login
       </Button>
     </form>
