@@ -6,4 +6,4 @@ export interface Token{
 }
 
 
-export default createTokens('/token/')
+export default createTokens('/jwt/create/')

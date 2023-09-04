@@ -6,16 +6,17 @@ import dayjs from "dayjs";
 
 const PrivateRoutes = () => {
     const access_token = localStorage.getItem('access')
+    console.log('access', access_token);
+    
+    let isExpired = null
     if (access_token){
         const user:User = jwtDecode(access_token ? access_token : '')
-        const isExpired = dayjs.unix(user?.exp).diff(dayjs()) < 1;
+        isExpired = dayjs.unix(user?.exp).diff(dayjs()) < 1;
         if (isExpired)
             return <Navigate to='/login'/>
-
+        return <Outlet/>
     }
-    if (!access_token){        
-            return <Navigate to='/login'/>}
-    return <Outlet/>
+  
 }
 
 export default PrivateRoutes

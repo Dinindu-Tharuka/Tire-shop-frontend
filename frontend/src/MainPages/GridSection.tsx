@@ -11,7 +11,9 @@ const GridSection = () => {
   const [access, setAccess] = useState<string | null>('')
   const [refresh, setRefresh] = useState('')
 
-  
+  if (!localStorage.getItem('access')){
+    location.reload()
+  }
 
   
   return (

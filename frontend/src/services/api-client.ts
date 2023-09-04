@@ -23,42 +23,41 @@ const axiosInstance =  axios.create({
    
    
 })
-const onRequest =(config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig>  => {
-    let access_token = localStorage.getItem('access')
-    if (!access_token){
-        access_token = (localStorage.getItem('access'));
-        config.headers.Authorization = `Bearer ${access_token}`
-    }
-    console.log('acces_token111',access_token);
+// const onRequest =(config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig>  => {
+//     let access_token = localStorage.getItem('access')
     
-    // const access_token = localStorage.getItem('access')    
-    const refresh_token = localStorage.getItem('refresh')    
-    const user:User = jwtDecode(access_token ? access_token : '')
-    const isExpired = dayjs.unix(user?.exp).diff(dayjs()) < 1;
+//     console.log('acces_token111',access_token);
+    
+//     // const access_token = localStorage.getItem('access')    
+//     const refresh_token = localStorage.getItem('refresh')    
+//     const user:User = jwtDecode(access_token ? access_token : '')
+//     const isExpired = dayjs.unix(user?.exp).diff(dayjs()) < 1;
 
-    if (!isExpired)
-        return Promise.resolve(config);
-    
-    apiClientBase.post('/token/refresh/',  {
-        refresh:refresh_token
-    }).then(res =>{ 
-        console.log(res.data)
-        localStorage.setItem('access', res.data.access)
-        localStorage.setItem('refresh', res.data.refresh)
-        config.headers.Authorization = `Bearer ${res.data.access}`
-    }
-    )
-    
-    return Promise.resolve(config)
-    
-}
+//     if (!isExpired)
+//         return Promise.resolve(config);
+//     else{
+//         apiClientBase.post('/token/refresh/',  {
+//             refresh:refresh_token
+//         }).then(res =>{ 
+//             console.log(res.data)
+//             localStorage.setItem('access', res.data.access)
+//             localStorage.setItem('refresh', res.data.refresh)
+//             config.headers.Authorization = `Bearer ${res.data.access}`
+//         }
+//         )
 
-const onRequestError = (error: AxiosError): Promise<AxiosError> => {
-    console.error(`[request error] [${JSON.stringify(error)}]`);
-    return Promise.reject(error);
-}
+//     }
+    
+//     return Promise.resolve(config)
+    
+// }
 
-axiosInstance.interceptors.request.use(onRequest, onRequestError)
+// const onRequestError = (error: AxiosError): Promise<AxiosError> => {
+//     console.error(`[request error] [${JSON.stringify(error)}]`);
+//     return Promise.reject(error);
+// }
+
+// axiosInstance.interceptors.request.use(onRequest, onRequestError)
 
 export default axiosInstance
 

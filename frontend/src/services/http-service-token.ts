@@ -1,5 +1,6 @@
 import { LoginForm } from "../Authentication/Login";
-import apiClientBase from "./api-client-base"
+import axiosInstance from "./api-client";
+
 
 class HttpServiceToken{
     endpoint:string
@@ -7,9 +8,10 @@ class HttpServiceToken{
         this.endpoint = endpoint
 
     }
+    
 
     getTokens<T>( form : LoginForm){
-        return apiClientBase.post<T>(`${this.endpoint}`, form)
+        return axiosInstance.post<T>(`${this.endpoint}`, form)
     }
 }
 

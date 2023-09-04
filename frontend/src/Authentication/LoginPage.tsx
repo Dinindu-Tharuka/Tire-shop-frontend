@@ -20,7 +20,7 @@ const LoginPage = () => {
         borderRadius={50}
       >
         <Flex width="40vw" justifyContent="center" alignItems="center">
-          <Box>
+          <Box width='20vw' height='40vh'>
             <Login />
           </Box>
         </Flex>
