@@ -3,8 +3,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import apiClient from "../services/api-client";
 import axios from "axios";
 import { Button, Input, background, useColorMode } from "@chakra-ui/react";
-import createTokens from "../services/http-service-token";
-import TokenService, { Token } from "../services/Authentication/token-service";
 import { Navigate } from "react-router-dom";
 import axiosInstance from "../services/api-client";
 
@@ -32,10 +30,11 @@ const Login = () => {
       localStorage.clear();
       console.log("responce", res.data);
 
+      
+
       localStorage.setItem("access", res.data.access);
       localStorage.setItem("refresh", res.data.refresh);
       setAccessToken(res.data.access);
-    
     });
 
     // TokenService.getTokens<Token>(data).then((res) => {

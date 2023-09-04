@@ -13,12 +13,12 @@ export interface User{
       
 }
 
-const access = localStorage.getItem('access') ? localStorage.getItem('access') : null
 
 const axiosInstance =  axios.create({
     baseURL:'http://127.0.0.1:8000/api',
     headers:{
-        Authorization:`Bearer ${access}`
+        "Authorization":`Bearer ${localStorage.getItem('access') ? localStorage.getItem('access') : null}`,
+        "Content-Type":'application/json',
     }
    
    

@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 
 const PrivateRoutes = () => {
     const access_token = localStorage.getItem('access')
-    console.log('access', access_token);
     
     let isExpired = null
     if (access_token){
@@ -15,6 +14,8 @@ const PrivateRoutes = () => {
         if (isExpired)
             return <Navigate to='/login'/>
         return <Outlet/>
+    } else{
+        return <Navigate to='/login'/>
     }
   
 }
