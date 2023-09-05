@@ -13,15 +13,19 @@ import BillingMainPage from "../Billing/MainPage/BillingMainPage";
 import BillTable from "../Billing/Bill/BillTable";
 import StockInvoiceTable from "../Billing/StockInvoice/StockInvoiceTable";
 import RebuiltMainPage from "../Billing/Rebuilt/MainPage/RebuiltMainPage";
-import Login from "../Authentication/Login";
 import PrivateRoutes from "./PrivateRoutes";
 import LoginPage from "../Authentication/LoginPage";
+import PasswordReset from "../Authentication/PasswordReset";
 
 const routes = createBrowserRouter([
   
   {
     path:"/login",
     element: <LoginPage/>
+  },
+  {
+    path:"/password/reset/:uid/:token",
+    element: <PasswordReset/>
   },
   {
     element: <PrivateRoutes/>,
