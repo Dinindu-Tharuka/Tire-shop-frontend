@@ -1,7 +1,7 @@
 import axios, {AxiosError, AxiosRequestConfig, CanceledError, InternalAxiosRequestConfig} from 'axios'
 
 
-export interface User{    
+export interface UserToken{    
         token_type: string;
         exp: number,
         iat: number,

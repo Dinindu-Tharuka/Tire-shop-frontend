@@ -3,23 +3,20 @@ import Navbar from "../componants/Navbar";
 import SideBarOptionList from "./SideBarOptionList";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import TokenContext from "../Contexts/Auth/TokenContex";
 
 const GridSection = () => {
   const [access, setAccess] = useState<string | null>("");
   const [refresh, setRefresh] = useState("");
 
-  useEffect(()=>{
-    const hasReloadedBefore = localStorage.getItem('hasReloaded');
-    if(!hasReloadedBefore){
-      localStorage.setItem('hasReloaded', 'true');
-      window.location.reload()
+  useEffect(() => {
+    const hasReloadedBefore = localStorage.getItem("hasReloaded");
+    if (!hasReloadedBefore) {
+      localStorage.setItem("hasReloaded", "true");
+      window.location.reload();
     }
-  }, [])
-  
+  }, []);
 
   return (
-    <TokenContext.Provider value={{ access, setAccess, refresh, setRefresh }}>
       <Grid
         templateAreas={{
           base: `"nav" "side" "main"`,
@@ -50,7 +47,6 @@ const GridSection = () => {
           <Outlet />
         </GridItem>
       </Grid>
-    </TokenContext.Provider>
   );
 };
 

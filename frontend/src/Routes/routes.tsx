@@ -16,6 +16,7 @@ import RebuiltMainPage from "../Billing/Rebuilt/MainPage/RebuiltMainPage";
 import PrivateRoutes from "./PrivateRoutes";
 import LoginPage from "../Authentication/LoginPage";
 import PasswordReset from "../Authentication/PasswordReset";
+import UserPage from "../Registration/User/UserPage";
 
 const routes = createBrowserRouter([
   
@@ -48,9 +49,10 @@ const routes = createBrowserRouter([
             path: "registration",
             element: <RegistraionMainPage />,
             children: [
+              { path: "", element: <EmployeeTable /> },
               { path: "suppliers", element: <SupplierTable /> },
-              { path: "employees", element: <EmployeeTable /> },
               { path: "services", element: <ServicesTable /> },
+              { path: "user", element: <UserPage /> },
             ],
           },
           {

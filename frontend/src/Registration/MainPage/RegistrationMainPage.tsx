@@ -8,9 +8,21 @@ import useEmployee from "../../hooks/Registration/useEmployee";
 import EmployeeContext from "../../Contexts/Registration/EmployeeContecxt";
 import ServiceContext from "../../Contexts/Registration/ServiceContext";
 import useService from "../../hooks/Registration/useService";
+import UserContext from "../../Contexts/User/UserContext";
+import useUser from "../../hooks/User/useUser";
 
 const RegistraionMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
+  const {
+    users,
+    setUsers,
+    errorFetchStockItems,
+    nextUserPageUrl,
+    previousUserPageUrl,
+    setFilterUserPageParams,
+    isLoadingUsers,
+    userCount,
+  } = useUser();
   const {
     suppliers,
     setSuppliers,
@@ -21,7 +33,7 @@ const RegistraionMainPage = () => {
     errorFetchSupplier,
     isLoadingSupplierPage,
     suppliersCount,
-    setErrorFetchSupplier
+    setErrorFetchSupplier,
   } = useSupplier();
   const {
     services,
@@ -32,7 +44,7 @@ const RegistraionMainPage = () => {
     setFilterServiceParams,
     isLaodingServicePage,
     errorFetchService,
-    servicesCount
+    servicesCount,
   } = useService();
 
   const {
@@ -45,80 +57,92 @@ const RegistraionMainPage = () => {
     errorFetchEmployee,
     isLoadingEmployees,
     employeeCount,
-    setErrorFetchEmployee
-
+    setErrorFetchEmployee,
   } = useEmployee();
 
   return (
-    <ServiceContext.Provider
+    <UserContext.Provider
       value={{
-        services,
-        setServices,
-        nextServiceUrl,
-        previousServiceUrl,
-        filterServiceParams,
-        setFilterServiceParams,
-        isLaodingServicePage,
-        servicesCount,
-        errorFetchService
+        users,
+        setUsers,
+        errorFetchStockItems,
+        nextUserPageUrl,
+        previousUserPageUrl,
+        setFilterUserPageParams,
+        isLoadingUsers,
+        userCount,
       }}
     >
-      <EmployeeContext.Provider
+      <ServiceContext.Provider
         value={{
-          employees,
-          setEmployees,
-          nextEmployeeUrl,
-          previousEmployeeUrl,
-          filterEmployeeParams,
-          setFilterEmployeeParams,
-          errorFetchEmployee,
-          isLoadingEmployees,
-          employeeCount,
-          setErrorFetchEmployee
+          services,
+          setServices,
+          nextServiceUrl,
+          previousServiceUrl,
+          filterServiceParams,
+          setFilterServiceParams,
+          isLaodingServicePage,
+          servicesCount,
+          errorFetchService,
         }}
       >
-        <SupplierContext.Provider
+        <EmployeeContext.Provider
           value={{
-            suppliers,
-            setSuppliers,
-            nextSupplierUrl,
-            previousSupplierUrl,
-            filterSupplierParams,
-            setFilterSupplierParams,
-            suppliersCount,
-            isLoadingSupplierPage,
-            errorFetchSupplier,
-            setErrorFetchSupplier
+            employees,
+            setEmployees,
+            nextEmployeeUrl,
+            previousEmployeeUrl,
+            filterEmployeeParams,
+            setFilterEmployeeParams,
+            errorFetchEmployee,
+            isLoadingEmployees,
+            employeeCount,
+            setErrorFetchEmployee,
           }}
         >
-          <Grid
-            templateAreas={{
-              lg: `"main aside"`,
-              base: `"aside" "main"`,
+          <SupplierContext.Provider
+            value={{
+              suppliers,
+              setSuppliers,
+              nextSupplierUrl,
+              previousSupplierUrl,
+              filterSupplierParams,
+              setFilterSupplierParams,
+              suppliersCount,
+              isLoadingSupplierPage,
+              errorFetchSupplier,
+              setErrorFetchSupplier,
             }}
           >
-            <GridItem
-              area="main"
-              height={{ base: "10vh", lg: "85vh" }}
-              width={{ base: "100vw", lg: "60vw" }}
+            <Grid
+              templateAreas={{
+                lg: `"main aside"`,
+                base: `"aside" "main"`,
+              }}
             >
-              <Outlet />
-            </GridItem>
-            <GridItem
-              area="aside"
-              height={{ base: "10vh", lg: "85vh" }}
-              width={{ base: "100vw", lg: "15vw" }}
-              boxShadow="dark-lg"
-              borderRadius={30}
-              padding={5}
-              bg={colorMode === "light" ? "#ca5c4f" : ""}
-            >
-              <RegistrationSidePanel />
-            </GridItem>
-          </Grid>
-        </SupplierContext.Provider>
-      </EmployeeContext.Provider>
-    </ServiceContext.Provider>
+              <GridItem
+                area="main"
+                height={{ base: "10vh", lg: "85vh" }}
+                width={{ base: "100vw", lg: "60vw" }}
+              >
+                <Outlet />
+              </GridItem>
+              <GridItem
+                area="aside"
+                height={{ base: "10vh", lg: "85vh" }}
+                width={{ base: "100vw", lg: "15vw" }}
+                boxShadow="dark-lg"
+                borderRadius={30}
+                padding={5}
+                bg={colorMode === "light" ? "#ca5c4f" : ""}
+              >
+                <RegistrationSidePanel />
+              </GridItem>
+            </Grid>
+          </SupplierContext.Provider>
+        </EmployeeContext.Provider>
+      </ServiceContext.Provider>
+    </UserContext.Provider>
   );
 };
 
