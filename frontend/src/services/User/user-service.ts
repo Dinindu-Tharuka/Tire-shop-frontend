@@ -1,9 +1,12 @@
-import createPagination from "../http-pagination-service";
+
+import create from "../http-service";
 
 export interface User{
     id:number;
     user_name:string;
-    email: string
+    email: string,
+    is_manager:boolean,
+    is_superuser:boolean
 }
 export interface UserPageStructure{
     count:number;
@@ -12,4 +15,4 @@ export interface UserPageStructure{
     results:User[]
 }
 
-export default createPagination('/users/')
+export default create('/user/')

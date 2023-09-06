@@ -16,13 +16,13 @@ const RegistraionMainPage = () => {
   const {
     users,
     setUsers,
-    errorFetchStockItems,
-    nextUserPageUrl,
-    previousUserPageUrl,
-    setFilterUserPageParams,
+    errorFetchUsers,
     isLoadingUsers,
-    userCount,
+    setErrorFetchUser,
   } = useUser();
+
+  console.log('user_main',users);
+  
   const {
     suppliers,
     setSuppliers,
@@ -65,12 +65,10 @@ const RegistraionMainPage = () => {
       value={{
         users,
         setUsers,
-        errorFetchStockItems,
-        nextUserPageUrl,
-        previousUserPageUrl,
-        setFilterUserPageParams,
+        errorFetchUsers,
         isLoadingUsers,
-        userCount,
+        setErrorFetchUser,
+        
       }}
     >
       <ServiceContext.Provider

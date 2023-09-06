@@ -17,7 +17,7 @@ const Login = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const [accessToken, setAccessToken] = useState<string | null>("");
   const [isShowEmailBox, setIsShowEmailBox] = useState(false);
-  const [isResetEmailSuccess, setIsResetEmailSuccess] = useState(false)
+  const [isResetEmailSuccess, setIsResetEmailSuccess] = useState(false);
 
   if (accessToken) return <Navigate to="/" />;
 
@@ -116,7 +116,11 @@ const Login = () => {
             Get url
           </Button>
 
-          {isResetEmailSuccess && <Text align='center' textColor='#e6e668'>Email Succefully sent to your Email Account.</Text>}
+          {isResetEmailSuccess && (
+            <Text align="center" textColor="#e6e668">
+              Email Succefully sent to your Email Account.
+            </Text>
+          )}
         </form>
       )}
     </>

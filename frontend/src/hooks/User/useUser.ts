@@ -3,28 +3,26 @@ import UserService, { User, UserPageStructure } from "../../services/User/user-s
 
 const useUser = () => {
     const [users, setUsers] = useState<User[]>([])
-    const [errorFetchStockItems, setErrorFetchStockItems] = useState('')
-    const [nextUserPageUrl, setNextUserPageUrl] = useState<string | null>('')
-    const [previousUserPageUrl, setPreviousUserPageUrl] = useState<string | null>('')
-    const [filterUserPageParams, setFilterUserPageParams] = useState<string | null>('')
+    const [errorFetchUsers, setErrorFetchUser] = useState('')
     const [isLoadingUsers, setIsLoadingUsers] = useState(false) 
-    const [userCount, setUserCount] = useState(0)
+
 
     useEffect(()=>{
-        const {request, cancel} = UserService.getAll<UserPageStructure>(filterUserPageParams)
+        const {request, cancel} = UserService.getAll<User>()
         request
           .then(res=>{
-            setUsers(res.data.results)
-            setNextUserPageUrl(res.data.next)
-            setPreviousUserPageUrl(res.data.previous)
+            console.log('res', res);
+            
+            setUsers(res.data)
+            
+        
             setIsLoadingUsers(false)
-            setUserCount(res.data.count)
           })
-          .catch(err=> setErrorFetchStockItems(err.message === 'canceled'?'':err.message))
+          .catch(err=> setErrorFetchUser(err.message === 'canceled'?'':err.message))
 
         return ()=> cancel();
     }, [])
-  return {users, setUsers, errorFetchStockItems, nextUserPageUrl, previousUserPageUrl, setFilterUserPageParams, isLoadingUsers, userCount}
+  return {users, setUsers, errorFetchUsers, setErrorFetchUser, isLoadingUsers}
 }
 
 export default useUser

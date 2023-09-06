@@ -16,7 +16,7 @@ import RebuiltMainPage from "../Billing/Rebuilt/MainPage/RebuiltMainPage";
 import PrivateRoutes from "./PrivateRoutes";
 import LoginPage from "../Authentication/LoginPage";
 import PasswordReset from "../Authentication/PasswordReset";
-import UserPage from "../Registration/User/UserPage";
+import UserListTable from "../Registration/User/UserListTable";
 
 const routes = createBrowserRouter([
   
@@ -52,7 +52,7 @@ const routes = createBrowserRouter([
               { path: "", element: <EmployeeTable /> },
               { path: "suppliers", element: <SupplierTable /> },
               { path: "services", element: <ServicesTable /> },
-              { path: "user", element: <UserPage /> },
+              { path: "user", element: <UserListTable /> },
             ],
           },
           {
