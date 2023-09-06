@@ -21,6 +21,7 @@ import AddItemDrawer from "../../componants/Inventory/Item/AddItemDrawer";
 import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
 import AddServiceDrawer from "../Services/AddServiceDrawer";
 import AddEmployeeDrawer from "../Employee/AddEmployeeDrawer";
+import UserAddDrawer from "../User/UserAddDrawer";
 
 const RegistrationSidePanel = () => {
   const registerList = ["Employees", "Suppliers", "Services", "User"];
@@ -51,13 +52,13 @@ const RegistrationSidePanel = () => {
           <AccordionPanel pb={4} bg={colorMode === "light" ? "#f1cac1" : ""}>
             {options.map((option, num) =>
               index === 0 ? (
-                <AddItemDrawer key={num} />
-              ) : index === 1 ? (
                 <AddEmployeeDrawer key={num} />
-              ) : index === 2 ? (
+              ) : index === 1 ? (
                 <AddSupplierDrawer key={num} />
+              ) : index === 2 ? (
+                <AddServiceDrawer key={num} />
               ) : index === 3 ? (
-                <AddServiceDrawer />
+                <UserAddDrawer />
               ) : null
             )}
           </AccordionPanel>

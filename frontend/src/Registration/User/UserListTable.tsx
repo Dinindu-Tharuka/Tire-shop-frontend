@@ -35,7 +35,7 @@ const UserListTable = () => {
       )}
       <TableContainer>
       <Text fontWeight="semibold" align='center'>
-          Users Count {users.length}
+          Users ({users.length})
         </Text>
         <Table>
           <Thead>
