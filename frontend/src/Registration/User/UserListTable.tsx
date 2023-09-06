@@ -40,22 +40,22 @@ const UserListTable = () => {
         <Table>
           <Thead>
             <Tr>
+              <Th></Th>
               <Th>Id</Th>
               <Th>User Name</Th>
               <Th>Email</Th>  
               <Th>Designation</Th>
-              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
             {users?.map((user, index) => {
               return (
                 <Tr key={user.id}>
+                  <Td><UserDeleteDrawer selectedDeleteUser={user}/></Td>            
                   <Td>{user.id}</Td>
                   <Td>{user.user_name}</Td>
                   <Td>{user.email}</Td>    
                   <Td>{user.is_manager ? 'Manager': user.is_superuser ? 'Superuser': 'Cashier'}</Td>  
-                  <Td><UserDeleteDrawer selectedDeleteUser={user}/></Td>            
                 </Tr>
               );
             })}

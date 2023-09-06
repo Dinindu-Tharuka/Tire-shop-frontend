@@ -51,24 +51,24 @@ const CategoryTable = () => {
         <Table>
           <Thead>
             <Tr>
+              <Th></Th>
+              <Th></Th>
               <Th>Category Name</Th>
               <Th>Description</Th>
-              <Th></Th>
-              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
             {categories?.map((category, index) => (
               <Tr key={category.id}>
-                <Td>{category.category_name}</Td>
-                <Td>{category.description}</Td>
-
                 <Td>
                   <UpdateCategoryDrawer updateCategory={category} />
                 </Td>
                 <Td>
                   <DeleteCategory selectedDeleteCategory={category} />
                 </Td>
+                <Td>{category.category_name}</Td>
+                <Td>{category.description}</Td>
+
               </Tr>
             ))}
           </Tbody>

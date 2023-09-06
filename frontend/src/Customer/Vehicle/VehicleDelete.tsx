@@ -6,39 +6,37 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { useRef } from "react";
-import userService, { User } from "../../services/User/user-service";
-import UserContext from "../../Contexts/User/UserContext";
+import vehicleService, { Vehicle } from "../../services/Customer/vehicle-service";
+import VehicleContext from "../../Contexts/Customer/VehicleContext";
 
 interface Props {
-  selectedDeleteUser: User;
+  selectedDeleteVehicle: Vehicle;
 }
 
-const UserDeleteDrawer = ({ selectedDeleteUser }: Props) => {
+const VehicleDelete = ({ selectedDeleteVehicle }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const deleteToast = useToast();
 
-  const { users, setUsers } = useContext(UserContext);
-  const user_can_not_delete_message = <Text textColor='red.700'>You can't delete this user.</Text>;
+  const { vehicles, setVehicles } = useContext(VehicleContext);
+  const mainName = "Vehicle";
 
-  const onDeleteUser = (user: User) => {
-    const originalUsers = [...users];
+  const onDeleteCustomer = (vehicle: Vehicle) => {
+    const originalCustomers = [...vehicles];
 
-    setUsers(users.filter((u) => u.id !== user.id));
+    setVehicles(vehicles.filter((veh) => veh.vehical_no !== vehicle.vehical_no));
 
-    userService
-      .delete(`${user.id}`)
+    vehicleService.delete(`${vehicle.vehical_no}`)
       .then((res) => {
         if (res.status === 204) {
           deleteToast({
-            title: "User",
-            description: "User successfully deleted.",
+            title: `${mainName}`,
+            description: `${mainName} successfully deleted.`,
             status: "success",
             duration: 2000,
             isClosable: true,
@@ -46,11 +44,11 @@ const UserDeleteDrawer = ({ selectedDeleteUser }: Props) => {
         }
       })
       .catch((err) => {
-        setUsers(originalUsers);
+        setVehicles(originalCustomers);
 
         deleteToast({
           title: "Error",
-          description: "User not successfully deleted.",
+          description: `${mainName} not successfully deleted.`,
           status: "error",
           duration: 2000,
           isClosable: true,
@@ -71,29 +69,27 @@ const UserDeleteDrawer = ({ selectedDeleteUser }: Props) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete User {selectedDeleteUser.user_name}
+              Delete Supplier {selectedDeleteVehicle.vehical_no}
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              {selectedDeleteUser.is_superuser
-                ? user_can_not_delete_message
-                : "Are you sure? You can't undo this action afterwards."}
+              Are you sure? You can't undo this action afterwards.
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              {!selectedDeleteUser.is_superuser && <Button
+              <Button
                 colorScheme="red"
                 onClick={() => {
                   onClose();
-                  onDeleteUser(selectedDeleteUser);
+                  onDeleteCustomer(selectedDeleteVehicle);
                 }}
                 ml={3}
               >
                 Delete
-              </Button>}
+              </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>
@@ -102,4 +98,4 @@ const UserDeleteDrawer = ({ selectedDeleteUser }: Props) => {
   );
 };
 
-export default UserDeleteDrawer;
+export default VehicleDelete;

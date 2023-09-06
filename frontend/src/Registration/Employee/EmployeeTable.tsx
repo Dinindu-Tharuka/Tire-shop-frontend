@@ -53,29 +53,29 @@ const EmployeeTable = () => {
         <Table>
           <Thead>
             <Tr>
+              <Th></Th>
+              <Th></Th>
               <Th>NIC</Th>
               <Th>Name</Th>
               <Th>Address</Th>
               <Th>Telephone</Th>
               <Th>Designation</Th>
-              <Th></Th>
-              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
             {employees?.map((employee, index) => (
               <Tr key={employee.id}>
-                <Td>{employee.nic}</Td>
-                <Td>{employee.name}</Td>
-                <Td>{employee.address}</Td>
-                <Td>{employee.telephone}</Td>
-                <Td>{employee.designation}</Td>
                 <Td>
                   <UpdateEmployeeDrawer selecedEmployee={employee}/>
                 </Td>
                 <Td>
                   <DeleteEmployee selectedDeleteEmployee={employee}/>
                 </Td>
+                <Td>{employee.nic}</Td>
+                <Td>{employee.name}</Td>
+                <Td>{employee.address}</Td>
+                <Td>{employee.telephone}</Td>
+                <Td>{employee.designation}</Td>
               </Tr>
             ))}
           </Tbody>

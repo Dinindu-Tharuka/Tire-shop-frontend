@@ -15,6 +15,7 @@ import { useContext } from "react";
 import VehicleContext from "../../Contexts/Customer/VehicleContext";
 import VehicleService, { Vehicle } from "../../services/Customer/vehicle-service";
 import UpdateVehicleDrawer from "./UpdateVehicleDrawer";
+import VehicleDelete from "./VehicleDelete";
 
 interface Props{
   customer_id:number
@@ -59,36 +60,30 @@ const VehicleTable = ({customer_id}:Props) => {
                               <Table>
                                 <Thead>
                                   <Tr>
+                                    <Th></Th>
+                                    <Th></Th>
                                     <Th>Customer Id</Th>
                                     <Th>Vehicle No</Th>
                                     <Th>Brand</Th>
                                     <Th>Type</Th>
                                     <Th>Madal</Th>
-                                    <Th></Th>
-                                    <Th></Th>
                                   </Tr>
                                 </Thead>
                                 <Tbody>
                                   {vehicles?.map((vehicle, index) => (
                                     <Tr key={index}>
+                                      <Td>
+                                        <UpdateVehicleDrawer onSelectedVehicle={vehicle}/>
+                                      </Td>
+                                      <Td>
+                                       <VehicleDelete selectedDeleteVehicle={vehicle}/>
+                                      </Td>
                                       <Td>{vehicle.customer}</Td>
                                       <Td>{vehicle.vehical_no}</Td>
                                       <Td>{vehicle.brand}</Td>
                                       <Td>{vehicle.type}</Td>
                                       <Td>{vehicle.madal}</Td>
 
-                                      <Td>
-                                        <UpdateVehicleDrawer onSelectedVehicle={vehicle}/>
-                                      </Td>
-                                      <Td>
-                                        <Button                  
-                                          onClick={()=>onDeleteVehicle(vehicle)}
-                                          padding={4}
-                                          bg="#f87454"
-                                        >
-                                          Delete
-                                        </Button>
-                                      </Td>
                                     </Tr>
                                   ))}
                                 </Tbody>

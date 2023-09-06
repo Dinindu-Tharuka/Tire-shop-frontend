@@ -49,23 +49,23 @@ const ServicesTable = () => {
         <Table>
           <Thead>
             <Tr>
+              <Th></Th>
+              <Th></Th>
               <Th>Description</Th>
               <Th>Service Value</Th>              
-              <Th></Th>
-              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
             {services?.map((service, index) => (
               <Tr key={service.id}>
-                <Td>{service.description}</Td>
-                <Td>{service.service_value}</Td>                
                 <Td>
                   <UpdateServiceDrawer selecedService={service}/>
                 </Td>
                 <Td>
                   <ServiceDelete selectedDeleteService={service}/>
                 </Td>
+                <Td>{service.description}</Td>
+                <Td>{service.service_value}</Td>                
               </Tr>
             ))}
           </Tbody>

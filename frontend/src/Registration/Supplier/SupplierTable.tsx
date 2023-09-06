@@ -16,9 +16,7 @@ import {
 import UpdateSupplierDrawer from "./UpdateSupplierDrawer";
 import { useContext, useState } from "react";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
-import SupplierService, {
-  Supplier,
-} from "../../services/Registration/supplier-service";
+
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -52,29 +50,29 @@ const SupplierTable = () => {
         <Table>
           <Thead>
             <Tr>
+              <Th></Th>
+              <Th></Th>
               <Th>Name</Th>
               <Th>Address</Th>
               <Th>Telephone</Th>
               <Th>Mobile</Th>
               <Th>Email</Th>
-              <Th></Th>
-              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
             {suppliers?.map((supplier, index) => (
               <Tr key={supplier.id}>
-                <Td>{supplier.name}</Td>
-                <Td>{supplier.address}</Td>
-                <Td>{supplier.telephone}</Td>
-                <Td>{supplier.mobile}</Td>
-                <Td>{supplier.email}</Td>
                 <Td>
                   <UpdateSupplierDrawer selecedSupplier={supplier} />
                 </Td>
                 <Td>
                   <DeleteSupplier selectedDeleteSupplier={supplier} />
                 </Td>
+                <Td>{supplier.name}</Td>
+                <Td>{supplier.address}</Td>
+                <Td>{supplier.telephone}</Td>
+                <Td>{supplier.mobile}</Td>
+                <Td>{supplier.email}</Td>
               </Tr>
             ))}
           </Tbody>

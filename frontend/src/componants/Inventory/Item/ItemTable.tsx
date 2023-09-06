@@ -62,6 +62,8 @@ const ItemTable = () => {
         <Table>
           <Thead>
             <Tr>
+              <Th></Th>
+              <Th></Th>
               <Th>ID</Th>
               <Th>Name</Th>
               <Th>Size</Th>
@@ -72,13 +74,17 @@ const ItemTable = () => {
               <Th>Valve</Th>
               <Th>Category</Th>
               <Th>Supplier</Th>
-              <Th></Th>
-              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
             {items?.map((item) => (
               <Tr key={item.item_id}>
+                <Td>
+                  <UpdateItem selectedUpdateItem={item} />
+                </Td>
+                <Td>
+                  <ItemDelete selectedDeleteItem={item} />
+                </Td>
                 <Td>{item.item_id}</Td>
                 <Td>{item.name}</Td>
                 <Td>{item.size}</Td>
@@ -89,12 +95,6 @@ const ItemTable = () => {
                 <Td>{item.vale_type}</Td>
                 <Td>{item.item_category}</Td>
                 <Td>{item.supplier}</Td>
-                <Td>
-                  <UpdateItem selectedUpdateItem={item} />
-                </Td>
-                <Td>
-                  <ItemDelete selectedDeleteItem={item} />
-                </Td>
               </Tr>
             ))}
           </Tbody>

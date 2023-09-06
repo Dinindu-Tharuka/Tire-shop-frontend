@@ -31,14 +31,17 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import SelectedCustomerContext from "../../Contexts/Customer/SelectedCustomerContex";
-import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
+import getCutUrl, {
+  MAXIMUM_PAGES_PER_PAGE,
+} from "../../services/pagination-cut-link";
+import CustomerDelete from "./CustomerDelete";
 
 const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer>(
     {} as Customer
   );
 
-  const [pageNum, setPageNum] = useState(1)
+  const [pageNum, setPageNum] = useState(1);
   const {
     customers,
     setCustomers,
@@ -48,12 +51,11 @@ const CustomerTable = () => {
     errorCustomerFetch,
     setErrorCustomerFetch,
     isLoadingCustomer,
-    customerCount
+    customerCount,
   } = useContext(CustomerContext);
 
   const numOfPages = Math.ceil(customerCount / MAXIMUM_PAGES_PER_PAGE);
 
-  
   const { toggleColorMode, colorMode } = useColorMode();
 
   const onDeleteCustomer = (customer: Customer) => {
@@ -64,31 +66,37 @@ const CustomerTable = () => {
       setCustomers([...originalCustomers])
     );
   };
-  
 
-  if(isLoadingCustomer)
-    return <Spinner/>
+  if (isLoadingCustomer) return <Spinner />;
   return (
     <>
       <Flex alignItems="center" flexDir="column">
-        {errorCustomerFetch && <Text textColor='red'>Unable to fetch data from the internet.</Text>}
+        {errorCustomerFetch && (
+          <Text textColor="red">Unable to fetch data from the internet.</Text>
+        )}
         <TableContainer>
           <Table>
             <Thead>
               <Tr>
+                <Th></Th>
+                <Th></Th>
                 <Th>Name</Th>
                 <Th justifyContent="center"></Th>
                 <Th>Address</Th>
                 <Th>Telephone</Th>
                 <Th>Mobile</Th>
                 <Th>Email</Th>
-                <Th></Th>
-                <Th></Th>
               </Tr>
             </Thead>
             <Tbody>
               {customers?.map((customer, index) => (
                 <Tr key={index}>
+                  <Td>
+                    <UpdateCustomerDrawer onSelectedCustomer={customer} />
+                  </Td>
+                  <Td>
+                    <CustomerDelete selectedDeleteCustomer={customer}/>
+                  </Td>
                   <Td>{customer.name}</Td>
                   <Td>
                     <Accordion allowToggle>
@@ -117,19 +125,6 @@ const CustomerTable = () => {
                   <Td>{customer.telephone}</Td>
                   <Td>{customer.mobile}</Td>
                   <Td>{customer.email}</Td>
-
-                  <Td>
-                    <UpdateCustomerDrawer onSelectedCustomer={customer} />
-                  </Td>
-                  <Td>
-                    <Button
-                      onClick={() => onDeleteCustomer(customer)}
-                      padding={4}
-                      bg="#f87454"
-                    >
-                      Delete
-                    </Button>
-                  </Td>
                 </Tr>
               ))}
             </Tbody>
@@ -139,24 +134,25 @@ const CustomerTable = () => {
         <HStack>
           <Button
             colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-            isDisabled={pageNum === 1? true:false}
+            isDisabled={pageNum === 1 ? true : false}
             onClick={() => {
-              setFilterParams(getCutUrl(previousUrl, 'customers') + "")
-              setErrorCustomerFetch('')
-              setPageNum(pageNum - 1)
+              setFilterParams(getCutUrl(previousUrl, "customers") + "");
+              setErrorCustomerFetch("");
+              setPageNum(pageNum - 1);
             }}
-            
           >
             <IoIosArrowDropleftCircle />
           </Button>
-          <Text fontWeight='semibold'>page {pageNum} of {numOfPages}</Text>
+          <Text fontWeight="semibold">
+            page {pageNum} of {numOfPages}
+          </Text>
           <Button
             colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-            isDisabled={pageNum === numOfPages? true:false}
-            onClick={
-              () => {setFilterParams(getCutUrl(nextUrl, 'customers') + "")
-              setPageNum(pageNum + 1)
-              setErrorCustomerFetch('')
+            isDisabled={pageNum === numOfPages ? true : false}
+            onClick={() => {
+              setFilterParams(getCutUrl(nextUrl, "customers") + "");
+              setPageNum(pageNum + 1);
+              setErrorCustomerFetch("");
             }}
           >
             <IoIosArrowDroprightCircle />

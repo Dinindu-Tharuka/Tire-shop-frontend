@@ -21,6 +21,9 @@ const VehicleAddForm = () => {
 
   const onCreate = (data: FieldValues) => {   
 
+    console.log(data);
+    
+
     VehicleService
     .create(data)
     .then(res =>{ 
@@ -76,7 +79,7 @@ const VehicleAddForm = () => {
 
           <div className="mb-3 h-75">
             <Select {...register("customer")}>
-              <option>{selectedCustomer.name}</option>
+              <option value={selectedCustomer.id}>{selectedCustomer.name}</option>
               {customers.map( cus=> <option value={cus.id}>{cus.name}</option>)}
 
             </Select>

@@ -28,7 +28,7 @@ const UpdateServiceDrawer = ({selecedService}:Props) => {
         variant="link"
         bg="#ffc2b3"
         padding={2.5}
-        textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
+        textColor={colorMode === "light" ? "#2b2323" : "#4d0012"}
         _hover={
           colorMode === "light"
             ? { background: "#3e3d40 " }
