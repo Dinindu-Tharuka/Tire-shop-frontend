@@ -1,4 +1,5 @@
 import {
+  Button,
   Table,
   TableCaption,
   TableContainer,
@@ -13,12 +14,16 @@ import {
 import { Bill } from "../../services/Billing/bill-service";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import useService from "../../hooks/Registration/useService";
+import { useState } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 interface Props {
   seletedBill: Bill;
 }
 
 const BillShowPage = ({ seletedBill }: Props) => {
+  const [loader, setLoader] = useState(false);
   const { customers } = useCustomer();
   const { services } = useService();
 
@@ -27,108 +32,130 @@ const BillShowPage = ({ seletedBill }: Props) => {
     ["Customer Item Value", seletedBill.custome_item_value],
     ["Sub total", seletedBill.sub_total],
   ];
+
+  const dowloadPdf = () => {
+    const capture: HTMLElement | null = document.querySelector(".receipt");
+    setLoader(true);
+    if (capture)
+      html2canvas(capture).then((canvas) => {
+        const imgData = canvas.toDataURL("img/png");
+        const doc = new jsPDF("p", "mm", "a4");
+        const componantWidth = doc.internal.pageSize.getWidth();
+        const componantHeight = doc.internal.pageSize.getHeight();
+        doc.addImage(imgData, "PNG", 0, 0, componantWidth, componantHeight);
+        setLoader(false);
+        doc.save("receipt.pdf");
+      });
+  };
   return (
     <>
-      <TableContainer width="25%">
-        <Table variant="simple">
-          <Tbody>
-            <Tr>
-              <Td>
-                <Text fontWeight='semibold'>Bill No</Text>
-              </Td>
-              <Td>
-                <Text>{seletedBill.invoice_id}</Text>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>
-                <Text fontWeight='semibold'>Customer</Text>
-              </Td>
-              <Td>
-                <Text>
-                  {
-                    customers.find((cus) => cus.id === seletedBill.customer)
-                      ?.name
-                  }
-                </Text>
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </TableContainer>
-
-      {/* Items List  */}
-      {seletedBill.bill_items.length !== 0 && <TableContainer width="50%">
-        <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
-          Item List
-        </Text>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Item</Th>
-              <Th>QTY</Th>
-              <Th>customer Discount</Th>
-              <Th>customer Price</Th>
-            </Tr>
-          </Thead>
-
-          <Tbody>
-            {seletedBill.bill_items.map((item, index) => (
-              <Tr key={index}>
+      <div className="receipt">
+        
+        <TableContainer width="25%">
+          <Table variant="simple">
+            <Tbody>
+              <Tr>
                 <Td>
-                  <Text>{item.item}</Text>
+                  <Text fontWeight="semibold">Bill No</Text>
                 </Td>
                 <Td>
-                  <Text>{item.qty}</Text>
-                </Td>
-                <Td>
-                  <Text>{item.customer_discount}</Text>
-                </Td>
-                <Td>
-                  <Text>{item.customer_price}</Text>
+                  <Text>{seletedBill.invoice_id}</Text>
                 </Td>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>}
-
-      {/* Services List */}
-      {seletedBill.bill_services.length !== 0 && <TableContainer width="25%">
-        <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
-          Services List
-        </Text>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Service</Th>
-              <Th>Employee</Th>
-              <Th> Price</Th>
-            </Tr>
-          </Thead>
-
-          <Tbody>
-            {seletedBill.bill_services.map((service, index) => (
-              <Tr key={index}>
+              <Tr>
                 <Td>
-                  <Text>{service.service}</Text>
-                </Td>
-                <Td>
-                  <Text>{service.employee}</Text>
+                  <Text fontWeight="semibold">Customer</Text>
                 </Td>
                 <Td>
                   <Text>
                     {
-                      services.find((ser) => ser.id === service.service)
-                        ?.service_value
+                      customers.find((cus) => cus.id === seletedBill.customer)
+                        ?.name
                     }
                   </Text>
                 </Td>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>}
+            </Tbody>
+          </Table>
+        </TableContainer>
+
+        {/* Items List  */}
+        {seletedBill.bill_items.length !== 0 && (
+          <TableContainer width="50%">
+            <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
+              Item List
+            </Text>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Item</Th>
+                  <Th>QTY</Th>
+                  <Th>customer Discount</Th>
+                  <Th>customer Price</Th>
+                </Tr>
+              </Thead>
+
+              <Tbody>
+                {seletedBill.bill_items.map((item, index) => (
+                  <Tr key={index}>
+                    <Td>
+                      <Text>{item.item}</Text>
+                    </Td>
+                    <Td>
+                      <Text>{item.qty}</Text>
+                    </Td>
+                    <Td>
+                      <Text>{item.customer_discount}</Text>
+                    </Td>
+                    <Td>
+                      <Text>{item.customer_price}</Text>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        )}
+
+        {/* Services List */}
+        {seletedBill.bill_services.length !== 0 && (
+          <TableContainer width="25%">
+            <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
+              Services List
+            </Text>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Service</Th>
+                  <Th>Employee</Th>
+                  <Th> Price</Th>
+                </Tr>
+              </Thead>
+
+              <Tbody>
+                {seletedBill.bill_services.map((service, index) => (
+                  <Tr key={index}>
+                    <Td>
+                      <Text>{service.service}</Text>
+                    </Td>
+                    <Td>
+                      <Text>{service.employee}</Text>
+                    </Td>
+                    <Td>
+                      <Text>
+                        {
+                          services.find((ser) => ser.id === service.service)
+                            ?.service_value
+                        }
+                      </Text>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        )}
+      </div>
 
       {/* Payment List */}
       <TableContainer width="100%">
@@ -281,16 +308,14 @@ const BillShowPage = ({ seletedBill }: Props) => {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {payment.payments_credit.map(
-                            (credit, index) => (
-                              <Tr key={index}>
-                                <Td>{credit.date}</Td>
-                                <Td>{credit.payeename}</Td>
-                                <Td>{credit.amount}</Td>
-                                <Td>{credit.due_date}</Td>
-                              </Tr>
-                            )
-                          )}
+                          {payment.payments_credit.map((credit, index) => (
+                            <Tr key={index}>
+                              <Td>{credit.date}</Td>
+                              <Td>{credit.payeename}</Td>
+                              <Td>{credit.amount}</Td>
+                              <Td>{credit.due_date}</Td>
+                            </Tr>
+                          ))}
                         </Tbody>
                       </Table>
                     </TableContainer>
@@ -307,7 +332,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
           <Tbody>
             <Tr>
               <Td>
-                <Text fontWeight='semibold'>Total Discount</Text>
+                <Text fontWeight="semibold">Total Discount</Text>
               </Td>
               <Td>
                 <Text>{seletedBill.discount_amount}</Text>
@@ -315,27 +340,27 @@ const BillShowPage = ({ seletedBill }: Props) => {
             </Tr>
             <Tr>
               <Td>
-                <Text fontWeight='semibold'>Customer Item Value</Text>
+                <Text fontWeight="semibold">Customer Item Value</Text>
               </Td>
               <Td>
-                <Text>
-                  {seletedBill.custome_item_value}
-                </Text>
+                <Text>{seletedBill.custome_item_value}</Text>
               </Td>
             </Tr>
             <Tr>
               <Td>
-                <Text fontWeight='semibold'>Sub Total</Text>
+                <Text fontWeight="semibold">Sub Total</Text>
               </Td>
               <Td>
-                <Text>
-                  {seletedBill.sub_total}
-                </Text>
+                <Text>{seletedBill.sub_total}</Text>
               </Td>
             </Tr>
           </Tbody>
         </Table>
       </TableContainer>
+
+      <Button disabled={!(loader === false)} onClick={() => dowloadPdf()}>
+        {loader ? "Downloading" : "Download"}
+      </Button>
     </>
   );
 };

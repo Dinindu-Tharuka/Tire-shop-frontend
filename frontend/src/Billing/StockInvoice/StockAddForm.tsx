@@ -18,6 +18,7 @@ import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import { StockItem } from "../../services/Stock/stock-item-service";
 import useItems from "../../hooks/Inventory/useItems";
+import StockItemContext from "../../Contexts/Stock/StockItemContext";
 
 const StockAddForm = () => {
   const { register, handleSubmit, control } = useForm<StockInvoice>({
@@ -40,14 +41,16 @@ const StockAddForm = () => {
   const { stockInvoices, setStockInvoices } = useContext(StockInvoiceContext);
   const { items } = useItems();
   const { suppliers } = useSupplier();
+  const { stockItems, setStockItems } = useContext(StockItemContext)
 
   const onSubmit = (data: StockInvoice) => {
-    console.log(data);
+    console.log(data.stockitems);
 
     StockInvoiceService.create(data)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setStockInvoices([res.data, ...stockInvoices]);
+        setStockItems([...res.data.stockitems, ...stockItems])
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -157,6 +160,13 @@ const StockAddForm = () => {
             </Flex>
           </div>
 
+            <div className="mb-3">
+              <Input
+                {...register("total_discount")}
+                type="number"
+                placeholder="Total Discount"
+              />
+            </div>
           <div className="w-25">
             <div className="mb-3">
               <Input
@@ -166,13 +176,6 @@ const StockAddForm = () => {
               />
             </div>
 
-            <div className="mb-3">
-              <Input
-                {...register("total_discount")}
-                type="number"
-                placeholder="Total Discount"
-              />
-            </div>
           </div>
         </div>
         <HStack justifyContent="space-between">

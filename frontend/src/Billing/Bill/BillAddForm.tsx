@@ -18,15 +18,8 @@ import BillServices, {
   BillItem,
   BillPayment,
   BillService,
-  PaymentCash,
-  PaymentCheque,
-  PaymentCredit,
-  PaymentCreditCard,
 } from "../../services/Billing/bill-service";
-import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useCustomer from "../../hooks/Customer/useCustomer";
-import useStockItem from "../../hooks/Stock/useStockItems";
-import { PADDING_UPDATE_DRAWER_BUTTON } from "../../Constants/Constants";
 import useService from "../../hooks/Registration/useService";
 import useEmployee from "../../hooks/Registration/useEmployee";
 import PaymentCashInput from "./Payments/PaymentCashInput";
@@ -35,15 +28,20 @@ import PaymentCreditCardInput from "./Payments/PaymentCreditCardInput";
 import PaymentCreditInput from "./Payments/PaymentCreditInput";
 import useItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
-import { StockItem } from "../../services/Stock/stock-item-service";
+import BillAddPayment from "./BillAddPayment";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
-  const [selectedStockItemCount, setSelectedStockItemCount] = useState<number | undefined>(0)
-  const { register, handleSubmit, control, formState : {errors} } = useForm<Bill>();
 
-  
-  
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<Bill>();
+  const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
+    []
+  );
 
   const paymentMethods = [
     ["Cash", "cash"],
@@ -71,45 +69,30 @@ const BillAddForm = () => {
     control,
   });
 
-  const {
-    fields: paymentsArray,
-    append: paymentAppend,
-    remove: paymentRemove,
-  } = useFieldArray({
-    name: "bill_payments",
-    control,
-  });
+ 
 
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
+  const [isComletedBill, setIsComletedBill] = useState(false)
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { bills, setBills } = useContext(BillContext);
   const { items } = useItems();
-  
+
   const { customers } = useCustomer();
   const { services } = useService();
   const { employees } = useEmployee();
-  const { stockItems, setStockItems} = useContext(StockItemContext)
-  
+  const { stockItems, setStockItems } = useContext(StockItemContext);
 
   const onSubmit = (data: Bill) => {
-
     console.log(data);
 
-    const newStockItem = {
-      
-    }
-    
- 
-    BillServices.create(data)
+    BillServices.create<Bill>(data)
       .then((res) => {
-        setSuccess(res.status === 201 ? "Successfullt Created." : "");
+        setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
-        // const changedStockItem = stockItems.find(item => item.id === res.data.stock_item)
-        // if (changedStockItem){
-        // const newStockItem : StockItem = {...changedStockItem, qty:}
-        // setStockItems(stockItems.map(item => item.id === res.data.stock_item ? newStockItem : item))}
+        
+
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -122,11 +105,13 @@ const BillAddForm = () => {
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 w-25">
             <Input
-              {...register("invoice_id", {required:'Bill number is required.'})}
+              {...register("invoice_id", {
+                required: "Bill number is required.",
+              })}
               type="text"
               placeholder="Bill No"
             />
-            <Text textColor='red.600'>{errors.invoice_id?.message}</Text>
+            <Text textColor="red.600">{errors.invoice_id?.message}</Text>
           </div>
 
           <div className="mb-3 w-25">
@@ -138,7 +123,6 @@ const BillAddForm = () => {
                 </option>
               ))}
             </Select>
-            
           </div>
 
           {/* Add Items */}
@@ -151,8 +135,7 @@ const BillAddForm = () => {
                     className="select w-100 p-2"
                     marginRight={10}
                     onChange={(event) => {
-                      
-                      setSelectedItem(event.target.value)
+                      setSelectedItem(event.target.value);
                     }}
                   >
                     <option value="">Select Item</option>
@@ -163,16 +146,22 @@ const BillAddForm = () => {
                     ))}
                   </Select>
                   <Select
-                  width='30vw'
+                    width="30vw"
                     {...register(`bill_items.${index}.stock_item`)}
-                    className="select w-100 p-2"  
-                    onChange={(e)=>{
-                      setSelectedStockItemCount(stockItems.find(item => item.id === parseInt(e.target.value))?.qty)
-                      
-                      
-                    }}  
+                    className="select w-100 p-2"
+                    onChange={(e) => {
+                      const count = stockItems.find(
+                        (item) => item.id === parseInt(e.target.value)
+                      )?.qty;
+                      if (count)
+                        setSeletedItemCountList([
+                          ...seletedItemCountList,
+                          count,
+                        ]);
+                      console.log(seletedItemCountList);
+                    }}
                   >
-                    <option >Stock Item</option>
+                    <option>Stock Item</option>
                     {stockItems
                       .filter((item) => item.item === selectedItem)
                       .map((stockItem, index) => (
@@ -186,26 +175,30 @@ const BillAddForm = () => {
                             <Text>({stockItem.qty})</Text>
                           </div>
                         </option>
-                        
                       ))}
                   </Select>
                 </Flex>
                 <Flex>
-                  <Flex flexDir='column' width='40vw'>
-                  <Input
-                    type="number"
-                    {...register(`bill_items.${index}.qty`, {validate:(fieldValue)=>{
-                      
-                      if (selectedStockItemCount)
-                      return fieldValue <= selectedStockItemCount || 'Item counts not valid'
-                    }})}
-                    placeholder="QTY"
-                  />
-                  <Text textColor='red.600'>{errors.bill_items && errors.bill_items[index]?.qty?.message }</Text>
+                  <Flex flexDir="column" width="40vw">
+                    <Input
+                      type="number"
+                      {...register(`bill_items.${index}.qty`, {
+                        validate: (fieldValue) => {
+                          if (seletedItemCountList)
+                            return (
+                              fieldValue <= seletedItemCountList[index] ||
+                              "Item counts not valid"
+                            );
+                        },
+                      })}
+                      placeholder="QTY"
+                    />
+                    <Text textColor="red.600">
+                      {errors.bill_items &&
+                        errors.bill_items[index]?.qty?.message}
+                    </Text>
                   </Flex>
-                  
-                 
-                  
+
                   <Input
                     type="number"
                     {...register(`bill_items.${index}.customer_discount`)}
@@ -217,27 +210,37 @@ const BillAddForm = () => {
                     placeholder="Customer Price"
                   />
                 </Flex>
-                
+
                 <Flex>
-                  
-                    <Button
-                      bg="#f87454"
-                      padding={2.5}
-                      type="button"
-                      onClick={() => itemRemove(index)}
-                    >
-                      Remove
-                    </Button>
-                 
+                  <Button
+                    bg="#f87454"
+                    padding={2.5}
+                    type="button"
+                    onClick={() => {
+                      console.log("valuse", seletedItemCountList);
+
+                      itemRemove(index);
+                      console.log("index", index);
+                      setSeletedItemCountList(
+                        seletedItemCountList.filter((val, ind) => index !== ind)
+                      );
+
+                      console.log("value updated", seletedItemCountList);
+                    }}
+                  >
+                    Remove
+                  </Button>
                 </Flex>
               </Flex>
             ))}
-            
+
             <Flex alignItems="center">
               <Button
                 type="button"
                 onClick={() => {
                   itemAppend({} as BillItem);
+                  setSeletedItemCountList(seletedItemCountList);
+                  console.log(seletedItemCountList);
                 }}
               >
                 Add Item
@@ -301,97 +304,7 @@ const BillAddForm = () => {
             </Flex>
           </div>
 
-          {/* Add Payments */}
-          <div className="mb-3">
-            {paymentsArray.map((field, index) => (
-              <Flex>
-                <Flex>
-                  <Input
-                    {...register(`bill_payments.${index}.discount`)}
-                    placeholder="Discount"
-                    type="number"
-                    className=""
-                  />
-                  {/* 
-                  <Select
-                    {...register(`bill_payments.${index}.payment_methods`)}
-                    className="select p-2"
-                    onChange={(event) =>
-                      setselectedPaymentMethod(event.target.value)
-                    }
-                  >
-                    <option>Payment Method</option>
-                    {paymentMethods.map((method, index) => (
-                      <option className="mt-3" key={index} value={method[1]}>
-                        {method[0]}
-                      </option>
-                    ))}
-                  </Select> */}
-                </Flex>
-                <VStack align="start">
-                  <HStack>
-                    <PaymentCashInput
-                      field={field}
-                      control={control}
-                      indexMain={index}
-                      register={register}
-                    />
-                  </HStack>
-
-                  <HStack>
-                    <PaymentChequeInput
-                      field={field}
-                      control={control}
-                      indexMain={index}
-                      register={register}
-                    />
-                  </HStack>
-                  <HStack>
-                    <PaymentCreditCardInput
-                      field={field}
-                      control={control}
-                      indexMain={index}
-                      register={register}
-                    />
-                  </HStack>
-                  <HStack>
-                    <PaymentCreditInput
-                      field={field}
-                      control={control}
-                      indexMain={index}
-                      register={register}
-                    />
-                  </HStack>
-                </VStack>
-
-                <Flex>
-                  {index > 0 && (
-                    <Button
-                      bg="#f87454"
-                      padding={2.5}
-                      type="button"
-                      onClick={() => paymentRemove(index)}
-                    >
-                      Remove
-                    </Button>
-                  )}
-                </Flex>
-              </Flex>
-            ))}
-            <Flex alignItems="center">
-              <Button
-                type="button"
-                onClick={() => {
-                  paymentAppend({
-                    ...({} as BillPayment),
-                  } as BillPayment);
-                }}
-              >
-                Add Payment
-              </Button>
-              <IoAddCircle />
-            </Flex>
-          </div>
+         
 
           <div className="mb-3 w-25">
             <Input
@@ -402,31 +315,43 @@ const BillAddForm = () => {
           </div>
           <div className="mb-3 w-25">
             <Input
-              {...register("sub_total")}
-              type="number"
-              placeholder="Sub Total"
-            />
-          </div>
-          <div className="mb-3 w-25">
-            <Input
               {...register("custome_item_value")}
               type="text"
               placeholder="Customer Item Value"
             />
           </div>
         </div>
-        <HStack justifyContent="space-between">
+        <div className="mb-3 w-25">
+          <Input
+            {...register("sub_total")}
+            type="number"
+            placeholder="Sub Total"
+          />
+        </div>
+        <HStack >
           <Button
             type="submit"
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
               setErrorBillCreate("");
               setSuccess("");
+              
             }}
           >
             Save
           </Button>
+          <Button
+            bg={colorMode === "light" ? "#e3a99c" : "#575757"}
+            onClick={() => {
+              setErrorBillCreate("");
+              setSuccess("");
+              
+            }}
+          >
+            Payments
+          </Button>
         </HStack>
+      <BillAddPayment/>
       </form>
     </>
   );
