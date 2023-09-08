@@ -6,20 +6,18 @@ import {
   UseFormRegister,
   useFieldArray,
 } from "react-hook-form";
-import { Bill, PaymentCash, PaymentCheque } from "../../../services/Billing/bill-service";
+import { Bill, BillPayment, PaymentCash, PaymentCheque } from "../../../services/Billing/bill-service";
 import { IoAddCircle } from "react-icons/io5";
 
 interface Props {
-  register: UseFormRegister<Bill>;
-  indexMain: number;
-  control: Control<Bill>;
-  field: FieldArrayWithId<Bill, "bill_payments">;
+  register: UseFormRegister<BillPayment>;
+  control: Control<BillPayment>;
  
 }
 
-const PaymentChequeInput = ({register, indexMain, control, field}:Props) => {
+const PaymentChequeInput = ({register, control}:Props) => {
   const { append, remove, fields } = useFieldArray({
-    name: `bill_payments.${indexMain}.payment_cheques`,
+    name: `payment_cheques`,
     control,
   });
   return (
@@ -30,7 +28,7 @@ const PaymentChequeInput = ({register, indexMain, control, field}:Props) => {
             <VStack align='start'>
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.bill_payment`
+                  `payment_cheques.${chequeIndex}.bill_payment`
                 )}
                 placeholder="Bill"
                 type="number"
@@ -38,35 +36,35 @@ const PaymentChequeInput = ({register, indexMain, control, field}:Props) => {
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.payeename`
+                  `payment_cheques.${chequeIndex}.payeename`
                 )}
                 placeholder="Payee Name"
                 type="text"
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.amount`
+                  `payment_cheques.${chequeIndex}.amount`
                 )}
                 placeholder="Amount"
                 type="number"
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.cheque_no`
+                  `payment_cheques.${chequeIndex}.cheque_no`
                 )}
                 placeholder="Cheque No"
                 type="text"
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.bank`
+                  `payment_cheques.${chequeIndex}.bank`
                 )}
                 placeholder="Bank"
                 type="text"
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.branch`
+                  `payment_cheques.${chequeIndex}.branch`
                 )}
                 placeholder="Branch"
                 type="text"
@@ -74,7 +72,7 @@ const PaymentChequeInput = ({register, indexMain, control, field}:Props) => {
               <label>Cheque Date</label>
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payment_cheques.${chequeIndex}.cheque_date`
+                  `payment_cheques.${chequeIndex}.cheque_date`
                 )}
                 placeholder="Cheque Date"
                 type='date'

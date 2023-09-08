@@ -6,20 +6,18 @@ import {
   UseFormRegister,
   useFieldArray,
 } from "react-hook-form";
-import { Bill, PaymentCash, PaymentCheque, PaymentCredit } from "../../../services/Billing/bill-service";
+import { Bill, BillPayment, PaymentCash, PaymentCheque, PaymentCredit } from "../../../services/Billing/bill-service";
 import { IoAddCircle } from "react-icons/io5";
 
 interface Props {
-  register: UseFormRegister<Bill>;
-  indexMain: number;
-  control: Control<Bill>;
-  field: FieldArrayWithId<Bill, "bill_payments">;
+  register: UseFormRegister<BillPayment>;
+  control: Control<BillPayment>;
  
 }
 
-const PaymentCreditInput = ({register, indexMain, control, field}:Props) => {
+const PaymentCreditInput = ({register, control}:Props) => {
     const { append, remove, fields } = useFieldArray({
-        name: `bill_payments.${indexMain}.payments_credit`,
+        name: `payments_credit`,
         control,
       });
   return (
@@ -30,7 +28,7 @@ const PaymentCreditInput = ({register, indexMain, control, field}:Props) => {
             <VStack align='start'>
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payments_credit.${creditIndex}.bill_payment`
+                  `payments_credit.${creditIndex}.bill_payment`
                 )}
                 placeholder="ID"
                 type="number"
@@ -38,14 +36,14 @@ const PaymentCreditInput = ({register, indexMain, control, field}:Props) => {
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payments_credit.${creditIndex}.payeename`
+                  `payments_credit.${creditIndex}.payeename`
                 )}
                 placeholder="Payee Name"
                 type="text"
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payments_credit.${creditIndex}.amount`
+                  `payments_credit.${creditIndex}.amount`
                 )}
                 placeholder="Amount"
                 type="number"
@@ -54,7 +52,7 @@ const PaymentCreditInput = ({register, indexMain, control, field}:Props) => {
               <label>Due Date</label>
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payments_credit.${creditIndex}.due_date`
+                  `payments_credit.${creditIndex}.due_date`
                 )}
                 
                 type='date'

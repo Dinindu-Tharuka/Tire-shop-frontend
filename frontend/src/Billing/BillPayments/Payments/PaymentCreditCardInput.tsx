@@ -6,53 +6,44 @@ import {
   UseFormRegister,
   useFieldArray,
 } from "react-hook-form";
-import { Bill, PaymentCash } from "../../../services/Billing/bill-service";
+import { Bill, BillPayment, PaymentCash } from "../../../services/Billing/bill-service";
 import { IoAddCircle } from "react-icons/io5";
 
 interface Props {
-  register: UseFormRegister<Bill>;
-  indexMain: number;
-  control: Control<Bill>;
-  field: FieldArrayWithId<Bill, "bill_payments">;
+  register: UseFormRegister<BillPayment>;
+  control: Control<BillPayment>;
  
 }
 
-const PaymentCashInput = ({
-  register,
-  indexMain,
-  control,
-  field,
- 
-}: Props) => {
+const PaymentCreditCardInput = ({ register, control}:Props) => {
   const { append, remove, fields } = useFieldArray({
-    name: `bill_payments.${indexMain}.payments_cash`,
+    name: `payments_credit_card`,
     control,
   });
-
   return (
     <>
       <Flex>
         <Flex>
-          {fields.map((field, cashIndex) => (
+          {fields.map((field, creditCardIndex) => (
             <VStack>
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payments_cash.${cashIndex}.bill_payment`
+                  `payments_credit_card.${creditCardIndex}.bill_payment`
                 )}
-                placeholder="Bill"
+                placeholder="ID"
                 type="number"
-                defaultValue={cashIndex + 1}
+                defaultValue={creditCardIndex + 1}
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payments_cash.${cashIndex}.payeename`
+                  `payments_credit_card.${creditCardIndex}.payeename`
                 )}
                 placeholder="Payee Name"
                 type="text"
               />
               <Input
                 {...register(
-                  `bill_payments.${indexMain}.payments_cash.${cashIndex}.amount`
+                  `payments_credit_card.${creditCardIndex}.amount`
                 )}
                 placeholder="Amount"
                 type="number"
@@ -62,7 +53,7 @@ const PaymentCashInput = ({
                   bg="#f87454"
                   padding={2.5}
                   type="button"
-                  onClick={() => remove(cashIndex)}
+                  onClick={() => remove(creditCardIndex)}
                 >
                   Remove
                 </Button>
@@ -74,7 +65,7 @@ const PaymentCashInput = ({
             onClick={() => append({} as PaymentCash)}
             alignContent="top"
           >
-            <div className="me-4">Add Cash Payment</div>
+            <div className="me-4">Add Credit Card Payment</div>
           <IoAddCircle />
           </Button>
         </Flex>
@@ -82,7 +73,7 @@ const PaymentCashInput = ({
         
       </Flex>
     </>
-  );
-};
+  )
+}
 
-export default PaymentCashInput;
+export default PaymentCreditCardInput

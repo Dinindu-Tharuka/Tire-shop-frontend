@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BillPayment } from '../../services/Billing/bill-service'
 import billPaymentService from '../../services/Billing/bill-payment-service'
 
-const usePayment = () => {
+const useBillPayment = () => {
     const [billPayments, setBillPayments] = useState<BillPayment[]>([])
     const [billPaymentFetchError, setBillPaymentFetchError] = useState('')    
     const [isLoadingBillPayments, setIsLoadingBillPayments] = useState(false)
@@ -22,8 +22,8 @@ const usePayment = () => {
   
           return ()=>cancel();
 
-    })
+    }, [])
   return {billPayments, setBillPayments, billPaymentFetchError, setBillPaymentFetchError, isLoadingBillPayments, setIsLoadingBillPayments}
 }
 
-export default usePayment
+export default useBillPayment

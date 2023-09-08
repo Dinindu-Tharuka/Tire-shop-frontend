@@ -8,11 +8,20 @@ import useStockInvoice from "../../hooks/Stock/useStockInvoice";
 import useStockItem from "../../hooks/Stock/useStockItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
+import BillPaymentContext from "../../Contexts/Bill/BillPAymentContext";
+import useBillPayment from "../../hooks/Billing/useBillPayment";
 
 const BillingMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
-  
+  const {
+    billPayments,
+    setBillPayments,
+    billPaymentFetchError,
+    setBillPaymentFetchError,
+    isLoadingBillPayments,
+    setIsLoadingBillPayments,
+  } = useBillPayment();
 
   const {
     bills,
@@ -23,7 +32,7 @@ const BillingMainPage = () => {
     setFilterBillPageParams,
     billFetchError,
     isLoadingBills,
-    billCount
+    billCount,
   } = useBill();
 
   const {
@@ -36,68 +45,78 @@ const BillingMainPage = () => {
     isLoadingInvoices,
     errorFetchStockInvoice,
     setErrorFetchStockInvoice,
-    invoicesCount
+    invoicesCount,
   } = useStockInvoice();
 
   const { stockItems, setStockItems } = useStockItem();
   return (
-    <StockInvoiceContext.Provider
-      value={{
-        stockInvoices,
-        setStockInvoices,
-        nextStockInvoiceUrl,
-        previousStockInvoiceUrl,
-        filterStockInvoiceParams,
-        setFilterStockInvoiceParams,
-        isLoadingInvoices,
-        errorFetchStockInvoice,
-        setErrorFetchStockInvoice,
-        invoicesCount
-      }}
+    <BillPaymentContext.Provider
+      value={
+        {billPayments,
+        setBillPayments,
+        billPaymentFetchError,
+        setBillPaymentFetchError,
+        isLoadingBillPayments
+        }
+      }
     >
-      <StockItemContext.Provider value={{ stockItems, setStockItems }}>
-        <BillContext.Provider
-          value={{
-            bills,
-            setBills,
-            nextBillPageUrl,
-            previousBillPageUrl,
-            filterBillPageParams,
-            setFilterBillPageParams,
-            billFetchError,
-            isLoadingBills,
-            billCount
-          }}
-        >
-          <Grid
-            templateAreas={{
-              lg: `"main aside"`,
-              base: `"aside" "main"`,
+      <StockInvoiceContext.Provider
+        value={{
+          stockInvoices,
+          setStockInvoices,
+          nextStockInvoiceUrl,
+          previousStockInvoiceUrl,
+          filterStockInvoiceParams,
+          setFilterStockInvoiceParams,
+          isLoadingInvoices,
+          errorFetchStockInvoice,
+          setErrorFetchStockInvoice,
+          invoicesCount,
+        }}
+      >
+        <StockItemContext.Provider value={{ stockItems, setStockItems }}>
+          <BillContext.Provider
+            value={{
+              bills,
+              setBills,
+              nextBillPageUrl,
+              previousBillPageUrl,
+              filterBillPageParams,
+              setFilterBillPageParams,
+              billFetchError,
+              isLoadingBills,
+              billCount,
             }}
           >
-            <GridItem
-              area="main"
-              height={{ base: "10vh", lg: "85vh" }}
-              width={{ base: "100vw", lg: "60vw" }}
+            <Grid
+              templateAreas={{
+                lg: `"main aside"`,
+                base: `"aside" "main"`,
+              }}
             >
-              
-              <Outlet />
-            </GridItem>
-            <GridItem
-              area="aside"
-              height={{ base: "10vh", lg: "85vh" }}
-              width={{ base: "100vw", lg: "15vw" }}
-              boxShadow="dark-lg"
-              borderRadius={30}
-              padding={5}
-              bg={colorMode === "light" ? "#ca5c4f" : ""}
-            >
-              <BillingSidePanel />
-            </GridItem>
-          </Grid>
-        </BillContext.Provider>
-      </StockItemContext.Provider>
-    </StockInvoiceContext.Provider>
+              <GridItem
+                area="main"
+                height={{ base: "10vh", lg: "85vh" }}
+                width={{ base: "100vw", lg: "60vw" }}
+              >
+                <Outlet />
+              </GridItem>
+              <GridItem
+                area="aside"
+                height={{ base: "10vh", lg: "85vh" }}
+                width={{ base: "100vw", lg: "15vw" }}
+                boxShadow="dark-lg"
+                borderRadius={30}
+                padding={5}
+                bg={colorMode === "light" ? "#ca5c4f" : ""}
+              >
+                <BillingSidePanel />
+              </GridItem>
+            </Grid>
+          </BillContext.Provider>
+        </StockItemContext.Provider>
+      </StockInvoiceContext.Provider>
+    </BillPaymentContext.Provider>
   );
 };
 

@@ -16,22 +16,19 @@ import { IoAddCircle } from "react-icons/io5";
 import BillServices, {
   Bill,
   BillItem,
-  BillPayment,
   BillService,
 } from "../../services/Billing/bill-service";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import useService from "../../hooks/Registration/useService";
 import useEmployee from "../../hooks/Registration/useEmployee";
-import PaymentCashInput from "./Payments/PaymentCashInput";
-import PaymentChequeInput from "./Payments/PaymentChequeInput";
-import PaymentCreditCardInput from "./Payments/PaymentCreditCardInput";
-import PaymentCreditInput from "./Payments/PaymentCreditInput";
 import useItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
-import BillAddPayment from "./BillAddPayment";
+import BillAddPayment from "../BillPayments/BillAddPayment";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
+  const [createdBill, setCreatedBill] = useState<Bill>({} as Bill)
+  const [isCreatedBill, setIsCreatedBill] = useState(false)
 
   const {
     register,
@@ -91,6 +88,8 @@ const BillAddForm = () => {
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
+        setCreatedBill(res.data)
+        setIsCreatedBill(true)
         
 
       })
@@ -101,7 +100,7 @@ const BillAddForm = () => {
       {errorBillCreate && <Text textColor="#dd0939">{errorBillCreate}</Text>}
       {success && <Text textColor="#38e17e">{success}</Text>}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
+      <form onSubmit={handleSubmit(onSubmit)} className="vh-75 ">
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 w-25">
             <Input
@@ -158,7 +157,6 @@ const BillAddForm = () => {
                           ...seletedItemCountList,
                           count,
                         ]);
-                      console.log(seletedItemCountList);
                     }}
                   >
                     <option>Stock Item</option>
@@ -172,7 +170,7 @@ const BillAddForm = () => {
                         >
                           <div className="d-flex justify-content-between w-100 ">
                             <Text>{stockItem.item}</Text>
-                            <Text>({stockItem.qty})</Text>
+                            <Text>{stockItem.qty}</Text>
                           </div>
                         </option>
                       ))}
@@ -330,6 +328,7 @@ const BillAddForm = () => {
         </div>
         <HStack >
           <Button
+          width='10vw'
             type="submit"
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
@@ -341,6 +340,7 @@ const BillAddForm = () => {
             Save
           </Button>
           <Button
+          width='10vw'
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
               setErrorBillCreate("");
@@ -351,8 +351,8 @@ const BillAddForm = () => {
             Payments
           </Button>
         </HStack>
-      <BillAddPayment/>
       </form>
+      { isCreatedBill && <BillAddPayment createdBill={createdBill}/>}
     </>
   );
 };
