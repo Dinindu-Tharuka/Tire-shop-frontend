@@ -14,9 +14,10 @@ import {
 import { Bill } from "../../services/Billing/bill-service";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import useService from "../../hooks/Registration/useService";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import BillPaymentContext from "../../Contexts/Bill/BillPAymentContext";
 
 interface Props {
   seletedBill: Bill;
@@ -26,6 +27,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
   const [loader, setLoader] = useState(false);
   const { customers } = useCustomer();
   const { services } = useService();
+  const { billPayments } = useContext(BillPaymentContext)
 
   const accountNames = [
     ["", seletedBill.discount_amount],
@@ -172,7 +174,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
           </Thead>
 
           <Tbody>
-            {seletedBill.bill_payments.map((payment, index) => (
+            {billPayments.filter(payment => payment.bill === seletedBill.invoice_id).map((payment, index) => (
               <Tr key={index}>
                 <Td>
                   <Text>{payment.date}</Text>

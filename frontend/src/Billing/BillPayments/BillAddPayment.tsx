@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FieldValues, useFieldArray, useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { Bill, BillPayment } from "../../services/Billing/bill-service";
 import PaymentCashInput from "./Payments/PaymentCashInput";
-import { Box, Button, Input, useColorMode } from "@chakra-ui/react";
+import { Box, Button, Input, Text, useColorMode } from "@chakra-ui/react";
 import PaymentChequeInput from "./Payments/PaymentChequeInput";
 import PaymentCreditCardInput from "./Payments/PaymentCreditCardInput";
 import billPaymentService from "../../services/Billing/bill-payment-service";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const BillAddPayment = ({ createdBill }: Props) => {
-  const [error, serError] = useState()
+  const [error, setError] = useState()
   const { toggleColorMode, colorMode } = useColorMode();
   
 
@@ -31,11 +31,12 @@ const BillAddPayment = ({ createdBill }: Props) => {
     billPaymentService
       .create(newly)
       .then((res) => window.location.reload())
-      .catch((err) => console.log(err.message));
+      .catch((err) => setError(err.message));
   };
 
   return (
     <Box marginTop={10}>
+      {error && <Text textColor='red.600'>{error}</Text>}
       <form onSubmit={handleSubmit(onPayment)}>
         <Input
           {...register(`discount`)}

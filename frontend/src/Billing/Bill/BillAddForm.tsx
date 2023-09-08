@@ -27,8 +27,8 @@ import BillAddPayment from "../BillPayments/BillAddPayment";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
-  const [createdBill, setCreatedBill] = useState<Bill>({} as Bill)
-  const [isCreatedBill, setIsCreatedBill] = useState(false)
+  const [createdBill, setCreatedBill] = useState<Bill>({} as Bill);
+  const [isCreatedBill, setIsCreatedBill] = useState(false);
 
   const {
     register,
@@ -66,11 +66,9 @@ const BillAddForm = () => {
     control,
   });
 
- 
-
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
-  const [isComletedBill, setIsComletedBill] = useState(false)
+  const [isComletedBill, setIsComletedBill] = useState(false);
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { bills, setBills } = useContext(BillContext);
@@ -88,10 +86,8 @@ const BillAddForm = () => {
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
-        setCreatedBill(res.data)
-        setIsCreatedBill(true)
-        
-
+        setCreatedBill(res.data);
+        setIsCreatedBill(true);
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -302,8 +298,6 @@ const BillAddForm = () => {
             </Flex>
           </div>
 
-         
-
           <div className="mb-3 w-25">
             <Input
               {...register("discount_amount")}
@@ -326,33 +320,44 @@ const BillAddForm = () => {
             placeholder="Sub Total"
           />
         </div>
-        <HStack >
+        <HStack>
           <Button
-          width='10vw'
+            width="10vw"
             type="submit"
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
               setErrorBillCreate("");
               setSuccess("");
-              
             }}
           >
             Save
           </Button>
           <Button
-          width='10vw'
+            width="10vw"
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
               setErrorBillCreate("");
               setSuccess("");
-              
             }}
           >
             Payments
           </Button>
+          <Button
+            width="10vw"
+            type="submit"
+            isDisabled={isCreatedBill}
+            bg={colorMode === "light" ? "#e3a99c" : "#575757"}
+            onClick={() => {
+              setErrorBillCreate("");
+              setSuccess("");
+              window.location.reload()
+            }}
+          >
+            Without Payments
+          </Button>
         </HStack>
       </form>
-      { isCreatedBill && <BillAddPayment createdBill={createdBill}/>}
+      {isCreatedBill && <BillAddPayment createdBill={createdBill} />}
     </>
   );
 };

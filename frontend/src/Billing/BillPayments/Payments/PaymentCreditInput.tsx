@@ -1,8 +1,6 @@
 import { Input, Button, Flex, VStack, Text, HStack } from "@chakra-ui/react";
-import React from "react";
 import {
   Control,
-  FieldArrayWithId,
   UseFormRegister,
   useFieldArray,
 } from "react-hook-form";
