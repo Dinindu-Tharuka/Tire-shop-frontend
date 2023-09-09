@@ -10,7 +10,7 @@ import {
   Bill,
   BillPayment,
   PaymentCash,
-} from "../../../services/Billing/bill-service";
+} from "../../../services/Billing/bill-page-service";
 import { IoAddCircle } from "react-icons/io5";
 
 interface Props {

@@ -6,16 +6,20 @@ import {
   UseFormRegister,
   useFieldArray,
 } from "react-hook-form";
-import { Bill, BillPayment, PaymentCash, PaymentCheque } from "../../../services/Billing/bill-service";
+import {
+  Bill,
+  BillPayment,
+  PaymentCash,
+  PaymentCheque,
+} from "../../../services/Billing/bill-page-service";
 import { IoAddCircle } from "react-icons/io5";
 
 interface Props {
   register: UseFormRegister<BillPayment>;
   control: Control<BillPayment>;
- 
 }
 
-const PaymentChequeInput = ({register, control}:Props) => {
+const PaymentChequeInput = ({ register, control }: Props) => {
   const { append, remove, fields } = useFieldArray({
     name: `payment_cheques`,
     control,
@@ -25,68 +29,53 @@ const PaymentChequeInput = ({register, control}:Props) => {
       <Flex>
         <Flex>
           {fields.map((field, chequeIndex) => (
-            <VStack align='start'>
+            <VStack align="start">
               <Input
-                {...register(
-                  `payment_cheques.${chequeIndex}.bill_payment`
-                )}
+                {...register(`payment_cheques.${chequeIndex}.bill_payment`)}
                 placeholder="Bill"
                 type="number"
                 defaultValue={chequeIndex + 1}
               />
               <Input
-                {...register(
-                  `payment_cheques.${chequeIndex}.payeename`
-                )}
+                {...register(`payment_cheques.${chequeIndex}.payeename`)}
                 placeholder="Payee Name"
                 type="text"
               />
               <Input
-                {...register(
-                  `payment_cheques.${chequeIndex}.amount`
-                )}
+                {...register(`payment_cheques.${chequeIndex}.amount`)}
                 placeholder="Amount"
                 type="number"
               />
               <Input
-                {...register(
-                  `payment_cheques.${chequeIndex}.cheque_no`
-                )}
+                {...register(`payment_cheques.${chequeIndex}.cheque_no`)}
                 placeholder="Cheque No"
                 type="text"
               />
               <Input
-                {...register(
-                  `payment_cheques.${chequeIndex}.bank`
-                )}
+                {...register(`payment_cheques.${chequeIndex}.bank`)}
                 placeholder="Bank"
                 type="text"
               />
               <Input
-                {...register(
-                  `payment_cheques.${chequeIndex}.branch`
-                )}
+                {...register(`payment_cheques.${chequeIndex}.branch`)}
                 placeholder="Branch"
                 type="text"
               />
               <label>Cheque Date</label>
               <Input
-                {...register(
-                  `payment_cheques.${chequeIndex}.cheque_date`
-                )}
+                {...register(`payment_cheques.${chequeIndex}.cheque_date`)}
                 placeholder="Cheque Date"
-                type='date'
+                type="date"
               />
-              
-                <Button
-                  bg="#f87454"
-                  padding={2.5}
-                  type="button"
-                  onClick={() => remove(chequeIndex)}
-                >
-                  Remove
-                </Button>
-              
+
+              <Button
+                bg="#f87454"
+                padding={2.5}
+                type="button"
+                onClick={() => remove(chequeIndex)}
+              >
+                Remove
+              </Button>
             </VStack>
           ))}
           <Button
@@ -95,14 +84,12 @@ const PaymentChequeInput = ({register, control}:Props) => {
             alignContent="top"
           >
             <div className="me-4">Add Cheque Payment</div>
-          <IoAddCircle />
+            <IoAddCircle />
           </Button>
         </Flex>
-        
-        
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default PaymentChequeInput
+export default PaymentChequeInput;

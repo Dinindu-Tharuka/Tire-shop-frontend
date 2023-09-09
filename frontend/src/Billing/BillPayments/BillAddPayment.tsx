@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Bill, BillPayment } from "../../services/Billing/bill-service";
+import { Bill, BillPayment } from "../../services/Billing/bill-page-service";
 import PaymentCashInput from "./Payments/PaymentCashInput";
 import { Box, Button, Input, Text, useColorMode } from "@chakra-ui/react";
 import PaymentChequeInput from "./Payments/PaymentChequeInput";
@@ -13,9 +13,8 @@ interface Props {
 }
 
 const BillAddPayment = ({ createdBill }: Props) => {
-  const [error, setError] = useState()
+  const [error, setError] = useState();
   const { toggleColorMode, colorMode } = useColorMode();
-  
 
   const {
     register,
@@ -25,7 +24,7 @@ const BillAddPayment = ({ createdBill }: Props) => {
   } = useForm<BillPayment>();
 
   const onPayment = (data: FieldValues) => {
-    const newly = { ...data, bill_id: createdBill.invoice_id};
+    const newly = { ...data, bill_id: createdBill.invoice_id };
     console.log(newly);
 
     billPaymentService
@@ -36,7 +35,7 @@ const BillAddPayment = ({ createdBill }: Props) => {
 
   return (
     <Box marginTop={10}>
-      {error && <Text textColor='red.600'>{error}</Text>}
+      {error && <Text textColor="red.600">{error}</Text>}
       <form onSubmit={handleSubmit(onPayment)}>
         <Input
           {...register(`discount`)}

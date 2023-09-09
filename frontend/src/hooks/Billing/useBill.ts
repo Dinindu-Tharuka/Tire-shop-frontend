@@ -1,29 +1,19 @@
-import { useEffect, useState } from "react"
-import BillService,{ Bill, BillPageStructure } from "../../services/Billing/bill-service"
-
+import React, { useEffect, useState } from 'react'
+import { Bill } from '../../services/Billing/bill-page-service'
+import billService from '../../services/Billing/bill-service'
 
 const useBill = () => {
     const [bills, setBills] = useState<Bill[]>([])
     const [billFetchError, setBillFetchError] = useState('')
-    const [nextBillPageUrl, setnextBillPageUrl] = useState<string | null>('')
-    const [previousBillPageUrl, setPreviousBillPageUrl] = useState<string | null>('')
-    const [filterBillPageParams, setFilterBillPageParams] = useState<string | null>('')
     const [isLoadingBills, setIsLoadingBills] = useState(false)
-    const [billCount, setBillCount] = useState(0)
-    
-    
-
 
     useEffect(()=>{
         setIsLoadingBills(true)
-        const {request, cancel} = BillService.getAll<BillPageStructure>(filterBillPageParams)   
+        const {request, cancel} = billService.getAll<Bill>()   
         request     
             .then(res=> {
-                setBills(res.data.results)
-                setnextBillPageUrl(res.data.next)
-                setPreviousBillPageUrl(res.data.previous)
+                setBills(res.data)
                 setIsLoadingBills(false)
-                setBillCount(res.data.count)
             })
             .catch(error=>{
                 setBillFetchError(error.message === 'canceled'? '':error.message)
@@ -31,10 +21,9 @@ const useBill = () => {
             });
   
           return ()=>cancel();
-      }, [filterBillPageParams])
-
-    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills, billCount}
-  
+      }, [])
+      
+  return {bills, setBills, billFetchError, setBillFetchError, isLoadingBills, setIsLoadingBills}
 }
 
 export default useBill

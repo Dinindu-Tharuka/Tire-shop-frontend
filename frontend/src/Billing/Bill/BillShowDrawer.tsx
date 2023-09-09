@@ -1,28 +1,28 @@
-import { Bill } from "../../services/Billing/bill-service"
+import { Bill } from "../../services/Billing/bill-page-service";
 import {
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
-    DrawerHeader,
-    DrawerOverlay,
-    useColorMode,
-    useDisclosure,
-  } from "@chakra-ui/react";
-  import { useRef, useState } from "react";
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  useColorMode,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useRef, useState } from "react";
 import BillShowPage from "./BillShowPage";
 
-interface Props{
-    selectedBill:Bill
+interface Props {
+  selectedBill: Bill;
 }
 
-const BillShowDrawer = ({ selectedBill }:Props) => {
-    const { toggleColorMode, colorMode } = useColorMode();
+const BillShowDrawer = ({ selectedBill }: Props) => {
+  const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  console.log('selected bill',selectedBill);
-  
+  console.log("selected bill", selectedBill);
+
   return (
     <>
       <Button
@@ -35,9 +35,8 @@ const BillShowDrawer = ({ selectedBill }:Props) => {
             : { background: "#766f6f" }
         }
         padding={2.5}
-        width='5vw'
+        width="5vw"
         onClick={onOpen}
-        
       >
         Show
       </Button>
@@ -46,7 +45,7 @@ const BillShowDrawer = ({ selectedBill }:Props) => {
         placement="right"
         onClose={onClose}
         finalFocusRef={btnRef}
-        size='full'
+        size="full"
       >
         <DrawerOverlay />
         <DrawerContent height="100vh">
@@ -54,14 +53,12 @@ const BillShowDrawer = ({ selectedBill }:Props) => {
           <DrawerHeader>Customer Bill</DrawerHeader>
 
           <DrawerBody>
-            <BillShowPage seletedBill={selectedBill}/>
-            
-           
+            <BillShowPage seletedBill={selectedBill} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default BillShowDrawer
+export default BillShowDrawer;

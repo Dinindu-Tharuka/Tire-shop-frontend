@@ -2,20 +2,15 @@ import {
   Button,
   HStack,
   Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Select,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import { KeyboardEventHandler, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, {
   Item,
 } from "../../../services/Inventory/item-page-service";
-import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
 import useSupplier from "../../../hooks/Registration/useSupplier";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
 import FilterCategory from "../Category/FilterCategory";
@@ -109,11 +104,7 @@ const ItemAddForm = () => {
           </div>
           <div className="mb-3">
             <SupplierFilter selectedSupplier={(sup)=> setSelectedSupplier(sup)}/>
-            {/* <Select {...register("supplier")} placeholder="Select Supplier">
-              {suppliers.map((supplier) => (
-                <option value={supplier.id}>{supplier.name}</option>
-              ))}
-            </Select> */}
+            
           </div>
         </div>
         <HStack justifyContent="space-between">

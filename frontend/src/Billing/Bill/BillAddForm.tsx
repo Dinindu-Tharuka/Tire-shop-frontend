@@ -17,7 +17,7 @@ import BillServices, {
   Bill,
   BillItem,
   BillService,
-} from "../../services/Billing/bill-service";
+} from "../../services/Billing/bill-page-service";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import useService from "../../hooks/Registration/useService";
 import useEmployee from "../../hooks/Registration/useEmployee";
@@ -350,7 +350,7 @@ const BillAddForm = () => {
             onClick={() => {
               setErrorBillCreate("");
               setSuccess("");
-              window.location.reload()
+              window.location.reload();
             }}
           >
             Without Payments

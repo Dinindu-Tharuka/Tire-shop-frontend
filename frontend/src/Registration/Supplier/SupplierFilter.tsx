@@ -6,11 +6,9 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
-import { FieldValues, UseFormRegister } from "react-hook-form";
 import { Supplier } from "../../services/Registration/supplier-service";
-import SupplierContext from "../../Contexts/Registration/SupplierContext";
 import useSupplier from "../../hooks/Registration/useSupplier";
 
 interface Props {

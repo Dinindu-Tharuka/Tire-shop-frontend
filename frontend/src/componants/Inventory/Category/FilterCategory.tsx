@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { AiOutlineDown } from "react-icons/ai"
 import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
 import { Category } from "../../../services/Inventory/category-page-service";
-import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface Props {
     selectedCategory:(category:Category)=>void

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react"
 import React from "react";
-import { Bill } from "../../services/Billing/bill-service";
+import { Bill } from "../../services/Billing/bill-page-service";
 
 interface BillContextType{
     bills:Bill[];

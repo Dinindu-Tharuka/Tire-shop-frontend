@@ -6,16 +6,19 @@ import {
   UseFormRegister,
   useFieldArray,
 } from "react-hook-form";
-import { Bill, BillPayment, PaymentCash } from "../../../services/Billing/bill-service";
+import {
+  Bill,
+  BillPayment,
+  PaymentCash,
+} from "../../../services/Billing/bill-page-service";
 import { IoAddCircle } from "react-icons/io5";
 
 interface Props {
   register: UseFormRegister<BillPayment>;
   control: Control<BillPayment>;
- 
 }
 
-const PaymentCreditCardInput = ({ register, control}:Props) => {
+const PaymentCreditCardInput = ({ register, control }: Props) => {
   const { append, remove, fields } = useFieldArray({
     name: `payments_credit_card`,
     control,
@@ -42,22 +45,19 @@ const PaymentCreditCardInput = ({ register, control}:Props) => {
                 type="text"
               />
               <Input
-                {...register(
-                  `payments_credit_card.${creditCardIndex}.amount`
-                )}
+                {...register(`payments_credit_card.${creditCardIndex}.amount`)}
                 placeholder="Amount"
                 type="number"
               />
-              
-                <Button
-                  bg="#f87454"
-                  padding={2.5}
-                  type="button"
-                  onClick={() => remove(creditCardIndex)}
-                >
-                  Remove
-                </Button>
-              
+
+              <Button
+                bg="#f87454"
+                padding={2.5}
+                type="button"
+                onClick={() => remove(creditCardIndex)}
+              >
+                Remove
+              </Button>
             </VStack>
           ))}
           <Button
@@ -66,14 +66,12 @@ const PaymentCreditCardInput = ({ register, control}:Props) => {
             alignContent="top"
           >
             <div className="me-4">Add Credit Card Payment</div>
-          <IoAddCircle />
+            <IoAddCircle />
           </Button>
         </Flex>
-        
-        
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default PaymentCreditCardInput
+export default PaymentCreditCardInput;

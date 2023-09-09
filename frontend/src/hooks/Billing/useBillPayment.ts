@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BillPayment } from '../../services/Billing/bill-service'
+import { BillPayment } from '../../services/Billing/bill-page-service'
 import billPaymentService from '../../services/Billing/bill-payment-service'
 
 const useBillPayment = () => {

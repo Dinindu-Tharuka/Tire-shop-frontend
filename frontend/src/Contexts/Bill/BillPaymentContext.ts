@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react"
 import React from "react";
-import { BillPayment } from "../../services/Billing/bill-service";
+import { BillPayment } from "../../services/Billing/bill-page-service";
 
 interface BillPaymentsContextType{
     billPayments:BillPayment[];
