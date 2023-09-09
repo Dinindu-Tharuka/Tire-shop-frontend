@@ -18,8 +18,10 @@ import ItemService, {
 import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
 import useSupplier from "../../../hooks/Registration/useSupplier";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
-import FilterCategory from "./FilterCategory";
+import FilterCategory from "../Category/FilterCategory";
 import { Category } from "../../../services/Inventory/category-page-service";
+import SupplierFilter from "../../../Registration/Supplier/SupplierFilter";
+import { Supplier } from "../../../services/Registration/supplier-service";
 
 const ItemAddForm = () => {
   const [errorItemCreate, setErrorItemCreate] = useState("");
@@ -30,10 +32,11 @@ const ItemAddForm = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { items, setItems } = useContext(ItemContext);
   const [selectedCatgory, setSelectedCatgory] = useState<Category | null>(null)
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null)
 
   const onSubmit = (data: FieldValues) => {
     
-    const newly ={...data, item_category:selectedCatgory?.id}
+    const newly ={...data, item_category:selectedCatgory?.id, supplier:selectedSupplier?.id}
     console.log("Item", newly);
 
     ItemService.create(newly)
@@ -105,11 +108,12 @@ const ItemAddForm = () => {
             </Select>
           </div>
           <div className="mb-3">
-            <Select {...register("supplier")} placeholder="Select Supplier">
+            <SupplierFilter selectedSupplier={(sup)=> setSelectedSupplier(sup)}/>
+            {/* <Select {...register("supplier")} placeholder="Select Supplier">
               {suppliers.map((supplier) => (
                 <option value={supplier.id}>{supplier.name}</option>
               ))}
-            </Select>
+            </Select> */}
           </div>
         </div>
         <HStack justifyContent="space-between">

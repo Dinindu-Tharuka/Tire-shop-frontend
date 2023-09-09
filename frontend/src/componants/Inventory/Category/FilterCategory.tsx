@@ -24,7 +24,7 @@ const FilterCategory = ({selectedCategory}:Props) => {
     <div>
         <Menu>
               <MenuButton as={Button} rightIcon={<AiOutlineDown />} width='100%'>
-                {selectedCategory === null? "Select Category":cat?.category_name}
+                {cat === null? "Select Category":cat?.category_name}
               </MenuButton>
               <MenuList>
                 <Input    onKeyUp={onCategoryType} placeholder="Search"/>
