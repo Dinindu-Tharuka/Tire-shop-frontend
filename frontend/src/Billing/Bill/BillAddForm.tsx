@@ -166,7 +166,7 @@ const BillAddForm = () => {
                         >
                           <div className="d-flex justify-content-between w-100 ">
                             <Text>{stockItem.item}</Text>
-                            <Text>{stockItem.qty}</Text>
+                            <Text>({stockItem.qty})</Text>
                           </div>
                         </option>
                       ))}

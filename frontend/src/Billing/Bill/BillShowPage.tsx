@@ -14,10 +14,11 @@ import {
 import { Bill } from "../../services/Billing/bill-service";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import useService from "../../hooks/Registration/useService";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import BillPaymentContext from "../../Contexts/Bill/BillPAymentContext";
+import useBillPayment from "../../hooks/Billing/useBillPayment";
 
 interface Props {
   seletedBill: Bill;
@@ -27,31 +28,52 @@ const BillShowPage = ({ seletedBill }: Props) => {
   const [loader, setLoader] = useState(false);
   const { customers } = useCustomer();
   const { services } = useService();
-  const { billPayments } = useContext(BillPaymentContext)
+  const { billPayments } = useBillPayment()
+
+  console.log('bills', billPayments);
+  
+
+  console.log('selected_bill_id', seletedBill.invoice_id);
+  
+
+  console.log('payments',billPayments.forEach(pay => console.log(pay.bill_id)
+  ))
+  
 
   const accountNames = [
     ["", seletedBill.discount_amount],
     ["Customer Item Value", seletedBill.custome_item_value],
     ["Sub total", seletedBill.sub_total],
   ];
+  const pdfRef = useRef<HTMLDivElement>(null)
 
   const dowloadPdf = () => {
-    const capture: HTMLElement | null = document.querySelector(".receipt");
+    let capture = pdfRef.current
+   
     setLoader(true);
     if (capture)
-      html2canvas(capture).then((canvas) => {
+      html2canvas(capture).then(async (canvas) => {
         const imgData = canvas.toDataURL("img/png");
         const doc = new jsPDF("p", "mm", "a4");
-        const componantWidth = doc.internal.pageSize.getWidth();
-        const componantHeight = doc.internal.pageSize.getHeight();
-        doc.addImage(imgData, "PNG", 0, 0, componantWidth, componantHeight);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = doc.internal.pageSize.getHeight();
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ratio = Math.min(pdfWidth/imgWidth, pdfHeight/imgHeight)
+        const imgX = (pdfWidth - imgWidth * ratio)/2;
+        const imgY = 5;
+        doc.addImage(imgData, "PNG", imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+        const fileName = String(new Date().valueOf());
+        await doc.save(fileName, {returnPromise:true});
+        window.open(doc.output('bloburl', { filename: fileName }), '_blank');
+       
         setLoader(false);
-        doc.save("receipt.pdf");
       });
   };
   return (
     <>
-      <div className="receipt">
+      <div ref={pdfRef}>
         
         <TableContainer width="25%">
           <Table variant="simple">
@@ -157,31 +179,28 @@ const BillShowPage = ({ seletedBill }: Props) => {
             </Table>
           </TableContainer>
         )}
-      </div>
+     
 
       {/* Payment List */}
       <TableContainer width="100%">
         <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
           Payments
         </Text>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Date</Th>
-              <Th>Discount</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
+        <Table variant="simple">          
 
-          <Tbody>
-            {billPayments.filter(payment => payment.bill === seletedBill.invoice_id).map((payment, index) => (
-              <Tr key={index}>
-                <Td>
-                  <Text>{payment.date}</Text>
-                </Td>
-                <Td>
-                  <Text>{payment.discount}</Text>
-                </Td>
+          <Tbody width='50vw'>
+            {billPayments.filter(payment => (payment.bill_id) === seletedBill.invoice_id).map((payment, index) => (
+              <div key={index}>
+              <Tr width='25vw' >
+                <Th>Date</Th>
+                <Th>{payment.date}</Th>
+              </Tr>
+              <Tr width='25vw'>
+                <Th>Discount</Th>
+                <Th>{payment.discount}</Th>
+              </Tr>
+              <Tr>
+                
                 <Td>
                   {payment.payments_cash.length !== 0 && (
                     <TableContainer>
@@ -324,6 +343,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
                   )}
                 </Td>
               </Tr>
+              </div>
             ))}
           </Tbody>
         </Table>
@@ -359,6 +379,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
           </Tbody>
         </Table>
       </TableContainer>
+      </div>
 
       <Button disabled={!(loader === false)} onClick={() => dowloadPdf()}>
         {loader ? "Downloading" : "Download"}

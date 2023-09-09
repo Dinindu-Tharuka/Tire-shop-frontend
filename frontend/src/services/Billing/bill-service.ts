@@ -56,7 +56,7 @@ export interface PaymentCredit{
 
 export interface BillPayment{
     id:number;
-    bill:string;
+    bill_id:string;
     date:string;
     discount:number;
     payment_methods:string;

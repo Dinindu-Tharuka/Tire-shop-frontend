@@ -2,11 +2,15 @@ import {
   Button,
   HStack,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { KeyboardEventHandler, useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, {
   Item,
@@ -14,23 +18,25 @@ import ItemService, {
 import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
 import useSupplier from "../../../hooks/Registration/useSupplier";
 import ItemContext from "../../../Contexts/Inventory/ItemContext";
+import FilterCategory from "./FilterCategory";
+import { Category } from "../../../services/Inventory/category-page-service";
 
 const ItemAddForm = () => {
-  const { register, handleSubmit } = useForm();
   const [errorItemCreate, setErrorItemCreate] = useState("");
   const [success, setSuccess] = useState("");
-
-  const { categories, errorFetchCategory } = useCategoryPagination();
+  
+  const { register, handleSubmit } = useForm();
   const { suppliers, errorFetchSupplier } = useSupplier();
-
   const { toggleColorMode, colorMode } = useColorMode();
-
   const { items, setItems } = useContext(ItemContext);
+  const [selectedCatgory, setSelectedCatgory] = useState<Category | null>(null)
 
   const onSubmit = (data: FieldValues) => {
-    console.log("Item", data);
+    
+    const newly ={...data, item_category:selectedCatgory?.id}
+    console.log("Item", newly);
 
-    ItemService.create(data)
+    ItemService.create(newly)
       .then((res) => {
         if (res.status === 201) {
           setSuccess("Successfully Created.");
@@ -41,6 +47,8 @@ const ItemAddForm = () => {
         setErrorItemCreate(err.message);
       });
   };
+
+  
 
   return (
     <>
@@ -87,14 +95,7 @@ const ItemAddForm = () => {
             ></Input>
           </div>
           <div className="mb-3">
-            <Select
-              {...register("item_category")}
-              placeholder="Select Category"
-            >
-              {categories.map((category) => (
-                <option value={category.id}>{category.category_name}</option>
-              ))}
-            </Select>
+            <FilterCategory selectedCategory={(cat)=> setSelectedCatgory(cat)}/>
           </div>
           <div className="mb-3">
             <Select {...register("vale_type")}>
