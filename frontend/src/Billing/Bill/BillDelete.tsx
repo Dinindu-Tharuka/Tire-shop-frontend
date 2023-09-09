@@ -13,6 +13,7 @@ import React, { useContext } from "react";
 import { useRef } from "react";
 import BillService, { Bill } from "../../services/Billing/bill-page-service";
 import BillContext from "../../Contexts/Bill/BillContext";
+import AllBillContext from "../../Contexts/Bill/AllBillContext";
 
 interface Props {
   selectedDeleteBill: Bill;
@@ -22,7 +23,7 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const deleteToast = useToast();
-  const { bills, setBills } = useContext(BillContext);
+  const { bills, setBills } = useContext(AllBillContext);
 
   const name = "Bill";
 

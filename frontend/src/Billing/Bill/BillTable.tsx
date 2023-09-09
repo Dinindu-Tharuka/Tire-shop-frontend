@@ -11,44 +11,42 @@ import {
   Tr,
   useColorMode,
   Text,
-  Spinner
+  Spinner,
+  Input
 } from "@chakra-ui/react";
 
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import BillContext from "../../Contexts/Bill/BillContext";
 import { useContext, useState } from "react";
 import BillDelete from "./BillDelete";
-import BillAddDrawer from "./BillAddDrawer";
 import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import BillShowDrawer from "./BillShowDrawer";
+import useBill from "../../hooks/Billing/useBill";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const [ currentPage, setCurrentPage] = useState(1)
-  const {
-    bills,
-    nextBillPageUrl,
-    previousBillPageUrl,
-    setFilterBillPageParams,
-    isLoadingBills,
-    billCount,
-    billFetchError
-  } = useContext(BillContext);
-
-  const numOfpages = Math.ceil(billCount/ MAXIMUM_PAGES_PER_PAGE)
+  const [billNoValue, setBillNoValue] = useState('')
+ 
+  const { bills, setBills, isLoadingBills, billFetchError} = useBill()
   const {customers} = useCustomer()
 
-  
+  const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>)=>{
+
+    
+    setBillNoValue(event.currentTarget.value)
+    
+  }  
   if (isLoadingBills)
     return <Spinner/>
 
   return (
     <>
     <Flex alignItems="center" flexDir="column">    
+    <Input placeholder="Search Bill No" onKeyUp={onTypeFilter}/>
     {billFetchError && <Text textColor='red'>Unable to fetch data from the internet.</Text>}  
       <TableContainer>
         <Table>
@@ -60,14 +58,14 @@ const BillTable = () => {
               <Th>Customer</Th>
               <Th>Date</Th>
               <Th>Discount Amount</Th>
-              <Th>Suc Total</Th>
+              <Th>Sub Total</Th>
               <Th>Customer Item Value</Th>
             </Tr>
             
 
           </Thead>
           <Tbody>
-            {bills?.map((bill, index) => (
+            {bills.filter(bill =>billNoValue? bill.invoice_id.toLowerCase().startsWith(billNoValue):true).map((bill, index) => (
               <Tr key={index}>
                 <Th><BillShowDrawer selectedBill={bill}/></Th>
                 <Th>
@@ -85,29 +83,7 @@ const BillTable = () => {
         </Table>
       </TableContainer>
 
-      <HStack>
-        <Button
-          colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          isDisabled={currentPage === 1 ? true:false}
-          onClick={() =>{
-            setFilterBillPageParams(getCutUrl(previousBillPageUrl, 'bills') + '')
-            setCurrentPage(currentPage - 1)
-          }}
-        >
-          <IoIosArrowDropleftCircle />
-        </Button>
-        <Text fontWeight='semibold'>page {currentPage} of {numOfpages}</Text>
-        <Button
-          colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
-          isDisabled={currentPage === numOfpages ? true:false}
-          onClick={() =>{
-            setFilterBillPageParams(getCutUrl(nextBillPageUrl, 'bills') + '')
-            setCurrentPage(currentPage + 1)
-          }}
-        >
-          <IoIosArrowDroprightCircle />
-        </Button>
-      </HStack>
+     
     </Flex>
     </>
   );

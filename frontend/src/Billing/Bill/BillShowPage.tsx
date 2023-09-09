@@ -17,7 +17,6 @@ import useService from "../../hooks/Registration/useService";
 import { useContext, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import BillPaymentContext from "../../Contexts/Bill/BillPAymentContext";
 import useBillPayment from "../../hooks/Billing/useBillPayment";
 
 interface Props {

@@ -8,8 +8,10 @@ import useStockInvoice from "../../hooks/Stock/useStockInvoice";
 import useStockItem from "../../hooks/Stock/useStockItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
-import BillPaymentContext from "../../Contexts/Bill/BillPAymentContext";
 import useBillPayment from "../../hooks/Billing/useBillPayment";
+import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
+import useBill from "../../hooks/Billing/useBill";
+import AllBillContext from "../../Contexts/Bill/AllBillContext";
 
 const BillingMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -26,14 +28,9 @@ const BillingMainPage = () => {
   const {
     bills,
     setBills,
-    nextBillPageUrl,
-    previousBillPageUrl,
-    filterBillPageParams,
-    setFilterBillPageParams,
     billFetchError,
     isLoadingBills,
-    billCount,
-  } = usePageBill();
+  } = useBill();
 
   const {
     stockInvoices,
@@ -74,17 +71,11 @@ const BillingMainPage = () => {
         }}
       >
         <StockItemContext.Provider value={{ stockItems, setStockItems }}>
-          <BillContext.Provider
+          <AllBillContext.Provider
             value={{
               bills,
               setBills,
-              nextBillPageUrl,
-              previousBillPageUrl,
-              filterBillPageParams,
-              setFilterBillPageParams,
-              billFetchError,
               isLoadingBills,
-              billCount,
             }}
           >
             <Grid
@@ -112,7 +103,7 @@ const BillingMainPage = () => {
                 <BillingSidePanel />
               </GridItem>
             </Grid>
-          </BillContext.Provider>
+          </AllBillContext.Provider>
         </StockItemContext.Provider>
       </StockInvoiceContext.Provider>
     </BillPaymentContext.Provider>

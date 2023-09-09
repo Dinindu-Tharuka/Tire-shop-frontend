@@ -9,9 +9,7 @@ const usePageBill = () => {
     const [previousBillPageUrl, setPreviousBillPageUrl] = useState<string | null>('')
     const [filterBillPageParams, setFilterBillPageParams] = useState<string | null>('')
     const [isLoadingBills, setIsLoadingBills] = useState(false)
-    const [billCount, setBillCount] = useState(0)
-    
-    
+    const [billCount, setBillCount] = useState(0)   
 
 
     useEffect(()=>{
