@@ -14,7 +14,7 @@ import { useRef } from "react";
 import StockInvoiceService, {
   StockInvoice,
 } from "../../services/Stock/stock-invoice-page-service";
-import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
+import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 
 interface Props {
   selectedStockInvoice: StockInvoice;
@@ -24,7 +24,9 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const deleteToast = useToast();
-  const { stockInvoices, setStockInvoices } = useContext(StockInvoiceContext);
+  const { stockInvoices, setStockInvoices } = useContext(
+    StockInvoicePageContext
+  );
 
   const name = "Stock Invoice";
 

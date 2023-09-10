@@ -4,14 +4,24 @@ import { Outlet } from "react-router-dom";
 import useStockInvoicePage from "../../hooks/Stock/useStockInvoicePage";
 import useStockItem from "../../hooks/Stock/useStockItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
-import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
+import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 import useBillPayment from "../../hooks/Billing/useBillPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import useBill from "../../hooks/Billing/useBill";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
+import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
+import useStockInvoice from "../../hooks/Stock/useStockInvoice";
 
 const BillingMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
+
+  const {
+    stockInvoices,
+    setStockInvoices,
+    errorFetchStockInvoice,
+    isLoadingInvoices,
+    setErrorFetchStockInvoice,
+  } = useStockInvoice();
 
   const {
     billPayments,
@@ -24,42 +34,24 @@ const BillingMainPage = () => {
 
   const { bills, setBills, billFetchError, isLoadingBills } = useBill();
 
-  const {
-    stockInvoices,
-    setStockInvoices,
-    nextStockInvoiceUrl,
-    previousStockInvoiceUrl,
-    filterStockInvoiceParams,
-    setFilterStockInvoiceParams,
-    isLoadingInvoices,
-    errorFetchStockInvoice,
-    setErrorFetchStockInvoice,
-    invoicesCount,
-  } = useStockInvoicePage();
-
   const { stockItems, setStockItems } = useStockItem();
   return (
-    <BillPaymentContext.Provider
+    <StockInvoiceContext.Provider
       value={{
-        billPayments,
-        setBillPayments,
-        billPaymentFetchError,
-        setBillPaymentFetchError,
-        isLoadingBillPayments,
+        stockInvoices,
+        setStockInvoices,
+        errorFetchStockInvoice,
+        isLoadingInvoices,
+        setErrorFetchStockInvoice,
       }}
     >
-      <StockInvoiceContext.Provider
+      <BillPaymentContext.Provider
         value={{
-          stockInvoices,
-          setStockInvoices,
-          nextStockInvoiceUrl,
-          previousStockInvoiceUrl,
-          filterStockInvoiceParams,
-          setFilterStockInvoiceParams,
-          isLoadingInvoices,
-          errorFetchStockInvoice,
-          setErrorFetchStockInvoice,
-          invoicesCount,
+          billPayments,
+          setBillPayments,
+          billPaymentFetchError,
+          setBillPaymentFetchError,
+          isLoadingBillPayments,
         }}
       >
         <StockItemContext.Provider value={{ stockItems, setStockItems }}>
@@ -98,8 +90,8 @@ const BillingMainPage = () => {
             </Grid>
           </AllBillContext.Provider>
         </StockItemContext.Provider>
-      </StockInvoiceContext.Provider>
-    </BillPaymentContext.Provider>
+      </BillPaymentContext.Provider>
+    </StockInvoiceContext.Provider>
   );
 };
 

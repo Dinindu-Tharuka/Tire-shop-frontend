@@ -21,7 +21,7 @@ import { IoAddCircle } from "react-icons/io5";
 import StockInvoiceService, {
   StockInvoice,
 } from "../../services/Stock/stock-invoice-page-service";
-import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
+import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
@@ -40,7 +40,9 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const { stockInvoices, setStockInvoices } = useContext(StockInvoiceContext);
+  const { stockInvoices, setStockInvoices } = useContext(
+    StockInvoicePageContext
+  );
   const { setStockItems, stockItems } = useContext(StockItemContext);
   const { suppliers } = useSupplier();
 
