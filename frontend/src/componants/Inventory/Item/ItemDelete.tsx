@@ -14,7 +14,7 @@ import { useRef } from "react";
 import ItemService, {
   Item,
 } from "../../../services/Inventory/item-page-service";
-import ItemContext from "../../../Contexts/Inventory/ItemContext";
+import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
 
 interface Props {
   selectedDeleteItem: Item;
@@ -25,7 +25,7 @@ const ItemDelete = ({ selectedDeleteItem }: Props) => {
   const cancelRef = useRef(null);
   const deleteToast = useToast();
 
-  const { items, setItems } = useContext(ItemContext);
+  const { items, setItems } = useContext(ItemPageContext);
 
   const onDeleteSupplier = (item: Item) => {
     const originalItems = [...items];

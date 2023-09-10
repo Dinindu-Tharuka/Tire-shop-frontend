@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from "axios";
 import axiosInstance from "./api-client";
 import apiClient from "./api-client";
 
@@ -9,10 +10,10 @@ class HttpServicePagination{
         this.endpoint = endpoint
     }
 
-    getAll<T>(filter:string | null){
+    getAll<T>(filter:string | null, requestConfig?:AxiosRequestConfig){
         const controller = new AbortController();
         const request =axiosInstance
-                        .get<T>(`${this.endpoint}${filter}`, {signal:controller.signal})
+                        .get<T>(`${this.endpoint}${filter}`, {signal:controller.signal, ...requestConfig})
                         
 
         return {request, cancel:()=>controller.abort()}

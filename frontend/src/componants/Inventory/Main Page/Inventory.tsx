@@ -13,7 +13,7 @@ import useSupplier from "../../../hooks/Registration/useSupplier";
 import { Outlet } from "react-router-dom";
 import SupplierContext from "../../../Contexts/Registration/SupplierContext";
 import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
-import ItemContext from "../../../Contexts/Inventory/ItemContext";
+import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
 
 const Inventory = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -29,6 +29,8 @@ const Inventory = () => {
     error,
     setError,
     itemCount,
+    setItemQuery,
+    setItemSizeQuery
   } = useItemsPagination();
   const {
     categories,
@@ -44,7 +46,7 @@ const Inventory = () => {
   } = useCategoryPagination();
 
   return (
-    <ItemContext.Provider
+    <ItemPageContext.Provider
       value={{
         items,
         setItems,
@@ -56,6 +58,8 @@ const Inventory = () => {
         setError,
         error,
         itemCount,
+        setItemQuery,
+        setItemSizeQuery
       }}
     >
       <ItemCategoryContext.Provider
@@ -101,7 +105,7 @@ const Inventory = () => {
           </GridItem>
         </Grid>
       </ItemCategoryContext.Provider>
-    </ItemContext.Provider>
+    </ItemPageContext.Provider>
   );
 };
 

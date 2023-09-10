@@ -4,7 +4,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import ItemService, {
   Item,
 } from "../../../services/Inventory/item-page-service";
-import ItemContext from "../../../Contexts/Inventory/ItemContext";
+import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
 import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
 import useSupplier from "../../../hooks/Registration/useSupplier";
 
@@ -21,7 +21,7 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
   const { categories } = useCategoryPagination();
   const { suppliers } = useSupplier();
 
-  const { items, setItems } = useContext(ItemContext);
+  const { items, setItems } = useContext(ItemPageContext);
 
   const onSubmit = (data: FieldValues) => {
     ItemService.update(data, data.item_id)

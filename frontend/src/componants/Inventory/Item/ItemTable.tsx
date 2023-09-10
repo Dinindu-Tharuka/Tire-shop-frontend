@@ -11,10 +11,12 @@ import {
   Tr,
   useColorMode,
   Text,
+  InputAddon,
+  Input,
 } from "@chakra-ui/react";
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext, useState } from "react";
-import ItemContext from "../../../Contexts/Inventory/ItemContext";
+import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
 import ItemService, {
   Item,
 } from "../../../services/Inventory/item-page-service";
@@ -39,25 +41,30 @@ const ItemTable = () => {
     setFilterItemPageParams,
     error,
     itemCount,
-  } = useContext(ItemContext);
+    setItemQuery,
+    setItemSizeQuery,
+  } = useContext(ItemPageContext);
 
   const numOfPages = Math.ceil(itemCount / MAXIMUM_PAGES_PER_PAGE);
-
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const onDeleteItem = (itemSelected: Item) => {
-    const originalItems = [...items];
-    setItems(items.filter((item) => item.item_id !== itemSelected.item_id));
-
-    ItemService.delete(itemSelected.item_id).catch((error) => {
-      setItems(originalItems);
-    });
+  const onTypeId = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    setItemQuery(event.currentTarget.value);
   };
+
+  const onTypeSize = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    setItemSizeQuery(event.currentTarget.value);
+  };
+
   if (error)
     return <Text textColor="red">Unable to fetch data from the internet.</Text>;
 
   return (
     <Flex alignItems="center" flexDir="column">
+      <HStack>
+        <Input placeholder="Search Item" onKeyUp={onTypeId} />
+        <Input placeholder="Search Size" onKeyUp={onTypeSize} />
+      </HStack>
       <TableContainer>
         <Table>
           <Thead>

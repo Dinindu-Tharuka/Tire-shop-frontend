@@ -12,7 +12,7 @@ import ItemService, {
   Item,
 } from "../../../services/Inventory/item-page-service";
 import useSupplier from "../../../hooks/Registration/useSupplier";
-import ItemContext from "../../../Contexts/Inventory/ItemContext";
+import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
 import FilterCategory from "../Category/FilterCategory";
 import { Category } from "../../../services/Inventory/category-page-service";
 import SupplierFilter from "../../../Registration/Supplier/SupplierFilter";
@@ -21,17 +21,22 @@ import { Supplier } from "../../../services/Registration/supplier-service";
 const ItemAddForm = () => {
   const [errorItemCreate, setErrorItemCreate] = useState("");
   const [success, setSuccess] = useState("");
-  
+
   const { register, handleSubmit } = useForm();
   const { suppliers, errorFetchSupplier } = useSupplier();
   const { toggleColorMode, colorMode } = useColorMode();
-  const { items, setItems } = useContext(ItemContext);
-  const [selectedCatgory, setSelectedCatgory] = useState<Category | null>(null)
-  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null)
+  const { items, setItems } = useContext(ItemPageContext);
+  const [selectedCatgory, setSelectedCatgory] = useState<Category | null>(null);
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(
+    null
+  );
 
   const onSubmit = (data: FieldValues) => {
-    
-    const newly ={...data, item_category:selectedCatgory?.id, supplier:selectedSupplier?.id}
+    const newly = {
+      ...data,
+      item_category: selectedCatgory?.id,
+      supplier: selectedSupplier?.id,
+    };
     console.log("Item", newly);
 
     ItemService.create(newly)
@@ -45,8 +50,6 @@ const ItemAddForm = () => {
         setErrorItemCreate(err.message);
       });
   };
-
-  
 
   return (
     <>
@@ -93,7 +96,9 @@ const ItemAddForm = () => {
             ></Input>
           </div>
           <div className="mb-3">
-            <FilterCategory selectedCategory={(cat)=> setSelectedCatgory(cat)}/>
+            <FilterCategory
+              selectedCategory={(cat) => setSelectedCatgory(cat)}
+            />
           </div>
           <div className="mb-3">
             <Select {...register("vale_type")}>
@@ -103,8 +108,9 @@ const ItemAddForm = () => {
             </Select>
           </div>
           <div className="mb-3">
-            <SupplierFilter selectedSupplier={(sup)=> setSelectedSupplier(sup)}/>
-            
+            <SupplierFilter
+              selectedSupplier={(sup) => setSelectedSupplier(sup)}
+            />
           </div>
         </div>
         <HStack justifyContent="space-between">

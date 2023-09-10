@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import ItemService from "../../services/Inventory/item-service"
 import { Item } from "../../services/Inventory/item-page-service"
+import axios from "axios"
 
 
 
@@ -10,7 +11,8 @@ const useItems = () => {
 
 
     useEffect(()=>{
-        const {request, cancel} = ItemService.getAll<Item>()  
+        const {request, cancel} = ItemService.getAll<Item>()
+        
         request     
             .then(res=> {
                 setItems(res.data)

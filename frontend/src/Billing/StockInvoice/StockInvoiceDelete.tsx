@@ -15,6 +15,7 @@ import StockInvoiceService, {
   StockInvoice,
 } from "../../services/Stock/stock-invoice-page-service";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
+import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 
 interface Props {
   selectedStockInvoice: StockInvoice;
@@ -25,7 +26,7 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
   const cancelRef = useRef(null);
   const deleteToast = useToast();
   const { stockInvoices, setStockInvoices } = useContext(
-    StockInvoicePageContext
+    StockInvoiceContext
   );
 
   const name = "Stock Invoice";
@@ -41,7 +42,6 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
 
     StockInvoiceService.delete(`${seletedStockInvoice.invoice_no}`)
       .then((res) => {
-        if (res.status === 204) {
           deleteToast({
             title: `${name}`,
             description: `${name} successfully deleted.`,
@@ -49,14 +49,14 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
             duration: 2000,
             isClosable: true,
           });
-        }
+        
       })
       .catch((err) => {
         setStockInvoices(originalBills);
 
         deleteToast({
           title: "Error",
-          description: `${name} not successfully deleted.`,
+          description: `${name} not successfully deleted. Beacause ${err.message}`,
           status: "error",
           duration: 2000,
           isClosable: true,
