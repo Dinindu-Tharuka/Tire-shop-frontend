@@ -10,11 +10,12 @@ const usePageBill = () => {
     const [filterBillPageParams, setFilterBillPageParams] = useState<string | null>('')
     const [isLoadingBills, setIsLoadingBills] = useState(false)
     const [billCount, setBillCount] = useState(0)   
+    const [billIdFilter, setBillIdFilter] = useState('')
 
 
     useEffect(()=>{
         setIsLoadingBills(true)
-        const {request, cancel} = BillService.getAll<BillPageStructure>(filterBillPageParams)   
+        const {request, cancel} = BillService.getAll<BillPageStructure>(filterBillPageParams, {params: { billIdFilter }})   
         request     
             .then(res=> {
                 setBills(res.data.results)
@@ -29,9 +30,9 @@ const usePageBill = () => {
             });
   
           return ()=>cancel();
-      }, [filterBillPageParams])
+      }, [filterBillPageParams, billIdFilter])
 
-    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills, billCount, setBillFetchError}
+    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills, billCount, setBillFetchError, setBillIdFilter}
   
 }
 

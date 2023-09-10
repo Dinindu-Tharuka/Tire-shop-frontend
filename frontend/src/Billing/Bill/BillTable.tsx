@@ -34,12 +34,11 @@ const BillTable = () => {
     setBills,
     nextBillPageUrl,
     previousBillPageUrl,
-    filterBillPageParams,
     setFilterBillPageParams,
     billFetchError,
-    isLoadingBills,
     billCount,
-    setBillFetchError
+    setBillFetchError,
+    setBillIdFilter
   } = useContext(BillContext);
   const { customers } = useCustomer();
 
@@ -48,9 +47,8 @@ const BillTable = () => {
   const numOfPages = Math.ceil(billCount / MAXIMUM_PAGES_PER_PAGE)
 
   const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-   
+   setBillIdFilter(event.currentTarget.value)
   };
-  if (isLoadingBills) return <Spinner />;
 
   return (
     <>

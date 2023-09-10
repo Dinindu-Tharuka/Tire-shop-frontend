@@ -50,7 +50,8 @@ const BillingMainPage = () => {
     billFetchError,
     isLoadingBills,
     billCount,
-    setBillFetchError
+    setBillFetchError,
+    setBillIdFilter
   } = usePageBill();
 
   const { stockItems, setStockItems } = useStockItem();
@@ -91,7 +92,8 @@ const BillingMainPage = () => {
               billFetchError,
               isLoadingBills,
               billCount,
-              setBillFetchError
+              setBillFetchError,
+              setBillIdFilter
             }}
           >
             <Grid

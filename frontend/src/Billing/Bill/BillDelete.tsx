@@ -23,7 +23,7 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const deleteToast = useToast();
-  const { bills, setBills } = useContext(AllBillContext);
+  const { bills, setBills } = useContext(BillContext);
 
   
 
