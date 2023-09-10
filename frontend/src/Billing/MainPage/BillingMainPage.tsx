@@ -19,9 +19,18 @@ const BillingMainPage = () => {
     stockInvoices,
     setStockInvoices,
     errorFetchStockInvoice,
+    nextStockInvoiceUrl,
+    previousStockInvoiceUrl,
+    filterStockInvoiceParams,
+    setFilterStockInvoiceParams,
     isLoadingInvoices,
+    invoicesCount,
     setErrorFetchStockInvoice,
-  } = useStockInvoice();
+    setInvoiceIdFilter
+  } = useStockInvoicePage();
+
+
+  
 
   const {
     billPayments,
@@ -36,13 +45,19 @@ const BillingMainPage = () => {
 
   const { stockItems, setStockItems } = useStockItem();
   return (
-    <StockInvoiceContext.Provider
+    <StockInvoicePageContext.Provider
       value={{
         stockInvoices,
         setStockInvoices,
         errorFetchStockInvoice,
+        nextStockInvoiceUrl,
+        previousStockInvoiceUrl,
+        filterStockInvoiceParams,
+        setFilterStockInvoiceParams,
         isLoadingInvoices,
+        invoicesCount,
         setErrorFetchStockInvoice,
+        setInvoiceIdFilter
       }}
     >
       <BillPaymentContext.Provider
@@ -91,7 +106,7 @@ const BillingMainPage = () => {
           </AllBillContext.Provider>
         </StockItemContext.Provider>
       </BillPaymentContext.Provider>
-    </StockInvoiceContext.Provider>
+    </StockInvoicePageContext.Provider>
   );
 };
 

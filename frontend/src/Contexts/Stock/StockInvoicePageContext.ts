@@ -13,6 +13,7 @@ interface StockInvoicePageContextType{
     invoicesCount:number;
     errorFetchStockInvoice:string;
     setErrorFetchStockInvoice:Dispatch<SetStateAction<string>>;
+    setInvoiceIdFilter:Dispatch<SetStateAction<string>>;
 }
 
 const StockInvoicePageContext = React.createContext<StockInvoicePageContextType>({} as StockInvoicePageContextType)

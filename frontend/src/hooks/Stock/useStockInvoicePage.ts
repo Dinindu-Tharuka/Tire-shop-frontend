@@ -10,10 +10,11 @@ const useStockInvoicePage = () => {
     const [filterStockInvoiceParams, setFilterStockInvoiceParams] = useState<string | null>('')
     const [isLoadingInvoices, setIsLoadingInvoices] = useState(false) 
     const [invoicesCount, setInvoicesCount] = useState(0)   
+    const [invoiceIdFilter, setInvoiceIdFilter] = useState('')
 
     useEffect(()=>{
       setIsLoadingInvoices(true)
-        const {request, cancel} = StockInvoiceService.getAll<StockInvoicePageStructure>(filterStockInvoiceParams)
+        const {request, cancel} = StockInvoiceService.getAll<StockInvoicePageStructure>(filterStockInvoiceParams, {params: { invoiceIdFilter }})
         request
           .then(res=>{
             
@@ -29,8 +30,8 @@ const useStockInvoicePage = () => {
           })
 
         return ()=> cancel();
-    }, [filterStockInvoiceParams])
-  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, nextStockInvoiceUrl, previousStockInvoiceUrl, filterStockInvoiceParams, setFilterStockInvoiceParams, isLoadingInvoices, invoicesCount, setErrorFetchStockInvoice}
+    }, [filterStockInvoiceParams, invoiceIdFilter])
+  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, nextStockInvoiceUrl, previousStockInvoiceUrl, filterStockInvoiceParams, setFilterStockInvoiceParams, isLoadingInvoices, invoicesCount, setErrorFetchStockInvoice, setInvoiceIdFilter}
 }
 
 export default useStockInvoicePage

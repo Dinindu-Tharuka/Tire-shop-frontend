@@ -21,19 +21,35 @@ import UpdateStockInvoiceDrawer from "./UpdateStockInvoiceDrawer";
 import useSupplier from "../../hooks/Registration/useSupplier";
 
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
+import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 
 const StockInvoiceTable = () => {
-  const [stockBillNoValue, setStockBillNoValue] = useState("");
+  const [currentPageNum, setCurrentPageNum] = useState(1)
   const { toggleColorMode, colorMode } = useColorMode();
-  const { stockInvoices, isLoadingInvoices, errorFetchStockInvoice } =
-    useContext(StockInvoiceContext);
+  const {
+    stockInvoices,
+    setStockInvoices,
+    errorFetchStockInvoice,
+    nextStockInvoiceUrl,
+    previousStockInvoiceUrl,
+    filterStockInvoiceParams,
+    setFilterStockInvoiceParams,
+    isLoadingInvoices,
+    invoicesCount,
+    setErrorFetchStockInvoice,
+    setInvoiceIdFilter
+  } = useContext(StockInvoicePageContext);
+
+  const numOfPages = Math.ceil(invoicesCount / MAXIMUM_PAGES_PER_PAGE);
 
   const { suppliers } = useSupplier();
   const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    setStockBillNoValue(event.currentTarget.value);
+    setInvoiceIdFilter(event.currentTarget.value);
   };
 
-  if (isLoadingInvoices) return <Spinner />;
+  
 
   return (
     <Flex alignItems="center" flexDir="column">
@@ -56,14 +72,7 @@ const StockInvoiceTable = () => {
           </Thead>
           <Tbody>
             {stockInvoices
-              ?.filter((stock) =>
-                stockBillNoValue
-                  ? stock.invoice_no
-                      .toLowerCase()
-                      .startsWith(stockBillNoValue.toLowerCase())
-                  : true
-              )
-              .map((invoice, index) => (
+              ?.map((invoice, index) => (
                 <Tr key={index}>
                   <Th>
                     <UpdateStockInvoiceDrawer
@@ -85,6 +94,35 @@ const StockInvoiceTable = () => {
           </Tbody>
         </Table>
       </TableContainer>
+      <HStack>
+        <Button
+          colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
+          isDisabled={currentPageNum === 1 ? true : false}
+          onClick={() => {
+            setFilterStockInvoiceParams(
+              getCutUrl(previousStockInvoiceUrl, "stock-items-invoices") + ""
+            );
+            setCurrentPageNum(currentPageNum - 1);
+            setErrorFetchStockInvoice("");
+          }}
+        >
+          <IoIosArrowDropleftCircle />
+        </Button>
+        <Text fontWeight="semibold">
+          page {currentPageNum} of {numOfPages}
+        </Text>
+        <Button
+          colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
+          isDisabled={currentPageNum === numOfPages ? true : false}
+          onClick={() => {
+            setFilterStockInvoiceParams(getCutUrl(nextStockInvoiceUrl, "stock-items-invoices") + "");
+            setCurrentPageNum(currentPageNum + 1);
+            setErrorFetchStockInvoice("");
+          }}
+        >
+          <IoIosArrowDroprightCircle />
+        </Button>
+      </HStack>
     </Flex>
   );
 };
