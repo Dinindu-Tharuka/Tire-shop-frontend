@@ -21,7 +21,6 @@ const RegistraionMainPage = () => {
     setErrorFetchUser,
   } = useUser();
 
-  console.log('user_main',users);
   
   const {
     suppliers,

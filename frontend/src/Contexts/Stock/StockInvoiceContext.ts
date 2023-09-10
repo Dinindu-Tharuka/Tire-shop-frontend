@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import React from "react";
-import { StockInvoice } from "../../services/Stock/stock-invoice-service";
+import { StockInvoice } from "../../services/Stock/stock-invoice-page-service";
 
 interface StockInvoiceContextType{
     stockInvoices:StockInvoice[];

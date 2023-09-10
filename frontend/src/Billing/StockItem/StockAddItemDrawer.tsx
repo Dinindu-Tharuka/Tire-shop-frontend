@@ -1,25 +1,24 @@
 import {
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
-    DrawerHeader,
-    DrawerOverlay,
-    useColorMode,
-    useDisclosure,
-  } from "@chakra-ui/react";
-  import { useRef, useState } from "react";
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  useColorMode,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useRef, useState } from "react";
 import StockAddItemForm from "./StockAddItemForm";
-import { StockInvoice } from "../../services/Stock/stock-invoice-service";
+import { StockInvoice } from "../../services/Stock/stock-invoice-page-service";
 
-interface Props{
-    selectedStockInvoice:StockInvoice
+interface Props {
+  selectedStockInvoice: StockInvoice;
 }
 
-
-const StockAddItemDrawer = ({ selectedStockInvoice }:Props) => {
-    const { toggleColorMode, colorMode } = useColorMode();
+const StockAddItemDrawer = ({ selectedStockInvoice }: Props) => {
+  const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
   return (
@@ -43,7 +42,7 @@ const StockAddItemDrawer = ({ selectedStockInvoice }:Props) => {
         placement="left"
         onClose={onClose}
         finalFocusRef={btnRef}
-        size='sm'
+        size="sm"
       >
         <DrawerOverlay />
         <DrawerContent height="100vh">
@@ -51,12 +50,12 @@ const StockAddItemDrawer = ({ selectedStockInvoice }:Props) => {
           <DrawerHeader>Add Stock Item</DrawerHeader>
 
           <DrawerBody>
-            <StockAddItemForm seletedInvoice={selectedStockInvoice}/>
+            <StockAddItemForm seletedInvoice={selectedStockInvoice} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default StockAddItemDrawer
+export default StockAddItemDrawer;

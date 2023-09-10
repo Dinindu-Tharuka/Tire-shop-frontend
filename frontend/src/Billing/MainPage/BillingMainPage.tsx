@@ -1,10 +1,7 @@
 import { Grid, GridItem, useColorMode, Text } from "@chakra-ui/react";
-import React from "react";
 import BillingSidePanel from "../SidePanel/BillingSidePanel";
-import BillContext from "../../Contexts/Bill/BillContext";
-import usePageBill from "../../hooks/Billing/usePageBill";
 import { Outlet } from "react-router-dom";
-import useStockInvoice from "../../hooks/Stock/useStockInvoice";
+import useStockInvoicePage from "../../hooks/Stock/useStockInvoicePage";
 import useStockItem from "../../hooks/Stock/useStockItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
@@ -25,12 +22,7 @@ const BillingMainPage = () => {
     setIsLoadingBillPayments,
   } = useBillPayment();
 
-  const {
-    bills,
-    setBills,
-    billFetchError,
-    isLoadingBills,
-  } = useBill();
+  const { bills, setBills, billFetchError, isLoadingBills } = useBill();
 
   const {
     stockInvoices,
@@ -43,7 +35,7 @@ const BillingMainPage = () => {
     errorFetchStockInvoice,
     setErrorFetchStockInvoice,
     invoicesCount,
-  } = useStockInvoice();
+  } = useStockInvoicePage();
 
   const { stockItems, setStockItems } = useStockItem();
   return (
@@ -76,6 +68,7 @@ const BillingMainPage = () => {
               bills,
               setBills,
               isLoadingBills,
+              billFetchError,
             }}
           >
             <Grid

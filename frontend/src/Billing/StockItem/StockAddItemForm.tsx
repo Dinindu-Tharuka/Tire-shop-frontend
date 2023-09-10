@@ -14,7 +14,7 @@ import StockItemService, {
   StockItem,
 } from "../../services/Stock/stock-item-service";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
-import { StockInvoice } from "../../services/Stock/stock-invoice-service";
+import { StockInvoice } from "../../services/Stock/stock-invoice-page-service";
 import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 
 interface Props {

@@ -25,10 +25,14 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
   const deleteToast = useToast();
   const { bills, setBills } = useContext(AllBillContext);
 
+  
+
   const name = "Bill";
 
   const onDeleteBill = (seletedBill: Bill) => {
     const originalBills = [...bills];
+
+    
 
     setBills(
       bills.filter((bill) => bill.invoice_id !== seletedBill.invoice_id)
@@ -36,7 +40,6 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
 
     BillService.delete(`${seletedBill.invoice_id}`)
       .then((res) => {
-        console.log(res.data);
 
         if (res.status === 204) {
           deleteToast({

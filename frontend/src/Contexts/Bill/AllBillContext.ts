@@ -6,6 +6,7 @@ interface AllBillContextType{
     bills:Bill[];
     setBills:Dispatch<SetStateAction<Bill[]>>;    
     isLoadingBills:boolean; 
+    billFetchError:string
     
 }
 

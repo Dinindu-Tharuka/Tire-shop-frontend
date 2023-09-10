@@ -12,7 +12,7 @@ import { FieldValues, useForm, useFieldArray } from "react-hook-form";
 import { IoAddCircle } from "react-icons/io5";
 import StockInvoiceService, {
   StockInvoice,
-} from "../../services/Stock/stock-invoice-service";
+} from "../../services/Stock/stock-invoice-page-service";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useSupplier from "../../hooks/Registration/useSupplier";
@@ -41,7 +41,7 @@ const StockAddForm = () => {
   const { stockInvoices, setStockInvoices } = useContext(StockInvoiceContext);
   const { items } = useItems();
   const { suppliers } = useSupplier();
-  const { stockItems, setStockItems } = useContext(StockItemContext)
+  const { stockItems, setStockItems } = useContext(StockItemContext);
 
   const onSubmit = (data: StockInvoice) => {
     console.log(data.stockitems);
@@ -50,7 +50,7 @@ const StockAddForm = () => {
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setStockInvoices([res.data, ...stockInvoices]);
-        setStockItems([...res.data.stockitems, ...stockItems])
+        setStockItems([...res.data.stockitems, ...stockItems]);
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -160,13 +160,13 @@ const StockAddForm = () => {
             </Flex>
           </div>
 
-            <div className="mb-3">
-              <Input
-                {...register("total_discount")}
-                type="number"
-                placeholder="Total Discount"
-              />
-            </div>
+          <div className="mb-3">
+            <Input
+              {...register("total_discount")}
+              type="number"
+              placeholder="Total Discount"
+            />
+          </div>
           <div className="w-25">
             <div className="mb-3">
               <Input
@@ -175,7 +175,6 @@ const StockAddForm = () => {
                 placeholder="Total Amount"
               />
             </div>
-
           </div>
         </div>
         <HStack justifyContent="space-between">

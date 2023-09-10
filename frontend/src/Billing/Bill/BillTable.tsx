@@ -12,79 +12,81 @@ import {
   useColorMode,
   Text,
   Spinner,
-  Input
+  Input,
 } from "@chakra-ui/react";
 
-import {
-  IoIosArrowDropleftCircle,
-  IoIosArrowDroprightCircle,
-} from "react-icons/io";
 import { useContext, useState } from "react";
 import BillDelete from "./BillDelete";
-import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import BillShowDrawer from "./BillShowDrawer";
-import useBill from "../../hooks/Billing/useBill";
+import AllBillContext from "../../Contexts/Bill/AllBillContext";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
-  const [ currentPage, setCurrentPage] = useState(1)
-  const [billNoValue, setBillNoValue] = useState('')
- 
-  const { bills, setBills, isLoadingBills, billFetchError} = useBill()
-  const {customers} = useCustomer()
+  const [billNoValue, setBillNoValue] = useState("");
 
-  const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>)=>{
+  const { bills, setBills, isLoadingBills, billFetchError } = useContext(AllBillContext)
+  const { customers } = useCustomer();
 
-    
-    setBillNoValue(event.currentTarget.value)
-    
-  }  
-  if (isLoadingBills)
-    return <Spinner/>
+  const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    setBillNoValue(event.currentTarget.value);
+  };
+  if (isLoadingBills) return <Spinner />;
 
   return (
     <>
-    <Flex alignItems="center" flexDir="column">    
-    <Input placeholder="Search Bill No" onKeyUp={onTypeFilter}/>
-    {billFetchError && <Text textColor='red'>Unable to fetch data from the internet.</Text>}  
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th></Th>
-              <Th></Th>
-              <Th>Bill No</Th>
-              <Th>Customer</Th>
-              <Th>Date</Th>
-              <Th>Discount Amount</Th>
-              <Th>Sub Total</Th>
-              <Th>Customer Item Value</Th>
-            </Tr>
-            
-
-          </Thead>
-          <Tbody>
-            {bills.filter(bill =>billNoValue? bill.invoice_id.toLowerCase().startsWith(billNoValue):true).map((bill, index) => (
-              <Tr key={index}>
-                <Th><BillShowDrawer selectedBill={bill}/></Th>
-                <Th>
-                  <BillDelete selectedDeleteBill={bill} />
-                </Th>
-                <Td>{bill.invoice_id}</Td>
-                <Td>{customers.find(customer => customer.id === bill.customer)?.name}</Td>
-                <Td>{bill.date}</Td>
-                <Td>{bill.discount_amount}</Td>
-                <Td>{bill.sub_total}</Td>
-                <Td>{bill.custome_item_value}</Td>
+      <Flex alignItems="center" flexDir="column">
+        <Input placeholder="Search Bill No" onKeyUp={onTypeFilter} />
+        {billFetchError && (
+          <Text textColor="red">Unable to fetch data from the internet.</Text>
+        )}
+        <TableContainer>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th></Th>
+                <Th></Th>
+                <Th>Bill No</Th>
+                <Th>Customer</Th>
+                <Th>Date</Th>
+                <Th>Discount Amount</Th>
+                <Th>Sub Total</Th>
+                <Th>Customer Item Value</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-
-     
-    </Flex>
+            </Thead>
+            <Tbody>
+              {bills
+                .filter((bill) =>
+                  billNoValue
+                    ? bill.invoice_id.toLowerCase().startsWith(billNoValue.toLowerCase())
+                    : true
+                )
+                .map((bill, index) => (
+                  <Tr key={index}>
+                    <Th>
+                      <BillShowDrawer selectedBill={bill} />
+                    </Th>
+                    <Th>
+                      <BillDelete selectedDeleteBill={bill} />
+                    </Th>
+                    <Td>{bill.invoice_id}</Td>
+                    <Td>
+                      {
+                        customers.find(
+                          (customer) => customer.id === bill.customer
+                        )?.name
+                      }
+                    </Td>
+                    <Td>{bill.date}</Td>
+                    <Td>{bill.discount_amount}</Td>
+                    <Td>{bill.sub_total}</Td>
+                    <Td>{bill.custome_item_value}</Td>
+                  </Tr>
+                ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Flex>
     </>
   );
 };

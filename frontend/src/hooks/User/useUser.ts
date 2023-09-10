@@ -10,9 +10,7 @@ const useUser = () => {
     useEffect(()=>{
         const {request, cancel} = UserService.getAll<User>()
         request
-          .then(res=>{
-            console.log('res', res);
-            
+          .then(res=>{            
             setUsers(res.data)
             
         

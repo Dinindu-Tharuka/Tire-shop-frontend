@@ -20,7 +20,7 @@ import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import { IoAddCircle } from "react-icons/io5";
 import StockInvoiceService, {
   StockInvoice,
-} from "../../services/Stock/stock-invoice-service";
+} from "../../services/Stock/stock-invoice-page-service";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useSupplier from "../../hooks/Registration/useSupplier";

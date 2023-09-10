@@ -21,7 +21,6 @@ const BillShowDrawer = ({ selectedBill }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
-  console.log("selected bill", selectedBill);
 
   return (
     <>
