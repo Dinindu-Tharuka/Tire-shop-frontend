@@ -12,7 +12,7 @@ interface BillContextType{
     billFetchError:string;
     isLoadingBills:boolean;
     billCount:number;
-    
+    setBillFetchError: Dispatch<SetStateAction<string>>
 }
 
 const BillContext = React.createContext<BillContextType>({} as BillContextType)

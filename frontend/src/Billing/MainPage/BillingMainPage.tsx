@@ -11,6 +11,8 @@ import useBill from "../../hooks/Billing/useBill";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import useStockInvoice from "../../hooks/Stock/useStockInvoice";
+import usePageBill from "../../hooks/Billing/usePageBill";
+import BillContext from "../../Contexts/Bill/BillContext";
 
 const BillingMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -26,11 +28,8 @@ const BillingMainPage = () => {
     isLoadingInvoices,
     invoicesCount,
     setErrorFetchStockInvoice,
-    setInvoiceIdFilter
+    setInvoiceIdFilter,
   } = useStockInvoicePage();
-
-
-  
 
   const {
     billPayments,
@@ -41,7 +40,18 @@ const BillingMainPage = () => {
     setIsLoadingBillPayments,
   } = useBillPayment();
 
-  const { bills, setBills, billFetchError, isLoadingBills } = useBill();
+  const {
+    bills,
+    setBills,
+    nextBillPageUrl,
+    previousBillPageUrl,
+    filterBillPageParams,
+    setFilterBillPageParams,
+    billFetchError,
+    isLoadingBills,
+    billCount,
+    setBillFetchError
+  } = usePageBill();
 
   const { stockItems, setStockItems } = useStockItem();
   return (
@@ -57,7 +67,7 @@ const BillingMainPage = () => {
         isLoadingInvoices,
         invoicesCount,
         setErrorFetchStockInvoice,
-        setInvoiceIdFilter
+        setInvoiceIdFilter,
       }}
     >
       <BillPaymentContext.Provider
@@ -70,12 +80,18 @@ const BillingMainPage = () => {
         }}
       >
         <StockItemContext.Provider value={{ stockItems, setStockItems }}>
-          <AllBillContext.Provider
+          <BillContext.Provider
             value={{
               bills,
               setBills,
-              isLoadingBills,
+              nextBillPageUrl,
+              previousBillPageUrl,
+              filterBillPageParams,
+              setFilterBillPageParams,
               billFetchError,
+              isLoadingBills,
+              billCount,
+              setBillFetchError
             }}
           >
             <Grid
@@ -103,7 +119,7 @@ const BillingMainPage = () => {
                 <BillingSidePanel />
               </GridItem>
             </Grid>
-          </AllBillContext.Provider>
+          </BillContext.Provider>
         </StockItemContext.Provider>
       </BillPaymentContext.Provider>
     </StockInvoicePageContext.Provider>

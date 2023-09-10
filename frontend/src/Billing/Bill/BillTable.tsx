@@ -20,16 +20,35 @@ import BillDelete from "./BillDelete";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import BillShowDrawer from "./BillShowDrawer";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
+import BillContext from "../../Contexts/Bill/BillContext";
+import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const [billNoValue, setBillNoValue] = useState("");
+  const [currentPageNum, setCurrentPageNum] = useState(1)
 
-  const { bills, setBills, isLoadingBills, billFetchError } = useContext(AllBillContext)
+  const {
+    bills,
+    setBills,
+    nextBillPageUrl,
+    previousBillPageUrl,
+    filterBillPageParams,
+    setFilterBillPageParams,
+    billFetchError,
+    isLoadingBills,
+    billCount,
+    setBillFetchError
+  } = useContext(BillContext);
   const { customers } = useCustomer();
 
+  
+
+  const numOfPages = Math.ceil(billCount / MAXIMUM_PAGES_PER_PAGE)
+
   const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    setBillNoValue(event.currentTarget.value);
+   
   };
   if (isLoadingBills) return <Spinner />;
 
@@ -56,11 +75,6 @@ const BillTable = () => {
             </Thead>
             <Tbody>
               {bills
-                .filter((bill) =>
-                  billNoValue
-                    ? bill.invoice_id.toLowerCase().startsWith(billNoValue.toLowerCase())
-                    : true
-                )
                 .map((bill, index) => (
                   <Tr key={index}>
                     <Th>
@@ -86,6 +100,37 @@ const BillTable = () => {
             </Tbody>
           </Table>
         </TableContainer>
+        <HStack>
+          <Button
+            colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
+            isDisabled={currentPageNum === 1 ? true : false}
+            onClick={() => {
+              setFilterBillPageParams(
+                getCutUrl(previousBillPageUrl, "bills") + ""
+              );
+              setCurrentPageNum(currentPageNum - 1);
+              setBillFetchError('')
+            }}
+          >
+            <IoIosArrowDropleftCircle />
+          </Button>
+          <Text fontWeight="semibold">
+            page {currentPageNum} of {numOfPages}
+          </Text>
+          <Button
+            colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
+            isDisabled={currentPageNum === numOfPages ? true : false}
+            onClick={() => {
+              setFilterBillPageParams(
+                getCutUrl(nextBillPageUrl, "bills") + ""
+              );
+              setCurrentPageNum(currentPageNum + 1);
+              setBillFetchError("");
+            }}
+          >
+            <IoIosArrowDroprightCircle />
+          </Button>
+        </HStack>
       </Flex>
     </>
   );

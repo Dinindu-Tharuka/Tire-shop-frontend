@@ -31,7 +31,7 @@ const usePageBill = () => {
           return ()=>cancel();
       }, [filterBillPageParams])
 
-    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills, billCount}
+    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills, billCount, setBillFetchError}
   
 }
 
