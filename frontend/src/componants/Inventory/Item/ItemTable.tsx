@@ -11,24 +11,23 @@ import {
   Tr,
   useColorMode,
   Text,
-  InputAddon,
   Input,
 } from "@chakra-ui/react";
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext, useState } from "react";
 import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
-import ItemService, {
+import {
   Item,
 } from "../../../services/Inventory/item-page-service";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import DeleteCategory from "../Category/DeleteCategory";
 import ItemDelete from "./ItemDelete";
 import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
 } from "../../../services/pagination-cut-link";
+import useStockItem from "../../../hooks/Stock/useStockItems";
 
 const ItemTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -45,6 +44,8 @@ const ItemTable = () => {
     setItemSizeQuery,
   } = useContext(ItemPageContext);
 
+  
+
   const numOfPages = Math.ceil(itemCount / MAXIMUM_PAGES_PER_PAGE);
   const { toggleColorMode, colorMode } = useColorMode();
 
@@ -55,6 +56,22 @@ const ItemTable = () => {
   const onTypeSize = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setItemSizeQuery(event.currentTarget.value);
   };
+
+  const { stockItems } = useStockItem()
+  const stockItemCount = (item:Item)=>{
+    let count = 0
+    stockItems.forEach(stock => {
+      if (stock.item === item.item_id){
+        count += stock.qty
+        
+      }
+      
+    }
+    )
+
+    return ''+count
+  }
+
 
   if (error)
     return <Text textColor="red">Unable to fetch data from the internet.</Text>;
@@ -72,6 +89,7 @@ const ItemTable = () => {
               <Th></Th>
               <Th></Th>
               <Th>ID</Th>
+              <Th>Stock Count</Th>
               <Th>Name</Th>
               <Th>Size</Th>
               <Th>Brand</Th>
@@ -93,6 +111,7 @@ const ItemTable = () => {
                   <ItemDelete selectedDeleteItem={item} />
                 </Td>
                 <Td>{item.item_id}</Td>
+                <Td>{stockItemCount(item)}</Td>
                 <Td>{item.name}</Td>
                 <Td>{item.size}</Td>
                 <Td>{item.brand}</Td>
@@ -114,7 +133,7 @@ const ItemTable = () => {
           isDisabled={currentPageNum === 1 ? true : false}
           onClick={() => {
             setFilterItemPageParams(
-              getCutUrl(previousItemPageUrl, "items") + ""
+              getCutUrl(previousItemPageUrl, "items-pagination") + ""
             );
             setCurrentPageNum(currentPageNum - 1);
             setError("");
@@ -129,7 +148,7 @@ const ItemTable = () => {
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           isDisabled={currentPageNum === numOfPages ? true : false}
           onClick={() => {
-            setFilterItemPageParams(getCutUrl(nextItemPageUrl, "items") + "");
+            setFilterItemPageParams(getCutUrl(nextItemPageUrl, "items-pagination") + "");
             setCurrentPageNum(currentPageNum + 1);
             setError("");
           }}

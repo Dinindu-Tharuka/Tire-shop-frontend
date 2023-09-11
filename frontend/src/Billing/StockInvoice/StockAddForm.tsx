@@ -14,7 +14,6 @@ import StockInvoiceService, {
   StockInvoice,
 } from "../../services/Stock/stock-invoice-page-service";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
-import useItemsPagination from "../../hooks/Inventory/useItemsPage";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import { StockItem } from "../../services/Stock/stock-item-service";
 import useItems from "../../hooks/Inventory/useItems";

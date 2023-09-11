@@ -28,21 +28,6 @@ const BillShowPage = ({ seletedBill }: Props) => {
   const { customers } = useCustomer();
   const { services } = useService();
   const { billPayments } = useBillPayment();
-
-  console.log("bills", billPayments);
-
-  console.log("selected_bill_id", seletedBill.invoice_id);
-
-  console.log(
-    "payments",
-    billPayments.forEach((pay) => console.log(pay.bill_id))
-  );
-
-  const accountNames = [
-    ["", seletedBill.discount_amount],
-    ["Customer Item Value", seletedBill.custome_item_value],
-    ["Sub total", seletedBill.sub_total],
-  ];
   const pdfRef = useRef<HTMLDivElement>(null);
 
   const dowloadPdf = () => {
@@ -78,29 +63,27 @@ const BillShowPage = ({ seletedBill }: Props) => {
   };
   return (
     <>
-      <div ref={pdfRef}>
-        <TableContainer width="25%">
-          <Table variant="simple">
+      <div ref={pdfRef} className="w-50">
+        <TableContainer>
+          <Table>
             <Tbody>
               <Tr>
+                <Th>
+                  Bill No
+                </Th>
                 <Td>
-                  <Text fontWeight="semibold">Bill No</Text>
-                </Td>
-                <Td>
-                  <Text>{seletedBill.invoice_id}</Text>
+                  {seletedBill.invoice_id}
                 </Td>
               </Tr>
               <Tr>
+                <Th>
+                  Customer
+                </Th>
                 <Td>
-                  <Text fontWeight="semibold">Customer</Text>
-                </Td>
-                <Td>
-                  <Text>
                     {
                       customers.find((cus) => cus.id === seletedBill.customer)
                         ?.name
                     }
-                  </Text>
                 </Td>
               </Tr>
             </Tbody>
@@ -109,7 +92,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
 
         {/* Items List  */}
         {seletedBill.bill_items.length !== 0 && (
-          <TableContainer width="50%">
+          <TableContainer>
             <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
               Item List
             </Text>
@@ -147,8 +130,8 @@ const BillShowPage = ({ seletedBill }: Props) => {
 
         {/* Services List */}
         {seletedBill.bill_services.length !== 0 && (
-          <TableContainer width="25%">
-            <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
+          <TableContainer>
+            <Text padding={3} bg="#f1cac1" borderRadius={10} fontWeight="bold">
               Services List
             </Text>
             <Table variant="simple">
@@ -164,18 +147,17 @@ const BillShowPage = ({ seletedBill }: Props) => {
                 {seletedBill.bill_services.map((service, index) => (
                   <Tr key={index}>
                     <Td>
-                      <Text>{service.service}</Text>
+                      {
+                        services.find((ser) => ser.id === service.service)
+                          ?.description
+                      }
                     </Td>
+                    <Td>{service.employee}</Td>
                     <Td>
-                      <Text>{service.employee}</Text>
-                    </Td>
-                    <Td>
-                      <Text>
-                        {
-                          services.find((ser) => ser.id === service.service)
-                            ?.service_value
-                        }
-                      </Text>
+                      {
+                        services.find((ser) => ser.id === service.service)
+                          ?.service_value
+                      }
                     </Td>
                   </Tr>
                 ))}
@@ -185,7 +167,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
         )}
 
         {/* Payment List */}
-        <TableContainer width="100%">
+        <TableContainer>
           <Text bg="#f1cac1" padding={3} borderRadius={10} fontWeight="bold">
             Payments
           </Text>
@@ -356,31 +338,31 @@ const BillShowPage = ({ seletedBill }: Props) => {
           </Table>
         </TableContainer>
 
-        <TableContainer width="25%">
+        <TableContainer>
           <Table variant="simple">
             <Tbody>
               <Tr>
+                <Th>
+                  Total Discount
+                </Th>
                 <Td>
-                  <Text fontWeight="semibold">Total Discount</Text>
-                </Td>
-                <Td>
-                  <Text>{seletedBill.discount_amount}</Text>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  <Text fontWeight="semibold">Customer Item Value</Text>
-                </Td>
-                <Td>
-                  <Text>{seletedBill.custome_item_value}</Text>
+                  {seletedBill.discount_amount}
                 </Td>
               </Tr>
               <Tr>
+                <Th>
+                  Customer Item Value
+                </Th>
                 <Td>
-                  <Text fontWeight="semibold">Sub Total</Text>
+                  {seletedBill.custome_item_value}
                 </Td>
+              </Tr>
+              <Tr>
+                <Th>
+                  Sub Total
+                </Th>
                 <Td>
-                  <Text>{seletedBill.sub_total}</Text>
+                  {seletedBill.sub_total}
                 </Td>
               </Tr>
             </Tbody>

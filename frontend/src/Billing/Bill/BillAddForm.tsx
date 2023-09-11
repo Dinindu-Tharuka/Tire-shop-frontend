@@ -5,7 +5,13 @@ import {
   HStack,
   Input,
   Select,
+  Table,
+  TableContainer,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
@@ -24,11 +30,27 @@ import useEmployee from "../../hooks/Registration/useEmployee";
 import useItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import BillAddPayment from "../BillPayments/BillAddPayment";
+import calculateSubTotal from "./BillCalculation";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [createdBill, setCreatedBill] = useState<Bill>({} as Bill);
   const [isCreatedBill, setIsCreatedBill] = useState(false);
+  const [subTotal, setSubTotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [errorBillCreate, setErrorBillCreate] = useState("");
+  const [success, setSuccess] = useState("");
+  const { colorMode } = useColorMode();
+  const [selectedServiceIndex, setSelectedServiceIndex] = useState<number[]>(
+    []
+  );
+  const { bills, setBills } = useContext(BillContext);
+  const { items } = useItems();
+
+  const { customers } = useCustomer();
+  const { services } = useService();
+  const { employees } = useEmployee();
+  const { stockItems, setStockItems } = useContext(StockItemContext);
 
   const {
     register,
@@ -66,23 +88,15 @@ const BillAddForm = () => {
     control,
   });
 
-  const [errorBillCreate, setErrorBillCreate] = useState("");
-  const [success, setSuccess] = useState("");
-  const [isComletedBill, setIsComletedBill] = useState(false);
-  const { toggleColorMode, colorMode } = useColorMode();
-
-  const { bills, setBills } = useContext(BillContext);
-  const { items } = useItems();
-
-  const { customers } = useCustomer();
-  const { services } = useService();
-  const { employees } = useEmployee();
-  const { stockItems, setStockItems } = useContext(StockItemContext);
-
   const onSubmit = (data: Bill) => {
-    console.log(data);
+    const { total, discount } = calculateSubTotal(data, services);
+    setDiscount(discount);
+    setSubTotal(total);
 
-    BillServices.create<Bill>(data)
+    const newly = { ...data, sub_total: total, discount_amount: discount };
+    console.log("new ", newly);
+
+    BillServices.create<Bill>(newly)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
@@ -251,6 +265,12 @@ const BillAddForm = () => {
                   <Select
                     {...register(`bill_services.${index}.service`)}
                     className="select p-2"
+                    onChange={(e) =>
+                      setSelectedServiceIndex([
+                        ...selectedServiceIndex,
+                        parseInt(e.target.value),
+                      ])
+                    }
                   >
                     <option>Select Service</option>
                     {services.map((service, index) => (
@@ -259,6 +279,15 @@ const BillAddForm = () => {
                       </option>
                     ))}
                   </Select>
+
+                  <Input
+                    value={
+                      services.find(
+                        (ser) => ser.id === selectedServiceIndex[index]
+                      )?.service_value
+                    }
+                    placeholder="Price"
+                  />
 
                   <Select
                     {...register(`bill_services.${index}.employee`)}
@@ -300,26 +329,29 @@ const BillAddForm = () => {
 
           <div className="mb-3 w-25">
             <Input
-              {...register("discount_amount")}
-              type="number"
-              placeholder="Discount Amount"
-            />
-          </div>
-          <div className="mb-3 w-25">
-            <Input
               {...register("custome_item_value")}
               type="text"
               placeholder="Customer Item Value"
             />
           </div>
         </div>
-        <div className="mb-3 w-25">
-          <Input
-            {...register("sub_total")}
-            type="number"
-            placeholder="Sub Total"
-          />
-        </div>
+        <TableContainer width='40vw'>
+          <Table>
+            {discount !== 0 && (
+              <Tr>
+                <Th>Total Discount</Th>
+                <Td>{discount}</Td>
+              </Tr>
+            )}
+            {subTotal !== 0 && (
+              <Tr>
+                <Th>Sub Total</Th>
+                <Td>{subTotal}</Td>
+              </Tr>
+            )}
+          </Table>
+        </TableContainer>
+
         <HStack>
           <Button
             width="10vw"
@@ -332,16 +364,7 @@ const BillAddForm = () => {
           >
             Save
           </Button>
-          <Button
-            width="10vw"
-            bg={colorMode === "light" ? "#e3a99c" : "#575757"}
-            onClick={() => {
-              setErrorBillCreate("");
-              setSuccess("");
-            }}
-          >
-            Payments
-          </Button>
+          
           <Button
             width="10vw"
             type="submit"
