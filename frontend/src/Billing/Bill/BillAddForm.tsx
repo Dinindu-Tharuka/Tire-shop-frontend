@@ -31,15 +31,25 @@ import useItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import BillAddPayment from "../BillPayments/BillAddPayment";
 import calculateSubTotal from "./BillCalculation";
+import calculateStockitemCount from "../../componants/Inventory/Item/Calculations/CountStockItems";
+import {
+  BILL_ITEM_MARGIN_BOTTOM,
+  BILL_ITEM_MARGIN_LEFT,
+  BILL_ITEM_TEXT_PADDING,
+  BILL_ITEM_WIDTH,
+} from "./UI Contastants/BillFormConstatnts";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItemText, setSelectedItemText] = useState<string[]>([]);
   const [createdBill, setCreatedBill] = useState<Bill>({} as Bill);
   const [isCreatedBill, setIsCreatedBill] = useState(false);
   const [subTotal, setSubTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
+  const [selectedStockItems, setSelectedStockItem] = useState<string[]>([]);
+
   const { colorMode } = useColorMode();
   const [selectedServiceIndex, setSelectedServiceIndex] = useState<number[]>(
     []
@@ -50,7 +60,7 @@ const BillAddForm = () => {
   const { customers } = useCustomer();
   const { services } = useService();
   const { employees } = useEmployee();
-  const { stockItems, setStockItems } = useContext(StockItemContext);
+  const { stockItems } = useContext(StockItemContext);
 
   const {
     register,
@@ -112,84 +122,128 @@ const BillAddForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="vh-75 ">
         <div className="d-flex flex-column justify-content-between">
-          <div className="mb-3 w-25">
-            <Input
-              {...register("invoice_id", {
-                required: "Bill number is required.",
-              })}
-              type="text"
-              placeholder="Bill No"
-            />
-            <Text textColor="red.600">{errors.invoice_id?.message}</Text>
-          </div>
+          <Flex>
+            <div className="mb-3 w-25 me-3">
+              <Input
+                {...register("invoice_id", {
+                  required: "Bill number is required.",
+                })}
+                type="text"
+                placeholder="Bill No"
+              />
+              <Text textColor="red.600">{errors.invoice_id?.message}</Text>
+            </div>
 
-          <div className="mb-3 w-25">
-            <Select {...register("customer")} className="select p-2">
-              <option>Select Customer</option>
-              {customers.map((customer, index) => (
-                <option className="mt-3" key={index} value={customer.id}>
-                  {customer.name}
-                </option>
-              ))}
-            </Select>
-          </div>
+            <div className="mb-3 w-25">
+              <Select {...register("customer")}>
+                <option>Select Customer</option>
+                {customers.map((customer, index) => (
+                  <option className="mt-3" key={index} value={customer.id}>
+                    {customer.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          </Flex>
 
           {/* Add Items */}
           <div className="mb-3">
             {itemsArray.map((field, index) => (
               <Flex>
                 <Flex>
-                  <Select
-                    {...register(`bill_items.${index}.item`)}
-                    className="select w-100 p-2"
-                    marginRight={10}
-                    onChange={(event) => {
-                      setSelectedItem(event.target.value);
-                    }}
-                  >
-                    <option value="">Select Item</option>
-                    {items.map((item, index) => (
-                      <option key={index} value={item.item_id}>
-                        {item.item_id}
-                      </option>
-                    ))}
-                  </Select>
-                  <Select
-                    width="30vw"
-                    {...register(`bill_items.${index}.stock_item`)}
-                    className="select w-100 p-2"
-                    onChange={(e) => {
-                      const count = stockItems.find(
-                        (item) => item.id === parseInt(e.target.value)
-                      )?.qty;
-                      if (count)
-                        setSeletedItemCountList([
-                          ...seletedItemCountList,
-                          count,
+                  {!selectedItemText[index] ? (
+                    <Select
+                      {...register(`bill_items.${index}.item`)}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      onChange={(event) => {
+                        setSelectedItem(event.target.value);
+                        setSelectedItemText([
+                          ...selectedItemText,
+                          event.target.options[event.target.selectedIndex].text,
                         ]);
-                    }}
-                  >
-                    <option>Stock Item</option>
-                    {stockItems
-                      .filter((item) => item.item === selectedItem)
-                      .map((stockItem, index) => (
-                        <option
-                          key={index}
-                          value={stockItem.id}
-                          className="w-100"
-                        >
-                          <div className="d-flex justify-content-between w-100 ">
-                            <Text>{stockItem.item}</Text>
-                            <Text>({stockItem.qty})</Text>
-                          </div>
+                      }}
+                    >
+                      <option value="">Select Item</option>
+                      {items.map((item, index) => (
+                        <option key={index} value={item.item_id}>
+                          {item.item_id}
+                          {"(" +
+                            calculateStockitemCount(item, stockItems) +
+                            ")"}
                         </option>
                       ))}
-                  </Select>
+                    </Select>
+                  ) : (
+                    <Text
+                      padding={BILL_ITEM_TEXT_PADDING}
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                      width={BILL_ITEM_WIDTH}
+                      textAlign="left"
+                    >
+                      {selectedItemText[index]}
+                    </Text>
+                  )}
+                  {!selectedStockItems[index] ? (
+                    <Select
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                      {...register(`bill_items.${index}.stock_item`)}
+                      onChange={(e) => {
+                        const count = stockItems.find(
+                          (item) => item.id === parseInt(e.target.value)
+                        )?.qty;
+                        if (count)
+                          setSeletedItemCountList([
+                            ...seletedItemCountList,
+                            count,
+                          ]);
+
+                        setSelectedStockItem([
+                          ...selectedStockItems,
+                          e.target.options[e.target.selectedIndex].text,
+                        ]);
+                      }}
+                    >
+                      <option>Stock Item</option>
+                      {stockItems
+                        .filter((item) => item.item === selectedItem)
+                        .map((stockItem, index) => (
+                          <option
+                            key={index}
+                            value={stockItem.id}
+                            className="w-100"
+                          >
+                            <div className="d-flex justify-content-between w-100 ">
+                              <Text>
+                                {stockItem.item}({stockItem.qty})
+                              </Text>
+                            </div>
+                          </option>
+                        ))}
+                    </Select>
+                  ) : (
+                    <Text
+                      padding={BILL_ITEM_TEXT_PADDING}
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      textAlign="left"
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                    >
+                      {selectedStockItems[index]}
+                    </Text>
+                  )}
                 </Flex>
                 <Flex>
-                  <Flex flexDir="column" width="40vw">
+                  <Flex flexDir="column">
                     <Input
                       type="number"
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                       {...register(`bill_items.${index}.qty`, {
                         validate: (fieldValue) => {
                           if (seletedItemCountList)
@@ -201,18 +255,32 @@ const BillAddForm = () => {
                       })}
                       placeholder="QTY"
                     />
-                    <Text textColor="red.600">
+                    <Text
+                      textColor="red.600"
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                    >
                       {errors.bill_items &&
                         errors.bill_items[index]?.qty?.message}
                     </Text>
                   </Flex>
 
+                  <Flex>
+                    <Input
+                      type="number"
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                      {...register(`bill_items.${index}.customer_discount`)}
+                      placeholder="Customer Discount"
+                    />
+                  </Flex>
+
                   <Input
-                    type="number"
-                    {...register(`bill_items.${index}.customer_discount`)}
-                    placeholder="Customer Discount"
-                  />
-                  <Input
+                    marginRight={BILL_ITEM_MARGIN_LEFT}
+                    width={BILL_ITEM_WIDTH}
+                    marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                     type="number"
                     {...register(`bill_items.${index}.customer_price`)}
                     placeholder="Customer Price"
@@ -228,12 +296,20 @@ const BillAddForm = () => {
                       console.log("valuse", seletedItemCountList);
 
                       itemRemove(index);
-                      console.log("index", index);
                       setSeletedItemCountList(
                         seletedItemCountList.filter((val, ind) => index !== ind)
                       );
+                      setSelectedStockItem([
+                        ...selectedStockItems.filter(
+                          (stockItem, indexStock) => indexStock !== index
+                        ),
+                      ]);
 
-                      console.log("value updated", seletedItemCountList);
+                      setSelectedItemText(
+                        selectedItemText.filter(
+                          (itemText, indexText) => indexText != index
+                        )
+                      );
                     }}
                   >
                     Remove
@@ -248,7 +324,6 @@ const BillAddForm = () => {
                 onClick={() => {
                   itemAppend({} as BillItem);
                   setSeletedItemCountList(seletedItemCountList);
-                  console.log(seletedItemCountList);
                 }}
               >
                 Add Item
@@ -264,7 +339,9 @@ const BillAddForm = () => {
                 <Flex>
                   <Select
                     {...register(`bill_services.${index}.service`)}
-                    className="select p-2"
+                    marginRight={BILL_ITEM_MARGIN_LEFT}
+                    width={BILL_ITEM_WIDTH}
+                    marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                     onChange={(e) =>
                       setSelectedServiceIndex([
                         ...selectedServiceIndex,
@@ -281,6 +358,9 @@ const BillAddForm = () => {
                   </Select>
 
                   <Input
+                    marginRight={BILL_ITEM_MARGIN_LEFT}
+                    width={BILL_ITEM_WIDTH}
+                    marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                     value={
                       services.find(
                         (ser) => ser.id === selectedServiceIndex[index]
@@ -290,8 +370,10 @@ const BillAddForm = () => {
                   />
 
                   <Select
+                    marginRight={BILL_ITEM_MARGIN_LEFT}
+                    width={BILL_ITEM_WIDTH}
+                    marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                     {...register(`bill_services.${index}.employee`)}
-                    className="select p-2"
                   >
                     <option>Select Employee</option>
                     {employees.map((employee, index) => (
@@ -335,7 +417,7 @@ const BillAddForm = () => {
             />
           </div>
         </div>
-        <TableContainer width='40vw'>
+        <TableContainer width="40vw">
           <Table>
             {discount !== 0 && (
               <Tr>
@@ -364,7 +446,7 @@ const BillAddForm = () => {
           >
             Save
           </Button>
-          
+
           <Button
             width="10vw"
             type="submit"

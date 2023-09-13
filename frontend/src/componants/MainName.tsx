@@ -1,7 +1,7 @@
 import { Center, VStack, Text } from "@chakra-ui/react"
 
-
 const MainName = () => {
+  
   return (
     <Center w="200px" h="15vh">
         <VStack>

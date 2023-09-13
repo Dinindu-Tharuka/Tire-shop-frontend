@@ -16,9 +16,7 @@ import {
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext, useState } from "react";
 import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
-import {
-  Item,
-} from "../../../services/Inventory/item-page-service";
+import { Item } from "../../../services/Inventory/item-page-service";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -28,6 +26,7 @@ import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
 } from "../../../services/pagination-cut-link";
 import useStockItem from "../../../hooks/Stock/useStockItems";
+import calculateStockitemCount from "./Calculations/CountStockItems";
 
 const ItemTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -44,35 +43,18 @@ const ItemTable = () => {
     setItemSizeQuery,
   } = useContext(ItemPageContext);
 
-  
-
   const numOfPages = Math.ceil(itemCount / MAXIMUM_PAGES_PER_PAGE);
   const { toggleColorMode, colorMode } = useColorMode();
 
   const onTypeId = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setItemQuery(event.currentTarget.value);
   };
-
   const onTypeSize = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setItemSizeQuery(event.currentTarget.value);
   };
 
-  const { stockItems } = useStockItem()
-  const stockItemCount = (item:Item)=>{
-    let count = 0
-    stockItems.forEach(stock => {
-      if (stock.item === item.item_id){
-        count += stock.qty
-        
-      }
-      
-    }
-    )
-
-    return ''+count
-  }
-
-
+  const { stockItems } = useStockItem();
+ 
   if (error)
     return <Text textColor="red">Unable to fetch data from the internet.</Text>;
 
@@ -111,7 +93,7 @@ const ItemTable = () => {
                   <ItemDelete selectedDeleteItem={item} />
                 </Td>
                 <Td>{item.item_id}</Td>
-                <Td>{stockItemCount(item)}</Td>
+                <Td>{calculateStockitemCount(item, stockItems)}</Td>
                 <Td>{item.name}</Td>
                 <Td>{item.size}</Td>
                 <Td>{item.brand}</Td>
@@ -148,7 +130,9 @@ const ItemTable = () => {
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           isDisabled={currentPageNum === numOfPages ? true : false}
           onClick={() => {
-            setFilterItemPageParams(getCutUrl(nextItemPageUrl, "items-pagination") + "");
+            setFilterItemPageParams(
+              getCutUrl(nextItemPageUrl, "items-pagination") + ""
+            );
             setCurrentPageNum(currentPageNum + 1);
             setError("");
           }}
