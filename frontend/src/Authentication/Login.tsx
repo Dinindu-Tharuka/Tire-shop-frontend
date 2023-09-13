@@ -74,7 +74,7 @@ const Login = () => {
         <Button
           textColor="whiteAlpha.700"
           type="submit"
-          bg="#dd0939"
+          bg="#e3a99c"
           padding={15}
           height="8vh"
           width="100%"

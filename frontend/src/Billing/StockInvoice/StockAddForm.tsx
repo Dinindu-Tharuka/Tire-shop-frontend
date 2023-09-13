@@ -18,6 +18,13 @@ import useSupplier from "../../hooks/Registration/useSupplier";
 import { StockItem } from "../../services/Stock/stock-item-service";
 import useItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
+import {
+  STOCK_ITEM_MARIGIN_BOTTOM,
+  STOCK_ITEM_MARIGIN_LEFT,
+  STOCK_ITEM_QTY_WIDTH,
+  STOCK_ITEM_WIDTH,
+  STOCK_ITEM_WIDTH_MAIN,
+} from "./UI Constants/StockItemBillConstatnts";
 
 const StockAddForm = () => {
   const { register, handleSubmit, control } = useForm<StockInvoice>({
@@ -64,16 +71,17 @@ const StockAddForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
         <div className="d-flex flex-column justify-content-between">
-          <div className="w-25">
-            <div className="mb-3 h-75">
+          <div className="w-50 d-flex flex-row">
+            <div className="mb-3 me-3 h-75">
               <Input
+              width={STOCK_ITEM_WIDTH_MAIN}
                 {...register("invoice_no")}
                 type="text"
                 placeholder="Bill No"
               />
             </div>
             <div className="mb-3">
-              <Select {...register("supplier")} className="select p-2">
+              <Select {...register("supplier")} width={STOCK_ITEM_WIDTH_MAIN} className="select p-2">
                 <option>Select Supplier</option>
                 {suppliers.map((sup, index) => (
                   <option className="mt-3" key={index} value={sup.id}>
@@ -87,9 +95,11 @@ const StockAddForm = () => {
           {/* Add Stock items */}
           <div className="mb-3">
             {stockItemArray.map((field, index) => (
-              <Flex>
+              <Flex marginBottom={STOCK_ITEM_MARIGIN_BOTTOM}>
                 <Flex>
                   <Select
+                    width={STOCK_ITEM_WIDTH}
+                    marginRight={STOCK_ITEM_MARIGIN_LEFT}
                     {...register(`stockitems.${index}.item`)}
                     className="select w-100 p-2"
                   >
@@ -101,6 +111,8 @@ const StockAddForm = () => {
                     ))}
                   </Select>
                   <Input
+                    width={STOCK_ITEM_WIDTH}
+                    marginRight={STOCK_ITEM_MARIGIN_LEFT}
                     type="number"
                     {...register(`stockitems.${index}.retail_price`)}
                     placeholder="Retail Price"
@@ -108,11 +120,15 @@ const StockAddForm = () => {
                 </Flex>
                 <Flex>
                   <Input
+                    width={STOCK_ITEM_WIDTH}
+                    marginRight={STOCK_ITEM_MARIGIN_LEFT}
                     type="number"
                     {...register(`stockitems.${index}.cost`)}
                     placeholder="Cost"
                   />
                   <Input
+                    width={STOCK_ITEM_WIDTH}
+                    marginRight={STOCK_ITEM_MARIGIN_LEFT}
                     type="number"
                     {...register(`stockitems.${index}.selling_price`)}
                     placeholder="Selling Price"
@@ -120,24 +136,30 @@ const StockAddForm = () => {
                 </Flex>
                 <Flex>
                   <Input
+                    width={STOCK_ITEM_WIDTH}
+                    marginRight={STOCK_ITEM_MARIGIN_LEFT}
                     type="number"
                     {...register(`stockitems.${index}.discount`)}
                     placeholder="Discount"
                   />
 
                   <Input
+                    width={STOCK_ITEM_QTY_WIDTH}
+                    marginRight={STOCK_ITEM_MARIGIN_LEFT}
                     type="number"
                     {...register(`stockitems.${index}.qty`)}
                     placeholder="QTY"
                   />
                   <Input
+                    marginRight={STOCK_ITEM_MARIGIN_LEFT}
+                    width={STOCK_ITEM_QTY_WIDTH}
                     type="number"
                     {...register(`stockitems.${index}.sold_qty`)}
                     placeholder="Sold QTY"
                   />
                 </Flex>
                 <Flex>
-                  {index > 0 && (
+                  {index >= 0 && (
                     <Button
                       bg="#f87454"
                       padding={3}
@@ -161,14 +183,14 @@ const StockAddForm = () => {
             </Flex>
           </div>
 
-          <div className="mb-3">
+          <div className="w-50 d-flex ">
+          <div className="mb-3 me-3">
             <Input
               {...register("total_discount")}
               type="number"
               placeholder="Total Discount"
             />
           </div>
-          <div className="w-25">
             <div className="mb-3">
               <Input
                 {...register("total_amount")}

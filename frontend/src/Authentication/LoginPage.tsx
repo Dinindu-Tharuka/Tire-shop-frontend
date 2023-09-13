@@ -15,7 +15,7 @@ const LoginPage = () => {
       <Flex
         width="80vw"
         height="90vh"
-        bg="#f95278"
+        bg="#ca5c4f"
         flexDir="row"
         borderRadius={50}
       >
