@@ -12,9 +12,7 @@ import {
   FieldValues,
   useForm,
   useFieldArray,
-  UseFormSetValue,
-  UseFormWatch,
-  useWatch
+  useWatch,
 } from "react-hook-form";
 import { IoAddCircle } from "react-icons/io5";
 import StockInvoiceService, {
@@ -35,18 +33,18 @@ import {
 import {
   onChangeCustomerPrice,
   onChangeRetailPrice,
+  onChangeStockItemDiscount,
   onChangeSupplierDiscount,
   onchangeCostValue,
 } from "./UI Calculations/StockInvoiceUICalculations";
 
 const StockAddForm = () => {
-  const [watchingCost, setWatchingCost] = useState('')
-  const [stockLastIndex, setStockLastIndex] = useState(-1)
+  const [watchingCost, setWatchingCost] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0)
   const { register, handleSubmit, control, reset, watch, getValues, setValue } =
     useForm<StockInvoice>();
-  
-  const stocks = useWatch({control, name:'stockitems'})
 
+  const stocks = useWatch({ control, name: "stockitems" });
 
   const {
     fields: stockItemArray,
@@ -57,26 +55,25 @@ const StockAddForm = () => {
     control,
   });
 
-  useEffect(()=>{
-    let totalCost = 0
-    if (stocks !== undefined){
-      totalCost = stocks.reduce((accum, current)=> accum + parseInt(current.cost+'') , 0)
-
+  useEffect(() => {
+    let totalCost = 0;
+    if (stocks !== undefined) {
+      totalCost = stocks.reduce(
+        (accum, current) => accum + parseInt(current.cost + ""),
+        0
+      );
     }
 
-    console.log(watchingCost);
-    
+    const totalAmount = totalCost + parseFloat(watchingCost)
+    setTotalAmount(totalAmount)
+    setValue("total_amount", totalAmount);
+  }, [stocks, setValue, watchingCost]);
 
-    setValue('total_amount', (totalCost+parseFloat(watchingCost)))
-  },[stocks, setValue, watchingCost])
+  const reduceCostPriceIfDeleteStockItem = (index: number) => {
+    stocks.splice(index, 1);
 
-
-  const reduceCostPriceIfDeleteStockItem = (index:number)=>{
-    stocks.splice(index, 1)
-
-    setValue('stockitems', [...stocks])
-  }
-
+    setValue("stockitems", [...stocks]);
+  };
 
   const [errorStockInvoiceCreate, setStockinvoiceCreate] = useState("");
   const [success, setSuccess] = useState("");
@@ -173,7 +170,7 @@ const StockAddForm = () => {
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
                     step="0.01"
-                    defaultValue="0.00"
+                    defaultValue="0"
                     {...register(`stockitems.${index}.retail_price`)}
                     placeholder="Retail Price"
                     onChange={(e) =>
@@ -185,7 +182,7 @@ const StockAddForm = () => {
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="nubmer"
                     step="0.01"
-                    defaultValue="0.00"
+                    defaultValue="0"
                     {...register(`stockitems.${index}.supplier_discount`)}
                     placeholder="Supplier Discount"
                     onChange={(e) =>
@@ -197,7 +194,7 @@ const StockAddForm = () => {
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
                     step="0.01"
-                    defaultValue="0.00"
+                    defaultValue="0"
                     {...register(`stockitems.${index}.customer_discount`)}
                     placeholder="Customer Discount"
                     onChange={(e) =>
@@ -210,7 +207,7 @@ const StockAddForm = () => {
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
                     step="0.01"
-                    defaultValue="0.00"
+                    defaultValue="0"
                     {...register(`stockitems.${index}.sales_discount`)}
                     placeholder="Sales Discount"
                   />
@@ -220,13 +217,13 @@ const StockAddForm = () => {
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
                     step="0.01"
-                    defaultValue="0.00"
+                    defaultValue="0"
                     {...register(`stockitems.${index}.cost`)}
                     placeholder="Cost"
-                    onChange={(e) =>{
-                      onchangeCostValue(e, index, watch, setValue)
-                      setWatchingCost(e.currentTarget.value)}
-                    }
+                    onChange={(e) => {
+                      onchangeCostValue(e, index, watch, setValue);
+                      setWatchingCost(e.currentTarget.value);
+                    }}
                   />
 
                   <Input
@@ -255,8 +252,8 @@ const StockAddForm = () => {
                       padding={3}
                       type="button"
                       onClick={() => {
-                        stockItemRemove(index);                    
-                        reduceCostPriceIfDeleteStockItem(index)
+                        stockItemRemove(index);
+                        reduceCostPriceIfDeleteStockItem(index);
                       }}
                     >
                       Remove
@@ -269,7 +266,7 @@ const StockAddForm = () => {
               <Button
                 type="button"
                 onClick={() => {
-                  setWatchingCost(0 +'')
+                  setWatchingCost(0 + "");
                   stockItemAppend({} as StockItem);
                 }}
               >
@@ -290,12 +287,14 @@ const StockAddForm = () => {
           <div className="w-50 d-flex ">
             <div className="mb-3 me-3 ">
               <Input
-              width={STOCK_WIDTH_NORMAL}
+                width={STOCK_WIDTH_NORMAL}
                 {...register("total_discount")}
                 type="number"
                 step="0.01"
-                defaultValue="0.00"
+                defaultValue="0"
                 placeholder="Total Discount"
+                required
+                onChange={(e)=> onChangeStockItemDiscount(e, watch, setValue, totalAmount)}
               />
             </div>
             <div className="mb-3">

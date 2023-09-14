@@ -26,8 +26,11 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
   const cancelRef = useRef(null);
   const deleteToast = useToast();
   const { stockInvoices, setStockInvoices } = useContext(
-    StockInvoiceContext
+    StockInvoicePageContext
   );
+
+  console.log('seleted', stockInvoices);
+  
 
   const name = "Stock Invoice";
 
@@ -39,6 +42,9 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
         (invoice) => invoice.invoice_no !== seletedStockInvoice.invoice_no
       )
     );
+
+    console.log('Deleting');
+    
 
     StockInvoiceService.delete(`${seletedStockInvoice.invoice_no}`)
       .then((res) => {
@@ -56,9 +62,9 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
 
         deleteToast({
           title: "Error",
-          description: `${name} not successfully deleted. Beacause ${err.message}`,
+          description: `${name} not successfully deleted. Beacause its has assosiated Bills.`,
           status: "error",
-          duration: 2000,
+          duration: 5000,
           isClosable: true,
         });
       });
@@ -92,6 +98,8 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
                 colorScheme="red"
                 onClick={() => {
                   onClose();
+                  console.log('Ok');
+                  
                   onDeleteBill(selectedStockInvoice);
                 }}
                 ml={3}

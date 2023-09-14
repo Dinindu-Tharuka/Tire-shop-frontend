@@ -31,6 +31,9 @@ const BillingMainPage = () => {
     setInvoiceIdFilter,
   } = useStockInvoicePage();
 
+  console.log('stock invoices', stockInvoices);
+  
+
   const {
     billPayments,
     setBillPayments,
@@ -71,6 +74,7 @@ const BillingMainPage = () => {
         setInvoiceIdFilter,
       }}
     >
+
       <BillPaymentContext.Provider
         value={{
           billPayments,

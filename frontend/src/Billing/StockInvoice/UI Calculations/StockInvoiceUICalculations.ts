@@ -67,10 +67,10 @@ export const onchangeCostValue = (
     setValue:UseFormSetValue<StockInvoice>
   ) => {
     const customerDiscount = parseInt(e.currentTarget.value)
-    const retailPrice = watch(`stockitems.${index}.retail_price`)
+    const retailPrice = parseInt(watch(`stockitems.${index}.retail_price`)+'')
     const cost = watch(`stockitems.${index}.cost`)
 
-    if (retailPrice){
+    if (retailPrice !== 0){
       const customerPrice = ((100-customerDiscount)* retailPrice)/100;
       setValue(`stockitems.${index}.selling_price`, customerPrice)
     }else if(cost){
@@ -78,4 +78,30 @@ export const onchangeCostValue = (
       setValue(`stockitems.${index}.selling_price`, customerPrice)
     }
   };
+
+  // Total Discount
+  export const onChangeStockItemDiscount = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    watch:UseFormWatch<StockInvoice>,
+    setValue:UseFormSetValue<StockInvoice>,
+    totalAmount:number
+  )=>{
+    const totalDiscount = parseInt(e.currentTarget.value)
+    // let totalAmount = watch('total_amount')
+    const originalTotalAmount = totalAmount
+
+    console.log(totalDiscount);
+    console.log(totalAmount);
+    
+    let newAmount = 0
+
+    if (totalDiscount){
+      newAmount = ((100 - totalDiscount) * totalAmount) / 100
+    }else{
+      setValue('total_amount', originalTotalAmount)
+    }
+
+    setValue('total_amount', newAmount !== 0 ? newAmount:totalAmount)
+
+  }
 

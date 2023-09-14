@@ -58,7 +58,7 @@ const StockInvoiceTable = () => {
         <Table>
           <Thead>
             <Tr>
-              <Th></Th>
+              {/* <Th></Th> */}
               <Th></Th>
               <Th>Bill No</Th>
               <Th>Date</Th>
@@ -71,11 +71,11 @@ const StockInvoiceTable = () => {
             {stockInvoices
               ?.map((invoice, index) => (
                 <Tr key={index}>
-                  <Th>
+                  {/* <Th>
                     <UpdateStockInvoiceDrawer
                       selectedUpdateStockInvoice={invoice}
                     />
-                  </Th>
+                  </Th> */}
                   <Th>
                     <StockInvoiceDelete selectedStockInvoice={invoice} />
                   </Th>

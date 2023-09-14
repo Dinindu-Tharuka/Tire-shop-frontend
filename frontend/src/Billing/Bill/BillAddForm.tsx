@@ -10,9 +10,7 @@ import {
   Td,
   Text,
   Th,
-  Thead,
   Tr,
-  VStack,
   useColorMode,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
@@ -72,13 +70,7 @@ const BillAddForm = () => {
     []
   );
 
-  const paymentMethods = [
-    ["Cash", "cash"],
-    ["Cheque", "cheque"],
-    ["Credit Card", "credit_card"],
-    ["Credit", "credit"],
-    ["Multiple Option", "multiple"],
-  ];
+
 
   const {
     fields: itemsArray,
@@ -161,7 +153,7 @@ const BillAddForm = () => {
                         setSelectedItem(event.target.value);
                         setSelectedItemText([
                           ...selectedItemText,
-                          event.target.options[event.target.selectedIndex].text,
+                          items.find((item, index) => index === event.target.selectedIndex-1)?.item_id+'',
                         ]);
                       }}
                     >
@@ -274,6 +266,7 @@ const BillAddForm = () => {
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                       {...register(`bill_items.${index}.customer_discount`)}
                       placeholder="Customer Discount"
+                      
                     />
                   </Flex>
 
