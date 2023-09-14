@@ -8,7 +8,9 @@ export interface StockItem{
     stock_item_invoice:string;
     cost:number;
     selling_price:number;
-    discount:number;
+    supplier_discount:number;
+    sales_discount:number;
+    customer_discount:number;
     qty:number;
     sold_qty:number;
 }

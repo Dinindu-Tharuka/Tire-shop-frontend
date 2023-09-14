@@ -113,10 +113,10 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
           <div className="mb-3 d-flex justify-content-between">
             <FormLabel>Discount</FormLabel>
             <Input
-              {...register("discount")}
+              {...register("supplier_discount")}
               type="text"
               placeholder="Discount"
-              defaultValue={selectedStockItem.discount}
+              defaultValue={selectedStockItem.supplier_discount}
               width="50%"
             />
           </div>

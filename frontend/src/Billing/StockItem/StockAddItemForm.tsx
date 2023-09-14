@@ -91,9 +91,9 @@ const StockAddItemForm = ({ seletedInvoice }: Props) => {
           <div className="mb-3 d-flex justify-content-between">
             <FormLabel>Discount</FormLabel>
             <Input
-              {...register("discount")}
+              {...register("supplier_discount")}
               type="number"
-              placeholder="Discount"
+              placeholder="Supplier Discount"
               width="50%"
             />
           </div>

@@ -66,7 +66,7 @@ const StockItemAddDrawer = () => {
             ></Input>
           </div>
           <div className="mb-3">
-            <Input type="text" placeholder="Type" {...register("discount")}></Input>
+            <Input type="text" {...register("supplier_discount")}></Input>
           </div>
           <div className="mb-3">
             <Input
