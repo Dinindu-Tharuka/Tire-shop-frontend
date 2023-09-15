@@ -18,6 +18,16 @@ const BillingMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
   const {
+    stockInvoices: stockAllInvoices,
+    setStockInvoices: setStockAllInvoices,
+    isLoadingInvoices: isLoadingAllInvoices,
+    errorFetchStockInvoice: errorFetchStockAllInvoice,
+    setErrorFetchStockInvoice:setErrorFetchAllStockInvoice
+  } = useStockInvoice();
+
+ 
+
+  const {
     stockInvoices,
     setStockInvoices,
     errorFetchStockInvoice,
@@ -30,9 +40,6 @@ const BillingMainPage = () => {
     setErrorFetchStockInvoice,
     setInvoiceIdFilter,
   } = useStockInvoicePage();
-
-  console.log('stock invoices', stockInvoices);
-  
 
   const {
     billPayments,
@@ -54,11 +61,19 @@ const BillingMainPage = () => {
     isLoadingBills,
     billCount,
     setBillFetchError,
-    setBillIdFilter
+    setBillIdFilter,
   } = usePageBill();
 
   const { stockItems, setStockItems } = useStockItem();
+  
   return (
+    <StockInvoiceContext.Provider value={
+      {stockAllInvoices,
+      setStockAllInvoices,
+      isLoadingAllInvoices,
+      errorFetchStockAllInvoice,
+      setErrorFetchAllStockInvoice}
+    }>
     <StockInvoicePageContext.Provider
       value={{
         stockInvoices,
@@ -74,7 +89,6 @@ const BillingMainPage = () => {
         setInvoiceIdFilter,
       }}
     >
-
       <BillPaymentContext.Provider
         value={{
           billPayments,
@@ -97,7 +111,7 @@ const BillingMainPage = () => {
               isLoadingBills,
               billCount,
               setBillFetchError,
-              setBillIdFilter
+              setBillIdFilter,
             }}
           >
             <Grid
@@ -129,6 +143,7 @@ const BillingMainPage = () => {
         </StockItemContext.Provider>
       </BillPaymentContext.Provider>
     </StockInvoicePageContext.Provider>
+    </StockInvoiceContext.Provider>
   );
 };
 

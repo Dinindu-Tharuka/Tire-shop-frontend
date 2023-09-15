@@ -1,6 +1,5 @@
 import {
   Button,
-  Checkbox,
   Flex,
   HStack,
   Input,
@@ -13,8 +12,8 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
-import { FieldValues, useForm, useFieldArray } from "react-hook-form";
+import { useContext, useEffect, useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import BillContext from "../../Contexts/Bill/BillContext";
 import { IoAddCircle } from "react-icons/io5";
 import BillServices, {
@@ -27,21 +26,27 @@ import useService from "../../hooks/Registration/useService";
 import useEmployee from "../../hooks/Registration/useEmployee";
 import useItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
-import BillAddPayment from "../BillPayments/BillAddPayment";
 import calculateSubTotal from "./BillCalculation";
 import calculateStockitemCount from "../../componants/Inventory/Item/Calculations/CountStockItems";
 import {
   BILL_ITEM_MARGIN_BOTTOM,
   BILL_ITEM_MARGIN_LEFT,
-  BILL_ITEM_TEXT_PADDING,
   BILL_ITEM_WIDTH,
 } from "./UI Contastants/BillFormConstatnts";
+import { StockItem } from "../../services/Stock/stock-item-service";
+import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
+import { onChangeBillQty, onChangeService, onchangeBillStockItem } from "./Calculations/BillCalculations";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
+
+  //
+  const [seletedFilteredListSet, setSeletedFilteredListSet] = useState<
+    StockItem[][]
+  >([[]]);
+  const [rowIndex, setRowIndex] = useState(-1);
+
   const [selectedItemText, setSelectedItemText] = useState<string[]>([]);
-  const [createdBill, setCreatedBill] = useState<Bill>({} as Bill);
-  const [isCreatedBill, setIsCreatedBill] = useState(false);
   const [subTotal, setSubTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [errorBillCreate, setErrorBillCreate] = useState("");
@@ -49,7 +54,7 @@ const BillAddForm = () => {
   const [selectedStockItems, setSelectedStockItem] = useState<string[]>([]);
 
   const { colorMode } = useColorMode();
-  const [selectedServiceIndex, setSelectedServiceIndex] = useState<number[]>(
+  const [selectedServices, setSelectedServices] = useState<number[]>(
     []
   );
   const { bills, setBills } = useContext(BillContext);
@@ -65,12 +70,15 @@ const BillAddForm = () => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
+    setValue,
+    watch
   } = useForm<Bill>();
+
+
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
     []
   );
-
-
 
   const {
     fields: itemsArray,
@@ -90,7 +98,21 @@ const BillAddForm = () => {
     control,
   });
 
+  // Ui Item Fix
+  useEffect(() => {
+    const options = stockItems.filter(
+      (item) => item.item === selectedItem && item.qty !== 0
+    );
+    const newFilteredArray = [...seletedFilteredListSet];
+    newFilteredArray[rowIndex] = options;
+    setSeletedFilteredListSet([...newFilteredArray]);
+  }, [selectedItem, rowIndex]);
+
+ 
+
   const onSubmit = (data: Bill) => {
+    console.log(data);
+
     const { total, discount } = calculateSubTotal(data, services);
     setDiscount(discount);
     setSubTotal(total);
@@ -102,8 +124,6 @@ const BillAddForm = () => {
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
-        setCreatedBill(res.data);
-        setIsCreatedBill(true);
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -122,6 +142,7 @@ const BillAddForm = () => {
                 })}
                 type="text"
                 placeholder="Bill No"
+                defaultValue={BillNumberGenerate()}
               />
               <Text textColor="red.600">{errors.invoice_id?.message}</Text>
             </div>
@@ -140,45 +161,74 @@ const BillAddForm = () => {
 
           {/* Add Items */}
           <div className="mb-3">
+            <Flex>
+              <Text
+                marginRight={BILL_ITEM_MARGIN_LEFT}
+                width={BILL_ITEM_WIDTH}
+                marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+              >
+                Select Item
+              </Text>
+              <Text
+                marginRight={BILL_ITEM_MARGIN_LEFT}
+                width={BILL_ITEM_WIDTH}
+                marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+              >
+                Select Stock Item
+              </Text>
+              <Text
+                marginRight={BILL_ITEM_MARGIN_LEFT}
+                width={BILL_ITEM_WIDTH}
+                marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+              >
+                QTY
+              </Text>
+              <Text
+                marginRight={BILL_ITEM_MARGIN_LEFT}
+                width={BILL_ITEM_WIDTH}
+                marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+              >
+                Customer Discount
+              </Text>
+              <Text
+                marginRight={BILL_ITEM_MARGIN_LEFT}
+                width={BILL_ITEM_WIDTH}
+                marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+              >
+                Customer Price
+              </Text>
+            </Flex>
             {itemsArray.map((field, index) => (
               <Flex>
                 <Flex>
-                  {!selectedItemText[index] ? (
+                  <Flex flexDir='column'>
                     <Select
                       {...register(`bill_items.${index}.item`)}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       onChange={(event) => {
+                        setRowIndex(index);
                         setSelectedItem(event.target.value);
                         setSelectedItemText([
                           ...selectedItemText,
-                          items.find((item, index) => index === event.target.selectedIndex-1)?.item_id+'',
+                          event.target.options[event.target.selectedIndex].text,
                         ]);
                       }}
                     >
                       <option value="">Select Item</option>
                       {items.map((item, index) => (
                         <option key={index} value={item.item_id}>
-                          {item.item_id}
-                          {"(" +
-                            calculateStockitemCount(item, stockItems) +
-                            ")"}
+                          {item.item_id} (
+                          {calculateStockitemCount(item, stockItems)})
                         </option>
                       ))}
                     </Select>
-                  ) : (
-                    <Text
-                      padding={BILL_ITEM_TEXT_PADDING}
-                      marginRight={BILL_ITEM_MARGIN_LEFT}
-                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
-                      width={BILL_ITEM_WIDTH}
-                      textAlign="left"
-                    >
-                      {selectedItemText[index]}
-                    </Text>
-                  )}
-                  {!selectedStockItems[index] ? (
+
+                  </Flex>
+                  
+                  <Flex flexDir='column'>
+
                     <Select
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
@@ -198,12 +248,13 @@ const BillAddForm = () => {
                           ...selectedStockItems,
                           e.target.options[e.target.selectedIndex].text,
                         ]);
+
+                        onchangeBillStockItem(e, setValue, stockItems, index)
                       }}
                     >
                       <option>Stock Item</option>
-                      {stockItems
-                        .filter((item) => item.item === selectedItem)
-                        .map((stockItem, index) => (
+                      {seletedFilteredListSet[index]?.map(
+                        (stockItem, index) => (
                           <option
                             key={index}
                             value={stockItem.id}
@@ -215,24 +266,17 @@ const BillAddForm = () => {
                               </Text>
                             </div>
                           </option>
-                        ))}
+                        )
+                      )}
                     </Select>
-                  ) : (
-                    <Text
-                      padding={BILL_ITEM_TEXT_PADDING}
-                      marginRight={BILL_ITEM_MARGIN_LEFT}
-                      width={BILL_ITEM_WIDTH}
-                      textAlign="left"
-                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
-                    >
-                      {selectedStockItems[index]}
-                    </Text>
-                  )}
+                  </Flex>
+                  
                 </Flex>
                 <Flex>
                   <Flex flexDir="column">
                     <Input
                       type="number"
+                      defaultValue={0}
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
@@ -245,6 +289,7 @@ const BillAddForm = () => {
                             );
                         },
                       })}
+                      onChange={(e)=> onChangeBillQty(e, setValue, watch, index)}
                       placeholder="QTY"
                     />
                     <Text
@@ -261,12 +306,13 @@ const BillAddForm = () => {
                   <Flex>
                     <Input
                       type="number"
+                      step="0.01"
+                      defaultValue={0}
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                       {...register(`bill_items.${index}.customer_discount`)}
                       placeholder="Customer Discount"
-                      
                     />
                   </Flex>
 
@@ -275,6 +321,8 @@ const BillAddForm = () => {
                     width={BILL_ITEM_WIDTH}
                     marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                     type="number"
+                    step="0.01"
+                    defaultValue={0}
                     {...register(`bill_items.${index}.customer_price`)}
                     placeholder="Customer Price"
                   />
@@ -286,8 +334,6 @@ const BillAddForm = () => {
                     padding={2.5}
                     type="button"
                     onClick={() => {
-                      console.log("valuse", seletedItemCountList);
-
                       itemRemove(index);
                       setSeletedItemCountList(
                         seletedItemCountList.filter((val, ind) => index !== ind)
@@ -303,6 +349,12 @@ const BillAddForm = () => {
                           (itemText, indexText) => indexText != index
                         )
                       );
+                      setSeletedFilteredListSet([
+                        ...seletedFilteredListSet.filter(
+                          (list, listIndex) => listIndex !== index
+                        ),
+                      ]);
+                      
                     }}
                   >
                     Remove
@@ -335,12 +387,7 @@ const BillAddForm = () => {
                     marginRight={BILL_ITEM_MARGIN_LEFT}
                     width={BILL_ITEM_WIDTH}
                     marginBottom={BILL_ITEM_MARGIN_BOTTOM}
-                    onChange={(e) =>
-                      setSelectedServiceIndex([
-                        ...selectedServiceIndex,
-                        parseInt(e.target.value),
-                      ])
-                    }
+                    onChange={(e) =>{onChangeService(e, setValue, index, services, setSelectedServices, selectedServices)}}
                   >
                     <option>Select Service</option>
                     {services.map((service, index) => (
@@ -350,17 +397,15 @@ const BillAddForm = () => {
                     ))}
                   </Select>
 
-                  <Input
+                  <Text
                     marginRight={BILL_ITEM_MARGIN_LEFT}
                     width={BILL_ITEM_WIDTH}
                     marginBottom={BILL_ITEM_MARGIN_BOTTOM}
-                    value={
-                      services.find(
-                        (ser) => ser.id === selectedServiceIndex[index]
-                      )?.service_value
-                    }
-                    placeholder="Price"
-                  />
+                    textAlign='center'
+                    padding={2}
+                  >
+                    {selectedServices[index]? selectedServices[index]:0}
+                  </Text>
 
                   <Select
                     marginRight={BILL_ITEM_MARGIN_LEFT}
@@ -442,20 +487,18 @@ const BillAddForm = () => {
 
           <Button
             width="10vw"
-            type="submit"
-            isDisabled={isCreatedBill}
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
-              setErrorBillCreate("");
-              setSuccess("");
-              window.location.reload();
+              reset();
+              itemsArray.forEach((item, index) => itemRemove(index));
+              serviceArray.forEach((service, index) => serviceRemove(index));
             }}
           >
-            Without Payments
+            Reset
           </Button>
         </HStack>
       </form>
-      {isCreatedBill && <BillAddPayment createdBill={createdBill} />}
+      {/* {isCreatedBill && <BillAddPayment createdBill={createdBill} />} */}
     </>
   );
 };
