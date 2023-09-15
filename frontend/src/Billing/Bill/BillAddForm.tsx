@@ -13,7 +13,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import BillContext from "../../Contexts/Bill/BillContext";
 import { IoAddCircle } from "react-icons/io5";
 import BillServices, {
@@ -35,7 +35,12 @@ import {
 } from "./UI Contastants/BillFormConstatnts";
 import { StockItem } from "../../services/Stock/stock-item-service";
 import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
-import { onChangeBillQty, onChangeService, onchangeBillStockItem } from "./Calculations/BillCalculations";
+import {
+  onChangeBillCustomerPrice,
+  onChangeBillQty,
+  onChangeService,
+  onchangeBillStockItem,
+} from "./Calculations/BillCalculations";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -48,15 +53,12 @@ const BillAddForm = () => {
 
   const [selectedItemText, setSelectedItemText] = useState<string[]>([]);
   const [subTotal, setSubTotal] = useState(0);
-  const [discount, setDiscount] = useState(0);
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
   const [selectedStockItems, setSelectedStockItem] = useState<string[]>([]);
 
   const { colorMode } = useColorMode();
-  const [selectedServices, setSelectedServices] = useState<number[]>(
-    []
-  );
+  const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const { bills, setBills } = useContext(BillContext);
   const { items } = useItems();
 
@@ -72,9 +74,29 @@ const BillAddForm = () => {
     formState: { errors },
     reset,
     setValue,
-    watch
+    watch,
   } = useForm<Bill>();
 
+  const billItemsWatch = useWatch({
+    control,
+    name: "bill_items",
+  });
+
+  // calculate Sub Total
+
+  useEffect(() => {
+    let subTotal = 0;
+    if (billItemsWatch){
+      const customerPrice = billItemsWatch.reduce(
+        (currentValue, currentItem) => currentValue + currentItem.customer_price,
+        0
+      );
+      subTotal =+ customerPrice;
+      
+      setValue('sub_total', Math.round(subTotal * 100)/100)
+
+    }
+  }, [billItemsWatch ]);
 
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
     []
@@ -108,16 +130,13 @@ const BillAddForm = () => {
     setSeletedFilteredListSet([...newFilteredArray]);
   }, [selectedItem, rowIndex]);
 
- 
-
   const onSubmit = (data: Bill) => {
     console.log(data);
 
     const { total, discount } = calculateSubTotal(data, services);
-    setDiscount(discount);
     setSubTotal(total);
 
-    const newly = { ...data, sub_total: total, discount_amount: discount };
+    const newly = { ...data, discount_amount: discount };
     console.log("new ", newly);
 
     BillServices.create<Bill>(newly)
@@ -201,7 +220,7 @@ const BillAddForm = () => {
             {itemsArray.map((field, index) => (
               <Flex>
                 <Flex>
-                  <Flex flexDir='column'>
+                  <Flex flexDir="column">
                     <Select
                       {...register(`bill_items.${index}.item`)}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
@@ -224,11 +243,9 @@ const BillAddForm = () => {
                         </option>
                       ))}
                     </Select>
-
                   </Flex>
-                  
-                  <Flex flexDir='column'>
 
+                  <Flex flexDir="column">
                     <Select
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
@@ -249,7 +266,7 @@ const BillAddForm = () => {
                           e.target.options[e.target.selectedIndex].text,
                         ]);
 
-                        onchangeBillStockItem(e, setValue, stockItems, index)
+                        onchangeBillStockItem(e, setValue, stockItems, index);
                       }}
                     >
                       <option>Stock Item</option>
@@ -270,7 +287,6 @@ const BillAddForm = () => {
                       )}
                     </Select>
                   </Flex>
-                  
                 </Flex>
                 <Flex>
                   <Flex flexDir="column">
@@ -289,7 +305,9 @@ const BillAddForm = () => {
                             );
                         },
                       })}
-                      onChange={(e)=> onChangeBillQty(e, setValue, watch, index)}
+                      onChange={(e) =>
+                        onChangeBillQty(e, setValue, watch, index)
+                      }
                       placeholder="QTY"
                     />
                     <Text
@@ -325,6 +343,9 @@ const BillAddForm = () => {
                     defaultValue={0}
                     {...register(`bill_items.${index}.customer_price`)}
                     placeholder="Customer Price"
+                    onChange={(e) =>
+                      onChangeBillCustomerPrice(e, setValue, watch, index)
+                    }
                   />
                 </Flex>
 
@@ -354,7 +375,6 @@ const BillAddForm = () => {
                           (list, listIndex) => listIndex !== index
                         ),
                       ]);
-                      
                     }}
                   >
                     Remove
@@ -387,7 +407,16 @@ const BillAddForm = () => {
                     marginRight={BILL_ITEM_MARGIN_LEFT}
                     width={BILL_ITEM_WIDTH}
                     marginBottom={BILL_ITEM_MARGIN_BOTTOM}
-                    onChange={(e) =>{onChangeService(e, setValue, index, services, setSelectedServices, selectedServices)}}
+                    onChange={(e) => {
+                      onChangeService(
+                        e,
+                        setValue,
+                        index,
+                        services,
+                        setSelectedServices,
+                        selectedServices
+                      );
+                    }}
                   >
                     <option>Select Service</option>
                     {services.map((service, index) => (
@@ -401,10 +430,10 @@ const BillAddForm = () => {
                     marginRight={BILL_ITEM_MARGIN_LEFT}
                     width={BILL_ITEM_WIDTH}
                     marginBottom={BILL_ITEM_MARGIN_BOTTOM}
-                    textAlign='center'
+                    textAlign="center"
                     padding={2}
                   >
-                    {selectedServices[index]? selectedServices[index]:0}
+                    {selectedServices[index] ? selectedServices[index] : 0}
                   </Text>
 
                   <Select
@@ -423,7 +452,7 @@ const BillAddForm = () => {
                 </Flex>
 
                 <Flex>
-                  {index > 0 && (
+                  {index >= 0 && (
                     <Button
                       bg="#f87454"
                       padding={2.5}
@@ -446,31 +475,41 @@ const BillAddForm = () => {
               <IoAddCircle />
             </Flex>
           </div>
+          <Flex width="50vw">
+            <Flex flexDir="column">
+              <Text marginRight={BILL_ITEM_MARGIN_LEFT} width={BILL_ITEM_WIDTH}>
+                Customer Item Value
+              </Text>
 
-          <div className="mb-3 w-25">
-            <Input
-              {...register("custome_item_value")}
-              type="text"
-              placeholder="Customer Item Value"
-            />
-          </div>
+              <div className="mb-3 w-25">
+                <Input
+                  marginRight={BILL_ITEM_MARGIN_LEFT}
+                  width={BILL_ITEM_WIDTH}
+                  {...register("custome_item_value")}
+                  defaultValue={0}
+                  type="number"
+                  step="0.01"
+                  placeholder="Customer Item Value"
+                />
+              </div>
+            </Flex>
+
+            <Flex flexDir="column">
+              <Text>Sub Total</Text>
+
+              <div className="mb-3 w-100">
+                <Input
+                  marginRight={BILL_ITEM_MARGIN_LEFT}
+                  width={BILL_ITEM_WIDTH}
+                  {...register("sub_total")}
+                  defaultValue={0}
+                  type="number"
+                  step="0.01"
+                />
+              </div>
+            </Flex>
+          </Flex>
         </div>
-        <TableContainer width="40vw">
-          <Table>
-            {discount !== 0 && (
-              <Tr>
-                <Th>Total Discount</Th>
-                <Td>{discount}</Td>
-              </Tr>
-            )}
-            {subTotal !== 0 && (
-              <Tr>
-                <Th>Sub Total</Th>
-                <Td>{subTotal}</Td>
-              </Tr>
-            )}
-          </Table>
-        </TableContainer>
 
         <HStack>
           <Button
@@ -498,7 +537,6 @@ const BillAddForm = () => {
           </Button>
         </HStack>
       </form>
-      {/* {isCreatedBill && <BillAddPayment createdBill={createdBill} />} */}
     </>
   );
 };

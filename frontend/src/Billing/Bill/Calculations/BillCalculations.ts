@@ -68,3 +68,17 @@ export const onChangeService = (
     
 
 }
+
+export const onChangeBillCustomerPrice = (
+    e:React.ChangeEvent<HTMLInputElement>, 
+    setValue:UseFormSetValue<Bill>,
+    watch:UseFormWatch<Bill>,
+    index:number
+)=>{
+
+    const customerPrice = watch(`bill_items.${index}.customer_price`)
+    console.log(customerPrice);
+    
+    
+
+}
