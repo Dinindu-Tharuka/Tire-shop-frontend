@@ -32,7 +32,7 @@ import {
   BILL_ITEM_MARGIN_LEFT,
   BILL_ITEM_WIDTH,
 } from "./UI Contastants/BillFormConstatnts";
-import { StockItem } from "../../services/Stock/stock-item-service";
+import stockItemService, { StockItem } from "../../services/Stock/stock-item-service";
 import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
 import {
   onChangeBillCustomItemValue,
@@ -40,6 +40,7 @@ import {
   onChangeService,
   onchangeBillStockItem,
 } from "./Calculations/BillCalculations";
+import BillSaveConfirmation from "./BillSaveConfirmation";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -67,7 +68,16 @@ const BillAddForm = () => {
   const { customers } = useCustomer();
   const { services } = useService();
   const { employees } = useEmployee();
-  const { stockItems } = useContext(StockItemContext);
+  const { stockItems, setStockItems } = useContext(StockItemContext);
+
+  useEffect(()=>{
+    const {request, cancel} = stockItemService.getAll<StockItem>()
+
+    request
+      .then(res => setStockItems([...res.data]))
+
+      return ()=> cancel()
+  }, [isCreatedBill])
 
   const {
     register,
@@ -83,13 +93,6 @@ const BillAddForm = () => {
     control,
     name: "bill_items",
   });
-
-  //OverLay
-  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
-
-  const toggleOverlay = () => {
-    setIsOverlayVisible(!isOverlayVisible);
-  };
 
   // calculate Sub Total
 
@@ -151,19 +154,35 @@ const BillAddForm = () => {
     const newly = { ...data, discount_amount: 0 };
     console.log("new ", newly);
 
+    const indexes = data.bill_items.map( billItem => [billItem.stock_item, billItem.qty]) 
+   
+    console.log(indexes);
+
+    
+    
+
     BillServices.create<Bill>(newly)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
-        window.location.reload();
+        setIsCreatedBill(true)
+        
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
+
+  const submitForm = () => {
+    setErrorBillCreate("");
+    setSuccess("");
+    // Programmatically trigger form submission
+    handleSubmit(onSubmit)();
+  };
+
   return (
     <>
       {errorBillCreate && <Text textColor="#dd0939">{errorBillCreate}</Text>}
       {success && <Text textColor="#38e17e">{success}</Text>}
-      <form onSubmit={handleSubmit(onSubmit)} className="vh-75 ">
+      <form className="vh-75 ">
         <div className="d-flex flex-column justify-content-between">
           <Flex>
             <div className="mb-3 w-25 me-3">
@@ -506,7 +525,7 @@ const BillAddForm = () => {
 
               <div className="mb-3 w-25">
                 <Input
-                isDisabled={isCreatedBill}
+                  isDisabled={isCreatedBill}
                   marginRight={BILL_ITEM_MARGIN_LEFT}
                   width={BILL_ITEM_WIDTH}
                   {...register("custome_item_value")}
@@ -526,7 +545,7 @@ const BillAddForm = () => {
 
               <div className="mb-3 w-100">
                 <Input
-                isDisabled={isCreatedBill}
+                  isDisabled={isCreatedBill}
                   marginRight={BILL_ITEM_MARGIN_LEFT}
                   width={BILL_ITEM_WIDTH}
                   {...register("sub_total")}
@@ -540,17 +559,8 @@ const BillAddForm = () => {
         </div>
 
         <HStack>
-          <Button
-            width="10vw"
-            type="submit"
-            bg={colorMode === "light" ? "#e3a99c" : "#575757"}
-            onClick={() => {
-              setErrorBillCreate("");
-              setSuccess("");
-            }}
-          >
-            Save
-          </Button>
+          
+          <BillSaveConfirmation onSubmit={submitForm} />
 
           <Button
             width="10vw"
@@ -559,6 +569,7 @@ const BillAddForm = () => {
               reset();
               itemsArray.forEach((item, index) => itemRemove(index));
               serviceArray.forEach((service, index) => serviceRemove(index));
+              setIsCreatedBill(false)
             }}
           >
             Reset
