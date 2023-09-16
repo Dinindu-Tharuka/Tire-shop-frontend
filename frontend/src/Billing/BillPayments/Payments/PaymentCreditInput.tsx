@@ -63,9 +63,13 @@ const PaymentCreditInput = ({ register, control }: Props) => {
             type="button"
             onClick={() => append({} as PaymentCredit)}
             alignContent="top"
+            width='25vw'
           >
-            <div className="me-4">Add Credit Payment</div>
-            <IoAddCircle />
+            <Flex width='100%' justifyContent='space-between'>
+              <div className="me-4">Add Credit Payment</div>
+              <IoAddCircle />
+
+            </Flex>
           </Button>
         </Flex>
       </Flex>

@@ -25,49 +25,51 @@ const PaymentCashInput = ({ register, control }: Props) => {
   });
 
   return (
-    <>
-      <Flex>
-        <Flex>
-          {fields.map((field, cashIndex) => (
-            <VStack>
-              <Input
-                {...register(`payments_cash.${cashIndex}.bill_payment`)}
-                placeholder="Bill"
-                type="number"
-                defaultValue={cashIndex + 1}
-              />
-              <Input
-                {...register(`payments_cash.${cashIndex}.payeename`)}
-                placeholder="Payee Name"
-                type="text"
-              />
-              <Input
-                {...register(`payments_cash.${cashIndex}.amount`)}
-                placeholder="Amount"
-                type="number"
-              />
+    <Flex width="25vw">
+      <Flex width="100%">
+        {fields.map((field, cashIndex) => (
+          <VStack width="100%">
+            <Input
+              {...register(`payments_cash.${cashIndex}.bill_payment`)}
+              placeholder="Bill"
+              type="number"
+              defaultValue={cashIndex + 1}
+            />
+            <Input
+              {...register(`payments_cash.${cashIndex}.payeename`)}
+              placeholder="Payee Name"
+              type="text"
+            />
+            <Input
+              {...register(`payments_cash.${cashIndex}.amount`)}
+              placeholder="Amount"
+              type="number"
+            />
 
-              <Button
-                bg="#f87454"
-                padding={2.5}
-                type="button"
-                onClick={() => remove(cashIndex)}
-              >
-                Remove
-              </Button>
-            </VStack>
-          ))}
-          <Button
-            type="button"
-            onClick={() => append({} as PaymentCash)}
-            alignContent="top"
-          >
+            <Button
+              bg="#f87454"
+              padding={2.5}
+              type="button"
+              onClick={() => remove(cashIndex)}
+            >
+              Remove
+            </Button>
+          </VStack>
+        ))}
+        <Button
+          type="button"
+          onClick={() => append({} as PaymentCash)}
+          alignContent="top"
+          width="25vw"
+          marginTop={5}
+        >
+          <Flex width='100%' justifyContent='space-between'>
             <div className="me-4">Add Cash Payment</div>
             <IoAddCircle />
-          </Button>
-        </Flex>
+          </Flex>
+        </Button>
       </Flex>
-    </>
+    </Flex>
   );
 };
 

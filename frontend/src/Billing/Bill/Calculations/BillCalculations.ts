@@ -69,15 +69,19 @@ export const onChangeService = (
 
 }
 
-export const onChangeBillCustomerPrice = (
+export const onChangeBillCustomItemValue = (
     e:React.ChangeEvent<HTMLInputElement>, 
     setValue:UseFormSetValue<Bill>,
-    watch:UseFormWatch<Bill>,
-    index:number
+    subTotalVal:number,
 )=>{
 
-    const customerPrice = watch(`bill_items.${index}.customer_price`)
-    console.log(customerPrice);
+
+    const customItemVlaue = parseFloat(e.currentTarget.value)
+    console.log(subTotalVal);
+    
+
+    console.log(customItemVlaue);
+    setValue('sub_total', subTotalVal-customItemVlaue)
     
     
 

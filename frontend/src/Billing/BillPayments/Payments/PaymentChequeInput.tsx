@@ -82,9 +82,14 @@ const PaymentChequeInput = ({ register, control }: Props) => {
             type="button"
             onClick={() => append({} as PaymentCheque)}
             alignContent="top"
+            width="25vw"
+            margin={5}
+            marginLeft={0}
           >
-            <div className="me-4">Add Cheque Payment</div>
-            <IoAddCircle />
+            <Flex width="100%" justifyContent="space-between">
+              <div className="me-4">Add Cheque Payment</div>
+              <IoAddCircle />
+            </Flex>
           </Button>
         </Flex>
       </Flex>

@@ -36,7 +36,7 @@ import {
 import { StockItem } from "../../services/Stock/stock-item-service";
 import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
 import {
-  onChangeBillCustomerPrice,
+  onChangeBillCustomItemValue,
   onChangeBillQty,
   onChangeService,
   onchangeBillStockItem,
@@ -58,7 +58,7 @@ const BillAddForm = () => {
   const [selectedStockItems, setSelectedStockItem] = useState<string[]>([]);
 
   const { colorMode } = useColorMode();
-  const [selectedServices, setSelectedServices] = useState<number[]>([]);
+  const [selectedServicesPrice, setSelectedServicesPrice] = useState<number[]>([]);
   const { bills, setBills } = useContext(BillContext);
   const { items } = useItems();
 
@@ -82,21 +82,25 @@ const BillAddForm = () => {
     name: "bill_items",
   });
 
+
   // calculate Sub Total
 
   useEffect(() => {
     let subTotal = 0;
+    console.log(selectedServicesPrice);
+    
+    const serviceTotal = selectedServicesPrice.reduce((currentValue, nextValue)=>currentValue+parseInt(nextValue+''),0)
     if (billItemsWatch){
       const customerPrice = billItemsWatch.reduce(
-        (currentValue, currentItem) => currentValue + currentItem.customer_price,
+        (currentValue, currentItem) => currentValue + parseInt(currentItem.customer_price+''),
         0
-      );
-      subTotal =+ customerPrice;
-      
+      );     
+      subTotal =+ (customerPrice + serviceTotal);  
+      setSubTotal(subTotal)  
       setValue('sub_total', Math.round(subTotal * 100)/100)
 
     }
-  }, [billItemsWatch ]);
+  }, [billItemsWatch, selectedServicesPrice ]);
 
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
     []
@@ -131,12 +135,9 @@ const BillAddForm = () => {
   }, [selectedItem, rowIndex]);
 
   const onSubmit = (data: Bill) => {
-    console.log(data);
+    console.log(data);    
 
-    const { total, discount } = calculateSubTotal(data, services);
-    setSubTotal(total);
-
-    const newly = { ...data, discount_amount: discount };
+    const newly = { ...data, discount_amount: 0 };
     console.log("new ", newly);
 
     BillServices.create<Bill>(newly)
@@ -343,9 +344,7 @@ const BillAddForm = () => {
                     defaultValue={0}
                     {...register(`bill_items.${index}.customer_price`)}
                     placeholder="Customer Price"
-                    onChange={(e) =>
-                      onChangeBillCustomerPrice(e, setValue, watch, index)
-                    }
+                    
                   />
                 </Flex>
 
@@ -413,8 +412,8 @@ const BillAddForm = () => {
                         setValue,
                         index,
                         services,
-                        setSelectedServices,
-                        selectedServices
+                        setSelectedServicesPrice,
+                        selectedServicesPrice
                       );
                     }}
                   >
@@ -433,7 +432,7 @@ const BillAddForm = () => {
                     textAlign="center"
                     padding={2}
                   >
-                    {selectedServices[index] ? selectedServices[index] : 0}
+                    {selectedServicesPrice[index] ? selectedServicesPrice[index] : 0}
                   </Text>
 
                   <Select
@@ -490,6 +489,7 @@ const BillAddForm = () => {
                   type="number"
                   step="0.01"
                   placeholder="Customer Item Value"
+                  onChange={(e)=> onChangeBillCustomItemValue(e, setValue, subTotal)}
                 />
               </div>
             </Flex>

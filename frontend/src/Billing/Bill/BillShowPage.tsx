@@ -20,6 +20,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import useBillPayment from "../../hooks/Billing/useBillPayment";
 import BillAddPayment from "../BillPayments/BillAddPayment";
+import CalculateBillPayments from "./Calculations/BillTotalPayments";
 
 interface Props {
   seletedBill: Bill;
@@ -29,8 +30,9 @@ const BillShowPage = ({ seletedBill }: Props) => {
   const [loader, setLoader] = useState(false);
   const { customers } = useCustomer();
   const { services } = useService();
-  const { billPayments } = useBillPayment();
+  const { billPayments } = useBillPayment();  
   const pdfRef = useRef<HTMLDivElement>(null);
+
 
   const dowloadPdf = () => {
     let capture = pdfRef.current;
@@ -379,7 +381,9 @@ const BillShowPage = ({ seletedBill }: Props) => {
           </Button>
         </div>
       </Flex>
-      <Flex width="30vw">
+      <Flex width="30vw" flexDir='column'>
+        <Text>Sub Total  : {seletedBill.sub_total}</Text>
+        <CalculateBillPayments payments={billPayments} seletedBill={seletedBill}/>
         <BillAddPayment createdBill={seletedBill} />
       </Flex>
     </Flex>
