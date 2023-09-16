@@ -13,7 +13,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import { useForm, useFieldArray, useWatch } from "react-hook-form";
+import { useForm, useFieldArray, useWatch, Controller } from "react-hook-form";
 import BillContext from "../../Contexts/Bill/BillContext";
 import { IoAddCircle } from "react-icons/io5";
 import BillServices, {
@@ -26,7 +26,6 @@ import useService from "../../hooks/Registration/useService";
 import useEmployee from "../../hooks/Registration/useEmployee";
 import useItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
-import calculateSubTotal from "./BillCalculation";
 import calculateStockitemCount from "../../componants/Inventory/Item/Calculations/CountStockItems";
 import {
   BILL_ITEM_MARGIN_BOTTOM,
@@ -44,6 +43,7 @@ import {
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
+  const [isCreatedBill, setIsCreatedBill] = useState(false);
 
   //
   const [seletedFilteredListSet, setSeletedFilteredListSet] = useState<
@@ -58,7 +58,9 @@ const BillAddForm = () => {
   const [selectedStockItems, setSelectedStockItem] = useState<string[]>([]);
 
   const { colorMode } = useColorMode();
-  const [selectedServicesPrice, setSelectedServicesPrice] = useState<number[]>([]);
+  const [selectedServicesPrice, setSelectedServicesPrice] = useState<number[]>(
+    []
+  );
   const { bills, setBills } = useContext(BillContext);
   const { items } = useItems();
 
@@ -82,25 +84,34 @@ const BillAddForm = () => {
     name: "bill_items",
   });
 
+  //OverLay
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+
+  const toggleOverlay = () => {
+    setIsOverlayVisible(!isOverlayVisible);
+  };
 
   // calculate Sub Total
 
   useEffect(() => {
     let subTotal = 0;
     console.log(selectedServicesPrice);
-    
-    const serviceTotal = selectedServicesPrice.reduce((currentValue, nextValue)=>currentValue+parseInt(nextValue+''),0)
-    if (billItemsWatch){
-      const customerPrice = billItemsWatch.reduce(
-        (currentValue, currentItem) => currentValue + parseInt(currentItem.customer_price+''),
-        0
-      );     
-      subTotal =+ (customerPrice + serviceTotal);  
-      setSubTotal(subTotal)  
-      setValue('sub_total', Math.round(subTotal * 100)/100)
 
+    const serviceTotal = selectedServicesPrice.reduce(
+      (currentValue, nextValue) => currentValue + parseInt(nextValue + ""),
+      0
+    );
+    if (billItemsWatch) {
+      const customerPrice = billItemsWatch.reduce(
+        (currentValue, currentItem) =>
+          currentValue + parseInt(currentItem.customer_price + ""),
+        0
+      );
+      subTotal = +(customerPrice + serviceTotal);
+      setSubTotal(subTotal);
+      setValue("sub_total", Math.round(subTotal * 100) / 100);
     }
-  }, [billItemsWatch, selectedServicesPrice ]);
+  }, [billItemsWatch, selectedServicesPrice]);
 
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
     []
@@ -135,7 +146,7 @@ const BillAddForm = () => {
   }, [selectedItem, rowIndex]);
 
   const onSubmit = (data: Bill) => {
-    console.log(data);    
+    console.log(data);
 
     const newly = { ...data, discount_amount: 0 };
     console.log("new ", newly);
@@ -144,6 +155,7 @@ const BillAddForm = () => {
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
+        window.location.reload();
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -151,12 +163,12 @@ const BillAddForm = () => {
     <>
       {errorBillCreate && <Text textColor="#dd0939">{errorBillCreate}</Text>}
       {success && <Text textColor="#38e17e">{success}</Text>}
-
       <form onSubmit={handleSubmit(onSubmit)} className="vh-75 ">
         <div className="d-flex flex-column justify-content-between">
           <Flex>
             <div className="mb-3 w-25 me-3">
               <Input
+                isDisabled={isCreatedBill}
                 {...register("invoice_id", {
                   required: "Bill number is required.",
                 })}
@@ -168,7 +180,7 @@ const BillAddForm = () => {
             </div>
 
             <div className="mb-3 w-25">
-              <Select {...register("customer")}>
+              <Select isDisabled={isCreatedBill} {...register("customer")}>
                 <option>Select Customer</option>
                 {customers.map((customer, index) => (
                   <option className="mt-3" key={index} value={customer.id}>
@@ -223,6 +235,7 @@ const BillAddForm = () => {
                 <Flex>
                   <Flex flexDir="column">
                     <Select
+                      isDisabled={isCreatedBill}
                       {...register(`bill_items.${index}.item`)}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                       marginRight={BILL_ITEM_MARGIN_LEFT}
@@ -248,6 +261,7 @@ const BillAddForm = () => {
 
                   <Flex flexDir="column">
                     <Select
+                      isDisabled={isCreatedBill}
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
@@ -292,6 +306,7 @@ const BillAddForm = () => {
                 <Flex>
                   <Flex flexDir="column">
                     <Input
+                      isDisabled={isCreatedBill}
                       type="number"
                       defaultValue={0}
                       marginRight={BILL_ITEM_MARGIN_LEFT}
@@ -324,6 +339,7 @@ const BillAddForm = () => {
 
                   <Flex>
                     <Input
+                      isDisabled={isCreatedBill}
                       type="number"
                       step="0.01"
                       defaultValue={0}
@@ -336,6 +352,7 @@ const BillAddForm = () => {
                   </Flex>
 
                   <Input
+                    isDisabled={isCreatedBill}
                     marginRight={BILL_ITEM_MARGIN_LEFT}
                     width={BILL_ITEM_WIDTH}
                     marginBottom={BILL_ITEM_MARGIN_BOTTOM}
@@ -344,12 +361,12 @@ const BillAddForm = () => {
                     defaultValue={0}
                     {...register(`bill_items.${index}.customer_price`)}
                     placeholder="Customer Price"
-                    
                   />
                 </Flex>
 
                 <Flex>
                   <Button
+                    isDisabled={isCreatedBill}
                     bg="#f87454"
                     padding={2.5}
                     type="button"
@@ -384,6 +401,7 @@ const BillAddForm = () => {
 
             <Flex alignItems="center">
               <Button
+                isDisabled={isCreatedBill}
                 type="button"
                 onClick={() => {
                   itemAppend({} as BillItem);
@@ -402,6 +420,7 @@ const BillAddForm = () => {
               <Flex>
                 <Flex>
                   <Select
+                    isDisabled={isCreatedBill}
                     {...register(`bill_services.${index}.service`)}
                     marginRight={BILL_ITEM_MARGIN_LEFT}
                     width={BILL_ITEM_WIDTH}
@@ -432,10 +451,13 @@ const BillAddForm = () => {
                     textAlign="center"
                     padding={2}
                   >
-                    {selectedServicesPrice[index] ? selectedServicesPrice[index] : 0}
+                    {selectedServicesPrice[index]
+                      ? selectedServicesPrice[index]
+                      : 0}
                   </Text>
 
                   <Select
+                    isDisabled={isCreatedBill}
                     marginRight={BILL_ITEM_MARGIN_LEFT}
                     width={BILL_ITEM_WIDTH}
                     marginBottom={BILL_ITEM_MARGIN_BOTTOM}
@@ -453,6 +475,7 @@ const BillAddForm = () => {
                 <Flex>
                   {index >= 0 && (
                     <Button
+                      isDisabled={isCreatedBill}
                       bg="#f87454"
                       padding={2.5}
                       type="button"
@@ -466,6 +489,7 @@ const BillAddForm = () => {
             ))}
             <Flex alignItems="center">
               <Button
+                isDisabled={isCreatedBill}
                 type="button"
                 onClick={() => serviceAppend({} as BillService)}
               >
@@ -482,6 +506,7 @@ const BillAddForm = () => {
 
               <div className="mb-3 w-25">
                 <Input
+                isDisabled={isCreatedBill}
                   marginRight={BILL_ITEM_MARGIN_LEFT}
                   width={BILL_ITEM_WIDTH}
                   {...register("custome_item_value")}
@@ -489,7 +514,9 @@ const BillAddForm = () => {
                   type="number"
                   step="0.01"
                   placeholder="Customer Item Value"
-                  onChange={(e)=> onChangeBillCustomItemValue(e, setValue, subTotal)}
+                  onChange={(e) =>
+                    onChangeBillCustomItemValue(e, setValue, subTotal)
+                  }
                 />
               </div>
             </Flex>
@@ -499,6 +526,7 @@ const BillAddForm = () => {
 
               <div className="mb-3 w-100">
                 <Input
+                isDisabled={isCreatedBill}
                   marginRight={BILL_ITEM_MARGIN_LEFT}
                   width={BILL_ITEM_WIDTH}
                   {...register("sub_total")}
