@@ -7,7 +7,7 @@ export interface StockInvoice{
     total_amount:number;   
     total_discount:number;   
     supplier:number;
-    stockitems:StockItem[]
+    stock_items:StockItem[]
 }
 
 export interface StockInvoicePageStructure{

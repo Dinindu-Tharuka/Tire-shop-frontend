@@ -77,10 +77,9 @@ const BillAddForm = () => {
 
     request
       .then((res) => setStockItems([...res.data]))
-      .catch(error=>{
+      .catch((error) => {
         console.log(error.message);
-        
-    });
+      });
 
     return () => cancel();
   }, [isCreatedBill]);
@@ -156,44 +155,44 @@ const BillAddForm = () => {
 
     // Filter Same price and adding
 
-    console.log('seleted', newFilteredArray[rowIndex]);
-    
+    console.log("seleted", newFilteredArray[rowIndex]);
 
-    const priceItemFilterArry = newFilteredArray[rowIndex].reduce((list: StockItem[], stockItem) => {
-      console.log('list', list);
-      
-      const exititngItem = list.find(
-        (item, index) =>{
-          return item.item === stockItem.item &&
-          parseFloat(item.selling_price+'') / parseInt(item.qty+'') ===
-            parseFloat(stockItem.selling_price+'') / parseInt(stockItem.qty+'')}
-      );
+    const priceItemFilterArry = newFilteredArray[rowIndex].reduce(
+      (list: StockItem[], stockItem) => {
+        console.log("list", list);
 
-      if(exititngItem && exititngItem !== undefined){
-        console.log('exiting', exititngItem);
-      }else{
-        list.push(stockItem)
-      }
+        const exititngItem = list.find((item, index) => {
+          return (
+            item.item === stockItem.item &&
+            parseFloat(item.customer_price + "") / parseInt(item.qty + "") ===
+              parseFloat(stockItem.customer_price + "") /
+                parseInt(stockItem.qty + "")
+          );
+        });
 
-      return list
-    }, []);
+        if (exititngItem && exititngItem !== undefined) {
+          console.log("exiting", exititngItem);
+        } else {
+          list.push(stockItem);
+        }
 
-    console.log(priceItemFilterArry, 'Price item filter array');
-    
+        return list;
+      },
+      []
+    );
+
+    console.log(priceItemFilterArry, "Price item filter array");
   }, [selectedItem, rowIndex, isCreatedBill]);
 
   const onSubmit = (data: Bill) => {
     console.log(data);
 
     const newly = { ...data, discount_amount: 0 };
-    console.log("new ", newly);
 
     const indexes = data.bill_items.map((billItem) => [
-      billItem.stock_item,
+      billItem.stock_item_unique,
       billItem.qty,
     ]);
-
-    console.log(indexes);
 
     BillServices.create<Bill>(newly)
       .then((res) => {
@@ -244,7 +243,7 @@ const BillAddForm = () => {
           </Flex>
 
           {/* Add Items */}
-          <div className="mb-3" >
+          <div className="mb-3">
             <Flex>
               <Text
                 marginRight={BILL_ITEM_MARGIN_LEFT}
@@ -317,7 +316,7 @@ const BillAddForm = () => {
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
-                      {...register(`bill_items.${index}.stock_item`)}
+                      {...register(`bill_items.${index}.stock_item_unique`)}
                       onChange={(e) => {
                         const count = stockItems.find(
                           (item) => item.id === parseInt(e.target.value)
@@ -360,6 +359,7 @@ const BillAddForm = () => {
                     <Input
                       isDisabled={isCreatedBill}
                       type="number"
+                      required
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}

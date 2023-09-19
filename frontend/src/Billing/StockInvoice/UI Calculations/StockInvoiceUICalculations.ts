@@ -10,12 +10,12 @@ export const onchangeCostValue = (
     setValue:UseFormSetValue<StockInvoice>
   ) => {
     let cost = parseInt(e.currentTarget.value);
-    const customerDiscount = watch(`stockitems.${index}.customer_discount`);
+    const customerDiscount = watch(`stock_items.${index}.customer_discount`);
     if (customerDiscount) {
       cost = ((100 - customerDiscount) * cost) / 100;
     }
 
-    setValue(`stockitems.${index}.selling_price`, cost);
+    setValue(`stock_items.${index}.customer_price`, cost);
    
   };
 
@@ -27,18 +27,18 @@ export const onchangeCostValue = (
     setValue:UseFormSetValue<StockInvoice>
   ) => {
     let retailPrice = parseInt(e.currentTarget.value);
-    const customerDiscount = watch(`stockitems.${index}.customer_discount`);
-    const supplierDiscount = watch(`stockitems.${index}.supplier_discount`);
+    const customerDiscount = watch(`stock_items.${index}.customer_discount`);
+    const supplierDiscount = watch(`stock_items.${index}.supplier_discount`);
     if (customerDiscount) {
       const customerPrice = ((100 - customerDiscount) * retailPrice) / 100;
 
-      setValue(`stockitems.${index}.selling_price`, customerPrice);
+      setValue(`stock_items.${index}.customer_price`, customerPrice);
     }
 
     if (supplierDiscount) {
       const cost = ((100 - supplierDiscount) * retailPrice) / 100;
 
-      setValue(`stockitems.${index}.cost`, cost);
+      setValue(`stock_items.${index}.cost`, cost);
     }
   };
 
@@ -50,12 +50,12 @@ export const onchangeCostValue = (
     setValue:UseFormSetValue<StockInvoice>
   ) => {
     const suplierDiscount = parseInt(e.currentTarget.value);
-    const retailPrice = watch(`stockitems.${index}.retail_price`);
+    const retailPrice = watch(`stock_items.${index}.retail_price`);
 
     if (retailPrice) {
       const cost = ((100 - suplierDiscount) * retailPrice) / 100;
 
-      setValue(`stockitems.${index}.cost`, cost);
+      setValue(`stock_items.${index}.cost`, cost);
     }
   };
 
@@ -67,15 +67,15 @@ export const onchangeCostValue = (
     setValue:UseFormSetValue<StockInvoice>
   ) => {
     const customerDiscount = parseInt(e.currentTarget.value)
-    const retailPrice = parseInt(watch(`stockitems.${index}.retail_price`)+'')
-    const cost = watch(`stockitems.${index}.cost`)
+    const retailPrice = parseInt(watch(`stock_items.${index}.retail_price`)+'')
+    const cost = watch(`stock_items.${index}.cost`)
 
     if (retailPrice !== 0){
       const customerPrice = ((100-customerDiscount)* retailPrice)/100;
-      setValue(`stockitems.${index}.selling_price`, customerPrice)
+      setValue(`stock_items.${index}.customer_price`, customerPrice)
     }else if(cost){
       const customerPrice = ((100-customerDiscount)* cost)/100;
-      setValue(`stockitems.${index}.selling_price`, customerPrice)
+      setValue(`stock_items.${index}.customer_price`, customerPrice)
     }
   };
 

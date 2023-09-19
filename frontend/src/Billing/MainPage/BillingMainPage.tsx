@@ -13,19 +13,21 @@ import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import useStockInvoice from "../../hooks/Stock/useStockInvoice";
 import usePageBill from "../../hooks/Billing/usePageBill";
 import BillContext from "../../Contexts/Bill/BillContext";
+import useStockItemUnique from "../../hooks/Stock/useStockItemUnique";
+import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
 
 const BillingMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
+
+  const { stockItemsUnique, setStockItemsUnique } = useStockItemUnique();
 
   const {
     stockInvoices: stockAllInvoices,
     setStockInvoices: setStockAllInvoices,
     isLoadingInvoices: isLoadingAllInvoices,
     errorFetchStockInvoice: errorFetchStockAllInvoice,
-    setErrorFetchStockInvoice:setErrorFetchAllStockInvoice
+    setErrorFetchStockInvoice: setErrorFetchAllStockInvoice,
   } = useStockInvoice();
-
- 
 
   const {
     stockInvoices,
@@ -65,85 +67,91 @@ const BillingMainPage = () => {
   } = usePageBill();
 
   const { stockItems, setStockItems } = useStockItem();
-  
+
   return (
-    <StockInvoiceContext.Provider value={
-      {stockAllInvoices,
-      setStockAllInvoices,
-      isLoadingAllInvoices,
-      errorFetchStockAllInvoice,
-      setErrorFetchAllStockInvoice}
-    }>
-    <StockInvoicePageContext.Provider
-      value={{
-        stockInvoices,
-        setStockInvoices,
-        errorFetchStockInvoice,
-        nextStockInvoiceUrl,
-        previousStockInvoiceUrl,
-        filterStockInvoiceParams,
-        setFilterStockInvoiceParams,
-        isLoadingInvoices,
-        invoicesCount,
-        setErrorFetchStockInvoice,
-        setInvoiceIdFilter,
-      }}
+    <StockItemUniqueContext.Provider
+      value={{ stockItemsUnique, setStockItemsUnique }}
     >
-      <BillPaymentContext.Provider
+      <StockInvoiceContext.Provider
         value={{
-          billPayments,
-          setBillPayments,
-          billPaymentFetchError,
-          setBillPaymentFetchError,
-          isLoadingBillPayments,
+          stockAllInvoices,
+          setStockAllInvoices,
+          isLoadingAllInvoices,
+          errorFetchStockAllInvoice,
+          setErrorFetchAllStockInvoice,
         }}
       >
-        <StockItemContext.Provider value={{ stockItems, setStockItems }}>
-          <BillContext.Provider
+        <StockInvoicePageContext.Provider
+          value={{
+            stockInvoices,
+            setStockInvoices,
+            errorFetchStockInvoice,
+            nextStockInvoiceUrl,
+            previousStockInvoiceUrl,
+            filterStockInvoiceParams,
+            setFilterStockInvoiceParams,
+            isLoadingInvoices,
+            invoicesCount,
+            setErrorFetchStockInvoice,
+            setInvoiceIdFilter,
+          }}
+        >
+          <BillPaymentContext.Provider
             value={{
-              bills,
-              setBills,
-              nextBillPageUrl,
-              previousBillPageUrl,
-              filterBillPageParams,
-              setFilterBillPageParams,
-              billFetchError,
-              isLoadingBills,
-              billCount,
-              setBillFetchError,
-              setBillIdFilter,
+              billPayments,
+              setBillPayments,
+              billPaymentFetchError,
+              setBillPaymentFetchError,
+              isLoadingBillPayments,
             }}
           >
-            <Grid
-              templateAreas={{
-                lg: `"main aside"`,
-                base: `"aside" "main"`,
-              }}
-            >
-              <GridItem
-                area="main"
-                height={{ base: "10vh", lg: "85vh" }}
-                width={{ base: "100vw", lg: "60vw" }}
+            <StockItemContext.Provider value={{ stockItems, setStockItems }}>
+              <BillContext.Provider
+                value={{
+                  bills,
+                  setBills,
+                  nextBillPageUrl,
+                  previousBillPageUrl,
+                  filterBillPageParams,
+                  setFilterBillPageParams,
+                  billFetchError,
+                  isLoadingBills,
+                  billCount,
+                  setBillFetchError,
+                  setBillIdFilter,
+                }}
               >
-                <Outlet />
-              </GridItem>
-              <GridItem
-                area="aside"
-                height={{ base: "10vh", lg: "85vh" }}
-                width={{ base: "100vw", lg: "15vw" }}
-                boxShadow="dark-lg"
-                borderRadius={30}
-                padding={5}
-                bg={colorMode === "light" ? "#ca5c4f" : ""}
-              >
-                <BillingSidePanel />
-              </GridItem>
-            </Grid>
-          </BillContext.Provider>
-        </StockItemContext.Provider>
-      </BillPaymentContext.Provider>
-    </StockInvoicePageContext.Provider>
-    </StockInvoiceContext.Provider>
+                <Grid
+                  templateAreas={{
+                    lg: `"main aside"`,
+                    base: `"aside" "main"`,
+                  }}
+                >
+                  <GridItem
+                    area="main"
+                    height={{ base: "10vh", lg: "85vh" }}
+                    width={{ base: "100vw", lg: "60vw" }}
+                  >
+                    <Outlet />
+                  </GridItem>
+                  <GridItem
+                    area="aside"
+                    height={{ base: "10vh", lg: "85vh" }}
+                    width={{ base: "100vw", lg: "15vw" }}
+                    boxShadow="dark-lg"
+                    borderRadius={30}
+                    padding={5}
+                    bg={colorMode === "light" ? "#ca5c4f" : ""}
+                  >
+                    <BillingSidePanel />
+                  </GridItem>
+                </Grid>
+              </BillContext.Provider>
+            </StockItemContext.Provider>
+          </BillPaymentContext.Provider>
+        </StockInvoicePageContext.Provider>
+      </StockInvoiceContext.Provider>
+    </StockItemUniqueContext.Provider>
   );
 };
 

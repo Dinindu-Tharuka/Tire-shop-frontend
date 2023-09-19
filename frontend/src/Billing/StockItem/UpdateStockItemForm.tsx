@@ -33,7 +33,7 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
   const onUpdate = (data: StockItem) => {
     const newly = {
       ...data,
-      stock_item_invoice: selectedStockItem.stock_item_invoice,
+      stock_item_invoice: selectedStockItem.stock_invoice,
     };
 
     StockItemService.update(newly, `${selectedStockItem.id}`)
@@ -105,7 +105,7 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
               {...register("selling_price")}
               type="text"
               placeholder="Selling Price"
-              defaultValue={selectedStockItem.selling_price}
+              defaultValue={selectedStockItem.customer_price}
               width="50%"
             />
           </div>
@@ -138,7 +138,7 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
               {...register("sold_qty")}
               type="text"
               placeholder="Sold Qty"
-              defaultValue={selectedStockItem.sold_qty}
+              defaultValue={selectedStockItem.customer_unit_price}
               width="50%"
             />
           </div>

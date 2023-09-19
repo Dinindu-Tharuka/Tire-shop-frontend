@@ -3,7 +3,7 @@ import createPagination from "../http-pagination-service";
 export interface BillItem{
     id:number;
     item:number;
-    stock_item:number;
+    stock_item_unique:number;
     bill:number;
     qty:number;
     customer_discount:number;

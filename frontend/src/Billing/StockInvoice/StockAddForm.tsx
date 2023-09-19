@@ -8,12 +8,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  FieldValues,
-  useForm,
-  useFieldArray,
-  useWatch,
-} from "react-hook-form";
+import { FieldValues, useForm, useFieldArray, useWatch } from "react-hook-form";
 import { IoAddCircle } from "react-icons/io5";
 import StockInvoiceService, {
   StockInvoice,
@@ -40,18 +35,18 @@ import {
 
 const StockAddForm = () => {
   const [watchingCost, setWatchingCost] = useState("");
-  const [totalAmount, setTotalAmount] = useState(0)
+  const [totalAmount, setTotalAmount] = useState(0);
   const { register, handleSubmit, control, reset, watch, getValues, setValue } =
     useForm<StockInvoice>();
 
-  const stocks = useWatch({ control, name: "stockitems" });
+  const stocks = useWatch({ control, name: "stock_items" });
 
   const {
     fields: stockItemArray,
     append: stockItemAppend,
     remove: stockItemRemove,
   } = useFieldArray({
-    name: "stockitems",
+    name: "stock_items",
     control,
   });
 
@@ -64,15 +59,15 @@ const StockAddForm = () => {
       );
     }
 
-    const totalAmount = totalCost + parseFloat(watchingCost)
-    setTotalAmount(totalAmount)
+    const totalAmount = totalCost + parseFloat(watchingCost);
+    setTotalAmount(totalAmount);
     setValue("total_amount", totalAmount);
   }, [stocks, setValue, watchingCost]);
 
   const reduceCostPriceIfDeleteStockItem = (index: number) => {
     stocks.splice(index, 1);
 
-    setValue("stockitems", [...stocks]);
+    setValue("stock_items", [...stocks]);
   };
 
   const [errorStockInvoiceCreate, setStockinvoiceCreate] = useState("");
@@ -86,19 +81,19 @@ const StockAddForm = () => {
   const { stockItems, setStockItems } = useContext(StockItemContext);
 
   const onSubmit = (data: StockInvoice) => {
-    const stockItemss = data.stockitems.map((item) =>
+    const stockItemss = data.stock_items.map((item) =>
       item.retail_price + "" === ""
-        ? { ...item, retail_price: "0", sold_qty: 0 }
-        : { ...item, sold_qty: 0 }
+        ? { ...item, retail_price: "0" }
+        : { ...item }
     );
-    const newly = { ...data, stockitems: [...stockItemss] };
+    const newly = { ...data, stock_items: [...stockItemss] };
     console.log(newly);
 
     StockInvoiceService.create(newly)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setStockInvoices([res.data, ...stockInvoices]);
-        setStockItems([...res.data.stockitems, ...stockItems]);
+        setStockItems([...res.data.stock_items, ...stockItems]);
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -155,7 +150,7 @@ const StockAddForm = () => {
                   <Select
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
-                    {...register(`stockitems.${index}.item`)}
+                    {...register(`stock_items.${index}.item`)}
                     className="select w-100 p-2"
                   >
                     <option>Select Item</option>
@@ -171,7 +166,7 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stockitems.${index}.retail_price`)}
+                    {...register(`stock_items.${index}.retail_price`)}
                     placeholder="Retail Price"
                     onChange={(e) =>
                       onChangeRetailPrice(e, index, watch, setValue)
@@ -183,7 +178,7 @@ const StockAddForm = () => {
                     type="nubmer"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stockitems.${index}.supplier_discount`)}
+                    {...register(`stock_items.${index}.supplier_discount`)}
                     placeholder="Supplier Discount"
                     onChange={(e) =>
                       onChangeSupplierDiscount(e, index, watch, setValue)
@@ -195,7 +190,7 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stockitems.${index}.customer_discount`)}
+                    {...register(`stock_items.${index}.customer_discount`)}
                     placeholder="Customer Discount"
                     onChange={(e) =>
                       onChangeCustomerPrice(e, index, watch, setValue)
@@ -208,7 +203,7 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stockitems.${index}.sales_discount`)}
+                    {...register(`stock_items.${index}.sales_discount`)}
                     placeholder="Sales Discount"
                   />
 
@@ -218,7 +213,7 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stockitems.${index}.cost`)}
+                    {...register(`stock_items.${index}.cost`)}
                     placeholder="Cost"
                     onChange={(e) => {
                       onchangeCostValue(e, index, watch, setValue);
@@ -231,7 +226,7 @@ const StockAddForm = () => {
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
                     required
-                    {...register(`stockitems.${index}.qty`)}
+                    {...register(`stock_items.${index}.qty`)}
                     placeholder="QTY"
                   />
                   <Input
@@ -240,7 +235,7 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0.00"
-                    {...register(`stockitems.${index}.selling_price`)}
+                    {...register(`stock_items.${index}.customer_price`)}
                     placeholder="Customer Price"
                   />
                 </Flex>
@@ -294,7 +289,9 @@ const StockAddForm = () => {
                 defaultValue="0"
                 placeholder="Total Discount"
                 required
-                onChange={(e)=> onChangeStockItemDiscount(e, watch, setValue, totalAmount)}
+                onChange={(e) =>
+                  onChangeStockItemDiscount(e, watch, setValue, totalAmount)
+                }
               />
             </div>
             <div className="mb-3">

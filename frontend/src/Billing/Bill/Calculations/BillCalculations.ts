@@ -21,7 +21,7 @@ export const onchangeBillStockItem = (
     if (seletedStockItem !== undefined){
         const qty = seletedStockItem?.qty
         qtyItmes = qty
-        const customerPrice = seletedStockItem?.selling_price
+        const customerPrice = seletedStockItem?.customer_price
         currentPrice = customerPrice
         const customerDiscount = seletedStockItem?.customer_discount
         setValue(`bill_items.${index}.qty`, qty)

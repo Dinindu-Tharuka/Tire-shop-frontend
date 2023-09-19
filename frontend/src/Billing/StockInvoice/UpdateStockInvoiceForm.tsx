@@ -104,7 +104,7 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
           </div>
 
           {/* Add Stock items */}
-          {seletedStockInvoice.stockitems.length !== 0 && (
+          {seletedStockInvoice.stock_items.length !== 0 && (
             <TableContainer>
               <Table variant="simple">
                 <TableCaption>Stock Items List</TableCaption>
@@ -126,8 +126,7 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
                   {stockItems
                     .filter(
                       (item) =>
-                        item.stock_item_invoice ===
-                        seletedStockInvoice.invoice_no
+                        item.stock_invoice === seletedStockInvoice.invoice_no
                     )
                     .map((item) => (
                       <Tr>
@@ -141,10 +140,10 @@ const UpdateStockInvoiceForm = ({ seletedStockInvoice }: Props) => {
                         <Td>{item.retail_price}</Td>
                         <Td>{item.date}</Td>
                         <Td>{item.cost}</Td>
-                        <Td>{item.selling_price}</Td>
+                        <Td>{item.customer_price}</Td>
                         <Td>{item.discount}</Td>
                         <Td>{item.qty}</Td>
-                        <Td>{item.sold_qty}</Td>
+                        <Td>{item.customer_unit_price}</Td>
                       </Tr>
                     ))}
                 </Tbody>
