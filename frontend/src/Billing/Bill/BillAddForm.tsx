@@ -32,7 +32,9 @@ import {
   BILL_ITEM_MARGIN_LEFT,
   BILL_ITEM_WIDTH,
 } from "./UI Contastants/BillFormConstatnts";
-import stockItemService, { StockItem } from "../../services/Stock/stock-item-service";
+import stockItemService, {
+  StockItem,
+} from "../../services/Stock/stock-item-service";
 import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
 import {
   onChangeBillCustomItemValue,
@@ -70,14 +72,18 @@ const BillAddForm = () => {
   const { employees } = useEmployee();
   const { stockItems, setStockItems } = useContext(StockItemContext);
 
-  useEffect(()=>{
-    const {request, cancel} = stockItemService.getAll<StockItem>()
+  useEffect(() => {
+    const { request, cancel } = stockItemService.getAll<StockItem>();
 
     request
-      .then(res => setStockItems([...res.data]))
+      .then((res) => setStockItems([...res.data]))
+      .catch(error=>{
+        console.log(error.message);
+        
+    });
 
-      return ()=> cancel()
-  }, [isCreatedBill])
+    return () => cancel();
+  }, [isCreatedBill]);
 
   const {
     register,
@@ -140,13 +146,41 @@ const BillAddForm = () => {
 
   // Ui Item Fix
   useEffect(() => {
+    // Get rid of zeros
     const options = stockItems.filter(
       (item) => item.item === selectedItem && item.qty !== 0
     );
     const newFilteredArray = [...seletedFilteredListSet];
     newFilteredArray[rowIndex] = options;
     setSeletedFilteredListSet([...newFilteredArray]);
-  }, [selectedItem, rowIndex]);
+
+    // Filter Same price and adding
+
+    console.log('seleted', newFilteredArray[rowIndex]);
+    
+
+    const priceItemFilterArry = newFilteredArray[rowIndex].reduce((list: StockItem[], stockItem) => {
+      console.log('list', list);
+      
+      const exititngItem = list.find(
+        (item, index) =>{
+          return item.item === stockItem.item &&
+          parseFloat(item.selling_price+'') / parseInt(item.qty+'') ===
+            parseFloat(stockItem.selling_price+'') / parseInt(stockItem.qty+'')}
+      );
+
+      if(exititngItem && exititngItem !== undefined){
+        console.log('exiting', exititngItem);
+      }else{
+        list.push(stockItem)
+      }
+
+      return list
+    }, []);
+
+    console.log(priceItemFilterArry, 'Price item filter array');
+    
+  }, [selectedItem, rowIndex, isCreatedBill]);
 
   const onSubmit = (data: Bill) => {
     console.log(data);
@@ -154,19 +188,18 @@ const BillAddForm = () => {
     const newly = { ...data, discount_amount: 0 };
     console.log("new ", newly);
 
-    const indexes = data.bill_items.map( billItem => [billItem.stock_item, billItem.qty]) 
-   
-    console.log(indexes);
+    const indexes = data.bill_items.map((billItem) => [
+      billItem.stock_item,
+      billItem.qty,
+    ]);
 
-    
-    
+    console.log(indexes);
 
     BillServices.create<Bill>(newly)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
-        setIsCreatedBill(true)
-        
+        setIsCreatedBill(true);
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -211,7 +244,7 @@ const BillAddForm = () => {
           </Flex>
 
           {/* Add Items */}
-          <div className="mb-3">
+          <div className="mb-3" >
             <Flex>
               <Text
                 marginRight={BILL_ITEM_MARGIN_LEFT}
@@ -250,7 +283,7 @@ const BillAddForm = () => {
               </Text>
             </Flex>
             {itemsArray.map((field, index) => (
-              <Flex>
+              <Flex key={index}>
                 <Flex>
                   <Flex flexDir="column">
                     <Select
@@ -327,7 +360,6 @@ const BillAddForm = () => {
                     <Input
                       isDisabled={isCreatedBill}
                       type="number"
-                      defaultValue={0}
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
@@ -559,7 +591,6 @@ const BillAddForm = () => {
         </div>
 
         <HStack>
-          
           <BillSaveConfirmation onSubmit={submitForm} />
 
           <Button
@@ -569,7 +600,7 @@ const BillAddForm = () => {
               reset();
               itemsArray.forEach((item, index) => itemRemove(index));
               serviceArray.forEach((service, index) => serviceRemove(index));
-              setIsCreatedBill(false)
+              setIsCreatedBill(false);
             }}
           >
             Reset

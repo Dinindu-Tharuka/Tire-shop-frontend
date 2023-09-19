@@ -230,7 +230,7 @@ const StockAddForm = () => {
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
-                    defaultValue="0"
+                    required
                     {...register(`stockitems.${index}.qty`)}
                     placeholder="QTY"
                   />

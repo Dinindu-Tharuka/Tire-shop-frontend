@@ -28,8 +28,6 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
   const { stockInvoices, setStockInvoices } = useContext(
     StockInvoicePageContext
   );
-
-  console.log('seleted', stockInvoices);
   
 
   const name = "Stock Invoice";
@@ -43,7 +41,6 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
       )
     );
 
-    console.log('Deleting');
     
 
     StockInvoiceService.delete(`${seletedStockInvoice.invoice_no}`)

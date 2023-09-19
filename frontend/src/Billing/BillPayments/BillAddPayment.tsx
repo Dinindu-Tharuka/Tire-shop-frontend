@@ -25,8 +25,9 @@ interface Props {
 const BillAddPayment = ({ createdBill }: Props) => {
   const [error, setError] = useState();
   const { toggleColorMode, colorMode } = useColorMode();
-  const { billPayments } = useContext(BillPaymentContext);
+  const { billPayments, setBillPayments } = useContext(BillPaymentContext);
   const { bills } = useContext(AllBillContext);
+  const [success, setSuccess] = useState('')
 
   const {
     register,
@@ -48,13 +49,17 @@ const BillAddPayment = ({ createdBill }: Props) => {
 
     billPaymentService
       .create(newly)
-      .then((res) => console.log("hi"))
+      .then((res) => {
+        setSuccess('Successfully do paments.')
+        setBillPayments([...billPayments, res.data])
+      })
       .catch((err) => setError(err.message));
   };
 
   return (
     <Box marginTop={10}>
       {error && <Text textColor="red.600">{error}</Text>}
+      {success && <Text textColor="green.600">{success}</Text>}
       <form onSubmit={handleSubmit(onPayment)}>
         <Flex>
           
