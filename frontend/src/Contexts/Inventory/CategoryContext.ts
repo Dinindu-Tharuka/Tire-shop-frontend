@@ -12,7 +12,8 @@ interface ItemCategoryContextType{
     isLoadingCategories:boolean;
     errorFetchCategory:string;
     setErrorFetchCategory:Dispatch<SetStateAction<string>>;
-    categoryCount:number
+    categoryCount:number;
+    setCategoryNameFilter:Dispatch<SetStateAction<string>>;
 }
 
 const ItemCategoryContext = React.createContext<ItemCategoryContextType>({} as ItemCategoryContextType)

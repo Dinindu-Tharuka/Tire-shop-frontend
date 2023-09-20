@@ -10,9 +10,10 @@ const useCategoryPagination = () => {
     const [filterCategoryParams, setFilterCategoryParams] = useState<string | null>('')
     const [isLoadingCategories, setIsLoadingCategories] = useState(false)
     const [categoryCount, setCategoryCount] =useState(0)
+    const [categoryNameFilter, setCategoryNameFilter] = useState('')
     useEffect(()=>{
         setIsLoadingCategories(true)
-        const {request, cancel} = CategoryService.getAll<CategoryPageStructure>(filterCategoryParams)
+        const {request, cancel} = CategoryService.getAll<CategoryPageStructure>(filterCategoryParams, {params : { categoryNameFilter }})
 
         request
             .then(res => {
@@ -29,9 +30,9 @@ const useCategoryPagination = () => {
             })
 
             return ()=> cancel();
-        }, [filterCategoryParams])
+        }, [filterCategoryParams, categoryNameFilter])
 
-        return {categories, errorFetchCategory, setCategories, nextCategoryUrl, previousCategoryUrl, filterCategoryParams, setFilterCategoryParams, isLoadingCategories, setErrorFetchCategory, categoryCount}  
+        return {categories, errorFetchCategory, setCategories, nextCategoryUrl, previousCategoryUrl, filterCategoryParams, setFilterCategoryParams, isLoadingCategories, setErrorFetchCategory, categoryCount, setCategoryNameFilter}  
 }
 
 export default useCategoryPagination

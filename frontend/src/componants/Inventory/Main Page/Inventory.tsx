@@ -57,6 +57,7 @@ const Inventory = () => {
     errorFetchCategory,
     setErrorFetchCategory,
     categoryCount,
+    setCategoryNameFilter
   } = useCategoryPagination();
 
   return (
@@ -103,6 +104,7 @@ const Inventory = () => {
             setErrorFetchCategory,
             errorFetchCategory,
             categoryCount,
+            setCategoryNameFilter
           }}
         >
           {/* Grid */}

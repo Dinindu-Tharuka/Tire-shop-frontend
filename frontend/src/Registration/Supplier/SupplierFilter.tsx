@@ -9,7 +9,6 @@ import {
 import { useContext, useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
 import { Supplier } from "../../services/Registration/supplier-service";
-import useSupplier from "../../hooks/Registration/useSupplier";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
 
 interface Props {
@@ -18,25 +17,22 @@ interface Props {
 
 const SupplierFilter = ({ selectedSupplier }: Props) => {
   const [currentSupplierFilterValue, setCurrentSupplierValue] = useState("");
-  
-  const { suppliers , setSupplierNameFilter } = useContext(SupplierContext)
-  
-  
+  const { suppliers, setSupplierNameFilter } = useContext(SupplierContext);
+
   const [sup, setSup] = useState<Supplier | null>(null);
 
   const onCategoryType = (event: React.KeyboardEvent<HTMLInputElement>) => {
     let currentValue = event.currentTarget.value;
-    setCurrentSupplierValue(currentValue)
-    setSupplierNameFilter(currentValue)
-    
+    setCurrentSupplierValue(currentValue);
+    setSupplierNameFilter(currentValue);
   };
-  return <div>
-  <Menu>
-        <MenuButton as={Button} rightIcon={<AiOutlineDown />} width='100%'>
-          {sup === null? "Select Supplier":sup?.name}
+  return (
+    <div>
+      <Menu>
+        <MenuButton as={Button} rightIcon={<AiOutlineDown />} width="100%">
+          {sup === null ? "Select Supplier" : sup?.name}
         </MenuButton>
         <MenuList>
-          
           {suppliers
             .filter((sup) =>
               currentSupplierFilterValue
@@ -46,17 +42,21 @@ const SupplierFilter = ({ selectedSupplier }: Props) => {
                 : true
             )
             .map((supplier) => (
-                <MenuItem onClick={()=> {
-                  selectedSupplier(supplier)
-                  setSup(supplier)
-                  }} className="dropdown-item">
-                  {supplier.name}
-                </MenuItem>                   
+              <MenuItem
+                onClick={() => {
+                  selectedSupplier(supplier);
+                  setSup(supplier);
+                }}
+                className="dropdown-item"
+              >
+                {supplier.name}
+              </MenuItem>
             ))}
-          <Input    onKeyUp={onCategoryType} placeholder="Search"/>
+          <Input onKeyUp={onCategoryType} placeholder="Search" />
         </MenuList>
       </Menu>
-</div>
+    </div>
+  );
 };
 
 export default SupplierFilter;

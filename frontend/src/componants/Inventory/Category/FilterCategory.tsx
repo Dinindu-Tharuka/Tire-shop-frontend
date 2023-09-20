@@ -9,14 +9,13 @@ interface Props {
 }
 
 const FilterCategory = ({selectedCategory}:Props) => {
-    
-  const [currentCategoryFilterValue, setCurrentCategoryValue] = useState("");  
-  const { categories, setCategories } = useContext(ItemCategoryContext);
+     
+  const { categories, setCategories, setCategoryNameFilter } = useContext(ItemCategoryContext);
   const [cat, setCat] = useState<Category | null>(null)
 
   const onCategoryType = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    let currentValue = event.currentTarget.value;
-    setCurrentCategoryValue(currentValue);    
+    let currentValue = event.currentTarget.value;   
+    setCategoryNameFilter(currentValue) 
   };
 
   return (
@@ -28,13 +27,6 @@ const FilterCategory = ({selectedCategory}:Props) => {
               <MenuList>
                 <Input    onKeyUp={onCategoryType} placeholder="Search"/>
                 {categories
-                  .filter((cat) =>
-                    currentCategoryFilterValue
-                      ? cat.category_name
-                          .toLowerCase()
-                          .startsWith(currentCategoryFilterValue.toLowerCase())
-                      : true
-                  )
                   .map((category) => (
                       <MenuItem onClick={()=> {
                         selectedCategory(category)
