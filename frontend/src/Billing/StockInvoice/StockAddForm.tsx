@@ -97,7 +97,7 @@ const StockAddForm = () => {
 
   const [errorStockInvoiceCreate, setStockinvoiceCreate] = useState("");
   const [success, setSuccess] = useState("");
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const { stockInvoices, setStockInvoices } = useContext(
     StockInvoicePageContext
   );

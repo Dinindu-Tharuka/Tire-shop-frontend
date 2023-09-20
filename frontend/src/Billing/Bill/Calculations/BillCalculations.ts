@@ -37,9 +37,11 @@ const calculateCustomerDiscount = (selectedStockItemUnique:StockItemUnique, stoc
     let discount = 0
    
     stockItems.filter(itemFilter => itemFilter.qty !== 0 && selectedStockItemUnique.item === itemFilter.item && selectedStockItemUnique.id === itemFilter.stock_item_unique).forEach((item, index)=>{
-        const customerUnitDiscount = (((item.retail_price/item.qty)*item.customer_discount)/100)
+        const customerUnitDiscount = (((item.retail_price/item.max_qty)*item.customer_discount)/100)
         discountList[index] = customerUnitDiscount        
     }) 
+    console.log('discountList', discountList);
+    
     
     
     discount = discount + (currentQtyValue * discountList[index])   

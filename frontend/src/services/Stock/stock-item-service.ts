@@ -22,6 +22,7 @@ export interface StockItemDefault{
     sales_discount:number;
     customer_discount:number;
     qty:number;
+    max_qty:number
 }
 
 export default create('/stock-item-list/')

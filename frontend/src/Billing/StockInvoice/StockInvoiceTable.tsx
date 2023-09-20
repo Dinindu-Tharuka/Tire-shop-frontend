@@ -21,6 +21,8 @@ import useSupplier from "../../hooks/Registration/useSupplier";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import StockInvoiceShowPage from "./StockInvoiceShowPage";
+import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1)
@@ -58,7 +60,7 @@ const StockInvoiceTable = () => {
         <Table>
           <Thead>
             <Tr>
-              {/* <Th></Th> */}
+              <Th></Th>
               <Th></Th>
               <Th>Bill No</Th>
               <Th>Date</Th>
@@ -71,11 +73,9 @@ const StockInvoiceTable = () => {
             {stockInvoices
               ?.map((invoice, index) => (
                 <Tr key={index}>
-                  {/* <Th>
-                    <UpdateStockInvoiceDrawer
-                      selectedUpdateStockInvoice={invoice}
-                    />
-                  </Th> */}
+                  <Th>
+                    <StockInvoiceShowDrawer selectedStockInvoice={invoice}/>
+                  </Th>
                   <Th>
                     <StockInvoiceDelete selectedStockInvoice={invoice} />
                   </Th>

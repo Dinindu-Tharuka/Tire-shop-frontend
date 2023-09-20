@@ -44,7 +44,7 @@ import {
 } from "./Calculations/BillCalculations";
 import BillSaveConfirmation from "./BillSaveConfirmation";
 import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
-import { StockItemUnique } from "../../services/Stock/stock-item-unique-service";
+import stockItemUniqueService, { StockItemUnique } from "../../services/Stock/stock-item-unique-service";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -93,6 +93,13 @@ const BillAddForm = () => {
       .catch((error) => {
         console.log(error.message);
       });
+
+    const { request : stockItemUniqueRequest} = stockItemUniqueService.getAll<StockItemUnique>()
+
+    stockItemUniqueRequest
+      .then(res => setStockItemsUnique([...res.data]))
+      .catch(err => console.log(err.message)
+      )
 
     return () => cancel();
   }, [isCreatedBill]);
@@ -203,7 +210,9 @@ const BillAddForm = () => {
   const onSubmit = (data: Bill) => {
     console.log(data, 'bill');
 
-    const newly = { ...data, discount_amount: 0 };
+    const total_discount = data.bill_items.reduce((currentValue, item)=> currentValue+ parseFloat(item.customer_discount+''), 0)
+
+    const newly = { ...data, discount_amount: total_discount };
 
     BillServices.create<Bill>(newly)
       .then((res) => {

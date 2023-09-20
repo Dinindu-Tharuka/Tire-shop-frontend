@@ -11,6 +11,7 @@ import {
   Th,
   Thead,
   Tr,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Bill } from "../../services/Billing/bill-page-service";
 import useCustomer from "../../hooks/Customer/useCustomer";
@@ -34,6 +35,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
   const { services } = useService();
   const pdfRef = useRef<HTMLDivElement>(null);
   const { billPayments } = useContext(BillPaymentContext)
+  const { colorMode } = useColorMode();
   
 
   const dowloadPdf = () => {
@@ -100,6 +102,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
                   padding={3}
                   borderRadius={10}
                   fontWeight="bold"
+                  textColor={colorMode === 'dark'? '#4d0012':''}
                 >
                   Item List
                 </Text>
