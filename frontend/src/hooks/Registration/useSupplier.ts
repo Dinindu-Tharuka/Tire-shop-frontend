@@ -9,10 +9,14 @@ const useSupplier = () => {
     const [filterSupplierParams, setFilterSupplierParams] = useState<string | null>('')
     const [isLoadingSupplierPage, setIsLoadingSupplierPage] = useState(false)
     const [suppliersCount, setSuppliersCount] = useState(0)
+    const [supplierNameFilter, setSupplierNameFilter] = useState('')
 
     useEffect(()=>{
       setIsLoadingSupplierPage(true)
-        const {request, cancel} = SupplierService.getAll<SupplierPageStructure>(filterSupplierParams)
+        const {request, cancel} = SupplierService.getAll<SupplierPageStructure>(filterSupplierParams, {params:{ supplierNameFilter }})
+        
+        console.log('use',supplierNameFilter);
+        
         request
           .then(res=>{
             setSuppliers(res.data.results)
@@ -27,8 +31,8 @@ const useSupplier = () => {
           })
 
         return ()=> cancel();
-    }, [filterSupplierParams])
-  return {suppliers, setSuppliers, errorFetchSupplier, nextSupplierUrl, previousSupplierUrl, filterSupplierParams, setFilterSupplierParams, suppliersCount, isLoadingSupplierPage, setErrorFetchSupplier}
+    }, [filterSupplierParams, supplierNameFilter])
+  return {suppliers, setSuppliers, errorFetchSupplier, nextSupplierUrl, previousSupplierUrl, filterSupplierParams, setFilterSupplierParams, suppliersCount, isLoadingSupplierPage, setErrorFetchSupplier, setSupplierNameFilter, supplierNameFilter}
 }
 
 export default useSupplier

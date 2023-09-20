@@ -7,8 +7,24 @@ import useCustomer from "../../hooks/Customer/useCustomer";
 import VehicleContext from "../../Contexts/Customer/VehicleContext";
 import CustomerTable from "../Customer/CustomerTable";
 import VehicleTable from "../Vehicle/VehicleTable";
+import useSupplier from "../../hooks/Registration/useSupplier";
+import SupplierContext from "../../Contexts/Registration/SupplierContext";
 
 const CustomerMainPage = () => {
+  const {
+    suppliers,
+    setSuppliers,
+    errorFetchSupplier,
+    nextSupplierUrl,
+    previousSupplierUrl,
+    filterSupplierParams,
+    setFilterSupplierParams,
+    suppliersCount,
+    isLoadingSupplierPage,
+    setErrorFetchSupplier,
+    setSupplierNameFilter,
+    supplierNameFilter,
+  } = useSupplier();
   const {
     customers,
     setCustomers,
@@ -24,6 +40,7 @@ const CustomerMainPage = () => {
   const { vehicles, setVehicles } = useVehicles();
   const { toggleColorMode, colorMode } = useColorMode();
   return (
+    <SupplierContext.Provider value={{suppliers, setSuppliers, errorFetchSupplier, nextSupplierUrl, previousSupplierUrl, filterSupplierParams, setFilterSupplierParams, suppliersCount, isLoadingSupplierPage, setErrorFetchSupplier, setSupplierNameFilter}}>
     <VehicleContext.Provider value={{ vehicles, setVehicles }}>
       <CustomerContext.Provider
         value={{
@@ -66,6 +83,7 @@ const CustomerMainPage = () => {
         </Grid>
       </CustomerContext.Provider>
     </VehicleContext.Provider>
+    </SupplierContext.Provider>
   );
 };
 

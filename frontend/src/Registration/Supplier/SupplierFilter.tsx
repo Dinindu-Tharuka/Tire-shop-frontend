@@ -6,10 +6,11 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
 import { Supplier } from "../../services/Registration/supplier-service";
 import useSupplier from "../../hooks/Registration/useSupplier";
+import SupplierContext from "../../Contexts/Registration/SupplierContext";
 
 interface Props {
   selectedSupplier: (supplier: Supplier) => void;
@@ -17,12 +18,17 @@ interface Props {
 
 const SupplierFilter = ({ selectedSupplier }: Props) => {
   const [currentSupplierFilterValue, setCurrentSupplierValue] = useState("");
-  const { suppliers, setSuppliers } = useSupplier();
+  
+  const { suppliers , setSupplierNameFilter } = useContext(SupplierContext)
+  
+  
   const [sup, setSup] = useState<Supplier | null>(null);
 
   const onCategoryType = (event: React.KeyboardEvent<HTMLInputElement>) => {
     let currentValue = event.currentTarget.value;
     setCurrentSupplierValue(currentValue)
+    setSupplierNameFilter(currentValue)
+    
   };
   return <div>
   <Menu>
@@ -30,7 +36,7 @@ const SupplierFilter = ({ selectedSupplier }: Props) => {
           {sup === null? "Select Supplier":sup?.name}
         </MenuButton>
         <MenuList>
-          <Input    onKeyUp={onCategoryType} placeholder="Search"/>
+          
           {suppliers
             .filter((sup) =>
               currentSupplierFilterValue
@@ -47,7 +53,7 @@ const SupplierFilter = ({ selectedSupplier }: Props) => {
                   {supplier.name}
                 </MenuItem>                   
             ))}
-          
+          <Input    onKeyUp={onCategoryType} placeholder="Search"/>
         </MenuList>
       </Menu>
 </div>

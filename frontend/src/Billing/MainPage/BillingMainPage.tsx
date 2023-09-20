@@ -7,20 +7,32 @@ import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 import useBillPayment from "../../hooks/Billing/useBillPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
-import useBill from "../../hooks/Billing/useBill";
-import AllBillContext from "../../Contexts/Bill/AllBillContext";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import useStockInvoice from "../../hooks/Stock/useStockInvoice";
 import usePageBill from "../../hooks/Billing/usePageBill";
 import BillContext from "../../Contexts/Bill/BillContext";
 import useStockItemUnique from "../../hooks/Stock/useStockItemUnique";
 import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
+import useSupplier from "../../hooks/Registration/useSupplier";
+import SupplierContext from "../../Contexts/Registration/SupplierContext";
 
 const BillingMainPage = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { stockItemsUnique, setStockItemsUnique } = useStockItemUnique();
-
+  const {
+    suppliers,
+    setSuppliers,
+    errorFetchSupplier,
+    nextSupplierUrl,
+    previousSupplierUrl,
+    filterSupplierParams,
+    setFilterSupplierParams,
+    suppliersCount,
+    isLoadingSupplierPage,
+    setErrorFetchSupplier,
+    setSupplierNameFilter,
+  } = useSupplier();
   const {
     stockInvoices: stockAllInvoices,
     setStockInvoices: setStockAllInvoices,
@@ -69,89 +81,105 @@ const BillingMainPage = () => {
   const { stockItems, setStockItems } = useStockItem();
 
   return (
-    <StockItemUniqueContext.Provider
-      value={{ stockItemsUnique, setStockItemsUnique }}
+    <SupplierContext.Provider
+      value={{
+        suppliers,
+        setSuppliers,
+        errorFetchSupplier,
+        nextSupplierUrl,
+        previousSupplierUrl,
+        filterSupplierParams,
+        setFilterSupplierParams,
+        suppliersCount,
+        isLoadingSupplierPage,
+        setErrorFetchSupplier,
+        setSupplierNameFilter,
+      }}
     >
-      <StockInvoiceContext.Provider
-        value={{
-          stockAllInvoices,
-          setStockAllInvoices,
-          isLoadingAllInvoices,
-          errorFetchStockAllInvoice,
-          setErrorFetchAllStockInvoice,
-        }}
+      <StockItemUniqueContext.Provider
+        value={{ stockItemsUnique, setStockItemsUnique }}
       >
-        <StockInvoicePageContext.Provider
+        <StockInvoiceContext.Provider
           value={{
-            stockInvoices,
-            setStockInvoices,
-            errorFetchStockInvoice,
-            nextStockInvoiceUrl,
-            previousStockInvoiceUrl,
-            filterStockInvoiceParams,
-            setFilterStockInvoiceParams,
-            isLoadingInvoices,
-            invoicesCount,
-            setErrorFetchStockInvoice,
-            setInvoiceIdFilter,
+            stockAllInvoices,
+            setStockAllInvoices,
+            isLoadingAllInvoices,
+            errorFetchStockAllInvoice,
+            setErrorFetchAllStockInvoice,
           }}
         >
-          <BillPaymentContext.Provider
+          <StockInvoicePageContext.Provider
             value={{
-              billPayments,
-              setBillPayments,
-              billPaymentFetchError,
-              setBillPaymentFetchError,
-              isLoadingBillPayments,
+              stockInvoices,
+              setStockInvoices,
+              errorFetchStockInvoice,
+              nextStockInvoiceUrl,
+              previousStockInvoiceUrl,
+              filterStockInvoiceParams,
+              setFilterStockInvoiceParams,
+              isLoadingInvoices,
+              invoicesCount,
+              setErrorFetchStockInvoice,
+              setInvoiceIdFilter,
             }}
           >
-            <StockItemContext.Provider value={{ stockItems, setStockItems }}>
-              <BillContext.Provider
-                value={{
-                  bills,
-                  setBills,
-                  nextBillPageUrl,
-                  previousBillPageUrl,
-                  filterBillPageParams,
-                  setFilterBillPageParams,
-                  billFetchError,
-                  isLoadingBills,
-                  billCount,
-                  setBillFetchError,
-                  setBillIdFilter,
-                }}
-              >
-                <Grid
-                  templateAreas={{
-                    lg: `"main aside"`,
-                    base: `"aside" "main"`,
+            <BillPaymentContext.Provider
+              value={{
+                billPayments,
+                setBillPayments,
+                billPaymentFetchError,
+                setBillPaymentFetchError,
+                isLoadingBillPayments,
+              }}
+            >
+              <StockItemContext.Provider value={{ stockItems, setStockItems }}>
+                <BillContext.Provider
+                  value={{
+                    bills,
+                    setBills,
+                    nextBillPageUrl,
+                    previousBillPageUrl,
+                    filterBillPageParams,
+                    setFilterBillPageParams,
+                    billFetchError,
+                    isLoadingBills,
+                    billCount,
+                    setBillFetchError,
+                    setBillIdFilter,
                   }}
                 >
-                  <GridItem
-                    area="main"
-                    height={{ base: "10vh", lg: "85vh" }}
-                    width={{ base: "100vw", lg: "60vw" }}
+                  <Grid
+                    templateAreas={{
+                      lg: `"main aside"`,
+                      base: `"aside" "main"`,
+                    }}
                   >
-                    <Outlet />
-                  </GridItem>
-                  <GridItem
-                    area="aside"
-                    height={{ base: "10vh", lg: "85vh" }}
-                    width={{ base: "100vw", lg: "15vw" }}
-                    boxShadow="dark-lg"
-                    borderRadius={30}
-                    padding={5}
-                    bg={colorMode === "light" ? "#ca5c4f" : ""}
-                  >
-                    <BillingSidePanel />
-                  </GridItem>
-                </Grid>
-              </BillContext.Provider>
-            </StockItemContext.Provider>
-          </BillPaymentContext.Provider>
-        </StockInvoicePageContext.Provider>
-      </StockInvoiceContext.Provider>
-    </StockItemUniqueContext.Provider>
+                    <GridItem
+                      area="main"
+                      height={{ base: "10vh", lg: "85vh" }}
+                      width={{ base: "100vw", lg: "60vw" }}
+                    >
+                      <Outlet />
+                    </GridItem>
+                    <GridItem
+                      area="aside"
+                      height={{ base: "10vh", lg: "85vh" }}
+                      width={{ base: "100vw", lg: "15vw" }}
+                      boxShadow="dark-lg"
+                      borderRadius={30}
+                      padding={5}
+                      bg={colorMode === "light" ? "#ca5c4f" : ""}
+                    >
+                      <BillingSidePanel />
+                    </GridItem>
+                  </Grid>
+                </BillContext.Provider>
+              </StockItemContext.Provider>
+            </BillPaymentContext.Provider>
+          </StockInvoicePageContext.Provider>
+        </StockInvoiceContext.Provider>
+      </StockItemUniqueContext.Provider>
+    </SupplierContext.Provider>
   );
 };
 

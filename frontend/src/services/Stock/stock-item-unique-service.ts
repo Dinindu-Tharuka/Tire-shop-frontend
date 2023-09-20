@@ -3,7 +3,7 @@ import create from "../http-service";
 
 export interface StockItemUnique{
     id:number;
-    item:Item;
+    item:string;
     total_qty:number;
     unit_price:number;
 }

@@ -11,7 +11,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import ItemService, {
   Item,
 } from "../../../services/Inventory/item-page-service";
-import useSupplier from "../../../hooks/Registration/useSupplier";
 import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
 import FilterCategory from "../Category/FilterCategory";
 import { Category } from "../../../services/Inventory/category-page-service";
@@ -23,7 +22,6 @@ const ItemAddForm = () => {
   const [success, setSuccess] = useState("");
 
   const { register, handleSubmit } = useForm();
-  const { suppliers, errorFetchSupplier } = useSupplier();
   const { toggleColorMode, colorMode } = useColorMode();
   const { items, setItems } = useContext(ItemPageContext);
   const [selectedCatgory, setSelectedCatgory] = useState<Category | null>(null);

@@ -32,6 +32,10 @@ import {
   onChangeSupplierDiscount,
   onchangeCostValue,
 } from "./UI Calculations/StockInvoiceUICalculations";
+import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
+import axiosInstance from "../../services/api-client";
+import StockInvoiceSaveConfirmation from "./StockInvoiceSaveConfirmation";
+import SupplierContext from "../../Contexts/Registration/SupplierContext";
 
 const StockAddForm = () => {
   const [watchingCost, setWatchingCost] = useState("");
@@ -39,8 +43,16 @@ const StockAddForm = () => {
   const { register, handleSubmit, control, reset, watch, getValues, setValue } =
     useForm<StockInvoice>();
 
-  const stocks = useWatch({ control, name: "stock_items" });
+  const [isCreatedBill, setIsCreatedBill] = useState(false);
 
+  const stocks = useWatch({ control, name: "stock_items" });
+  const { setStockItemsUnique } = useContext(StockItemUniqueContext);
+
+  //Supplier context
+  const { suppliers, setFilterSupplierParams } = useContext(SupplierContext)
+
+  console.log('suppliers', suppliers);
+  
   const {
     fields: stockItemArray,
     append: stockItemAppend,
@@ -49,6 +61,14 @@ const StockAddForm = () => {
     name: "stock_items",
     control,
   });
+
+  //Refetch stock item uniques
+  useEffect(() => {
+    axiosInstance
+      .get("/stock-item-unique-list/")
+      .then((res) => setStockItemsUnique([...res.data]))
+      .catch((err) => console.log(err.message));
+  }, [isCreatedBill]);
 
   useEffect(() => {
     let totalCost = 0;
@@ -77,7 +97,6 @@ const StockAddForm = () => {
     StockInvoicePageContext
   );
   const { items } = useItems();
-  const { suppliers } = useSupplier();
   const { stockItems, setStockItems } = useContext(StockItemContext);
 
   const onSubmit = (data: StockInvoice) => {
@@ -94,8 +113,15 @@ const StockAddForm = () => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setStockInvoices([res.data, ...stockInvoices]);
         setStockItems([...res.data.stock_items, ...stockItems]);
+        setIsCreatedBill(true);
       })
       .catch((err) => setStockinvoiceCreate(err.message));
+  };
+
+  const submitForm = () => {
+    setStockinvoiceCreate("");
+    setSuccess("");
+    handleSubmit(onSubmit)();
   };
 
   return (
@@ -110,6 +136,7 @@ const StockAddForm = () => {
           <div className="w-50 d-flex flex-row">
             <div className="mb-3 me-3 h-75">
               <Input
+                isDisabled={isCreatedBill}
                 width={STOCK_ITEM_WIDTH}
                 {...register("invoice_no")}
                 type="text"
@@ -118,6 +145,7 @@ const StockAddForm = () => {
             </div>
             <div className="mb-3">
               <Select
+                isDisabled={isCreatedBill}
                 {...register("supplier")}
                 width={STOCK_ITEM_WIDTH}
                 className="select p-2"
@@ -148,6 +176,7 @@ const StockAddForm = () => {
               <Flex marginBottom={STOCK_ITEM_MARIGIN_BOTTOM} flexDir="column">
                 <Flex>
                   <Select
+                    isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     {...register(`stock_items.${index}.item`)}
@@ -161,6 +190,7 @@ const StockAddForm = () => {
                     ))}
                   </Select>
                   <Input
+                    isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
@@ -173,6 +203,7 @@ const StockAddForm = () => {
                     }
                   />
                   <Input
+                    isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="nubmer"
@@ -185,6 +216,7 @@ const StockAddForm = () => {
                     }
                   />
                   <Input
+                    isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
@@ -198,6 +230,7 @@ const StockAddForm = () => {
                   />
 
                   <Input
+                    isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
@@ -208,6 +241,7 @@ const StockAddForm = () => {
                   />
 
                   <Input
+                    isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
@@ -222,6 +256,7 @@ const StockAddForm = () => {
                   />
 
                   <Input
+                    isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
@@ -230,6 +265,7 @@ const StockAddForm = () => {
                     placeholder="QTY"
                   />
                   <Input
+                    isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
@@ -243,6 +279,7 @@ const StockAddForm = () => {
                 <Flex justifyContent="end" marginTop={2}>
                   {index >= 0 && (
                     <Button
+                      isDisabled={isCreatedBill}
                       bg="#f87454"
                       padding={3}
                       type="button"
@@ -260,6 +297,7 @@ const StockAddForm = () => {
             <Flex alignItems="center">
               <Button
                 type="button"
+                isDisabled={isCreatedBill}
                 onClick={() => {
                   setWatchingCost(0 + "");
                   stockItemAppend({} as StockItem);
@@ -272,7 +310,7 @@ const StockAddForm = () => {
           </div>
           <div className="w-50 d-flex ">
             <div className="mb-1 me-3 ">
-              <Text width={STOCK_WIDTH_NORMAL}>Total Discount</Text>
+              <Text width={STOCK_WIDTH_NORMAL}>Total Discount (%)</Text>
             </div>
             <div className="mb-1 me-3">
               <Text>Total Amount</Text>
@@ -282,6 +320,7 @@ const StockAddForm = () => {
           <div className="w-50 d-flex ">
             <div className="mb-3 me-3 ">
               <Input
+                isDisabled={isCreatedBill}
                 width={STOCK_WIDTH_NORMAL}
                 {...register("total_discount")}
                 type="number"
@@ -296,6 +335,7 @@ const StockAddForm = () => {
             </div>
             <div className="mb-3">
               <Input
+                isDisabled={isCreatedBill}
                 {...register("total_amount")}
                 type="number"
                 step="0.01"
@@ -306,28 +346,22 @@ const StockAddForm = () => {
           </div>
         </div>
         <HStack justifyContent="space-between" width="10vw">
-          <Button
-            type="submit"
-            bg={colorMode === "light" ? "#e3a99c" : "#575757"}
-            onClick={() => {
-              setStockinvoiceCreate("");
-              setSuccess("");
-            }}
-          >
-            Save
-          </Button>
-          <Button
-            type="button"
-            bg={colorMode === "light" ? "#e3a99c" : "#575757"}
-            onClick={() => {
-              setStockinvoiceCreate("");
-              setSuccess("");
-              reset();
-              stockItemArray.forEach((item, index) => stockItemRemove(index));
-            }}
-          >
-            Reset
-          </Button>
+          <StockInvoiceSaveConfirmation onSubmit={submitForm} />
+          <Flex>
+            <Button
+              type="button"
+              bg={colorMode === "light" ? "#e3a99c" : "#575757"}
+              onClick={() => {
+                setStockinvoiceCreate("");
+                setSuccess("");
+                reset();
+                setIsCreatedBill(false);
+                stockItemArray.forEach((item, index) => stockItemRemove(index));
+              }}
+            >
+              Reset
+            </Button>
+          </Flex>
         </HStack>
       </form>
     </>

@@ -19,6 +19,20 @@ const Inventory = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const toast = useToast();
   const {
+    suppliers,
+    setSuppliers,
+    errorFetchSupplier,
+    nextSupplierUrl,
+    previousSupplierUrl,
+    filterSupplierParams,
+    setFilterSupplierParams,
+    suppliersCount,
+    isLoadingSupplierPage,
+    setErrorFetchSupplier,
+    setSupplierNameFilter,
+    supplierNameFilter,
+  } = useSupplier();
+  const {
     items,
     setItems,
     nextItemPageUrl,
@@ -30,7 +44,7 @@ const Inventory = () => {
     setError,
     itemCount,
     setItemQuery,
-    setItemSizeQuery
+    setItemSizeQuery,
   } = useItemsPagination();
   const {
     categories,
@@ -46,66 +60,82 @@ const Inventory = () => {
   } = useCategoryPagination();
 
   return (
-    <ItemPageContext.Provider
+    <SupplierContext.Provider
       value={{
-        items,
-        setItems,
-        nextItemPageUrl,
-        previousItemPageUrl,
-        filterItemPageParams,
-        setFilterItemPageParams,
-        isLoadingItems,
-        setError,
-        error,
-        itemCount,
-        setItemQuery,
-        setItemSizeQuery
+        suppliers,
+        setSuppliers,
+        errorFetchSupplier,
+        nextSupplierUrl,
+        previousSupplierUrl,
+        filterSupplierParams,
+        setFilterSupplierParams,
+        suppliersCount,
+        isLoadingSupplierPage,
+        setErrorFetchSupplier,
+        setSupplierNameFilter,
       }}
     >
-      <ItemCategoryContext.Provider
+      <ItemPageContext.Provider
         value={{
-          categories,
-          setCategories,
-          nextCategoryUrl,
-          previousCategoryUrl,
-          filterCategoryParams,
-          setFilterCategoryParams,
-          isLoadingCategories,
-          setErrorFetchCategory,
-          errorFetchCategory,
-          categoryCount,
+          items,
+          setItems,
+          nextItemPageUrl,
+          previousItemPageUrl,
+          filterItemPageParams,
+          setFilterItemPageParams,
+          isLoadingItems,
+          setError,
+          error,
+          itemCount,
+          setItemQuery,
+          setItemSizeQuery,
         }}
       >
-        {/* Grid */}
-        <Grid
-          templateAreas={{
-            lg: `"main aside"`,
-            base: `"aside" "main"`,
+        <ItemCategoryContext.Provider
+          value={{
+            categories,
+            setCategories,
+            nextCategoryUrl,
+            previousCategoryUrl,
+            filterCategoryParams,
+            setFilterCategoryParams,
+            isLoadingCategories,
+            setErrorFetchCategory,
+            errorFetchCategory,
+            categoryCount,
           }}
         >
-          <GridItem
-            area="main"
-            height={{ base: "10vh", lg: "85vh" }}
-            width={{ base: "100vw", lg: "60vw" }}
+          {/* Grid */}
+          <Grid
+            templateAreas={{
+              lg: `"main aside"`,
+              base: `"aside" "main"`,
+            }}
           >
-            {(isLoadingCategories || isLoadingItems) && <Spinner />}
+            <GridItem
+              area="main"
+              height={{ base: "10vh", lg: "85vh" }}
+              width={{ base: "100vw", lg: "60vw" }}
+            >
+              {(isLoadingCategories || isLoadingItems) && <Spinner />}
 
-            <Outlet />
-          </GridItem>
-          <GridItem
-            area="aside"
-            height={{ base: "10vh", lg: "85vh" }}
-            width={{ base: "100vw", lg: "15vw" }}
-            boxShadow="dark-lg"
-            borderRadius={30}
-            padding={5}
-            bg={colorMode === "light" ? "#ca5c4f" : ""}
-          >
-            <InventorySidePanel />
-          </GridItem>
-        </Grid>
-      </ItemCategoryContext.Provider>
-    </ItemPageContext.Provider>
+              <Outlet />
+            </GridItem>
+            <GridItem
+              area="aside"
+              height={{ base: "10vh", lg: "85vh" }}
+              width={{ base: "100vw", lg: "15vw" }}
+              boxShadow="dark-lg"
+              borderRadius={30}
+              padding={5}
+              bg={colorMode === "light" ? "#ca5c4f" : ""}
+            >
+              <InventorySidePanel />
+            </GridItem>
+          </Grid>
+        </ItemCategoryContext.Provider>
+      </ItemPageContext.Provider>
+    </SupplierContext.Provider>
   );
 };
 

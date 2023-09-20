@@ -13,6 +13,7 @@ interface SupplierContextType {
     isLoadingSupplierPage:boolean;
     errorFetchSupplier:string;
     setErrorFetchSupplier:Dispatch<SetStateAction<string>>;
+    setSupplierNameFilter:Dispatch<SetStateAction<string>>;
 }
 
 

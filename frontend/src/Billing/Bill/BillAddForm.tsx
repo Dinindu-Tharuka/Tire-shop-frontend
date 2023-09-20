@@ -40,9 +40,11 @@ import {
   onChangeBillCustomItemValue,
   onChangeBillQty,
   onChangeService,
-  onchangeBillStockItem,
+  onchangeBillStockItemUnique,
 } from "./Calculations/BillCalculations";
 import BillSaveConfirmation from "./BillSaveConfirmation";
+import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
+import { StockItemUnique } from "../../services/Stock/stock-item-unique-service";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -50,15 +52,15 @@ const BillAddForm = () => {
 
   //
   const [seletedFilteredListSet, setSeletedFilteredListSet] = useState<
-    StockItem[][]
+    StockItemUnique[][]
   >([[]]);
   const [rowIndex, setRowIndex] = useState(-1);
 
   const [selectedItemText, setSelectedItemText] = useState<string[]>([]);
+  const [selectedStockItems, setSelectedStockItem] = useState<string[]>([]);
   const [subTotal, setSubTotal] = useState(0);
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
-  const [selectedStockItems, setSelectedStockItem] = useState<string[]>([]);
 
   const { colorMode } = useColorMode();
   const [selectedServicesPrice, setSelectedServicesPrice] = useState<number[]>(
@@ -71,6 +73,16 @@ const BillAddForm = () => {
   const { services } = useService();
   const { employees } = useEmployee();
   const { stockItems, setStockItems } = useContext(StockItemContext);
+  const { stockItemsUnique, setStockItemsUnique } = useContext(
+    StockItemUniqueContext
+  );
+
+  console.log("uniques", stockItemsUnique);
+
+  // setting up stock item unique
+  const [selectedStockItemUnique, setSelectedStockitemUnique] = useState<
+    StockItemUnique[]
+  >([]);
 
   useEffect(() => {
     const { request, cancel } = stockItemService.getAll<StockItem>();
@@ -112,7 +124,7 @@ const BillAddForm = () => {
     if (billItemsWatch) {
       const customerPrice = billItemsWatch.reduce(
         (currentValue, currentItem) =>
-          currentValue + parseInt(currentItem.customer_price + ""),
+          currentValue + parseFloat(currentItem.customer_price + ""),
         0
       );
       subTotal = +(customerPrice + serviceTotal);
@@ -121,6 +133,7 @@ const BillAddForm = () => {
     }
   }, [billItemsWatch, selectedServicesPrice]);
 
+  // To calculate valid qty in selected item unique
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
     []
   );
@@ -143,11 +156,34 @@ const BillAddForm = () => {
     control,
   });
 
+  // find seleted stock item unique and store it in a array
+  const findStockItemUnique = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    index: number
+  ) => {
+    console.log(e.target.value);
+
+    const findStockItemUnique = stockItemsUnique.find(
+      (item) => item.id === parseInt(e.target.value)
+    );
+    const stocks = [...selectedStockItemUnique];
+    if (findStockItemUnique !== undefined) {
+      stocks[index] = findStockItemUnique;
+      setValue(`bill_items.${index}.qty`, findStockItemUnique?.total_qty);
+      setValue(
+        `bill_items.${index}.customer_price`,
+        findStockItemUnique.total_qty * findStockItemUnique.unit_price
+      );
+    }
+
+    setSelectedStockitemUnique([...stocks]);
+  };
+
   // Ui Item Fix
   useEffect(() => {
     // Get rid of zeros
-    const options = stockItems.filter(
-      (item) => item.item === selectedItem && item.qty !== 0
+    const options = stockItemsUnique.filter(
+      (item) => item.item === selectedItem && item.total_qty !== 0
     );
     const newFilteredArray = [...seletedFilteredListSet];
     newFilteredArray[rowIndex] = options;
@@ -156,43 +192,12 @@ const BillAddForm = () => {
     // Filter Same price and adding
 
     console.log("seleted", newFilteredArray[rowIndex]);
-
-    const priceItemFilterArry = newFilteredArray[rowIndex].reduce(
-      (list: StockItem[], stockItem) => {
-        console.log("list", list);
-
-        const exititngItem = list.find((item, index) => {
-          return (
-            item.item === stockItem.item &&
-            parseFloat(item.customer_price + "") / parseInt(item.qty + "") ===
-              parseFloat(stockItem.customer_price + "") /
-                parseInt(stockItem.qty + "")
-          );
-        });
-
-        if (exititngItem && exititngItem !== undefined) {
-          console.log("exiting", exititngItem);
-        } else {
-          list.push(stockItem);
-        }
-
-        return list;
-      },
-      []
-    );
-
-    console.log(priceItemFilterArry, "Price item filter array");
   }, [selectedItem, rowIndex, isCreatedBill]);
 
   const onSubmit = (data: Bill) => {
     console.log(data);
 
     const newly = { ...data, discount_amount: 0 };
-
-    const indexes = data.bill_items.map((billItem) => [
-      billItem.stock_item_unique,
-      billItem.qty,
-    ]);
 
     BillServices.create<Bill>(newly)
       .then((res) => {
@@ -318,34 +323,38 @@ const BillAddForm = () => {
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                       {...register(`bill_items.${index}.stock_item_unique`)}
                       onChange={(e) => {
-                        const count = stockItems.find(
-                          (item) => item.id === parseInt(e.target.value)
-                        )?.qty;
-                        if (count)
-                          setSeletedItemCountList([
-                            ...seletedItemCountList,
-                            count,
-                          ]);
+                        // find seleted stock item unique and store it in a array
 
-                        setSelectedStockItem([
-                          ...selectedStockItems,
-                          e.target.options[e.target.selectedIndex].text,
-                        ]);
-
-                        onchangeBillStockItem(e, setValue, stockItems, index);
+                        onchangeBillStockItemUnique(
+                          e,
+                          setValue,
+                          stockItemsUnique,
+                          stockItems,
+                          index,
+                          watch
+                        );
+                        const seletedCounts = [...seletedItemCountList];
+                        const qtySelected = stockItemsUnique.find(
+                          (item) => item.id === parseInt(e.currentTarget.value)
+                        )?.total_qty;
+                        if (qtySelected !== undefined) {
+                          seletedCounts[index] = qtySelected;
+                        }
+                        setSeletedItemCountList([...seletedCounts]);
                       }}
                     >
                       <option>Stock Item</option>
                       {seletedFilteredListSet[index]?.map(
-                        (stockItem, index) => (
+                        (stockItemUnique, index) => (
                           <option
                             key={index}
-                            value={stockItem.id}
+                            value={stockItemUnique.id}
                             className="w-100"
                           >
                             <div className="d-flex justify-content-between w-100 ">
                               <Text>
-                                {stockItem.item}({stockItem.qty})
+                                {stockItemUnique.item}(
+                                {stockItemUnique.total_qty})
                               </Text>
                             </div>
                           </option>
@@ -373,7 +382,7 @@ const BillAddForm = () => {
                         },
                       })}
                       onChange={(e) =>
-                        onChangeBillQty(e, setValue, watch, index)
+                        onChangeBillQty(e, setValue, watch, index, stockItems)
                       }
                       placeholder="QTY"
                     />
@@ -456,7 +465,7 @@ const BillAddForm = () => {
                 type="button"
                 onClick={() => {
                   itemAppend({} as BillItem);
-                  setSeletedItemCountList(seletedItemCountList);
+                  // setSeletedItemCountList(seletedItemCountList);
                 }}
               >
                 Add Item

@@ -33,6 +33,7 @@ const RegistraionMainPage = () => {
     isLoadingSupplierPage,
     suppliersCount,
     setErrorFetchSupplier,
+    setSupplierNameFilter
   } = useSupplier();
   const {
     services,
@@ -109,6 +110,7 @@ const RegistraionMainPage = () => {
               isLoadingSupplierPage,
               errorFetchSupplier,
               setErrorFetchSupplier,
+              setSupplierNameFilter,
             }}
           >
             <Grid
