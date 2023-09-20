@@ -33,7 +33,7 @@ import {
   BILL_ITEM_WIDTH,
 } from "./UI Contastants/BillFormConstatnts";
 import stockItemService, {
-  StockItem,
+  StockItem, StockItemDefault,
 } from "../../services/Stock/stock-item-service";
 import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
 import {
@@ -73,6 +73,7 @@ const BillAddForm = () => {
   const { services } = useService();
   const { employees } = useEmployee();
   const { stockItems, setStockItems } = useContext(StockItemContext);
+  
   const { stockItemsUnique, setStockItemsUnique } = useContext(
     StockItemUniqueContext
   );
@@ -85,7 +86,7 @@ const BillAddForm = () => {
   >([]);
 
   useEffect(() => {
-    const { request, cancel } = stockItemService.getAll<StockItem>();
+    const { request, cancel } = stockItemService.getAll<StockItemDefault>();
 
     request
       .then((res) => setStockItems([...res.data]))
@@ -104,7 +105,12 @@ const BillAddForm = () => {
     reset,
     setValue,
     watch,
-  } = useForm<Bill>();
+  } = useForm<Bill>({
+    defaultValues:{
+      bill_items:[],
+      bill_services:[]
+    }
+  });
 
   const billItemsWatch = useWatch({
     control,
@@ -138,7 +144,7 @@ const BillAddForm = () => {
     []
   );
 
-  const {
+  let {
     fields: itemsArray,
     append: itemAppend,
     remove: itemRemove,
@@ -147,7 +153,7 @@ const BillAddForm = () => {
     control,
   });
 
-  const {
+  let {
     fields: serviceArray,
     append: serviceAppend,
     remove: serviceRemove,
@@ -195,7 +201,7 @@ const BillAddForm = () => {
   }, [selectedItem, rowIndex, isCreatedBill]);
 
   const onSubmit = (data: Bill) => {
-    console.log(data);
+    console.log(data, 'bill');
 
     const newly = { ...data, discount_amount: 0 };
 
@@ -606,9 +612,10 @@ const BillAddForm = () => {
             width="10vw"
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
-              reset();
               itemsArray.forEach((item, index) => itemRemove(index));
               serviceArray.forEach((service, index) => serviceRemove(index));
+              reset();
+              
               setIsCreatedBill(false);
             }}
           >

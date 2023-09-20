@@ -36,10 +36,15 @@ import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext"
 import axiosInstance from "../../services/api-client";
 import StockInvoiceSaveConfirmation from "./StockInvoiceSaveConfirmation";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
+import { Supplier } from "../../services/Registration/supplier-service";
+import SupplierFilter from "../../Registration/Supplier/SupplierFilter";
 
 const StockAddForm = () => {
   const [watchingCost, setWatchingCost] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+
+  //for supplier menus
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier>()
   const { register, handleSubmit, control, reset, watch, getValues, setValue } =
     useForm<StockInvoice>();
 
@@ -105,7 +110,7 @@ const StockAddForm = () => {
         ? { ...item, retail_price: "0" }
         : { ...item }
     );
-    const newly = { ...data, stock_items: [...stockItemss] };
+    const newly = { ...data, supplier:selectedSupplier?.id , stock_items: [...stockItemss] };
     console.log(newly);
 
     StockInvoiceService.create(newly)
@@ -144,19 +149,7 @@ const StockAddForm = () => {
               />
             </div>
             <div className="mb-3">
-              <Select
-                isDisabled={isCreatedBill}
-                {...register("supplier")}
-                width={STOCK_ITEM_WIDTH}
-                className="select p-2"
-              >
-                <option>Select Supplier</option>
-                {suppliers.map((sup, index) => (
-                  <option className="mt-3" key={index} value={sup.id}>
-                    {sup.name}
-                  </option>
-                ))}
-              </Select>
+              <SupplierFilter selectedSupplier={(sup)=>setSelectedSupplier(sup)} />
             </div>
           </div>
 

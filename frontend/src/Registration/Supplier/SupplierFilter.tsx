@@ -16,31 +16,22 @@ interface Props {
 }
 
 const SupplierFilter = ({ selectedSupplier }: Props) => {
-  const [currentSupplierFilterValue, setCurrentSupplierValue] = useState("");
   const { suppliers, setSupplierNameFilter } = useContext(SupplierContext);
 
   const [sup, setSup] = useState<Supplier | null>(null);
 
   const onCategoryType = (event: React.KeyboardEvent<HTMLInputElement>) => {
     let currentValue = event.currentTarget.value;
-    setCurrentSupplierValue(currentValue);
     setSupplierNameFilter(currentValue);
   };
   return (
     <div>
       <Menu>
-        <MenuButton as={Button} rightIcon={<AiOutlineDown />} width="100%">
+        <MenuButton as={Button} rightIcon={<AiOutlineDown />} width="15vw">
           {sup === null ? "Select Supplier" : sup?.name}
         </MenuButton>
         <MenuList>
           {suppliers
-            .filter((sup) =>
-              currentSupplierFilterValue
-                ? sup.name
-                    .toLowerCase()
-                    .startsWith(currentSupplierFilterValue.toLowerCase())
-                : true
-            )
             .map((supplier) => (
               <MenuItem
                 onClick={() => {

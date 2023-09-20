@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
-import StockItemService,{ StockItem } from "../../services/Stock/stock-item-service";
+import StockItemService,{ StockItemDefault } from "../../services/Stock/stock-item-service";
 
 
 const useStockItem = () => {
-    const [stockItems, setStockItems] = useState<StockItem[]>([])
+    const [stockItems, setStockItems] = useState<StockItemDefault[]>([])
     const [errorFetchStockItems, setErrorFetchStockItems] = useState('');
 
     useEffect(()=>{
-        const {request, cancel} = StockItemService.getAll<StockItem>()
+        const {request, cancel} = StockItemService.getAll<StockItemDefault>()
         request
           .then(res=>{
             setStockItems(res.data)

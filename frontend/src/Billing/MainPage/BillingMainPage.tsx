@@ -79,6 +79,8 @@ const BillingMainPage = () => {
   } = usePageBill();
 
   const { stockItems, setStockItems } = useStockItem();
+  console.log('stockItems', stockItems);
+  
 
   return (
     <SupplierContext.Provider

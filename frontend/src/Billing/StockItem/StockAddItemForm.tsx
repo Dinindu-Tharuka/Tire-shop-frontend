@@ -25,7 +25,7 @@ const StockAddItemForm = ({ seletedInvoice }: Props) => {
   const { register, handleSubmit } = useForm<StockItem>();
   const [errorStockItemUpdate, setErrorStockItemUpdate] = useState("");
   const [success, setSuccess] = useState("");
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const { items } = useItemsPagination();
   const { setStockItems, stockItems } = useContext(StockItemContext);
   const onUpdate = (data: StockItem) => {
@@ -81,7 +81,7 @@ const StockAddItemForm = ({ seletedInvoice }: Props) => {
           <div className="mb-3 d-flex justify-content-between">
             <FormLabel whiteSpace="nowrap">Selling Price</FormLabel>
             <Input
-              {...register("selling_price")}
+              {...register("customer_price")}
               type="number"
               placeholder="Selling Price"
               width="50%"
@@ -108,15 +108,6 @@ const StockAddItemForm = ({ seletedInvoice }: Props) => {
             />
           </div>
 
-          <div className="mb-3 d-flex justify-content-between">
-            <FormLabel whiteSpace="nowrap">Sold Qty</FormLabel>
-            <Input
-              {...register("sold_qty")}
-              type="number"
-              placeholder="Sold Qty"
-              width="50%"
-            />
-          </div>
         </div>
         <HStack justifyContent="space-between">
           <Button

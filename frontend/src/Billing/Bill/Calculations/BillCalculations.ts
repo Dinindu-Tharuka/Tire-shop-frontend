@@ -2,17 +2,16 @@ import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { Bill } from "../../../services/Billing/bill-page-service";
 import { Service } from "../../../services/Registration/services-service";
 import { StockItemUnique } from "../../../services/Stock/stock-item-unique-service";
-import { StockItem } from "../../../services/Stock/stock-item-service";
+import { StockItemDefault } from "../../../services/Stock/stock-item-service";
 
 let currentPrice = 0
 let discountList:number[] = []
-let qtyList:number[] = []
 let seletedStockItemUnique : StockItemUnique | undefined;
 export const onchangeBillStockItemUnique = (
     e:React.ChangeEvent<HTMLSelectElement>, 
     setValue:UseFormSetValue<Bill>,
     stockItemsUnique:StockItemUnique[],
-    stockItems:StockItem[],
+    stockItems:StockItemDefault[],
     index:number,
     watch:UseFormWatch<Bill>,
     )=>{
@@ -31,36 +30,19 @@ export const onchangeBillStockItemUnique = (
         setValue(`bill_items.${index}.customer_price`, customerPrice)
 
     }
-    
-
 }
 
-const calculateCustomerDiscount = (selectedStockItemUnique:StockItemUnique, stockItems:StockItem[], watch:UseFormWatch<Bill>, index:number, currentQtyValue:number)=>{
+const calculateCustomerDiscount = (selectedStockItemUnique:StockItemUnique, stockItems:StockItemDefault[], watch:UseFormWatch<Bill>, index:number, currentQtyValue:number)=>{
     
-    
-    let qtyValue = currentQtyValue
     let discount = 0
    
-    stockItems.filter(itemFilter => itemFilter.qty !== 0 && selectedStockItemUnique.item === itemFilter.item).forEach((item, index)=>{
+    stockItems.filter(itemFilter => itemFilter.qty !== 0 && selectedStockItemUnique.item === itemFilter.item && selectedStockItemUnique.id === itemFilter.stock_item_unique).forEach((item, index)=>{
         const customerUnitDiscount = (((item.retail_price/item.qty)*item.customer_discount)/100)
-        discountList[index] = customerUnitDiscount
-        qtyList[index] = item.qty    
-        
-    })
-
-    qtyList.forEach((qty, index) => {
-        
-        if (qty >= currentQtyValue){            
-            discount = discount + currentQtyValue * discountList[index]
-        }
-        else{
-            discount = discount + qty * discountList[index]
-            qtyValue = qtyValue - qty
-        }
-    })
-
+        discountList[index] = customerUnitDiscount        
+    }) 
     
     
+    discount = discount + (currentQtyValue * discountList[index])   
 
     return Math.round(discount*100)/100
 }
@@ -70,7 +52,7 @@ export const onChangeBillQty = (
     setValue:UseFormSetValue<Bill>,
     watch:UseFormWatch<Bill>,
     index:number,
-    stockItems:StockItem[],
+    stockItems:StockItemDefault[],
 
 )=>{
     
@@ -108,11 +90,7 @@ export const onChangeBillCustomItemValue = (
     setValue:UseFormSetValue<Bill>,
     subTotalVal:number,
 )=>{
-
-
     const customItemVlaue = parseFloat(e.currentTarget.value)
     console.log(customItemVlaue);
     setValue('sub_total', subTotalVal-customItemVlaue)  
-    
-
 }
