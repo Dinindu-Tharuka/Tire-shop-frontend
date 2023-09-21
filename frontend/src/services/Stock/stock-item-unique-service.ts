@@ -1,4 +1,4 @@
-import { Item } from "../Inventory/item-page-service";
+
 import create from "../http-service";
 
 export interface StockItemUnique{

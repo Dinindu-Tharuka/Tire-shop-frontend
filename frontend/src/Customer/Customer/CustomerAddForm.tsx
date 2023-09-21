@@ -9,7 +9,7 @@ const CustomerAddForm = () => {
 
     const [errorCustomerCreate, setErrorCustomerCreate] = useState("");
     const [success, setSuccess] = useState("");
-    const { toggleColorMode, colorMode } = useColorMode();
+    const { colorMode } = useColorMode();
 
     const {customers, setCustomers} = useContext(CustomerContext)
 
