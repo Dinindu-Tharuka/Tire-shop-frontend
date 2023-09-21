@@ -45,10 +45,14 @@ import {
 import BillSaveConfirmation from "./BillSaveConfirmation";
 import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
 import stockItemUniqueService, { StockItemUnique } from "../../services/Stock/stock-item-unique-service";
+import BillShowDrawer from "./BillShowDrawer";
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
+
+  // After creation
   const [isCreatedBill, setIsCreatedBill] = useState(false);
+  const [bill, setBill] = useState<Bill>()
 
   //
   const [seletedFilteredListSet, setSeletedFilteredListSet] = useState<
@@ -219,6 +223,7 @@ const BillAddForm = () => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
         setIsCreatedBill(true);
+        setBill(res.data)
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -630,6 +635,8 @@ const BillAddForm = () => {
           >
             Reset
           </Button>
+
+          {bill !== undefined && bill && <BillShowDrawer selectedBill={bill}/>}
         </HStack>
       </form>
     </>

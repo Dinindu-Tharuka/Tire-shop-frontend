@@ -12,9 +12,6 @@ import {
 import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import UserContext from "../../Contexts/User/UserContext";
-import useService from "../../hooks/Registration/useService";
-import useUser from "../../hooks/User/useUser";
-import userService, { User } from "../../services/User/user-service";
 import axiosInstance from "../../services/api-client";
 
 const UserAddForm = () => {
@@ -22,15 +19,13 @@ const UserAddForm = () => {
 
   const [errorUserCreate, setErrorUserCreate] = useState("");
   const [success, setSuccess] = useState("");
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const [value, setValue] = useState("1");
 
   const { users, setUsers } = useContext(UserContext);
 
   const onSubmit = (data: FieldValues) => {
-    console.log(value);
     const newly = { ...data, is_manager: value === "1" ? false : true , is_staff:true};
-    console.log(newly);
 
     axiosInstance
       .post('/users/',newly)
@@ -59,6 +54,20 @@ const UserAddForm = () => {
 
           <div className="mb-3 h-75">
             <Input {...register("email")} type="email" placeholder="Email" />
+          </div>
+          <div className="mb-3 h-75">
+            <Input
+              {...register("first_name")}
+              type="text"
+              placeholder="First Name"
+            />
+          </div>
+          <div className="mb-3 h-75">
+            <Input
+              {...register("last_name")}
+              type="text"
+              placeholder="Last Name"
+            />
           </div>
           <div className="mb-3 h-75">
             <RadioGroup value={value} onChange={setValue}>

@@ -10,12 +10,19 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import axiosInstance from "../services/api-client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { User } from "../services/User/user-service";
+import UserContext from "../Contexts/User/UserContext";
+import UserMeContext from "../Contexts/User/UserMe";
+import useUser from "../hooks/User/useUser";
 
 const SignOut = () => {
   const { colorMode } = useColorMode();
-  const [user, setUser] = useState<User>();
+ 
+  const userMe = useContext(UserMeContext)
+  const {users} = useUser()
+
+  
 
   const signOut = () => {
     console.log("Sign out");
@@ -43,18 +50,18 @@ const SignOut = () => {
             fontSize="2xl"
             textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}
           >
-            Chamila
+            {users.find( user => user.id === userMe.id)?.first_name}
           </Heading>
           <Heading
             fontSize="2xl"
             textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}
           >
-            Perera
+            {users.find( user => user.id === userMe.id)?.last_name}
           </Heading>
         </VStack>
         <VStack>
           <Text textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}>
-            Admin
+          {userMe.id === 1? 'Admin': userMe.is_manager ? 'Manager':"Cashier"}
           </Text>
           <Button
             bg={colorMode === "light" ? "#e3a99c" : "#252528"}
