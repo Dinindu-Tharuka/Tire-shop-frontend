@@ -17,6 +17,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import LoginPage from "../Authentication/LoginPage";
 import PasswordReset from "../Authentication/PasswordReset";
 import UserListTable from "../Registration/User/UserListTable";
+import CreditorsTable from "../Billing/Creditors/CreditorsTable";
 
 const routes = createBrowserRouter([
   
@@ -62,6 +63,7 @@ const routes = createBrowserRouter([
               { path: "", element: <BillTable /> },
               { path: "rebuilt", element: <RebuiltMainPage /> },
               { path: "stock-invoice", element: <StockInvoiceTable /> },
+              { path: "creditors", element: <CreditorsTable /> },
             ],
           },
         ],

@@ -24,8 +24,8 @@ import BillAddDrawer from "../Bill/BillAddDrawer";
  
 
 const BillingSidePanel = () => {
-    const billingList = ["Invoice", "Rebuilt", "GRN"];
-  const billing_links = ["", "rebuilt", "stock-invoice"];
+    const billingList = ["Invoice", "Rebuilt", "Stock", "Creditors"];
+  const billing_links = ["", "rebuilt", "stock-invoice", "creditors"];
   const { toggleColorMode, colorMode } = useColorMode();
 
   const options = ["ADD"];
