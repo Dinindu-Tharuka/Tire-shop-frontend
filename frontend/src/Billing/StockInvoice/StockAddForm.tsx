@@ -38,10 +38,12 @@ import StockInvoiceSaveConfirmation from "./StockInvoiceSaveConfirmation";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
 import { Supplier } from "../../services/Registration/supplier-service";
 import SupplierFilter from "../../Registration/Supplier/SupplierFilter";
+import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 
 const StockAddForm = () => {
   const [watchingCost, setWatchingCost] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [stockInvoice, setStockInvoice] = useState<StockInvoice>()
 
   //for supplier menus
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier>()
@@ -119,6 +121,7 @@ const StockAddForm = () => {
         setStockInvoices([res.data, ...stockInvoices]);
         setStockItems([...res.data.stock_items, ...stockItems]);
         setIsCreatedBill(true);
+        setStockInvoice(res.data)
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -338,11 +341,12 @@ const StockAddForm = () => {
             </div>
           </div>
         </div>
-        <HStack justifyContent="space-between" width="10vw">
+        <HStack justifyContent="space-between" width="30vw">
           <StockInvoiceSaveConfirmation onSubmit={submitForm} />
           <Flex>
             <Button
               type="button"
+              width='10vw'
               bg={colorMode === "light" ? "#e3a99c" : "#575757"}
               onClick={() => {
                 setStockinvoiceCreate("");
@@ -355,6 +359,7 @@ const StockAddForm = () => {
               Reset
             </Button>
           </Flex>
+            {stockInvoice !== undefined && stockInvoice && <StockInvoiceShowDrawer selectedStockInvoice={stockInvoice}/>}
         </HStack>
       </form>
     </>
