@@ -16,6 +16,7 @@ import BillContext from "../../Contexts/Bill/BillContext";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import { calculateTotalPayment } from "../Bill/Calculations/CalculateTotalPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
+import { makeUpdate } from "../UI/MakeUpDate";
 
 const CreditorsTable = () => {
   const { bills } = useContext(BillContext);
@@ -80,7 +81,7 @@ const CreditorsTable = () => {
                   <Td>
                     {bill.sub_total - calculateTotalPayment(billPayments, bill)}
                   </Td>
-                  <Td>{bill.date}</Td>
+                  <Td>{makeUpdate(bill.date)}</Td>
                 </Tr>
               ))}
           </Tbody>

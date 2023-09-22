@@ -57,6 +57,7 @@ const Login = () => {
             borderRadius={15}
             bg="whiteAlpha.800"
             height="7vh"
+            textColor={colorMode === 'dark'? 'black':'black'}
           />
         </div>
         <div className="mb-3 h-75">
@@ -68,6 +69,7 @@ const Login = () => {
             borderRadius={15}
             bg="whiteAlpha.800"
             height="7vh"
+            textColor={colorMode === 'dark'? 'black':'black'}
           />
         </div>
 

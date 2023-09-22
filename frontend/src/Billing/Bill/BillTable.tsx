@@ -22,10 +22,10 @@ import BillShowDrawer from "./BillShowDrawer";
 import BillContext from "../../Contexts/Bill/BillContext";
 import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import { makeUpdate } from "../UI/MakeUpDate";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
-  const [billNoValue, setBillNoValue] = useState("");
   const [currentPageNum, setCurrentPageNum] = useState(1)
 
   const {
@@ -88,7 +88,7 @@ const BillTable = () => {
                         )?.name
                       }
                     </Td>
-                    <Td>{bill.date}</Td>
+                    <Td>{makeUpdate(bill.date)}</Td>
                     <Td>{bill.discount_amount}</Td>
                     <Td>{bill.sub_total}</Td>
                     <Td>{bill.custome_item_value}</Td>

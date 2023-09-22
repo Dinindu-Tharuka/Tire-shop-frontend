@@ -22,10 +22,11 @@ import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 import StockInvoiceShowPage from "./StockInvoiceShowPage";
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
+import { makeUpdate } from "../UI/MakeUpDate";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1)
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const {
     stockInvoices,
     setStockInvoices,
@@ -79,7 +80,7 @@ const StockInvoiceTable = () => {
                     <StockInvoiceDelete selectedStockInvoice={invoice} />
                   </Th>
                   <Td>{invoice.invoice_no}</Td>
-                  <Td>{invoice.date}</Td>
+                  <Td>{makeUpdate(invoice.date)}</Td>
                   <Td>{invoice.total_amount}</Td>
                   <Td>{invoice.total_discount}</Td>
                   <Td>
