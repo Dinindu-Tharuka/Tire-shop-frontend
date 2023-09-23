@@ -23,10 +23,9 @@ interface Props {
 }
 
 const BillAddPayment = ({ createdBill }: Props) => {
-  const [error, setError] = useState();
-  const { toggleColorMode, colorMode } = useColorMode();
+  const [error, setError] = useState('');
+  const { colorMode } = useColorMode();
   const { billPayments, setBillPayments } = useContext(BillPaymentContext);
-  const { bills } = useContext(AllBillContext);
   const [success, setSuccess] = useState('')
 
   const {
@@ -73,13 +72,17 @@ const BillAddPayment = ({ createdBill }: Props) => {
         </Select> */}
         <PaymentCashInput register={register} control={control} />
         <PaymentChequeInput register={register} control={control} />
-        <PaymentCreditInput register={register} control={control} />
+        {/* <PaymentCreditInput register={register} control={control} /> */}
         <PaymentCreditCardInput register={register} control={control} />
 
         <Button
           bg={colorMode === "light" ? "#e3a99c" : "#575757"}
           type="submit"
           width="10vw"
+          onClick={()=>{
+            setError('')
+            setSuccess('')
+          }}
         >
           Pay
         </Button>

@@ -20,6 +20,7 @@ import {
   import { Link } from "react-router-dom";
 import StockAddDrawer from "../StockInvoice/StockAddDrawer";
 import BillAddDrawer from "../Bill/BillAddDrawer";
+import RebuildSideBarOptions from "../Rebuilt/SideBarOptions/RebuildSideBarOptions";
   
  
 
@@ -54,7 +55,7 @@ const BillingSidePanel = () => {
               index === 0 ? (
                 <BillAddDrawer key={num} />
               ) : index === 1 ? (
-                <StockAddDrawer key={num} />
+                <RebuildSideBarOptions key={num} />
               ) : index === 2 ? (
                 <StockAddDrawer key={num} />
               ) : null

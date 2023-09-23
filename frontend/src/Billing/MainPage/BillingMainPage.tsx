@@ -19,9 +19,24 @@ import useCustomer from "../../hooks/Customer/useCustomer";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import useStockpayment from "../../hooks/Stock/useStockpayment";
 import StockPaymentContext from "../../Contexts/Stock/StockPaymentContext";
+import useTyreTakenPagination from "../../hooks/Rebuild/useTakenTyre";
+import TakenTyreContext from "../../Contexts/Rebuild/TakenTyreContext";
 
 const BillingMainPage = () => {
   const { colorMode } = useColorMode();
+  const {
+    takenTyres,
+    setTakenTyres,
+    errorFetchTakenTyres,
+    setErrorFetchTakenTyres,
+    nextTakenTyresUrl,
+    previousTakenTyresUrl,
+    filterTakenTyreParams,
+    setFilterTakenTyreParams,
+    isLoadingTakenTyre,
+    takenTyreCount,
+    setTakenTyreNameFilter,
+  } = useTyreTakenPagination();
   const {
     stockPayments,
     setStockPayments,
@@ -104,132 +119,148 @@ const BillingMainPage = () => {
   const { stockItems, setStockItems } = useStockItem();
 
   return (
-    <StockPaymentContext.Provider
+    <TakenTyreContext.Provider
       value={{
-        stockPayments,
-        setStockPayments,
-        stockPaymentsFetchError,
-        setStockPaymentsFetchError,
+        takenTyres,
+        setTakenTyres,
+        errorFetchTakenTyres,
+        setErrorFetchTakenTyres,
+        nextTakenTyresUrl,
+        previousTakenTyresUrl,
+        filterTakenTyreParams,
+        setFilterTakenTyreParams,
+        isLoadingTakenTyre,
+        takenTyreCount,
+        setTakenTyreNameFilter,
       }}
     >
-      <CustomerContext.Provider
+      <StockPaymentContext.Provider
         value={{
-          customers,
-          setCustomers,
-          nextUrl,
-          previousUrl,
-          setFilterParams,
-          filterParams,
-          errorCustomerFetch,
-          setErrorCustomerFetch,
-          isLoadingCustomer,
-          customerCount,
+          stockPayments,
+          setStockPayments,
+          stockPaymentsFetchError,
+          setStockPaymentsFetchError,
         }}
       >
-        <SupplierContext.Provider
+        <CustomerContext.Provider
           value={{
-            suppliers,
-            setSuppliers,
-            errorFetchSupplier,
-            nextSupplierUrl,
-            previousSupplierUrl,
-            filterSupplierParams,
-            setFilterSupplierParams,
-            suppliersCount,
-            isLoadingSupplierPage,
-            setErrorFetchSupplier,
-            setSupplierNameFilter,
+            customers,
+            setCustomers,
+            nextUrl,
+            previousUrl,
+            setFilterParams,
+            filterParams,
+            errorCustomerFetch,
+            setErrorCustomerFetch,
+            isLoadingCustomer,
+            customerCount,
           }}
         >
-          <StockItemUniqueContext.Provider
-            value={{ stockItemsUnique, setStockItemsUnique }}
+          <SupplierContext.Provider
+            value={{
+              suppliers,
+              setSuppliers,
+              errorFetchSupplier,
+              nextSupplierUrl,
+              previousSupplierUrl,
+              filterSupplierParams,
+              setFilterSupplierParams,
+              suppliersCount,
+              isLoadingSupplierPage,
+              setErrorFetchSupplier,
+              setSupplierNameFilter,
+            }}
           >
-            <StockInvoiceContext.Provider
-              value={{
-                stockAllInvoices,
-                setStockAllInvoices,
-                isLoadingAllInvoices,
-                errorFetchStockAllInvoice,
-                setErrorFetchAllStockInvoice,
-              }}
+            <StockItemUniqueContext.Provider
+              value={{ stockItemsUnique, setStockItemsUnique }}
             >
-              <StockInvoicePageContext.Provider
+              <StockInvoiceContext.Provider
                 value={{
-                  stockInvoices,
-                  setStockInvoices,
-                  errorFetchStockInvoice,
-                  nextStockInvoiceUrl,
-                  previousStockInvoiceUrl,
-                  filterStockInvoiceParams,
-                  setFilterStockInvoiceParams,
-                  isLoadingInvoices,
-                  invoicesCount,
-                  setErrorFetchStockInvoice,
-                  setInvoiceIdFilter,
+                  stockAllInvoices,
+                  setStockAllInvoices,
+                  isLoadingAllInvoices,
+                  errorFetchStockAllInvoice,
+                  setErrorFetchAllStockInvoice,
                 }}
               >
-                <BillPaymentContext.Provider
+                <StockInvoicePageContext.Provider
                   value={{
-                    billPayments,
-                    setBillPayments,
-                    billPaymentFetchError,
-                    setBillPaymentFetchError,
-                    isLoadingBillPayments,
+                    stockInvoices,
+                    setStockInvoices,
+                    errorFetchStockInvoice,
+                    nextStockInvoiceUrl,
+                    previousStockInvoiceUrl,
+                    filterStockInvoiceParams,
+                    setFilterStockInvoiceParams,
+                    isLoadingInvoices,
+                    invoicesCount,
+                    setErrorFetchStockInvoice,
+                    setInvoiceIdFilter,
                   }}
                 >
-                  <StockItemContext.Provider
-                    value={{ stockItems, setStockItems }}
+                  <BillPaymentContext.Provider
+                    value={{
+                      billPayments,
+                      setBillPayments,
+                      billPaymentFetchError,
+                      setBillPaymentFetchError,
+                      isLoadingBillPayments,
+                    }}
                   >
-                    <BillContext.Provider
-                      value={{
-                        bills,
-                        setBills,
-                        nextBillPageUrl,
-                        previousBillPageUrl,
-                        filterBillPageParams,
-                        setFilterBillPageParams,
-                        billFetchError,
-                        isLoadingBills,
-                        billCount,
-                        setBillFetchError,
-                        setBillIdFilter,
-                        setBillFilterCustomer,
-                      }}
+                    <StockItemContext.Provider
+                      value={{ stockItems, setStockItems }}
                     >
-                      <Grid
-                        templateAreas={{
-                          lg: `"main aside"`,
-                          base: `"aside" "main"`,
+                      <BillContext.Provider
+                        value={{
+                          bills,
+                          setBills,
+                          nextBillPageUrl,
+                          previousBillPageUrl,
+                          filterBillPageParams,
+                          setFilterBillPageParams,
+                          billFetchError,
+                          isLoadingBills,
+                          billCount,
+                          setBillFetchError,
+                          setBillIdFilter,
+                          setBillFilterCustomer,
                         }}
                       >
-                        <GridItem
-                          area="main"
-                          height={{ base: "10vh", lg: "85vh" }}
-                          width={{ base: "100vw", lg: "60vw" }}
+                        <Grid
+                          templateAreas={{
+                            lg: `"main aside"`,
+                            base: `"aside" "main"`,
+                          }}
                         >
-                          <Outlet />
-                        </GridItem>
-                        <GridItem
-                          area="aside"
-                          height={{ base: "10vh", lg: "85vh" }}
-                          width={{ base: "100vw", lg: "15vw" }}
-                          boxShadow="dark-lg"
-                          borderRadius={30}
-                          padding={5}
-                          bg={colorMode === "light" ? "#ca5c4f" : ""}
-                        >
-                          <BillingSidePanel />
-                        </GridItem>
-                      </Grid>
-                    </BillContext.Provider>
-                  </StockItemContext.Provider>
-                </BillPaymentContext.Provider>
-              </StockInvoicePageContext.Provider>
-            </StockInvoiceContext.Provider>
-          </StockItemUniqueContext.Provider>
-        </SupplierContext.Provider>
-      </CustomerContext.Provider>
-    </StockPaymentContext.Provider>
+                          <GridItem
+                            area="main"
+                            height={{ base: "10vh", lg: "85vh" }}
+                            width={{ base: "100vw", lg: "60vw" }}
+                          >
+                            <Outlet />
+                          </GridItem>
+                          <GridItem
+                            area="aside"
+                            height={{ base: "10vh", lg: "85vh" }}
+                            width={{ base: "100vw", lg: "15vw" }}
+                            boxShadow="dark-lg"
+                            borderRadius={30}
+                            padding={5}
+                            bg={colorMode === "light" ? "#ca5c4f" : ""}
+                          >
+                            <BillingSidePanel />
+                          </GridItem>
+                        </Grid>
+                      </BillContext.Provider>
+                    </StockItemContext.Provider>
+                  </BillPaymentContext.Provider>
+                </StockInvoicePageContext.Provider>
+              </StockInvoiceContext.Provider>
+            </StockItemUniqueContext.Provider>
+          </SupplierContext.Provider>
+        </CustomerContext.Provider>
+      </StockPaymentContext.Provider>
+    </TakenTyreContext.Provider>
   );
 };
 

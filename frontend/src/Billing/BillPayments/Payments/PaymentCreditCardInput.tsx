@@ -66,7 +66,8 @@ const PaymentCreditCardInput = ({ register, control }: Props) => {
             onClick={() => append({} as PaymentCash)}
             alignContent="top"
             width='25vw'
-            margin={5}
+            // margin={5}
+            marginBottom={5}
             marginLeft={0}
           >
             <Flex width='100%' justifyContent='space-between'>
