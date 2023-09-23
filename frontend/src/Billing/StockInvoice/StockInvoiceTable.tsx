@@ -18,14 +18,19 @@ import { useContext, useState } from "react";
 import StockInvoiceDelete from "./StockInvoiceDelete";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
-import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
-import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import getCutUrl, {
+  MAXIMUM_PAGES_PER_PAGE,
+} from "../../services/pagination-cut-link";
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from "react-icons/io";
 import StockInvoiceShowPage from "./StockInvoiceShowPage";
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
-import { makeUpdate } from "../UI/MakeUpDate";
+import { makeUpDate } from "../UI/MakeUpDate";
 
 const StockInvoiceTable = () => {
-  const [currentPageNum, setCurrentPageNum] = useState(1)
+  const [currentPageNum, setCurrentPageNum] = useState(1);
   const { colorMode } = useColorMode();
   const {
     stockInvoices,
@@ -38,7 +43,7 @@ const StockInvoiceTable = () => {
     isLoadingInvoices,
     invoicesCount,
     setErrorFetchStockInvoice,
-    setInvoiceIdFilter
+    setInvoiceIdFilter,
   } = useContext(StockInvoicePageContext);
 
   const numOfPages = Math.ceil(invoicesCount / MAXIMUM_PAGES_PER_PAGE);
@@ -47,8 +52,6 @@ const StockInvoiceTable = () => {
   const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setInvoiceIdFilter(event.currentTarget.value);
   };
-
-  
 
   return (
     <Flex alignItems="center" flexDir="column">
@@ -70,24 +73,23 @@ const StockInvoiceTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {stockInvoices
-              ?.map((invoice, index) => (
-                <Tr key={index}>
-                  <Th>
-                    <StockInvoiceShowDrawer selectedStockInvoice={invoice}/>
-                  </Th>
-                  <Th>
-                    <StockInvoiceDelete selectedStockInvoice={invoice} />
-                  </Th>
-                  <Td>{invoice.invoice_no}</Td>
-                  <Td>{makeUpdate(invoice.date)}</Td>
-                  <Td>{invoice.total_amount}</Td>
-                  <Td>{invoice.total_discount}</Td>
-                  <Td>
-                    {suppliers.find((sup) => sup.id === invoice.supplier)?.name}
-                  </Td>
-                </Tr>
-              ))}
+            {stockInvoices?.map((invoice, index) => (
+              <Tr key={index}>
+                <Th>
+                  <StockInvoiceShowDrawer selectedStockInvoice={invoice} />
+                </Th>
+                <Th>
+                  <StockInvoiceDelete selectedStockInvoice={invoice} />
+                </Th>
+                <Td>{invoice.invoice_no}</Td>
+                <Td>{makeUpDate(invoice.date)}</Td>
+                <Td>{invoice.total_amount}</Td>
+                <Td>{invoice.total_discount}</Td>
+                <Td>
+                  {suppliers.find((sup) => sup.id === invoice.supplier)?.name}
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </TableContainer>
@@ -112,7 +114,9 @@ const StockInvoiceTable = () => {
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           isDisabled={currentPageNum === numOfPages ? true : false}
           onClick={() => {
-            setFilterStockInvoiceParams(getCutUrl(nextStockInvoiceUrl, "stock-items-invoices") + "");
+            setFilterStockInvoiceParams(
+              getCutUrl(nextStockInvoiceUrl, "stock-items-invoices") + ""
+            );
             setCurrentPageNum(currentPageNum + 1);
             setErrorFetchStockInvoice("");
           }}

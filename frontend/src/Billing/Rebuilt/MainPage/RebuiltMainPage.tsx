@@ -6,6 +6,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
+import TyreTakenTable from "../TyreTaken/TyreTakenTable";
 
 const RebuiltMainPage = () => {
   return (
@@ -18,7 +19,9 @@ const RebuiltMainPage = () => {
 
       <TabPanels>
         <TabPanel>
-          <Flex width="60vw" height="85vh" bg="red.800"></Flex>
+          <Flex width="60vw" height="85vh">
+            <TyreTakenTable/>
+          </Flex>
         </TabPanel>
         <TabPanel>
           <Flex width="60vw" height="80vh" bg="blue.700"></Flex>

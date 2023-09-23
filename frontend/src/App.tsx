@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <GridSection />
-      {/* <h1>Home</h1> */}
+      <h1>Home</h1>
     </>
   );
 }

@@ -11,7 +11,8 @@ export interface CustomerTakenTyre{
 export interface TyreTaken{
     id:number;
     customer:number;
-    vehicle:number;
+    vehicle:string;
+    taken_date:string;
     customer_tyres:CustomerTakenTyre[];
 }
 

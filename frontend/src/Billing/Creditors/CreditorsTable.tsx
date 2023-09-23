@@ -14,7 +14,7 @@ import BillContext from "../../Contexts/Bill/BillContext";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import { calculateTotalPayment } from "../Bill/Calculations/CalculateTotalPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
-import { makeUpdate } from "../UI/MakeUpDate";
+import { makeUpDate } from "../UI/MakeUpDate";
 
 const CreditorsTable = () => {
   const { bills } = useContext(BillContext);
@@ -37,8 +37,17 @@ const CreditorsTable = () => {
   return (
     <Flex flexDir="column">
       <Flex>
-        <Input placeholder="Search Bill No" onKeyUp={onTypeFilterBillNo} width='20vw' marginRight={10} />
-        <Input placeholder="Search Customer" onKeyUp={onTypeFilterCustomer} width='20vw' />
+        <Input
+          placeholder="Search Bill No"
+          onKeyUp={onTypeFilterBillNo}
+          width="20vw"
+          marginRight={10}
+        />
+        <Input
+          placeholder="Search Customer"
+          onKeyUp={onTypeFilterCustomer}
+          width="20vw"
+        />
       </Flex>
       <TableContainer>
         <Table>
@@ -59,10 +68,10 @@ const CreditorsTable = () => {
                   bill.sub_total > calculateTotalPayment(billPayments, bill)
               )
               .filter((bill) => bill.invoice_id.startsWith(billIdFilter))
-              .filter(
-                (bill) =>
-                  customers.find((customer) => customer.id === bill.customer)
-                    ?.name.startsWith(billCustomerFilter)
+              .filter((bill) =>
+                customers
+                  .find((customer) => customer.id === bill.customer)
+                  ?.name.startsWith(billCustomerFilter)
               )
               .map((bill, index) => (
                 <Tr key={index}>
@@ -79,7 +88,7 @@ const CreditorsTable = () => {
                   <Td>
                     {bill.sub_total - calculateTotalPayment(billPayments, bill)}
                   </Td>
-                  <Td>{makeUpdate(bill.date)}</Td>
+                  <Td>{makeUpDate(bill.date)}</Td>
                 </Tr>
               ))}
           </Tbody>
