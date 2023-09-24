@@ -22,12 +22,14 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import TakenTyreContext from "../../../Contexts/Rebuild/TakenTyreContext";
-import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../../services/pagination-cut-link";
+import getCutUrl, {
+  MAXIMUM_PAGES_PER_PAGE,
+} from "../../../services/pagination-cut-link";
 import CustomerContext from "../../../Contexts/Customer/CustomerContext";
 import useVehicles from "../../../hooks/Customer/useVehicles";
 import { makeUpDate } from "../../UI/MakeUpDate";
 import TakenTyreDelete from "./TakenTyreDelete";
-import TakenTyreDrawer from "./TakenTyreDrawer";
+import TakenTyreUpdateDrawer from "./TakenTyreUpdateDrawer";
 
 const TyreTakenTable = () => {
   const { colorMode } = useColorMode();
@@ -47,12 +49,9 @@ const TyreTakenTable = () => {
     setTakenTyreNameFilter,
   } = useContext(TakenTyreContext);
 
-  const {
-    customers,
-  } = useContext(CustomerContext);
-  
+  const { customers } = useContext(CustomerContext);
 
-  const { vehicles, setVehicles} =useVehicles()
+  const { vehicles, setVehicles } = useVehicles();
 
   const numOfPages = Math.ceil(takenTyreCount / MAXIMUM_PAGES_PER_PAGE);
 
@@ -81,18 +80,24 @@ const TyreTakenTable = () => {
             {takenTyres.map((tyre, index) => (
               <Tr key={index}>
                 <Th>
-                  <TakenTyreDrawer selectedStockTakenTyre={tyre}/>
+                  <TakenTyreUpdateDrawer selectedTakenTyre={tyre} />
                 </Th>
                 <Th>
-                  <TakenTyreDelete selectedTakenTyre={tyre}/>
-                </Th>               
+                  <TakenTyreDelete selectedTakenTyre={tyre} />
+                </Th>
                 <Td>
                   {
                     customers.find((customer) => customer.id === tyre.customer)
                       ?.name
                   }
                 </Td>
-                <Td>{vehicles.find(vehicle => vehicle.vehical_no === tyre.vehicle)?.vehical_no}</Td>
+                <Td>
+                  {
+                    vehicles.find(
+                      (vehicle) => vehicle.vehical_no === tyre.vehicle
+                    )?.vehical_no
+                  }
+                </Td>
                 <Td>{makeUpDate(tyre.taken_date)}</Td>
               </Tr>
             ))}
@@ -120,7 +125,9 @@ const TyreTakenTable = () => {
           colorScheme={colorMode === "light" ? "blackAlpha" : "whiteAlpha"}
           isDisabled={currentPageNum === numOfPages ? true : false}
           onClick={() => {
-            setFilterTakenTyreParams(getCutUrl(nextTakenTyresUrl, "bills") + "");
+            setFilterTakenTyreParams(
+              getCutUrl(nextTakenTyresUrl, "bills") + ""
+            );
             setCurrentPageNum(currentPageNum + 1);
             setErrorFetchTakenTyres("");
           }}

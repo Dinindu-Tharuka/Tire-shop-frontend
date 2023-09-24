@@ -61,6 +61,7 @@ const BillingMainPage = () => {
     setErrorCustomerFetch,
     isLoadingCustomer,
     customerCount,
+    setCustomerNameFilter
   } = useCustomer();
 
   const { stockItemsUnique, setStockItemsUnique } = useStockItemUnique();
@@ -162,6 +163,7 @@ const BillingMainPage = () => {
               setErrorCustomerFetch,
               isLoadingCustomer,
               customerCount,
+              setCustomerNameFilter
             }}
           >
             <SupplierContext.Provider

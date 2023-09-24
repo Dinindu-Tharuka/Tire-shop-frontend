@@ -1,23 +1,24 @@
-
 import {
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
-    DrawerHeader,
-    DrawerOverlay,
-    useColorMode,
-    useDisclosure,
-  } from "@chakra-ui/react";
-  import { useRef, useState } from "react";
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  useColorMode,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useRef, useState } from "react";
 import { TyreTaken } from "../../../services/Rebuild/tyre-taken-service";
-  
-  interface Props {
-    selectedStockTakenTyre: TyreTaken;
-  }
+import { TakenTyreUpdate } from "./TakenTyreUpdate.1";
 
-const TakenTyreDrawer = ({ selectedStockTakenTyre }:Props) => {
+
+interface Props {
+  selectedTakenTyre: TyreTaken;
+}
+
+const TakenTyreUpdateDrawer = ({ selectedTakenTyre }: Props) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -43,7 +44,7 @@ const TakenTyreDrawer = ({ selectedStockTakenTyre }:Props) => {
         placement="right"
         onClose={onClose}
         finalFocusRef={btnRef}
-        size="full"
+        size="lg"
       >
         <DrawerOverlay />
         <DrawerContent height="100vh">
@@ -51,7 +52,7 @@ const TakenTyreDrawer = ({ selectedStockTakenTyre }:Props) => {
           <DrawerHeader>Update Taken Tyres</DrawerHeader>
 
           <DrawerBody>
-            {/* <StockInvoiceShowPage seletedStockInvoice={selectedStockInvoice} /> */}
+            <TakenTyreUpdate selectedTakenTyre={selectedTakenTyre} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -59,4 +60,4 @@ const TakenTyreDrawer = ({ selectedStockTakenTyre }:Props) => {
   );
 };
 
-export default TakenTyreDrawer;
+export default TakenTyreUpdateDrawer;

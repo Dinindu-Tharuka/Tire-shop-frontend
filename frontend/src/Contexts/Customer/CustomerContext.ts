@@ -13,6 +13,7 @@ interface CustomerContextType{
     setErrorCustomerFetch:Dispatch<SetStateAction<string>>;
     isLoadingCustomer:boolean;
     customerCount:number;
+    setCustomerNameFilter:Dispatch<SetStateAction<string>>;
 }
 
 const CustomerContext = React.createContext<CustomerContextType>({} as CustomerContextType)

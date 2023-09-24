@@ -9,10 +9,11 @@ const useCustomer = () => {
     const [filterParams, setFilterParams] = useState<string | null>('')
     const [isLoadingCustomer, setIsLoadingCustomer] = useState(false);
     const [customerCount, setCustomerCount] = useState(0);
+    const [customerNameFilter, setCustomerNameFilter] = useState('')
 
     useEffect(()=>{
         setIsLoadingCustomer(true)
-        const {request, cancel} = CustomerService.getAll<CustomerPageStructure>(filterParams)
+        const {request, cancel} = CustomerService.getAll<CustomerPageStructure>(filterParams, {params : { customerNameFilter }})
 
         request
             .then(res => {              
@@ -30,7 +31,7 @@ const useCustomer = () => {
         return ()=> cancel();
     }, [filterParams])
 
-    return {customers, setCustomers, nextUrl, previousUrl, setFilterParams, filterParams, errorCustomerFetch, setErrorCustomerFetch, isLoadingCustomer, customerCount}
+    return {customers, setCustomers, nextUrl, previousUrl, setFilterParams, filterParams, errorCustomerFetch, setErrorCustomerFetch, isLoadingCustomer, customerCount, setCustomerNameFilter}
 
 }
 
