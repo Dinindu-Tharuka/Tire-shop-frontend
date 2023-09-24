@@ -10,14 +10,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { TyreTaken } from "../../../services/Rebuild/tyre-taken-service";
-import { TakenTyreUpdate } from "./TakenTyreUpdate";
+import AddCustomerTakenTyre from "../AddCustomerTakenTyre";
+import { AddTakentyreForm } from "./AddTakentyreForm";
 
-interface Props {
-  selectedTakenTyre: TyreTaken;
-}
-
-const TakenTyreUpdateDrawer = ({ selectedTakenTyre }: Props) => {
+const AddDrawerTakenTyre = () => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -33,10 +29,10 @@ const TakenTyreUpdateDrawer = ({ selectedTakenTyre }: Props) => {
             : { background: "#766f6f" }
         }
         padding={2.5}
-        width="5vw"
+        width="500px"
         onClick={onOpen}
       >
-        Update
+        Add Taken Tyre
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -48,10 +44,10 @@ const TakenTyreUpdateDrawer = ({ selectedTakenTyre }: Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Update Taken Tyres</DrawerHeader>
+          <DrawerHeader>Add Taken Tyre</DrawerHeader>
 
           <DrawerBody>
-            <TakenTyreUpdate selectedTakenTyre={selectedTakenTyre} />
+            <AddTakentyreForm />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -59,4 +55,4 @@ const TakenTyreUpdateDrawer = ({ selectedTakenTyre }: Props) => {
   );
 };
 
-export default TakenTyreUpdateDrawer;
+export default AddDrawerTakenTyre;

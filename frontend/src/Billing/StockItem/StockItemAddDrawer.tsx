@@ -62,7 +62,7 @@ const StockItemAddDrawer = () => {
             <Input
               type="text"
               placeholder="Brand"
-              {...register("selling_price")}
+              {...register("customer_price")}
             ></Input>
           </div>
           <div className="mb-3">
@@ -75,13 +75,6 @@ const StockItemAddDrawer = () => {
               {...register("qty")}
             ></Input>
           </div>
-          <div className="mb-3">
-            <Input
-              type="text"
-              placeholder="Country"
-              {...register("sold_qty")}
-            ></Input>
-          </div>      
           
         </div>
         <HStack justifyContent="space-between">

@@ -20,8 +20,8 @@ import VehicleContext from "../../../Contexts/Customer/VehicleContext";
 
 import AddCustomerTakenTyre from "./AddCustomerTakenTyre";
 
-interface Props{
-  selectedTakenTyre:TyreTaken
+interface Props {
+  selectedTakenTyre: TyreTaken;
 }
 
 export const TakenTyreUpdate = ({ selectedTakenTyre }: Props) => {
@@ -36,16 +36,17 @@ export const TakenTyreUpdate = ({ selectedTakenTyre }: Props) => {
   const { vehicles } = useContext(VehicleContext);
 
   const onUpdate = (data: TyreTaken) => {
-    const updated = { ...data, id: selectedTakenTyre.id };
-    console.log(data,'submited');
-    
+    console.log(data, "submited");
 
     tyreTakenService
       .update(data, `${selectedTakenTyre.id}`)
       .then((res) => {
         setSuccess(res.status === 200 ? "Updated Successfully" : "");
-        takenTyres.map((cus) =>
-          cus.id === selectedTakenTyre.id ? updated : cus
+
+        setTakenTyres(
+          takenTyres.map((cus) =>
+            cus.id === selectedTakenTyre.id ? res.data : cus
+          )
         );
       })
       .catch((err) => setErrorTakenTyreUpdate(err.message));
@@ -60,7 +61,7 @@ export const TakenTyreUpdate = ({ selectedTakenTyre }: Props) => {
       <form onSubmit={handleSubmit(onUpdate)} className="vh-100">
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 w-50">
-            <Select {...register('customer')}>
+            <Select {...register("customer")}>
               <option value={selectedTakenTyre.customer}>
                 {
                   customers.find(
@@ -74,9 +75,8 @@ export const TakenTyreUpdate = ({ selectedTakenTyre }: Props) => {
             </Select>
           </div>
 
-          
           <div className="mb-3 w-50">
-            <Select {...register('vehicle')}>
+            <Select {...register("vehicle")}>
               <option value={selectedTakenTyre.vehicle}>
                 {selectedTakenTyre.vehicle}
               </option>
@@ -86,7 +86,11 @@ export const TakenTyreUpdate = ({ selectedTakenTyre }: Props) => {
             </Select>
           </div>
           <div className="mb-3 w-100">
-            <AddCustomerTakenTyre register={register} control={control} customerArrays={selectedTakenTyre.customer_tyres}/>
+            <AddCustomerTakenTyre
+              register={register}
+              control={control}
+              customerArrays={selectedTakenTyre.customer_tyres}
+            />
           </div>
         </div>
         <HStack justifyContent="space-between">

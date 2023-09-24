@@ -1,9 +1,15 @@
-import React from 'react'
+import { Accordion, AccordionButton } from "@chakra-ui/react";
+
+import AddDrawerTakenTyre from "../TyreTaken/Add/AddDrawerTakenTyre";
 
 const RebuildSideBarOptions = () => {
   return (
-    <div>RebuildSideBarOptions</div>
-  )
-}
+    <Accordion allowToggle>
+      <AccordionButton>
+        <AddDrawerTakenTyre />
+      </AccordionButton>
+    </Accordion>
+  );
+};
 
-export default RebuildSideBarOptions
+export default RebuildSideBarOptions;
