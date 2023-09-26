@@ -55,9 +55,7 @@ const TyreTakenTable = () => {
 
   const numOfPages = Math.ceil(takenTyreCount / MAXIMUM_PAGES_PER_PAGE);
 
-  // const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  //   setBillIdFilter(event.currentTarget.value);
-  // };
+  
 
   return (
     <Flex alignItems="center" flexDir="column">
@@ -110,7 +108,7 @@ const TyreTakenTable = () => {
           isDisabled={currentPageNum === 1 ? true : false}
           onClick={() => {
             setFilterTakenTyreParams(
-              getCutUrl(previousTakenTyresUrl, "bills") + ""
+              getCutUrl(previousTakenTyresUrl, "taken-tyres-list") + ""
             );
             setCurrentPageNum(currentPageNum - 1);
             setErrorFetchTakenTyres("");
@@ -126,7 +124,7 @@ const TyreTakenTable = () => {
           isDisabled={currentPageNum === numOfPages ? true : false}
           onClick={() => {
             setFilterTakenTyreParams(
-              getCutUrl(nextTakenTyresUrl, "bills") + ""
+              getCutUrl(nextTakenTyresUrl, "taken-tyres-list") + ""
             );
             setCurrentPageNum(currentPageNum + 1);
             setErrorFetchTakenTyres("");

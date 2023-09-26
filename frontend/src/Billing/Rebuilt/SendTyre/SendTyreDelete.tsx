@@ -1,40 +1,39 @@
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-  useDisclosure,
-  useToast,
-} from "@chakra-ui/react";
-import { useContext } from "react";
-import { useRef } from "react";
-import tyreTakenService, {
-  TyreTaken,
-} from "../../../services/Rebuild/tyre-taken-service";
-import TakenTyreContext from "../../../Contexts/Rebuild/TakenTyreContext";
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
+    Button,
+    useDisclosure,
+    useToast,
+  } from "@chakra-ui/react";
+  import { useContext } from "react";
+  import { useRef } from "react";
 
-interface Props {
-  selectedTakenTyre: TyreTaken;
-}
+import sendTyreService, { SendTyre } from "../../../services/Rebuild/send-tyre-service";
+import SendTyreContext from "../../../Contexts/Rebuild/SendTyreContext";
+  
+  interface Props {
+    selectedSendTyre: SendTyre;
+  }
 
-const TakenTyreDelete = ({ selectedTakenTyre }: Props) => {
+const SendTyreDelete = ({ selectedSendTyre }:Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const deleteToast = useToast();
-  const { takenTyres, setTakenTyres } = useContext(TakenTyreContext);
+  const { sendTyres, setSendTyres } = useContext(SendTyreContext);
 
-  const name = "Taken Tyre";
+  const name = "Send Tyre";
 
-  const onDeleteBill = (seletedTakntyre: TyreTaken) => {
-    const originalBills = [...takenTyres];
+  const onDeleteBill = (seletedSendTyre: SendTyre) => {
+    const originalSendTyres = [...sendTyres];
 
-    setTakenTyres(takenTyres.filter((tyre) => tyre.id !== seletedTakntyre.id));
+    setSendTyres(sendTyres.filter((tyre) => tyre.order_no !== seletedSendTyre.order_no));
 
-    tyreTakenService
-      .delete(`${seletedTakntyre.id}`)
+    sendTyreService
+      .delete(`${seletedSendTyre.order_no}`)
       .then((res) => {
         if (res.status === 204) {
           deleteToast({
@@ -47,7 +46,7 @@ const TakenTyreDelete = ({ selectedTakenTyre }: Props) => {
         }
       })
       .catch((err) => {
-        setTakenTyres(originalBills);
+        setSendTyres(originalSendTyres);
 
         deleteToast({
           title: "Error",
@@ -72,7 +71,7 @@ const TakenTyreDelete = ({ selectedTakenTyre }: Props) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Taken Tyre record {selectedTakenTyre.id}
+              Delete Taken Tyre record {selectedSendTyre.order_no}
             </AlertDialogHeader>
 
             <AlertDialogBody>
@@ -87,7 +86,7 @@ const TakenTyreDelete = ({ selectedTakenTyre }: Props) => {
                 colorScheme="red"
                 onClick={() => {
                   onClose();
-                  onDeleteBill(selectedTakenTyre);
+                  onDeleteBill(selectedSendTyre);
                 }}
                 ml={3}
               >
@@ -101,4 +100,4 @@ const TakenTyreDelete = ({ selectedTakenTyre }: Props) => {
   );
 };
 
-export default TakenTyreDelete;
+export default SendTyreDelete;
