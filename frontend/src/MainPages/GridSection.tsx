@@ -8,11 +8,17 @@ import axiosInstance from "../services/api-client";
 import useUser from "../hooks/User/useUser";
 import UserContext from "../Contexts/User/UserContext";
 import UserMeContext from "../Contexts/User/UserMe";
+import AllCustomerContext from "../Contexts/Customer/AllCustomerContext";
+import useAllCustomers from "../hooks/Customer/useAllCustomers";
 
 const GridSection = () => {
-  const [access, setAccess] = useState<string | null>("");
-  const [refresh, setRefresh] = useState("");
   const [userMe, setUserMe] = useState<User>({} as User);
+  const {
+    allCustomers,
+    setAllCustomers,
+    errorAllCustomerFetch,
+    setErrorAllCustomerFetch,
+  } = useAllCustomers();
   const {
     users,
     setUsers,
@@ -20,8 +26,6 @@ const GridSection = () => {
     setErrorFetchUser,
     isLoadingUsers,
   } = useUser();
-
-  console.log(users);
 
   useEffect(() => {
     const hasReloadedBefore = localStorage.getItem("hasReloaded");
@@ -33,53 +37,61 @@ const GridSection = () => {
     axiosInstance
       .get<User>("/users/me/")
       .then((res) => setUserMe(res.data))
-      .catch(err => console.log(err.message)
-      )
+      .catch((err) => console.log(err.message));
   }, []);
 
   return (
-    <UserMeContext.Provider value={userMe}>
-      <UserContext.Provider
-        value={{
-          users,
-          setUsers,
-          errorFetchUsers,
-          setErrorFetchUser,
-          isLoadingUsers,
-        }}
-      >
-        <Grid
-          templateAreas={{
-            base: `"nav" "side" "main"`,
-            lg: `"nav nav" "side main"`,
+    <AllCustomerContext.Provider
+      value={{
+        allCustomers,
+        setAllCustomers,
+        errorAllCustomerFetch,
+        setErrorAllCustomerFetch,
+      }}
+    >
+      <UserMeContext.Provider value={userMe}>
+        <UserContext.Provider
+          value={{
+            users,
+            setUsers,
+            errorFetchUsers,
+            setErrorFetchUser,
+            isLoadingUsers,
           }}
         >
-          <GridItem
-            area="nav"
-            height={{ base: "10vh", lg: "10vh" }}
-            marginBottom={5}
+          <Grid
+            templateAreas={{
+              base: `"nav" "side" "main"`,
+              lg: `"nav nav" "side main"`,
+            }}
           >
-            <Navbar />
-          </GridItem>
+            <GridItem
+              area="nav"
+              height={{ base: "10vh", lg: "10vh" }}
+              marginBottom={5}
+            >
+              <Navbar />
+            </GridItem>
 
-          <GridItem
-            area="side"
-            height={{ base: "10vh", lg: "85vh" }}
-            width={{ base: "100vw", lg: "20vw" }}
-          >
-            <SideBarOptionList />
-          </GridItem>
+            <GridItem
+              area="side"
+              height={{ base: "10vh", lg: "85vh" }}
+              width={{ base: "100vw", lg: "20vw" }}
+            >
+              <SideBarOptionList />
+            </GridItem>
 
-          <GridItem
-            area="main"
-            height={{ base: "80vh", lg: "85vh" }}
-            width={{ base: "100vw", lg: "80vw" }}
-          >
-            <Outlet />
-          </GridItem>
-        </Grid>
-      </UserContext.Provider>
-    </UserMeContext.Provider>
+            <GridItem
+              area="main"
+              height={{ base: "80vh", lg: "85vh" }}
+              width={{ base: "100vw", lg: "80vw" }}
+            >
+              <Outlet />
+            </GridItem>
+          </Grid>
+        </UserContext.Provider>
+      </UserMeContext.Provider>
+    </AllCustomerContext.Provider>
   );
 };
 

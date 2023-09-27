@@ -1,16 +1,15 @@
 import { Grid, GridItem, Text, useColorMode } from "@chakra-ui/react";
 import CustomerSidePanel from "../SidePanel/CustomerSidePanel";
-import useCategoryPagination from "../../hooks/Inventory/useCategoryPage";
 import useVehicles from "../../hooks/Customer/useVehicles";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import VehicleContext from "../../Contexts/Customer/VehicleContext";
 import CustomerTable from "../Customer/CustomerTable";
-import VehicleTable from "../Vehicle/VehicleTable";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
 
 const CustomerMainPage = () => {
+  
   const {
     suppliers,
     setSuppliers,
@@ -39,69 +38,70 @@ const CustomerMainPage = () => {
     setCustomerNameFilter,
   } = useCustomer();
   const { vehicles, setVehicles, setVehicleNoFilter } = useVehicles();
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   return (
-    <SupplierContext.Provider
-      value={{
-        suppliers,
-        setSuppliers,
-        errorFetchSupplier,
-        nextSupplierUrl,
-        previousSupplierUrl,
-        filterSupplierParams,
-        setFilterSupplierParams,
-        suppliersCount,
-        isLoadingSupplierPage,
-        setErrorFetchSupplier,
-        setSupplierNameFilter,
-      }}
-    >
-      <VehicleContext.Provider
-        value={{ vehicles, setVehicles, setVehicleNoFilter }}
+    
+      <SupplierContext.Provider
+        value={{
+          suppliers,
+          setSuppliers,
+          errorFetchSupplier,
+          nextSupplierUrl,
+          previousSupplierUrl,
+          filterSupplierParams,
+          setFilterSupplierParams,
+          suppliersCount,
+          isLoadingSupplierPage,
+          setErrorFetchSupplier,
+          setSupplierNameFilter,
+        }}
       >
-        <CustomerContext.Provider
-          value={{
-            customers,
-            setCustomers,
-            nextUrl,
-            previousUrl,
-            setFilterParams,
-            filterParams,
-            errorCustomerFetch,
-            setErrorCustomerFetch,
-            isLoadingCustomer,
-            customerCount,
-            setCustomerNameFilter,
-          }}
+        <VehicleContext.Provider
+          value={{ vehicles, setVehicles, setVehicleNoFilter }}
         >
-          <Grid
-            templateAreas={{
-              lg: `"main aside"`,
-              base: `"aside" "main"`,
+          <CustomerContext.Provider
+            value={{
+              customers,
+              setCustomers,
+              nextUrl,
+              previousUrl,
+              setFilterParams,
+              filterParams,
+              errorCustomerFetch,
+              setErrorCustomerFetch,
+              isLoadingCustomer,
+              customerCount,
+              setCustomerNameFilter,
             }}
           >
-            <GridItem
-              area="main"
-              height={{ base: "10vh", lg: "85vh" }}
-              width={{ base: "100vw", lg: "60vw" }}
+            <Grid
+              templateAreas={{
+                lg: `"main aside"`,
+                base: `"aside" "main"`,
+              }}
             >
-              <CustomerTable />
-            </GridItem>
-            <GridItem
-              area="aside"
-              height={{ base: "10vh", lg: "85vh" }}
-              width={{ base: "100vw", lg: "15vw" }}
-              boxShadow="dark-lg"
-              borderRadius={30}
-              padding={5}
-              bg={colorMode === "light" ? "#ca5c4f" : ""}
-            >
-              <CustomerSidePanel />
-            </GridItem>
-          </Grid>
-        </CustomerContext.Provider>
-      </VehicleContext.Provider>
-    </SupplierContext.Provider>
+              <GridItem
+                area="main"
+                height={{ base: "10vh", lg: "85vh" }}
+                width={{ base: "100vw", lg: "60vw" }}
+              >
+                <CustomerTable />
+              </GridItem>
+              <GridItem
+                area="aside"
+                height={{ base: "10vh", lg: "85vh" }}
+                width={{ base: "100vw", lg: "15vw" }}
+                boxShadow="dark-lg"
+                borderRadius={30}
+                padding={5}
+                bg={colorMode === "light" ? "#ca5c4f" : ""}
+              >
+                <CustomerSidePanel />
+              </GridItem>
+            </Grid>
+          </CustomerContext.Provider>
+        </VehicleContext.Provider>
+      </SupplierContext.Provider>
   );
 };
 

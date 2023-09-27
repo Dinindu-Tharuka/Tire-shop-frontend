@@ -28,6 +28,7 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import { makeUpDate } from "../UI/MakeUpDate";
+import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -44,7 +45,7 @@ const BillTable = () => {
     setBillFetchError,
     setBillIdFilter,
   } = useContext(BillContext);
-  const { customers } = useCustomer();
+  const { allCustomers } = useContext(AllCustomerContext);
 
   const numOfPages = Math.ceil(billCount / MAXIMUM_PAGES_PER_PAGE);
 
@@ -84,7 +85,7 @@ const BillTable = () => {
                 <Td>{bill.invoice_id}</Td>
                 <Td>
                   {
-                    customers.find((customer) => customer.id === bill.customer)
+                    allCustomers.find((customer) => customer.id === bill.customer)
                       ?.name
                   }
                 </Td>

@@ -16,7 +16,6 @@ import {
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext, useState } from "react";
 import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
-import { Item } from "../../../services/Inventory/item-page-service";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -44,7 +43,7 @@ const ItemTable = () => {
   } = useContext(ItemPageContext);
 
   const numOfPages = Math.ceil(itemCount / MAXIMUM_PAGES_PER_PAGE);
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const onTypeId = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setItemQuery(event.currentTarget.value);

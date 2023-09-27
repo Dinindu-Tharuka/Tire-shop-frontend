@@ -35,6 +35,7 @@ import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
 } from "../../services/pagination-cut-link";
 import CustomerDelete from "./CustomerDelete";
+import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 
 const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer>(
@@ -54,18 +55,13 @@ const CustomerTable = () => {
     customerCount,
   } = useContext(CustomerContext);
 
+  const { allCustomers, setAllCustomers} = useContext(AllCustomerContext)
+
   const numOfPages = Math.ceil(customerCount / MAXIMUM_PAGES_PER_PAGE);
 
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
-  const onDeleteCustomer = (customer: Customer) => {
-    const originalCustomers = [...customers];
-    setCustomers(customers.filter((cu) => cu.id !== customer.id));
-
-    CustomerService.delete(`${customer.id}`).catch((err) =>
-      setCustomers([...originalCustomers])
-    );
-  };
+  
 
   if (isLoadingCustomer) return <Spinner />;
   return (

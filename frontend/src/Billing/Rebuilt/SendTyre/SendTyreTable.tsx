@@ -24,7 +24,6 @@ import {
 import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
 } from "../../../services/pagination-cut-link";
-import useVehicles from "../../../hooks/Customer/useVehicles";
 import { makeUpDate } from "../../UI/MakeUpDate";
 import SendTyreContext from "../../../Contexts/Rebuild/SendTyreContext";
 import SupplierContext from "../../../Contexts/Registration/SupplierContext";
