@@ -13,9 +13,10 @@ import SupplierContext from "../../Contexts/Registration/SupplierContext";
 
 interface Props {
   selectedSupplier: (supplier: Supplier) => void;
+  defaultSupplier?: Supplier
 }
 
-const SupplierFilter = ({ selectedSupplier }: Props) => {
+const SupplierFilter = ({ selectedSupplier, defaultSupplier }: Props) => {
   const { suppliers, setSupplierNameFilter } = useContext(SupplierContext);
 
   const [sup, setSup] = useState<Supplier | null>(null);
@@ -28,7 +29,7 @@ const SupplierFilter = ({ selectedSupplier }: Props) => {
     <div>
       <Menu>
         <MenuButton as={Button} rightIcon={<AiOutlineDown />} width="15vw">
-          {sup === null ? "Select Supplier" : sup?.name}
+          {sup === null ? "Select Supplier" : sup?.name || (defaultSupplier && defaultSupplier?.name)}
         </MenuButton>
         <MenuList>
           {suppliers

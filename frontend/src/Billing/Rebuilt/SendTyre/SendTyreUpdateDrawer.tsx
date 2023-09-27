@@ -9,8 +9,9 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { SendTyre } from "../../../services/Rebuild/send-tyre-service";
+import SendTyreUpdate from "./SendTyreUpdate";
 
 interface Props {
   selectedSendTyre: SendTyre;
@@ -47,10 +48,10 @@ const SendTyreUpdateDrawer = ({ selectedSendTyre }: Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Update Send Tyres</DrawerHeader>
+          <DrawerHeader>Update Send Tyres {selectedSendTyre.order_no}</DrawerHeader>
 
           <DrawerBody>
-            {/* <TakenTyreUpdate selectedTakenTyre={selectedTakenTyre} /> */}
+            <SendTyreUpdate selectedSendTyre={selectedSendTyre}/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
