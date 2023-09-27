@@ -3,11 +3,13 @@ import { Control, UseFormRegister, useFieldArray } from "react-hook-form";
 
 import { IoAddCircle } from "react-icons/io5";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   SendSupplierTyre,
   SendTyre,
 } from "../../../services/Rebuild/send-tyre-service";
+import AllCustomerTakenTyresContext from "../../../Contexts/Rebuild/AllCustomerTakenTyresContext";
+import AllSendTyresContext from "../../../Contexts/Rebuild/AllSendTyreContext";
 
 interface Props {
   register: UseFormRegister<SendTyre>;
@@ -21,6 +23,14 @@ const AddSendTyres = ({ register, control, sendTyreArrays }: Props) => {
     name: "send_tyres",
     control,
   });
+
+  const { customerTyresTaken } = useContext(AllCustomerTakenTyresContext);
+  const { allSendTyres } = useContext(AllSendTyresContext)
+  useEffect(()=>{
+    
+    
+
+  },[])
 
   let countIndex = 0;
   useEffect(() => {
@@ -44,12 +54,25 @@ const AddSendTyres = ({ register, control, sendTyreArrays }: Props) => {
               type="text"
               isReadOnly={sendTyreArrays && arrayLength > tyreIndex}
             />
-            <Input
-              {...register(`send_tyres.${tyreIndex}.customer_taken_tyre`)}
-              placeholder="Rebuild Id"
-              type="text"
-              isReadOnly={sendTyreArrays && arrayLength > tyreIndex}
-            />
+
+            {/* Rebuild Id */}
+            {arrayLength > tyreIndex ? (
+              <Input
+                {...register(`send_tyres.${tyreIndex}.customer_taken_tyre`)}
+                placeholder="Rebuild Id"
+                type="text"
+                isReadOnly={sendTyreArrays && arrayLength > tyreIndex}
+              />
+            ) : (
+              <Select
+                {...register(`send_tyres.${tyreIndex}.customer_taken_tyre`)}
+              >
+                <option>Select</option>
+                {customerTyresTaken.map((tyre) => (
+                  <option value={tyre.rebuild_id}>{tyre.rebuild_id}</option>
+                ))}
+              </Select>
+            )}
 
             {/* status */}
             {arrayLength > tyreIndex ? (
