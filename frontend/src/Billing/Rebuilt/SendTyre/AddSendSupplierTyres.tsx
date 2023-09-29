@@ -9,7 +9,10 @@ import {
   SendTyre,
 } from "../../../services/Rebuild/send-tyre-service";
 import AllCustomerTakenTyresContext from "../../../Contexts/Rebuild/AllCustomerTakenTyresContext";
-import AllSendTyresContext from "../../../Contexts/Rebuild/AllSendTyreContext";
+
+import AllSendSupplierTyresContext from "../../../Contexts/Rebuild/AllSendSupplierContext";
+import { CustomerTakenTyre } from "../../../services/Rebuild/tyre-taken-service";
+
 
 interface Props {
   register: UseFormRegister<SendTyre>;
@@ -17,7 +20,7 @@ interface Props {
   sendTyreArrays?: SendSupplierTyre[];
 }
 
-const AddSendTyres = ({ register, control, sendTyreArrays }: Props) => {
+const AddSendSupplierTyres = ({ register, control, sendTyreArrays }: Props) => {
   const [arrayLength, setArrayLength] = useState(0);
   const { append, remove, fields } = useFieldArray({
     name: "send_tyres",
@@ -25,13 +28,23 @@ const AddSendTyres = ({ register, control, sendTyreArrays }: Props) => {
   });
 
   const { customerTyresTaken } = useContext(AllCustomerTakenTyresContext);
-  const { allSendTyres } = useContext(AllSendTyresContext)
+  const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
+
+  //Filtering supplier send tyres
+  const [supplierSendTyres, setSupplierSendTyres] = useState<CustomerTakenTyre[]>([])
+
   useEffect(()=>{
-    
-    
 
-  },[])
+    const filtered = customerTyresTaken.filter( cutomerTyre => {
+      const isAvailable = allSendSupplierTyres.some(supplierTyre => cutomerTyre.rebuild_id === supplierTyre.customer_taken_tyre)
+      return !isAvailable
+    })
 
+    setSupplierSendTyres([...filtered])
+
+  },[append])
+
+  //Fix Ui 
   let countIndex = 0;
   useEffect(() => {
     countIndex++;
@@ -67,8 +80,8 @@ const AddSendTyres = ({ register, control, sendTyreArrays }: Props) => {
               <Select
                 {...register(`send_tyres.${tyreIndex}.customer_taken_tyre`)}
               >
-                <option>Select</option>
-                {customerTyresTaken.map((tyre) => (
+                <option>Rebuild Id</option>
+                {supplierSendTyres.map((tyre) => (
                   <option value={tyre.rebuild_id}>{tyre.rebuild_id}</option>
                 ))}
               </Select>
@@ -84,7 +97,7 @@ const AddSendTyres = ({ register, control, sendTyreArrays }: Props) => {
               />
             ) : (
               <Select {...register(`send_tyres.${tyreIndex}.status`)}>
-                <option value="">Select</option>
+                <option value="">Select Status</option>
                 <option value="send">Send</option>
               </Select>
             )}
@@ -117,4 +130,4 @@ const AddSendTyres = ({ register, control, sendTyreArrays }: Props) => {
   );
 };
 
-export default AddSendTyres;
+export default AddSendSupplierTyres;

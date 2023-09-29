@@ -20,7 +20,7 @@ import SupplierFilter from "../../../Registration/Supplier/SupplierFilter";
 import SupplierContext from "../../../Contexts/Registration/SupplierContext";
 import AllSupplierContext from "../../../Contexts/Registration/AllSupplierContext";
 import AddSendTyreForm from "./Add/AddSendTyreForm";
-import AddSendTyres from "./AddSendTyres";
+import AddSendSupplierTyres from "./AddSendSupplierTyres";
 
 interface Props {
   selectedSendTyre: SendTyre;
@@ -42,8 +42,8 @@ const SendTyreUpdate = ({ selectedSendTyre }: Props) => {
       .update(data, `${selectedSendTyre.order_no}`)
       .then((res) => {
         setSuccess(res.status === 200 ? "Updated Successfully" : "");
-        console.log(res.data, 'updated data');
-        
+        console.log(res.data, "updated data");
+
         setSendTyres(
           sendTyres.map((sendTyre) =>
             sendTyre.order_no === selectedSendTyre.order_no
@@ -71,24 +71,27 @@ const SendTyreUpdate = ({ selectedSendTyre }: Props) => {
             />
           </div>
           <div className="mb-3 w-50">
-            <Select {...register("supplier")} >
+            <Select {...register("supplier")}>
               <option value={selectedSendTyre.supplier}>
                 {
-                  allSuppliers.find((sup) => sup.id === selectedSendTyre.supplier)
-                    ?.name
+                  allSuppliers.find(
+                    (sup) => sup.id === selectedSendTyre.supplier
+                  )?.name
                 }
               </option>
               {allSuppliers.map((supplier) => (
                 <option value={supplier.id}>{supplier.name}</option>
               ))}
             </Select>
-            
           </div>
 
           <div className="mb-3 w-100">
-            <AddSendTyres register={register} control={control} sendTyreArrays={selectedSendTyre.send_tyres}/>
+            <AddSendSupplierTyres
+              register={register}
+              control={control}
+              sendTyreArrays={selectedSendTyre.send_tyres}
+            />
           </div>
-          
         </div>
         <HStack justifyContent="space-between">
           <Button

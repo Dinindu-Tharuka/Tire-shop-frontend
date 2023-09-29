@@ -43,21 +43,25 @@ const AddCustomerTakenTyre = ({ register, control, customerArrays }: Props) => {
               {...register(`customer_tyres.${tyreIndex}.rebuild_id`)}
               placeholder="Rebuild Id"
               type="text"
+              isReadOnly={customerArrays && customerArrays.length > tyreIndex}
             />
             <Input
               {...register(`customer_tyres.${tyreIndex}.tyre_no`)}
               placeholder="Tyre No"
               type="text"
+              isReadOnly={customerArrays && customerArrays.length > tyreIndex}
             />
             <Input
               {...register(`customer_tyres.${tyreIndex}.size`)}
               placeholder="Size"
               type="text"
+              isReadOnly={customerArrays && customerArrays.length > tyreIndex}
             />
             <Input
               {...register(`customer_tyres.${tyreIndex}.brand`)}
               placeholder="Brand"
               type="text"
+              isReadOnly={customerArrays && customerArrays.length > tyreIndex}
             />
 
             <Button
