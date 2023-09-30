@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react"
 import React from "react";
-import { ReceivedTyre } from "../../../services/Rebuild/received-tyre-service";
+import { ReceivedTyre } from "../../../services/Rebuild/Received/received-tyre-service";
 
 interface TyreReceivedContextType{
     receivedTyres:ReceivedTyre[];

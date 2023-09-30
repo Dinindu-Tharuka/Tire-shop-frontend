@@ -4,8 +4,10 @@ import { Control, UseFormRegister, useFieldArray } from "react-hook-form";
 import { IoAddCircle } from "react-icons/io5";
 
 import { useContext, useEffect, useState } from "react";
-import { ReceivedSupplierTyre, ReceivedTyre } from "../../../../services/Rebuild/received-tyre-service";
-
+import {
+  ReceivedSupplierTyre,
+  ReceivedTyre,
+} from "../../../../services/Rebuild/Received/received-tyre-service";
 
 interface Props {
   register: UseFormRegister<ReceivedTyre>;
@@ -13,32 +15,36 @@ interface Props {
   sendTyreArrays?: ReceivedSupplierTyre[];
 }
 
-const AddSupplierReceivedTyres = ({register, control, sendTyreArrays}:Props) => {
-    const [arrayLength, setArrayLength] = useState(0);
+const AddSupplierReceivedTyres = ({
+  register,
+  control,
+  sendTyreArrays,
+}: Props) => {
+  const [arrayLength, setArrayLength] = useState(0);
   const { append, remove, fields } = useFieldArray({
     name: "received_tyres",
     control,
   });
 
-//   const { customerTyresTaken } = useContext(AllCustomerTakenTyresContext);
-//   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
+  //   const { customerTyresTaken } = useContext(AllCustomerTakenTyresContext);
+  //   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
 
   //Filtering supplier send tyres
   const [supplierSendTyres, setSupplierSendTyres] = useState<
     ReceivedSupplierTyre[]
   >([]);
 
-//   useEffect(() => {
-//     const filtered = customerTyresTaken.filter((cutomerTyre) => {
-//       const isAvailable = allSendSupplierTyres.some(
-//         (supplierTyre) =>
-//           cutomerTyre.rebuild_id === supplierTyre.customer_taken_tyre
-//       );
-//       return !isAvailable;
-//     });
+  //   useEffect(() => {
+  //     const filtered = customerTyresTaken.filter((cutomerTyre) => {
+  //       const isAvailable = allSendSupplierTyres.some(
+  //         (supplierTyre) =>
+  //           cutomerTyre.rebuild_id === supplierTyre.customer_taken_tyre
+  //       );
+  //       return !isAvailable;
+  //     });
 
-//     setSupplierSendTyres([...filtered]);
-//   }, [append]);
+  //     setSupplierSendTyres([...filtered]);
+  //   }, [append]);
 
   //Fix Ui
   let countIndex = 0;
@@ -55,10 +61,16 @@ const AddSupplierReceivedTyres = ({register, control, sendTyreArrays}:Props) => 
   return (
     <Flex width="100%" flexDir="column">
       <Flex width="100%" flexDir="column">
-        <Flex width='100%'>
-            <Text margin={3} width='25%'>Cost</Text>
-            <Text margin={3} width='25%'>Job No</Text>
-            <Text margin={3} width='25%'>Status</Text>
+        <Flex width="100%">
+          <Text margin={3} width="25%">
+            Cost
+          </Text>
+          <Text margin={3} width="25%">
+            Job No
+          </Text>
+          <Text margin={3} width="25%">
+            Status
+          </Text>
         </Flex>
         {fields.map((field, tyreIndex) => (
           <HStack width="100%" margin={3} key={field.id}>
@@ -129,7 +141,7 @@ const AddSupplierReceivedTyres = ({register, control, sendTyreArrays}:Props) => 
         </Button>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default AddSupplierReceivedTyres
+export default AddSupplierReceivedTyres;

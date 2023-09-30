@@ -18,13 +18,22 @@ import useAllSendTyres from "../hooks/Rebuild/useAllSendTyres";
 import AllSendTyresContext from "../Contexts/Rebuild/AllSendTyreContext";
 import useAllSendSupplierTyres from "../hooks/Rebuild/useAllSendSupplierTires";
 import AllSendSupplierTyresContext from "../Contexts/Rebuild/AllSendSupplierContext";
-import useReceivedTyre from "../hooks/Rebuild/useReceivedTyre";
+import useReceivedTyre from "../hooks/Rebuild/Received/useReceivedTyre";
 import ReceivedTyreContext from "../Contexts/Rebuild/Received/ReceivedTyreContex";
-import useAllReceivedTyres from "../hooks/Rebuild/useAllReceivedTyres";
-import AllReceivedTyresContext from "../Contexts/Rebuild/Received/AllreceivedtyresContext";
+import useAllReceivedTyres from "../hooks/Rebuild/Received/useAllReceivedTyres";
+import AllReceivedTyresContext from "../Contexts/Rebuild/Received/AllReceivedtyreContext";
+import useAllReceivedSupplierTyres from "../hooks/Rebuild/Received/useAllReceivedSupplierTyres";
+import AllReceivedSupplierTyresContext from "../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 
 const GridSection = () => {
   const [userMe, setUserMe] = useState<User>({} as User);
+
+  const {
+    allReceivedSupplierTyres,
+    setAllReceivedSupplierTyres,
+    allReceivedSupplierTyresFetchError,
+    setAllReceivedSupplierTyresFetchError,
+  } = useAllReceivedSupplierTyres();
 
   const {
     allReceivedTyres,
@@ -102,119 +111,128 @@ const GridSection = () => {
   }, []);
 
   return (
-    <AllReceivedTyresContext.Provider
+    <AllReceivedSupplierTyresContext.Provider
       value={{
-        allReceivedTyres,
-        setAllReceivedTyres,
-        allReceivedTyresFetchError,
-        setAllReceivedTyresFetchError,
+        allReceivedSupplierTyres,
+        setAllReceivedSupplierTyres,
+        allReceivedSupplierTyresFetchError,
+        setAllReceivedSupplierTyresFetchError,
       }}
     >
-      <ReceivedTyreContext.Provider
+      <AllReceivedTyresContext.Provider
         value={{
-          receivedTyres,
-          setReceivedTyres,
-          errorFetchReceivedTyres,
-          setErrorFetchReceivedTyres,
-          nextReceivedTyresUrl,
-          previousReceivedTyresUrl,
-          filterReceivedTyreParams,
-          setFilterReceivedTyreParams,
-          isLoadingReceivedTyre,
-          receivedTyreCount,
-          setReceivedTyreNameFilter,
+          allReceivedTyres,
+          setAllReceivedTyres,
+          allReceivedTyresFetchError,
+          setAllReceivedTyresFetchError,
         }}
       >
-        <AllSendSupplierTyresContext.Provider
+        <ReceivedTyreContext.Provider
           value={{
-            allSendSupplierTyres,
-            setAllSendSupplierTyres,
-            allSendTyresSupplierFetchError,
-            setAllSendSupplierTyresFetchError,
+            receivedTyres,
+            setReceivedTyres,
+            errorFetchReceivedTyres,
+            setErrorFetchReceivedTyres,
+            nextReceivedTyresUrl,
+            previousReceivedTyresUrl,
+            filterReceivedTyreParams,
+            setFilterReceivedTyreParams,
+            isLoadingReceivedTyre,
+            receivedTyreCount,
+            setReceivedTyreNameFilter,
           }}
         >
-          <AllSendTyresContext.Provider
+          <AllSendSupplierTyresContext.Provider
             value={{
-              allSendTyres,
-              setAllSendTyres,
-              allSendTyresFetchError,
-              setAllSendTyresFetchError,
+              allSendSupplierTyres,
+              setAllSendSupplierTyres,
+              allSendTyresSupplierFetchError,
+              setAllSendSupplierTyresFetchError,
             }}
           >
-            <AllCustomerTakenTyresContext.Provider
+            <AllSendTyresContext.Provider
               value={{
-                customerTyresTaken,
-                setCustomerTyresTaken,
-                customerTyresTakenFetchError,
-                setCustomerTyresTakenFetchError,
+                allSendTyres,
+                setAllSendTyres,
+                allSendTyresFetchError,
+                setAllSendTyresFetchError,
               }}
             >
-              <AllSupplierContext.Provider
+              <AllCustomerTakenTyresContext.Provider
                 value={{
-                  allSuppliers,
-                  setAllSuppliers,
-                  errorFetchAllSupplier,
-                  setErrorFetchAllSupplier,
-                  isLoadingAllSupplierPage,
+                  customerTyresTaken,
+                  setCustomerTyresTaken,
+                  customerTyresTakenFetchError,
+                  setCustomerTyresTakenFetchError,
                 }}
               >
-                <AllCustomerContext.Provider
+                <AllSupplierContext.Provider
                   value={{
-                    allCustomers,
-                    setAllCustomers,
-                    errorAllCustomerFetch,
-                    setErrorAllCustomerFetch,
+                    allSuppliers,
+                    setAllSuppliers,
+                    errorFetchAllSupplier,
+                    setErrorFetchAllSupplier,
+                    isLoadingAllSupplierPage,
                   }}
                 >
-                  <UserMeContext.Provider value={userMe}>
-                    <UserContext.Provider
-                      value={{
-                        users,
-                        setUsers,
-                        errorFetchUsers,
-                        setErrorFetchUser,
-                        isLoadingUsers,
-                      }}
-                    >
-                      <Grid
-                        templateAreas={{
-                          base: `"nav" "side" "main"`,
-                          lg: `"nav nav" "side main"`,
+                  <AllCustomerContext.Provider
+                    value={{
+                      allCustomers,
+                      setAllCustomers,
+                      errorAllCustomerFetch,
+                      setErrorAllCustomerFetch,
+                    }}
+                  >
+                    <UserMeContext.Provider value={userMe}>
+                      <UserContext.Provider
+                        value={{
+                          users,
+                          setUsers,
+                          errorFetchUsers,
+                          setErrorFetchUser,
+                          isLoadingUsers,
                         }}
                       >
-                        <GridItem
-                          area="nav"
-                          height={{ base: "10vh", lg: "10vh" }}
-                          marginBottom={5}
+                        <Grid
+                          templateAreas={{
+                            base: `"nav" "side" "main"`,
+                            lg: `"nav nav" "side main"`,
+                          }}
                         >
-                          <Navbar />
-                        </GridItem>
+                          <GridItem
+                            area="nav"
+                            height={{ base: "10vh", lg: "10vh" }}
+                            marginBottom={5}
+                          >
+                            <Navbar />
+                          </GridItem>
 
-                        <GridItem
-                          area="side"
-                          height={{ base: "10vh", lg: "85vh" }}
-                          width={{ base: "100vw", lg: "20vw" }}
-                        >
-                          <SideBarOptionList />
-                        </GridItem>
+                          <GridItem
+                            area="side"
+                            height={{ base: "10vh", lg: "85vh" }}
+                            width={{ base: "100vw", lg: "20vw" }}
+                          >
+                            <SideBarOptionList />
+                          </GridItem>
 
-                        <GridItem
-                          area="main"
-                          height={{ base: "80vh", lg: "85vh" }}
-                          width={{ base: "100vw", lg: "80vw" }}
-                        >
-                          <Outlet />
-                        </GridItem>
-                      </Grid>
-                    </UserContext.Provider>
-                  </UserMeContext.Provider>
-                </AllCustomerContext.Provider>
-              </AllSupplierContext.Provider>
-            </AllCustomerTakenTyresContext.Provider>
-          </AllSendTyresContext.Provider>
-        </AllSendSupplierTyresContext.Provider>
-      </ReceivedTyreContext.Provider>
-    </AllReceivedTyresContext.Provider>
+                          <GridItem
+                            area="main"
+                            height={{ base: "80vh", lg: "85vh" }}
+                            width={{ base: "100vw", lg: "80vw" }}
+                          >
+                            <Outlet />
+                          </GridItem>
+                        </Grid>
+                      </UserContext.Provider>
+                    </UserMeContext.Provider>
+                  </AllCustomerContext.Provider>
+                </AllSupplierContext.Provider>
+              </AllCustomerTakenTyresContext.Provider>
+            </AllSendTyresContext.Provider>
+          </AllSendSupplierTyresContext.Provider>
+        </ReceivedTyreContext.Provider>
+      </AllReceivedTyresContext.Provider>
+    </AllReceivedSupplierTyresContext.Provider>
   );
 };
 

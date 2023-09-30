@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import receivedTyreService, { ReceivedTyre, ReceivedtyrePageStructure } from "../../services/Rebuild/received-tyre-service"
+import receivedTyreService, { ReceivedTyre, ReceivedtyrePageStructure } from "../../../services/Rebuild/Received/received-tyre-service"
 
 const useReceivedTyre = () => {
     const [receivedTyres, setReceivedTyres] = useState<ReceivedTyre[]>([])

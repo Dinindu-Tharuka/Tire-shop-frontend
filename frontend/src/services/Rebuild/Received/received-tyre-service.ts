@@ -1,4 +1,4 @@
-import createPagination from "../http-pagination-service";
+import createPagination from "../../http-pagination-service";
 
 export interface ReceivedSupplierTyre{
     id:number;

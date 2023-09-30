@@ -13,7 +13,7 @@ import { useContext } from "react";
 import { useRef } from "react";
 import receivedTyreService, {
   ReceivedTyre,
-} from "../../../services/Rebuild/received-tyre-service";
+} from "../../../services/Rebuild/Received/received-tyre-service";
 import ReceivedTyreContext from "../../../Contexts/Rebuild/Received/ReceivedTyreContex";
 
 interface Props {

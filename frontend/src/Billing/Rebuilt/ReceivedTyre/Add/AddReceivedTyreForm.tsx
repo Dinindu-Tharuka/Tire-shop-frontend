@@ -10,7 +10,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import receivedTyreService, {
   ReceivedTyre,
-} from "../../../../services/Rebuild/received-tyre-service";
+} from "../../../../services/Rebuild/Received/received-tyre-service";
 import ReceivedTyreContext from "../../../../Contexts/Rebuild/Received/ReceivedTyreContex";
 import AddSupplierReceivedTyres from "./AddSupplierReceivedTyres";
 

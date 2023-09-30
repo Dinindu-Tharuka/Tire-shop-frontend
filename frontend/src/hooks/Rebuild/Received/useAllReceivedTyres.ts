@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { ReceivedTyre } from '../../services/Rebuild/received-tyre-service'
-import allReceivedTyresService from '../../services/Rebuild/all-received-tyres-service'
+import { ReceivedTyre } from '../../../services/Rebuild/Received/received-tyre-service'
+import allReceivedTyresService from '../../../services/Rebuild/Received/all-received-tyres-service'
 
 const useAllReceivedTyres = () => {
     const [allReceivedTyres, setAllReceivedTyres] = useState<ReceivedTyre[]>([])
