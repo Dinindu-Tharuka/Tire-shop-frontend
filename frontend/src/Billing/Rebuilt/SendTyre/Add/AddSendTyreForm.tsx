@@ -13,7 +13,7 @@ import sendTyreService, {
 } from "../../../../services/Rebuild/send-tyre-service";
 import SendTyreContext from "../../../../Contexts/Rebuild/SendTyreContext";
 import SupplierContext from "../../../../Contexts/Registration/SupplierContext";
-import AddSendSupplierTyres from "../AddSendSupplierTyres";
+import AddSendSupplierTyres from "./AddSendSupplierTyres";
 import SupplierFilter from "../../../../Registration/Supplier/SupplierFilter";
 import { Supplier } from "../../../../services/Registration/supplier-service";
 import AllSendSupplierTyresContext from "../../../../Contexts/Rebuild/AllSendSupplierContext";
@@ -27,7 +27,9 @@ const AddSendTyreForm = () => {
   const { colorMode } = useColorMode();
 
   const { sendTyres, setSendTyres } = useContext(SendTyreContext);
-  const { setAllSendSupplierTyres, allSendSupplierTyres } = useContext(AllSendSupplierTyresContext)
+  const { setAllSendSupplierTyres, allSendSupplierTyres } = useContext(
+    AllSendSupplierTyresContext
+  );
 
   const onCreate = (data: SendTyre) => {
     const newly = { ...data, supplier: seletedSuplier?.id };
@@ -41,7 +43,10 @@ const AddSendTyreForm = () => {
         console.log(res.data, "response");
 
         setSendTyres([res.data, ...sendTyres]);
-        setAllSendSupplierTyres([...allSendSupplierTyres, ...res.data.send_tyres])
+        setAllSendSupplierTyres([
+          ...allSendSupplierTyres,
+          ...res.data.send_tyres,
+        ]);
       })
       .catch((err) => {
         setErrorSendTyreCreate("Not Succefully created.");

@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import TyreTakenTable from "../TyreTaken/TyreTakenTable";
 import SendTyreTable from "../SendTyre/SendTyreTable";
+import ReceivedTyreTable from "../ReceivedTyre/ReceivedTyreTable";
 
 const RebuiltMainPage = () => {
   return (
@@ -30,7 +31,9 @@ const RebuiltMainPage = () => {
           </Flex>
         </TabPanel>
         <TabPanel>
-        <Flex width="60vw" height="80vh" bg="yellow.700"></Flex>
+        <Flex width="60vw" height="80vh">
+          <ReceivedTyreTable/>
+        </Flex>
         </TabPanel>
       </TabPanels>
     </Tabs>

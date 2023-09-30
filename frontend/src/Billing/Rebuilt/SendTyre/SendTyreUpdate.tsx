@@ -20,7 +20,7 @@ import SupplierFilter from "../../../Registration/Supplier/SupplierFilter";
 import SupplierContext from "../../../Contexts/Registration/SupplierContext";
 import AllSupplierContext from "../../../Contexts/Registration/AllSupplierContext";
 import AddSendTyreForm from "./Add/AddSendTyreForm";
-import AddSendSupplierTyres from "./AddSendSupplierTyres";
+import AddSendSupplierTyres from "./Add/AddSendSupplierTyres";
 
 interface Props {
   selectedSendTyre: SendTyre;
