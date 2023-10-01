@@ -13,15 +13,16 @@ import receivedTyreService, {
 } from "../../../../services/Rebuild/Received/received-tyre-service";
 import ReceivedTyreContext from "../../../../Contexts/Rebuild/Received/ReceivedTyreContex";
 import AddSupplierReceivedTyres from "./AddSupplierReceivedTyres";
+import AllReceivedSupplierTyresContext from "../../../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 
 const AddReceivedTyreForm = () => {
   const { register, handleSubmit, control } = useForm<ReceivedTyre>();
-
   const [errorSendTyreCreate, setErrorSendTyreCreate] = useState("");
   const [success, setSuccess] = useState("");
   const { colorMode } = useColorMode();
 
   const { receivedTyres, setReceivedTyres } = useContext(ReceivedTyreContext);
+  const { setAllReceivedSupplierTyres , allReceivedSupplierTyres} = useContext(AllReceivedSupplierTyresContext)
 
   const onCreate = (data: ReceivedTyre) => {
     console.log(data, "submitted");
@@ -34,7 +35,7 @@ const AddReceivedTyreForm = () => {
         console.log(res.data, "response");
 
         setReceivedTyres([res.data, ...receivedTyres]);
-        // setAllSendSupplierTyres([...allSendSupplierTyres, ...res.data.send_tyres])
+        setAllReceivedSupplierTyres([...allReceivedSupplierTyres, ...res.data.received_tyres])
       })
       .catch((err) => {
         setErrorSendTyreCreate("Not Succefully created.");

@@ -14,13 +14,13 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import sendTyreService, {
   SendTyre,
-} from "../../../services/Rebuild/send-tyre-service";
-import SendTyreContext from "../../../Contexts/Rebuild/SendTyreContext";
-import SupplierFilter from "../../../Registration/Supplier/SupplierFilter";
-import SupplierContext from "../../../Contexts/Registration/SupplierContext";
-import AllSupplierContext from "../../../Contexts/Registration/AllSupplierContext";
-import AddSendTyreForm from "./Add/AddSendTyreForm";
-import AddSendSupplierTyres from "./Add/AddSendSupplierTyres";
+} from "../../../../services/Rebuild/send-tyre-service";
+import SendTyreContext from "../../../../Contexts/Rebuild/SendTyreContext";
+import SupplierFilter from "../../../../Registration/Supplier/SupplierFilter";
+import SupplierContext from "../../../../Contexts/Registration/SupplierContext";
+import AllSupplierContext from "../../../../Contexts/Registration/AllSupplierContext";
+import AddSendTyreForm from "../Add/AddSendTyreForm";
+import AddSendSupplierTyres from "../Add/AddSendSupplierTyres";
 
 interface Props {
   selectedSendTyre: SendTyre;

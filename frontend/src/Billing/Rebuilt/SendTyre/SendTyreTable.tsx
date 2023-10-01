@@ -28,7 +28,7 @@ import { makeUpDate } from "../../UI/MakeUpDate";
 import SendTyreContext from "../../../Contexts/Rebuild/SendTyreContext";
 import SupplierContext from "../../../Contexts/Registration/SupplierContext";
 import SendTyreDelete from "./SendTyreDelete";
-import SendTyreUpdateDrawer from "./SendTyreUpdateDrawer";
+import SendTyreUpdateDrawer from "./Update/SendTyreUpdateDrawer";
 
 const SendTyreTable = () => {
   const { colorMode } = useColorMode();

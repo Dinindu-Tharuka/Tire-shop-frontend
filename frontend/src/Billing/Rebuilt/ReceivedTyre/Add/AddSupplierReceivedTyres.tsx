@@ -1,13 +1,14 @@
 import { Input, Button, Flex, HStack, Select, Text } from "@chakra-ui/react";
 import { Control, UseFormRegister, useFieldArray } from "react-hook-form";
-
 import { IoAddCircle } from "react-icons/io5";
-
 import { useContext, useEffect, useState } from "react";
 import {
   ReceivedSupplierTyre,
   ReceivedTyre,
 } from "../../../../services/Rebuild/Received/received-tyre-service";
+import AllReceivedSupplierTyresContext from "../../../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
+import AllSendSupplierTyresContext from "../../../../Contexts/Rebuild/AllSendSupplierContext";
+import { SendSupplierTyre } from "../../../../services/Rebuild/send-tyre-service";
 
 interface Props {
   register: UseFormRegister<ReceivedTyre>;
@@ -26,25 +27,32 @@ const AddSupplierReceivedTyres = ({
     control,
   });
 
-  //   const { customerTyresTaken } = useContext(AllCustomerTakenTyresContext);
-  //   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
+  const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
+  const { allReceivedSupplierTyres } = useContext(
+    AllReceivedSupplierTyresContext
+  );
 
   //Filtering supplier send tyres
-  const [supplierSendTyres, setSupplierSendTyres] = useState<
-    ReceivedSupplierTyre[]
+  const [allFilteredSupplierTyres, setallFilteredSupplierTyres] = useState<
+    SendSupplierTyre[]
   >([]);
 
-  //   useEffect(() => {
-  //     const filtered = customerTyresTaken.filter((cutomerTyre) => {
-  //       const isAvailable = allSendSupplierTyres.some(
-  //         (supplierTyre) =>
-  //           cutomerTyre.rebuild_id === supplierTyre.customer_taken_tyre
-  //       );
-  //       return !isAvailable;
-  //     });
+  useEffect(() => {
 
-  //     setSupplierSendTyres([...filtered]);
-  //   }, [append]);
+    console.log('received suppliers', allReceivedSupplierTyres);
+    
+    const filtered = allSendSupplierTyres.filter((supplierTyre) => {
+      console.log('suppier tyre', supplierTyre.job_no);
+      
+      const isAvailable = allReceivedSupplierTyres.some(
+        (supplierReceivedTyre) =>
+          parseInt(supplierReceivedTyre.send_supplier_tyre) === supplierTyre.id
+      );
+      return !isAvailable;
+    });
+
+    setallFilteredSupplierTyres([...filtered]);
+  }, [append]);
 
   //Fix Ui
   let countIndex = 0;
@@ -53,7 +61,18 @@ const AddSupplierReceivedTyres = ({
 
     if (countIndex === 1) {
       if (sendTyreArrays !== undefined) {
-        append([...sendTyreArrays]);
+        append([...sendTyreArrays.map(tyre => {
+          const jobNo = allSendSupplierTyres.find(sendTyre => sendTyre.id === parseInt(tyre.send_supplier_tyre))?.job_no
+          if (jobNo !== undefined){
+          return {...tyre, send_supplier_tyre:jobNo }
+        }
+
+
+
+          return tyre
+        } )]);
+        console.log('array', sendTyreArrays)
+        
         setArrayLength(sendTyreArrays.length);
       }
     }
@@ -81,11 +100,11 @@ const AddSupplierReceivedTyres = ({
               isReadOnly={sendTyreArrays && arrayLength > tyreIndex}
             />
 
-            {/* Rebuild Id */}
+            {/* Job No */}
             {arrayLength > tyreIndex ? (
               <Input
                 {...register(`received_tyres.${tyreIndex}.send_supplier_tyre`)}
-                placeholder="Rebuild Id"
+                placeholder="Job No"
                 type="text"
                 isReadOnly={sendTyreArrays && arrayLength > tyreIndex}
               />
@@ -94,9 +113,9 @@ const AddSupplierReceivedTyres = ({
                 {...register(`received_tyres.${tyreIndex}.send_supplier_tyre`)}
               >
                 <option>Job No</option>
-                {/* {supplierSendTyres.map((tyre) => (
-                  <option value={tyre.rebuild_id}>{tyre.rebuild_id}</option>
-                ))} */}
+                {allFilteredSupplierTyres.map((tyre) => (
+                  <option value={tyre.id}>{tyre.job_no}</option>
+                ))}
               </Select>
             )}
 
@@ -135,7 +154,7 @@ const AddSupplierReceivedTyres = ({
           marginTop={5}
         >
           <Flex width="100%" justifyContent="space-between">
-            <div className="me-4">Add Supplier Tyre</div>
+            <div className="me-4">Add Received Tyre</div>
             <IoAddCircle />
           </Flex>
         </Button>

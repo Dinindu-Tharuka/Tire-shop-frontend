@@ -27,6 +27,7 @@ import getCutUrl, {
 import { makeUpDate } from "../../UI/MakeUpDate";
 import ReceivedTyreContext from "../../../Contexts/Rebuild/Received/ReceivedTyreContex";
 import ReceivedTyreDelete from "./ReceivedTyreDelete";
+import ReceivedTyreUpdateDrawer from "./Update/ReceivedTyreUpdateDrawer";
 
 const ReceivedTyreTable = () => {
   const { colorMode } = useColorMode();
@@ -67,7 +68,7 @@ const ReceivedTyreTable = () => {
             {receivedTyres.map((tyre, index) => (
               <Tr key={index}>
                 <Th>
-                  {/* <SendTyreUpdateDrawer selectedSendTyre={tyre} /> */}
+                  <ReceivedTyreUpdateDrawer selectedReceivedTyre={tyre}/>
                 </Th>
                 <Th>
                   <ReceivedTyreDelete selectedReceivedTyre={tyre} />
