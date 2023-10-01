@@ -15,6 +15,8 @@ import receivedTyreService, {
   ReceivedTyre,
 } from "../../../services/Rebuild/Received/received-tyre-service";
 import ReceivedTyreContext from "../../../Contexts/Rebuild/Received/ReceivedTyreContex";
+import AllSendSupplierTyresContext from "../../../Contexts/Rebuild/AllSendSupplierContext";
+import AllReceivedSupplierTyresContext from "../../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 
 interface Props {
   selectedReceivedTyre: ReceivedTyre;
@@ -26,19 +28,24 @@ const ReceivedTyreDelete = ({ selectedReceivedTyre }: Props) => {
   const deleteToast = useToast();
   const { receivedTyres, setReceivedTyres } = useContext(ReceivedTyreContext);
 
+  // To update deletion ofthe received supplier tyres
+  const { allReceivedSupplierTyres, setAllReceivedSupplierTyres } = useContext(
+    AllReceivedSupplierTyresContext
+  );
+
   const name = "Received Tyre";
 
-  const onDeleteBill = (seletedSendTyre: ReceivedTyre) => {
+  const onDeleteBill = (seletedReceivedTyre: ReceivedTyre) => {
     const originalSendTyres = [...receivedTyres];
 
     setReceivedTyres(
       receivedTyres.filter(
-        (tyre) => tyre.invoice_no !== seletedSendTyre.invoice_no
+        (tyre) => tyre.invoice_no !== seletedReceivedTyre.invoice_no
       )
     );
 
     receivedTyreService
-      .delete(`${seletedSendTyre.invoice_no}`)
+      .delete(`${seletedReceivedTyre.invoice_no}`)
       .then((res) => {
         if (res.status === 204) {
           deleteToast({
@@ -48,6 +55,17 @@ const ReceivedTyreDelete = ({ selectedReceivedTyre }: Props) => {
             duration: 2000,
             isClosable: true,
           });
+
+          // To update deleted supplier tyres
+          setAllReceivedSupplierTyres([
+            ...allReceivedSupplierTyres.filter((supplierTyre) => {
+              const isAvailble = selectedReceivedTyre.received_tyres.some(
+                (seletedTyre) => seletedTyre.id === supplierTyre.id
+              );
+
+              return !isAvailble;
+            }),
+          ]);
         }
       })
       .catch((err) => {

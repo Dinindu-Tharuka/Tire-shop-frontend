@@ -38,11 +38,8 @@ const AddSupplierReceivedTyres = ({
   >([]);
 
   useEffect(() => {
-
-    console.log('received suppliers', allReceivedSupplierTyres);
     
     const filtered = allSendSupplierTyres.filter((supplierTyre) => {
-      console.log('suppier tyre', supplierTyre.job_no);
       
       const isAvailable = allReceivedSupplierTyres.some(
         (supplierReceivedTyre) =>
@@ -92,7 +89,7 @@ const AddSupplierReceivedTyres = ({
           </Text>
         </Flex>
         {fields.map((field, tyreIndex) => (
-          <HStack width="100%" margin={3} key={field.id}>
+          <HStack width="100%" margin={3} key={field.id} >
             <Input
               {...register(`received_tyres.${tyreIndex}.cost`)}
               placeholder="Cost"
