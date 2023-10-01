@@ -15,7 +15,6 @@ import receivedTyreService, {
   ReceivedTyre,
 } from "../../../services/Rebuild/Received/received-tyre-service";
 import ReceivedTyreContext from "../../../Contexts/Rebuild/Received/ReceivedTyreContex";
-import AllSendSupplierTyresContext from "../../../Contexts/Rebuild/AllSendSupplierContext";
 import AllReceivedSupplierTyresContext from "../../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 
 interface Props {

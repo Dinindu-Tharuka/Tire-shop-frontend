@@ -1,36 +1,43 @@
 import {
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogContent,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogOverlay,
-    Button,
-    useDisclosure,
-    useToast,
-  } from "@chakra-ui/react";
-  import { useContext } from "react";
-  import { useRef } from "react";
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import { useContext } from "react";
+import { useRef } from "react";
 
-import sendTyreService, { SendTyre } from "../../../services/Rebuild/send-tyre-service";
+import sendTyreService, {
+  SendTyre,
+} from "../../../services/Rebuild/send-tyre-service";
 import SendTyreContext from "../../../Contexts/Rebuild/SendTyreContext";
-  
-  interface Props {
-    selectedSendTyre: SendTyre;
-  }
+import AllSendSupplierTyresContext from "../../../Contexts/Rebuild/AllSendSupplierContext";
 
-const SendTyreDelete = ({ selectedSendTyre }:Props) => {
+interface Props {
+  selectedSendTyre: SendTyre;
+}
+
+const SendTyreDelete = ({ selectedSendTyre }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const deleteToast = useToast();
   const { sendTyres, setSendTyres } = useContext(SendTyreContext);
-
+  const { allSendSupplierTyres, setAllSendSupplierTyres } = useContext(
+    AllSendSupplierTyresContext
+  );
   const name = "Send Tyre";
 
   const onDeleteBill = (seletedSendTyre: SendTyre) => {
     const originalSendTyres = [...sendTyres];
 
-    setSendTyres(sendTyres.filter((tyre) => tyre.order_no !== seletedSendTyre.order_no));
+    setSendTyres(
+      sendTyres.filter((tyre) => tyre.order_no !== seletedSendTyre.order_no)
+    );
 
     sendTyreService
       .delete(`${seletedSendTyre.order_no}`)
@@ -43,6 +50,16 @@ const SendTyreDelete = ({ selectedSendTyre }:Props) => {
             duration: 2000,
             isClosable: true,
           });
+
+          setAllSendSupplierTyres([
+            ...allSendSupplierTyres.filter((tyre) => {
+              const isAvailable = selectedSendTyre.send_tyres.some(
+                (selectedTyre) => selectedTyre.id === tyre.id
+              );
+
+              return !isAvailable;
+            }),
+          ]);
         }
       })
       .catch((err) => {
