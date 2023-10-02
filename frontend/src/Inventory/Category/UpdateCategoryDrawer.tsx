@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import UpdateCategoryForm from "./UpdateCategoryForm";
-import { Category } from "../../../services/Inventory/category-page-service";
+import { Category } from "../../services/Inventory/category-page-service";
 
 interface Props {
   updateCategory: Category;

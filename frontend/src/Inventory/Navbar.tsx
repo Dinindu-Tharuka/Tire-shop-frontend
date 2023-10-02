@@ -5,7 +5,7 @@ import MainName from "./MainName";
 const Navbar = () => {
   return (
     <HStack justifyContent="space-between">
-      <MainName/>
+      <MainName />
       <ColorModeSwitch />
     </HStack>
   );

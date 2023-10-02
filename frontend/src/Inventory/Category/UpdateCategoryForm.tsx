@@ -3,40 +3,43 @@ import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import categoryService, {
   Category,
-} from "../../../services/Inventory/category-page-service";
-import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
+} from "../../services/Inventory/category-page-service";
+import ItemCategoryContext from "../../Contexts/Inventory/CategoryContext";
 
-const CategoryAddForm = () => {
+interface Props {
+  updateCategory: Category;
+}
+
+const UpdateCategoryForm = ({ updateCategory }: Props) => {
   const { register, handleSubmit } = useForm();
 
-  const [errorCategoryCreate, setErrorCategoryCreate] = useState("");
+  const [errorCategoryUpdate, setErrorCategoryUpdate] = useState("");
   const [success, setSuccess] = useState("");
   const { toggleColorMode, colorMode } = useColorMode();
 
   const { categories, setCategories } = useContext(ItemCategoryContext);
 
   const onSubmit = (data: FieldValues) => {
-    const createdCategory: Category = {
-      id: data.id,
+    const updated: Category = {
+      id: updateCategory.id,
       category_name: data.category_name,
       description: data.description,
     };
 
     categoryService
-      .create(data)
+      .update(updated, `${updated.id}`)
       .then((res) => {
-        if (res.status === 201) {
-          setSuccess("Successfully Created...");
-          setCategories([res.data, ...categories]);
-        }
+        setSuccess("Successfully Updated.");
+        setCategories(
+          categories.map((cat) => (cat.id === updated.id ? updated : cat))
+        );
       })
-      .catch((err) => setErrorCategoryCreate(err.message));
+      .catch((err) => setErrorCategoryUpdate(err.message));
   };
-
   return (
     <>
-      {errorCategoryCreate && (
-        <Text textColor="#dd0939">{errorCategoryCreate}</Text>
+      {errorCategoryUpdate && (
+        <Text textColor="#dd0939">{errorCategoryUpdate}</Text>
       )}
       {success && <Text textColor="#38e17e">{success}</Text>}
 
@@ -47,6 +50,7 @@ const CategoryAddForm = () => {
               {...register("category_name")}
               type="text"
               placeholder="Category Name"
+              defaultValue={updateCategory.category_name}
             />
           </div>
 
@@ -55,6 +59,7 @@ const CategoryAddForm = () => {
               {...register("description")}
               type="text"
               placeholder="Description"
+              defaultValue={updateCategory.description}
             />
           </div>
         </div>
@@ -63,7 +68,7 @@ const CategoryAddForm = () => {
             type="submit"
             bg={colorMode === "light" ? "#e3a99c" : "#575757"}
             onClick={() => {
-              setErrorCategoryCreate("");
+              setErrorCategoryUpdate("");
               setSuccess("");
             }}
           >
@@ -75,4 +80,4 @@ const CategoryAddForm = () => {
   );
 };
 
-export default CategoryAddForm;
+export default UpdateCategoryForm;

@@ -12,8 +12,6 @@ import {
 import { useRef, useState } from "react";
 import CategoryAddForm from "./CategoryAddForm";
 
-
-
 const AddCategoryDrawer = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,7 +46,7 @@ const AddCategoryDrawer = () => {
           <DrawerHeader>Add Category</DrawerHeader>
 
           <DrawerBody>
-            <CategoryAddForm/>
+            <CategoryAddForm />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

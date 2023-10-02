@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import AddCustomerTakenTyre from "../AddCustomerTakenTyre";
+import AddCustomerTakenTyre from "./AddCustomerTakenTyre";
 import { AddTakentyreForm } from "./AddTakentyreForm";
 
 const AddDrawerTakenTyre = () => {
@@ -32,7 +32,7 @@ const AddDrawerTakenTyre = () => {
         width="500px"
         onClick={onOpen}
       >
-        Add Taken Tyre
+        add taken tyre
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -44,7 +44,7 @@ const AddDrawerTakenTyre = () => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add Taken Tyre</DrawerHeader>
+          <DrawerHeader>ADD TAKEN TYRE</DrawerHeader>
 
           <DrawerBody>
             <AddTakentyreForm />

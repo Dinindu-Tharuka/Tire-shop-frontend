@@ -19,6 +19,7 @@ const AddDrawerReceivedTyre = () => {
   return (
     <>
       <Button
+      alignContent='start'
         textAlign="left"
         textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
         bg={colorMode === "light" ? "#f1cac1" : ""}
@@ -32,7 +33,7 @@ const AddDrawerReceivedTyre = () => {
         onClick={onOpen}
         
       >
-        Add Received Tyre 
+        add received tyre
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -44,7 +45,7 @@ const AddDrawerReceivedTyre = () => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Add Received Tyre</DrawerHeader>
+          <DrawerHeader>ADD RECEIVED TYRE</DrawerHeader>
 
           <DrawerBody>
             <AddReceivedTyreForm/>

@@ -8,14 +8,12 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import ItemService, {
-  Item,
-} from "../../../services/Inventory/item-page-service";
-import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
+import ItemService, { Item } from "../../services/Inventory/item-page-service";
+import ItemPageContext from "../../Contexts/Inventory/ItemPageContext";
 import FilterCategory from "../Category/FilterCategory";
-import { Category } from "../../../services/Inventory/category-page-service";
-import SupplierFilter from "../../../Registration/Supplier/SupplierFilter";
-import { Supplier } from "../../../services/Registration/supplier-service";
+import { Category } from "../../services/Inventory/category-page-service";
+import SupplierFilter from "../../Registration/Supplier/SupplierFilter";
+import { Supplier } from "../../services/Registration/supplier-service";
 
 const ItemAddForm = () => {
   const [errorItemCreate, setErrorItemCreate] = useState("");

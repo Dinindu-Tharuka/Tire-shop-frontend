@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import UpdateItem from "./UpdateItemDrawer";
 import { useContext, useState } from "react";
-import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
+import ItemPageContext from "../../Contexts/Inventory/ItemPageContext";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -23,8 +23,8 @@ import {
 import ItemDelete from "./ItemDelete";
 import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
-} from "../../../services/pagination-cut-link";
-import useStockItem from "../../../hooks/Stock/useStockItems";
+} from "../../services/pagination-cut-link";
+import useStockItem from "../../hooks/Stock/useStockItems";
 import calculateStockitemCount from "./Calculations/CountStockItems";
 
 const ItemTable = () => {
@@ -53,7 +53,7 @@ const ItemTable = () => {
   };
 
   const { stockItems } = useStockItem();
- 
+
   if (error)
     return <Text textColor="red">Unable to fetch data from the internet.</Text>;
 

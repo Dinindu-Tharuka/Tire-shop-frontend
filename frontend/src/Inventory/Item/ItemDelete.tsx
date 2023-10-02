@@ -11,10 +11,8 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { useRef } from "react";
-import ItemService, {
-  Item,
-} from "../../../services/Inventory/item-page-service";
-import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
+import ItemService, { Item } from "../../services/Inventory/item-page-service";
+import ItemPageContext from "../../Contexts/Inventory/ItemPageContext";
 
 interface Props {
   selectedDeleteItem: Item;

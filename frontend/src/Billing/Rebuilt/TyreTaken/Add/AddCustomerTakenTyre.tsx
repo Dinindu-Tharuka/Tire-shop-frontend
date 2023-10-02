@@ -5,7 +5,7 @@ import { IoAddCircle } from "react-icons/io5";
 import {
   CustomerTakenTyre,
   TyreTaken,
-} from "../../../services/Rebuild/tyre-taken-service";
+} from "../../../../services/Rebuild/tyre-taken-service";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 }
 
 const AddCustomerTakenTyre = ({ register, control, customerArrays }: Props) => {
-
   const { append, remove, fields } = useFieldArray({
     name: "customer_tyres",
     control,

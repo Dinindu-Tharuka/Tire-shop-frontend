@@ -1,5 +1,5 @@
-import { Item } from "../../../../services/Inventory/item-page-service";
-import { StockItem } from "../../../../services/Stock/stock-item-service";
+import { Item } from "../../../services/Inventory/item-page-service";
+import { StockItem } from "../../../services/Stock/stock-item-service";
 
 const calculateStockitemCount = (item:Item, stockItems:StockItem[])=>{
     let count = 0;

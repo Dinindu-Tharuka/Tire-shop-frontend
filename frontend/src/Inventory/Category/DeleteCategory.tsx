@@ -13,8 +13,8 @@ import React, { useContext } from "react";
 import { useRef } from "react";
 import CategoryService, {
   Category,
-} from "../../../services/Inventory/category-page-service";
-import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
+} from "../../services/Inventory/category-page-service";
+import ItemCategoryContext from "../../Contexts/Inventory/CategoryContext";
 
 interface Props {
   selectedDeleteCategory: Category;

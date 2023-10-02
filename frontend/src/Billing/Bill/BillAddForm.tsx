@@ -26,14 +26,15 @@ import useService from "../../hooks/Registration/useService";
 import useEmployee from "../../hooks/Registration/useEmployee";
 import useItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
-import calculateStockitemCount from "../../componants/Inventory/Item/Calculations/CountStockItems";
+import calculateStockitemCount from "../../Inventory/Item/Calculations/CountStockItems";
 import {
   BILL_ITEM_MARGIN_BOTTOM,
   BILL_ITEM_MARGIN_LEFT,
   BILL_ITEM_WIDTH,
 } from "./UI Contastants/BillFormConstatnts";
 import stockItemService, {
-  StockItem, StockItemDefault,
+  StockItem,
+  StockItemDefault,
 } from "../../services/Stock/stock-item-service";
 import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
 import {
@@ -44,7 +45,9 @@ import {
 } from "./Calculations/BillCalculations";
 import BillSaveConfirmation from "./BillSaveConfirmation";
 import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
-import stockItemUniqueService, { StockItemUnique } from "../../services/Stock/stock-item-unique-service";
+import stockItemUniqueService, {
+  StockItemUnique,
+} from "../../services/Stock/stock-item-unique-service";
 import BillShowDrawer from "./BillShowDrawer";
 
 const BillAddForm = () => {
@@ -52,7 +55,7 @@ const BillAddForm = () => {
 
   // After creation
   const [isCreatedBill, setIsCreatedBill] = useState(false);
-  const [bill, setBill] = useState<Bill>()
+  const [bill, setBill] = useState<Bill>();
 
   //
   const [seletedFilteredListSet, setSeletedFilteredListSet] = useState<
@@ -77,7 +80,7 @@ const BillAddForm = () => {
   const { services } = useService();
   const { employees } = useEmployee();
   const { stockItems, setStockItems } = useContext(StockItemContext);
-  
+
   const { stockItemsUnique, setStockItemsUnique } = useContext(
     StockItemUniqueContext
   );
@@ -98,12 +101,12 @@ const BillAddForm = () => {
         console.log(error.message);
       });
 
-    const { request : stockItemUniqueRequest} = stockItemUniqueService.getAll<StockItemUnique>()
+    const { request: stockItemUniqueRequest } =
+      stockItemUniqueService.getAll<StockItemUnique>();
 
     stockItemUniqueRequest
-      .then(res => setStockItemsUnique([...res.data]))
-      .catch(err => console.log(err.message)
-      )
+      .then((res) => setStockItemsUnique([...res.data]))
+      .catch((err) => console.log(err.message));
 
     return () => cancel();
   }, [isCreatedBill]);
@@ -117,10 +120,10 @@ const BillAddForm = () => {
     setValue,
     watch,
   } = useForm<Bill>({
-    defaultValues:{
-      bill_items:[],
-      bill_services:[]
-    }
+    defaultValues: {
+      bill_items: [],
+      bill_services: [],
+    },
   });
 
   const billItemsWatch = useWatch({
@@ -212,9 +215,13 @@ const BillAddForm = () => {
   }, [selectedItem, rowIndex, isCreatedBill]);
 
   const onSubmit = (data: Bill) => {
-    console.log(data, 'bill');
+    console.log(data, "bill");
 
-    const total_discount = data.bill_items.reduce((currentValue, item)=> currentValue+ parseFloat(item.customer_discount+''), 0)
+    const total_discount = data.bill_items.reduce(
+      (currentValue, item) =>
+        currentValue + parseFloat(item.customer_discount + ""),
+      0
+    );
 
     const newly = { ...data, discount_amount: total_discount };
 
@@ -223,7 +230,7 @@ const BillAddForm = () => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
         setBills([res.data, ...bills]);
         setIsCreatedBill(true);
-        setBill(res.data)
+        setBill(res.data);
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -629,14 +636,14 @@ const BillAddForm = () => {
               itemsArray.forEach((item, index) => itemRemove(index));
               serviceArray.forEach((service, index) => serviceRemove(index));
               reset();
-              
+
               setIsCreatedBill(false);
             }}
           >
             Reset
           </Button>
 
-          {bill !== undefined && bill && <BillShowDrawer selectedBill={bill}/>}
+          {bill !== undefined && bill && <BillShowDrawer selectedBill={bill} />}
         </HStack>
       </form>
     </>

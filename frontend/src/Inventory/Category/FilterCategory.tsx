@@ -8,8 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
-import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
-import { Category } from "../../../services/Inventory/category-page-service";
+import ItemCategoryContext from "../../Contexts/Inventory/CategoryContext";
+import { Category } from "../../services/Inventory/category-page-service";
 
 interface Props {
   selectedCategory: (category: Category) => void;

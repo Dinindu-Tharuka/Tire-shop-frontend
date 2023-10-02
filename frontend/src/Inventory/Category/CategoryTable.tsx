@@ -14,10 +14,10 @@ import {
 } from "@chakra-ui/react";
 import categoryService, {
   Category,
-} from "../../../services/Inventory/category-page-service";
+} from "../../services/Inventory/category-page-service";
 import UpdateCategoryDrawer from "./UpdateCategoryDrawer";
 import { useContext, useState } from "react";
-import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
+import ItemCategoryContext from "../../Contexts/Inventory/CategoryContext";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -25,7 +25,7 @@ import {
 import DeleteCategory from "./DeleteCategory";
 import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
-} from "../../../services/pagination-cut-link";
+} from "../../services/pagination-cut-link";
 
 const CategoryTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -68,7 +68,6 @@ const CategoryTable = () => {
                 </Td>
                 <Td>{category.category_name}</Td>
                 <Td>{category.description}</Td>
-
               </Tr>
             ))}
           </Tbody>

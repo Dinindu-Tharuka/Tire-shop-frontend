@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import GridSection from "../MainPages/GridSection";
-import Inventory from "../componants/Inventory/Main Page/Inventory";
-import MainImage from "../componants/MainImage";
-import ItemTable from "../componants/Inventory/Item/ItemTable";
-import CategoryTable from "../componants/Inventory/Category/CategoryTable";
+import Inventory from "../Inventory/MainPages/Inventory";
+import MainImage from "../Inventory/MainImage";
+import ItemTable from "../Inventory/Item/ItemTable";
+import CategoryTable from "../Inventory/Category/CategoryTable";
 import SupplierTable from "../Registration/Supplier/SupplierTable";
 import RegistraionMainPage from "../Registration/MainPage/RegistrationMainPage";
 import CustomerMainPage from "../Customer/MainPage/CustomerMainPage";
@@ -20,18 +20,17 @@ import UserListTable from "../Registration/User/UserListTable";
 import CreditorsTable from "../Billing/Creditors/CreditorsTable";
 
 const routes = createBrowserRouter([
-  
   {
-    path:"/login",
-    element: <LoginPage/>
+    path: "/login",
+    element: <LoginPage />,
   },
   {
-    path:"/password/reset/:uid/:token",
-    element: <PasswordReset/>
+    path: "/password/reset/:uid/:token",
+    element: <PasswordReset />,
   },
   {
-    element: <PrivateRoutes/>,
-    children:[
+    element: <PrivateRoutes />,
+    children: [
       {
         path: "/",
         element: <GridSection />,
@@ -68,8 +67,8 @@ const routes = createBrowserRouter([
           },
         ],
       },
-    ]
-  }
+    ],
+  },
 ]);
 
 export default routes;

@@ -1,23 +1,15 @@
-import {
-  Grid,
-  GridItem,
-  Spinner,
-  Text,
-  useColorMode,
-  useToast,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Spinner, useColorMode } from "@chakra-ui/react";
 import InventorySidePanel from "../SidePanel/InventorySidePanel";
-import useItemsPagination from "../../../hooks/Inventory/useItemsPage";
-import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
-import useSupplier from "../../../hooks/Registration/useSupplier";
+import useItemsPagination from "../../hooks/Inventory/useItemsPage";
+import useCategoryPagination from "../../hooks/Inventory/useCategoryPage";
+import useSupplier from "../../hooks/Registration/useSupplier";
 import { Outlet } from "react-router-dom";
-import SupplierContext from "../../../Contexts/Registration/SupplierContext";
-import ItemCategoryContext from "../../../Contexts/Inventory/CategoryContext";
-import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
+import SupplierContext from "../../Contexts/Registration/SupplierContext";
+import ItemCategoryContext from "../../Contexts/Inventory/CategoryContext";
+import ItemPageContext from "../../Contexts/Inventory/ItemPageContext";
 
 const Inventory = () => {
-  const { toggleColorMode, colorMode } = useColorMode();
-  const toast = useToast();
+  const { colorMode } = useColorMode();
   const {
     suppliers,
     setSuppliers,
@@ -57,7 +49,7 @@ const Inventory = () => {
     errorFetchCategory,
     setErrorFetchCategory,
     categoryCount,
-    setCategoryNameFilter
+    setCategoryNameFilter,
   } = useCategoryPagination();
 
   return (
@@ -104,7 +96,7 @@ const Inventory = () => {
             setErrorFetchCategory,
             errorFetchCategory,
             categoryCount,
-            setCategoryNameFilter
+            setCategoryNameFilter,
           }}
         >
           {/* Grid */}

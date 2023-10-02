@@ -1,15 +1,12 @@
 import { Input, Button, Flex, HStack, Select } from "@chakra-ui/react";
 import { Control, UseFormRegister, useFieldArray } from "react-hook-form";
-
 import { IoAddCircle } from "react-icons/io5";
-
 import { useContext, useEffect, useState } from "react";
 import {
   SendSupplierTyre,
   SendTyre,
 } from "../../../../services/Rebuild/send-tyre-service";
 import AllCustomerTakenTyresContext from "../../../../Contexts/Rebuild/AllCustomerTakenTyresContext";
-
 import AllSendSupplierTyresContext from "../../../../Contexts/Rebuild/AllSendSupplierContext";
 import { CustomerTakenTyre } from "../../../../services/Rebuild/tyre-taken-service";
 

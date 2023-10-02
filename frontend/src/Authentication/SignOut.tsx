@@ -9,10 +9,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import axiosInstance from "../services/api-client";
-import { useContext, useEffect, useState } from "react";
-import { User } from "../services/User/user-service";
-import UserContext from "../Contexts/User/UserContext";
+import { useContext} from "react";
 import UserMeContext from "../Contexts/User/UserMe";
 import useUser from "../hooks/User/useUser";
 
@@ -25,9 +22,6 @@ const SignOut = () => {
   
 
   const signOut = () => {
-    console.log("Sign out");
-    console.log(localStorage.getItem("access"));
-
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
   };

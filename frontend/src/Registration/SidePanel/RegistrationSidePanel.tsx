@@ -17,7 +17,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import AddItemDrawer from "../../componants/Inventory/Item/AddItemDrawer";
+import AddItemDrawer from "../../Inventory/Item/AddItemDrawer";
 import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
 import AddServiceDrawer from "../Services/AddServiceDrawer";
 import AddEmployeeDrawer from "../Employee/AddEmployeeDrawer";
@@ -25,7 +25,7 @@ import UserAddDrawer from "../User/UserAddDrawer";
 
 const RegistrationSidePanel = () => {
   const registerList = ["Employees", "Suppliers", "Services", "User"];
-  const register_links = ["", "suppliers", "services", 'user'];
+  const register_links = ["", "suppliers", "services", "user"];
   const { toggleColorMode, colorMode } = useColorMode();
 
   const options = ["ADD"];

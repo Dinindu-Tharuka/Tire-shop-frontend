@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { Item } from "../../../services/Inventory/item-page-service";
+import { Item } from "../../services/Inventory/item-page-service";
 import UpdateItemForm from "./UpdateItemForm";
 
 interface Props {

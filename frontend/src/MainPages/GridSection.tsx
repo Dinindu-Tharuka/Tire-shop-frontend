@@ -1,5 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import Navbar from "../componants/Navbar";
+import Navbar from "../Inventory/Navbar";
 import SideBarOptionList from "./SideBarOptionList";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";

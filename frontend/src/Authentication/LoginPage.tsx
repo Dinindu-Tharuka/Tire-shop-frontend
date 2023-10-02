@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import Login from "./Login";
-import MainImage from "../componants/MainImage";
+import MainImage from "../Inventory/MainImage";
 
 const LoginPage = () => {
   return (
@@ -20,7 +20,7 @@ const LoginPage = () => {
         borderRadius={50}
       >
         <Flex width="40vw" justifyContent="center" alignItems="center">
-          <Box width='20vw' height='40vh'>
+          <Box width="20vw" height="40vh">
             <Login />
           </Box>
         </Flex>

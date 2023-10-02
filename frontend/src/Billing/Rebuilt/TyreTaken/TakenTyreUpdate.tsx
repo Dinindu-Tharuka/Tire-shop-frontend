@@ -18,7 +18,7 @@ import TakenTyreContext from "../../../Contexts/Rebuild/TakenTyreContext";
 import CustomerContext from "../../../Contexts/Customer/CustomerContext";
 import VehicleContext from "../../../Contexts/Customer/VehicleContext";
 
-import AddCustomerTakenTyre from "./AddCustomerTakenTyre";
+import AddCustomerTakenTyre from "./Add/AddCustomerTakenTyre";
 
 interface Props {
   selectedTakenTyre: TyreTaken;

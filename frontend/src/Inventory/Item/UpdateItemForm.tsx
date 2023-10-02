@@ -1,12 +1,10 @@
 import { Button, HStack, Text, useColorMode } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import ItemService, {
-  Item,
-} from "../../../services/Inventory/item-page-service";
-import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
-import useCategoryPagination from "../../../hooks/Inventory/useCategoryPage";
-import useSupplier from "../../../hooks/Registration/useSupplier";
+import ItemService, { Item } from "../../services/Inventory/item-page-service";
+import ItemPageContext from "../../Contexts/Inventory/ItemPageContext";
+import useCategoryPagination from "../../hooks/Inventory/useCategoryPage";
+import useSupplier from "../../hooks/Registration/useSupplier";
 
 interface Props {
   selectedUpdateItem: Item;

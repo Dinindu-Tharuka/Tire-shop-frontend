@@ -18,7 +18,7 @@ import { PiContactlessPayment } from "react-icons/pi";
 import { RxAvatar } from "react-icons/rx";
 
 import { RiShutDownLine } from "react-icons/ri";
-import SignOut from "../componants/SignOut";
+import SignOut from "../Authentication/SignOut";
 import { Link } from "react-router-dom";
 import { MouseEventHandler } from "react";
 

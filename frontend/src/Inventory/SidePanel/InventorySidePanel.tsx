@@ -5,27 +5,21 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button,
   Flex,
   HStack,
-  Menu,
-  MenuButton,
-  MenuList,
   Show,
   Text,
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-import { AiOutlineDown } from "react-icons/ai";
 import AddItemDrawer from "../Item/AddItemDrawer";
 import AddCategoryDrawer from "../Category/AddCategoryDrawer";
-import AddSupplierDrawer from "../../../Registration/Supplier/AddSupplierDrawer";
 import { Link } from "react-router-dom";
 
 const InventorySidePanel = () => {
   const inventoryList = ["Item", "Category"];
   const inventory_links = ["", "categories"];
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const options = ["ADD"];
 
