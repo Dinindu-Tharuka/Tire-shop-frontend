@@ -1,4 +1,4 @@
-import { Button, HStack, Text, useColorMode } from "@chakra-ui/react";
+import { Button, HStack, Input, Select, Text, useColorMode } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import ItemService, { Item } from "../../services/Inventory/item-page-service";
@@ -14,7 +14,7 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const { categories } = useCategoryPagination();
   const { suppliers } = useSupplier();
@@ -45,71 +45,63 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
       <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 h-75">
-            <input
+            <Input
               {...register("item_id")}
               defaultValue={selectedUpdateItem.item_id}
-              id="id"
               type="text"
-              className="form-control"
               placeholder="Item ID"
             />
           </div>
           <div className="mb-3">
-            <input
+            <Input
               {...register("name")}
               defaultValue={selectedUpdateItem.name}
               type="text"
-              className="form-control"
               placeholder="Name"
             />
           </div>
           <div className="mb-3">
-            <input
+            <Input
               {...register("size")}
               defaultValue={selectedUpdateItem.size}
               type="text"
-              className="form-control"
               placeholder="Size"
             />
           </div>
           <div className="mb-3">
-            <input
+            <Input
               {...register("brand")}
               defaultValue={selectedUpdateItem.brand}
               type="text"
-              className="form-control"
               placeholder="Brand"
             />
           </div>
           <div className="mb-3">
-            <input
+            <Input
               {...register("type")}
               defaultValue={selectedUpdateItem.type}
               type="text"
-              className="form-control"
               placeholder="Type"
             />
           </div>
           <div className="mb-3">
-            <input
+            <Input
               {...register("plyrating")}
               defaultValue={selectedUpdateItem.plyrating}
               type="text"
-              className="form-control"
               placeholder="Plyrating"
             />
           </div>
           <div className="mb-3">
-            <input
+            <Input
               {...register("country")}
               defaultValue={selectedUpdateItem.country}
               type="text"
-              className="form-control"
               placeholder="Country"
             />
           </div>
           <div className="mb-3">
-            <select {...register("vale_type")} className="select w-100 p-2">
+            <Select {...register("vale_type")} className="select w-100 p-2">
               <option
                 value={
                   selectedUpdateItem.vale_type !== "Not selected"
@@ -123,10 +115,10 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
               </option>
               <option value="Long Valve">Long Valve</option>
               <option value="Short Valve">Short Valve</option>
-            </select>
+            </Select>
           </div>
           <div className="mb-3">
-            <select {...register("item_category")} className="select w-100 p-2">
+            <Select {...register("item_category")} className="select w-100 p-2">
               <option>
                 {selectedUpdateItem.item_category !== null
                   ? categories.find(
@@ -141,10 +133,10 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
                   {category.category_name}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
           <div className="mb-3">
-            <select {...register("supplier")} className="select w-100 p-2">
+            <Select {...register("supplier")} className="select w-100 p-2">
               <option>
                 {selectedUpdateItem.supplier !== null
                   ? suppliers.find(
@@ -157,7 +149,7 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
                   {supplier.name}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
         </div>
         <HStack justifyContent="space-between">

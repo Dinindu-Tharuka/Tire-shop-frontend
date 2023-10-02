@@ -20,7 +20,7 @@ const ItemAddForm = () => {
   const [success, setSuccess] = useState("");
 
   const { register, handleSubmit } = useForm();
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const { items, setItems } = useContext(ItemPageContext);
   const [selectedCatgory, setSelectedCatgory] = useState<Category | null>(null);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(
