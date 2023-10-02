@@ -17,9 +17,7 @@ const SignOut = () => {
   const { colorMode } = useColorMode();
  
   const userMe = useContext(UserMeContext)
-  const {users} = useUser()
-
-  
+  const {users} = useUser() 
 
   const signOut = () => {
     localStorage.removeItem("access");

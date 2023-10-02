@@ -98,11 +98,12 @@ const GridSection = () => {
   } = useUser();
 
   useEffect(() => {
-    const hasReloadedBefore = localStorage.getItem("hasReloaded");
-    if (!hasReloadedBefore) {
-      localStorage.setItem("hasReloaded", "true");
-      window.location.reload();
-    }
+    // const hasReloadedBefore = localStorage.getItem("hasReloaded");
+    // if (!hasReloadedBefore) {
+    //   localStorage.setItem("hasReloaded", "true");
+      
+    //   window.location.reload();
+    // }
 
     axiosInstance
       .get<User>("/users/me/")
