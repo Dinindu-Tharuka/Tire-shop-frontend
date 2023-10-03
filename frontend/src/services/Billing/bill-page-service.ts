@@ -1,5 +1,12 @@
 import createPagination from "../http-pagination-service";
 
+export interface DagPayment{
+    id:number;
+    received_supplier_tyre:number;
+    cost:number;
+    customer_price:number;
+}
+
 export interface BillItem{
     id:number;
     item:number;
@@ -63,7 +70,7 @@ export interface BillPayment{
     payments_cash:PaymentCash[];
     payment_cheques:PaymentCheque[];
     payments_credit_card:PaymentCreditCard[];
-    payments_credit:PaymentCredit[]
+    payments_credit:PaymentCredit[];
 }
 
 export interface Bill{
@@ -75,13 +82,14 @@ export interface Bill{
     custome_item_value:number;
     bill_items:BillItem[];
     bill_services:BillService[];
-    bill_payments:BillPayment[]
+    bill_payments:BillPayment[];
+    dag_payments:DagPayment[];
 }
 export interface BillPageStructure{
     count:number;
     next:string | null;
     previous:string | null;
-    results:Bill[]
+    results:Bill[];
 }
 
 

@@ -23,7 +23,7 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const deleteToast = useToast();
-  const { bills, setBills } = useContext(BillContext);
+  const { bills, setBills, setBillFetchError } = useContext(BillContext);
 
   
 
@@ -50,6 +50,7 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
             isClosable: true,
           });
         }
+        setBillFetchError('')
       })
       .catch((err) => {
         setBills(originalBills);

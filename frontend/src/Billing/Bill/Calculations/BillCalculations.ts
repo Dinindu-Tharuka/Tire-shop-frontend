@@ -3,6 +3,8 @@ import { Bill } from "../../../services/Billing/bill-page-service";
 import { Service } from "../../../services/Registration/services-service";
 import { StockItemUnique } from "../../../services/Stock/stock-item-unique-service";
 import { StockItemDefault } from "../../../services/Stock/stock-item-service";
+import { ReceivedSupplierTyre } from "../../../services/Rebuild/Received/received-tyre-service";
+import { ReceiveTyreNew } from "../BillAddForm";
 
 let currentPrice = 0
 let discountList:number[] = []
@@ -25,6 +27,7 @@ export const onchangeBillStockItemUnique = (
         const customerPrice = seletedStockItemUnique?.unit_price * qty
         currentPrice = customerPrice
         const customerDiscount = calculateCustomerDiscount(seletedStockItemUnique, stockItems, watch, index, qty)
+        console.log('discount', customerDiscount)
         setValue(`bill_items.${index}.qty`, qty)
         setValue(`bill_items.${index}.customer_discount`, customerDiscount)
         setValue(`bill_items.${index}.customer_price`, customerPrice)
@@ -44,7 +47,7 @@ const calculateCustomerDiscount = (selectedStockItemUnique:StockItemUnique, stoc
     
     
     
-    discount = discount + (currentQtyValue * discountList[index])   
+    discount = (discount + (currentQtyValue * discountList[index])) || 0  
 
     return Math.round(discount*100)/100
 }
@@ -60,8 +63,10 @@ export const onChangeBillQty = (
     
     const qty = parseInt(e.currentTarget.value)
     if (seletedStockItemUnique !== undefined){
-        const discount = calculateCustomerDiscount(seletedStockItemUnique, stockItems, watch, index, qty)
+        const discount = calculateCustomerDiscount(seletedStockItemUnique, stockItems, watch, index, qty) && 0
+        console.log('discount', discount);
         setValue(`bill_items.${index}.customer_discount`, discount)
+        
         setValue(`bill_items.${index}.customer_price`, (seletedStockItemUnique?.unit_price * qty))
     }
 
@@ -95,4 +100,30 @@ export const onChangeBillCustomItemValue = (
     const customItemVlaue = parseFloat(e.currentTarget.value)
     console.log(customItemVlaue);
     setValue('sub_total', subTotalVal-customItemVlaue)  
+}
+
+export const onChangeCustomerPrice = (
+    e:React.ChangeEvent<HTMLInputElement>, 
+    setValue:UseFormSetValue<Bill>,
+    subTotalVal:number,
+)=>{
+    const value = parseInt(e.currentTarget.value)
+    setValue('sub_total', (subTotalVal + value))
+    
+    
+
+}
+
+export const onChangeDagTyreChange = (
+    e:React.ChangeEvent<HTMLSelectElement>, 
+    setValue:UseFormSetValue<Bill>,
+    subTotalVal:number,
+    index:number,
+    filteredSupplierTyres:ReceiveTyreNew[]
+)=>{
+
+    const cost = filteredSupplierTyres[e.currentTarget.selectedIndex] !== undefined ? filteredSupplierTyres[e.currentTarget.selectedIndex].cost: 0
+
+    setValue(`dag_payments.${index}.cost`, cost)
+    setValue('sub_total', (parseFloat(subTotalVal+'') + parseFloat(cost+'.00')))
 }

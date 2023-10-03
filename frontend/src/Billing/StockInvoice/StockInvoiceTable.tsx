@@ -68,7 +68,6 @@ const StockInvoiceTable = () => {
               <Th>Bill No</Th>
               <Th>Date</Th>
               <Th>Total Amount</Th>
-              <Th>Total Discount</Th>
               <Th>supplier</Th>
             </Tr>
           </Thead>
@@ -84,7 +83,6 @@ const StockInvoiceTable = () => {
                 <Td>{invoice.invoice_no}</Td>
                 <Td>{makeUpDate(invoice.date)}</Td>
                 <Td>{invoice.total_amount}</Td>
-                <Td>{invoice.total_discount}</Td>
                 <Td>
                   {suppliers.find((sup) => sup.id === invoice.supplier)?.name}
                 </Td>

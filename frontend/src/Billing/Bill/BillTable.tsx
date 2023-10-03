@@ -68,7 +68,6 @@ const BillTable = () => {
               <Th>Bill No</Th>
               <Th>Customer</Th>
               <Th>Date</Th>
-              <Th>Discount Amount</Th>
               <Th>Sub Total</Th>
               <Th>Customer Item Value</Th>
             </Tr>
@@ -90,7 +89,6 @@ const BillTable = () => {
                   }
                 </Td>
                 <Td>{makeUpDate(bill.date)}</Td>
-                <Td>{bill.discount_amount}</Td>
                 <Td>{bill.sub_total}</Td>
                 <Td>{bill.custome_item_value}</Td>
               </Tr>

@@ -10,8 +10,9 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import BillShowPage from "./BillShowPage";
+import BillContext from "../../Contexts/Bill/BillContext";
 
 interface Props {
   selectedBill: Bill;
@@ -21,7 +22,11 @@ const BillShowDrawer = ({ selectedBill }: Props) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
+  const {setBillFetchError} = useContext(BillContext)
 
+  useEffect(()=>{
+    setBillFetchError('')
+  }, [])
   return (
     <>
       <Button

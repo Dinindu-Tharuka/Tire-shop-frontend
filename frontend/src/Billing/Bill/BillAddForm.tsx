@@ -4,12 +4,7 @@ import {
   HStack,
   Input,
   Select,
-  Table,
-  TableContainer,
-  Td,
   Text,
-  Th,
-  Tr,
   useColorMode,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
@@ -20,6 +15,7 @@ import BillServices, {
   Bill,
   BillItem,
   BillService,
+  DagPayment,
 } from "../../services/Billing/bill-page-service";
 import useCustomer from "../../hooks/Customer/useCustomer";
 import useService from "../../hooks/Registration/useService";
@@ -40,6 +36,8 @@ import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
 import {
   onChangeBillCustomItemValue,
   onChangeBillQty,
+  onChangeCustomerPrice,
+  onChangeDagTyreChange,
   onChangeService,
   onchangeBillStockItemUnique,
 } from "./Calculations/BillCalculations";
@@ -49,6 +47,17 @@ import stockItemUniqueService, {
   StockItemUnique,
 } from "../../services/Stock/stock-item-unique-service";
 import BillShowDrawer from "./BillShowDrawer";
+import AllReceivedSupplierTyresContext from "../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
+import AllSendSupplierTyresContext from "../../Contexts/Rebuild/AllSendSupplierContext";
+import AllDagPaymentsContext from "../../Contexts/Bill/AlldagPaymentsContext";
+
+export interface ReceiveTyreNew {
+  id: number;
+  cost: number;
+  status: string;
+  send_supplier_tyre: string;
+  job_no: string | undefined;
+}
 
 const BillAddForm = () => {
   const [selectedItem, setSelectedItem] = useState("");
@@ -68,6 +77,12 @@ const BillAddForm = () => {
   const [subTotal, setSubTotal] = useState(0);
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(-1)
+
+  // filtering for dag payment section
+  const [filteredSupplierTyres, setFilteredSupplierTyres] = useState<
+    ReceiveTyreNew[]
+  >([]);
 
   const { colorMode } = useColorMode();
   const [selectedServicesPrice, setSelectedServicesPrice] = useState<number[]>(
@@ -80,12 +95,14 @@ const BillAddForm = () => {
   const { services } = useService();
   const { employees } = useEmployee();
   const { stockItems, setStockItems } = useContext(StockItemContext);
-
   const { stockItemsUnique, setStockItemsUnique } = useContext(
     StockItemUniqueContext
   );
-
-  console.log("uniques", stockItemsUnique);
+  const { allReceivedSupplierTyres } = useContext(
+    AllReceivedSupplierTyresContext
+  );
+  const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
+  const { allDagPayments } = useContext(AllDagPaymentsContext);
 
   // setting up stock item unique
   const [selectedStockItemUnique, setSelectedStockitemUnique] = useState<
@@ -130,6 +147,32 @@ const BillAddForm = () => {
     control,
     name: "bill_items",
   });
+  const dagPaymentsWatch = useWatch({
+    control,
+    name: "dag_payments"
+  })
+
+  // filtering supplier tyres
+  useEffect(() => {
+    const newly = allReceivedSupplierTyres.map((tyre) => {
+      return {
+        ...tyre,
+        job_no: allSendSupplierTyres.find(
+          (sendTyre) => sendTyre.id === parseInt(tyre.send_supplier_tyre)
+        )?.job_no,
+      };
+    });
+
+    const filtered = newly.filter((tyre) => {
+      const isAvailable = allDagPayments.some(
+        (pay) => pay.received_supplier_tyre === tyre.id
+      );
+
+      return !isAvailable;
+    });
+
+    setFilteredSupplierTyres([...filtered]);
+  }, []);
 
   // calculate Sub Total
 
@@ -141,17 +184,21 @@ const BillAddForm = () => {
       (currentValue, nextValue) => currentValue + parseInt(nextValue + ""),
       0
     );
-    if (billItemsWatch) {
-      const customerPrice = billItemsWatch.reduce(
+    if (billItemsWatch || dagPaymentsWatch) {
+      const customerPrice = billItemsWatch?.reduce(
         (currentValue, currentItem) =>
           currentValue + parseFloat(currentItem.customer_price + ""),
         0
       );
-      subTotal = +(customerPrice + serviceTotal);
+      const dagPayment = dagPaymentsWatch?.reduce(
+        (currentValue, currentItem)=>(currentValue + parseFloat(currentItem.customer_price + '')),0
+      )
+      subTotal = +(customerPrice + serviceTotal + dagPayment);
       setSubTotal(subTotal);
       setValue("sub_total", Math.round(subTotal * 100) / 100);
     }
-  }, [billItemsWatch, selectedServicesPrice]);
+    
+  }, [billItemsWatch, selectedServicesPrice, dagPaymentsWatch]);
 
   // To calculate valid qty in selected item unique
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
@@ -176,28 +223,16 @@ const BillAddForm = () => {
     control,
   });
 
-  // find seleted stock item unique and store it in a array
-  const findStockItemUnique = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    index: number
-  ) => {
-    console.log(e.target.value);
+  let {
+    fields: dagPayments,
+    append: dagPaymentAdd,
+    remove: dagPaymentRemove,
+  } = useFieldArray({
+    name: "dag_payments",
+    control,
+  });
 
-    const findStockItemUnique = stockItemsUnique.find(
-      (item) => item.id === parseInt(e.target.value)
-    );
-    const stocks = [...selectedStockItemUnique];
-    if (findStockItemUnique !== undefined) {
-      stocks[index] = findStockItemUnique;
-      setValue(`bill_items.${index}.qty`, findStockItemUnique?.total_qty);
-      setValue(
-        `bill_items.${index}.customer_price`,
-        findStockItemUnique.total_qty * findStockItemUnique.unit_price
-      );
-    }
-
-    setSelectedStockitemUnique([...stocks]);
-  };
+  
 
   // Ui Item Fix
   useEffect(() => {
@@ -428,13 +463,11 @@ const BillAddForm = () => {
                     <Input
                       isDisabled={isCreatedBill}
                       type="number"
-                      step="0.01"
                       defaultValue={0}
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                       {...register(`bill_items.${index}.customer_discount`)}
-                      placeholder="Customer Discount"
                     />
                   </Flex>
 
@@ -585,6 +618,84 @@ const BillAddForm = () => {
               <IoAddCircle />
             </Flex>
           </div>
+
+          {/* Add Dag Payments */}
+          <div className="mb-3">
+            {dagPayments.map((field, index) => {
+              return (
+                <Flex>
+                  <Flex>
+                    <Select
+                      isDisabled={isCreatedBill}
+                      {...register(
+                        `dag_payments.${index}.received_supplier_tyre`
+                      )}
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                      onChange={(e)=> onChangeDagTyreChange(e, setValue, subTotal, index, filteredSupplierTyres)}
+                    >
+                      <option>Received Tyre</option>
+                      {filteredSupplierTyres.map((tyre, index) => (
+                        <option className="mt-3" key={index} value={tyre.id}>
+                          {tyre.job_no}
+                        </option>
+                      ))}
+                    </Select>
+
+                    <Input
+                      isDisabled={isCreatedBill}
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                      type="number"
+                      step="0.01"
+                      placeholder="Cost"
+                      {...register(`dag_payments.${index}.cost`)}
+                    />
+                    <Input
+                      isDisabled={isCreatedBill}
+                      marginRight={BILL_ITEM_MARGIN_LEFT}
+                      width={BILL_ITEM_WIDTH}
+                      marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                      placeholder="Customer Price"
+                      type="number"
+                      defaultValue={0}
+                      step="0.01"
+                      {...register(`dag_payments.${index}.customer_price`)}
+                      onChange={e => onChangeCustomerPrice(e, setValue, subTotal)}
+                    />
+                  </Flex>
+
+                  <Flex>
+                    {index >= 0 && (
+                      <Button
+                        isDisabled={isCreatedBill}
+                        bg="#f87454"
+                        padding={2.5}
+                        type="button"
+                        onClick={() => {
+                          // setSelectedIndex(-1)
+                          dagPaymentRemove(index)}}
+                      >
+                        Remove
+                      </Button>
+                    )}
+                  </Flex>
+                </Flex>
+              );
+            })}
+            <Flex alignItems="center">
+              <Button
+                isDisabled={isCreatedBill}
+                type="button"
+                onClick={() => dagPaymentAdd({} as DagPayment)}
+              >
+                Add Dag
+              </Button>
+              <IoAddCircle />
+            </Flex>
+          </div>
           <Flex width="50vw">
             <Flex flexDir="column">
               <Text marginRight={BILL_ITEM_MARGIN_LEFT} width={BILL_ITEM_WIDTH}>
@@ -638,6 +749,8 @@ const BillAddForm = () => {
               reset();
 
               setIsCreatedBill(false);
+              setSuccess("");
+              setErrorBillCreate("");
             }}
           >
             Reset
