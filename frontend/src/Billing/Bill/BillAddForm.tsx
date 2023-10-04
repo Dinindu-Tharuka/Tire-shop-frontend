@@ -77,7 +77,6 @@ const BillAddForm = () => {
   const [subTotal, setSubTotal] = useState(0);
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
-  const [selectedIndex, setSelectedIndex] = useState(-1)
 
   // filtering for dag payment section
   const [filteredSupplierTyres, setFilteredSupplierTyres] = useState<
@@ -102,31 +101,12 @@ const BillAddForm = () => {
     AllReceivedSupplierTyresContext
   );
   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
-  const { allDagPayments } = useContext(AllDagPaymentsContext);
+  const { allDagPayments, setAllDagPayments } = useContext(AllDagPaymentsContext);
 
-  // setting up stock item unique
-  const [selectedStockItemUnique, setSelectedStockitemUnique] = useState<
-    StockItemUnique[]
-  >([]);
-
-  useEffect(() => {
-    const { request, cancel } = stockItemService.getAll<StockItemDefault>();
-
-    request
-      .then((res) => setStockItems([...res.data]))
-      .catch((error) => {
-        console.log(error.message);
-      });
-
-    const { request: stockItemUniqueRequest } =
-      stockItemUniqueService.getAll<StockItemUnique>();
-
-    stockItemUniqueRequest
-      .then((res) => setStockItemsUnique([...res.data]))
-      .catch((err) => console.log(err.message));
-
-    return () => cancel();
-  }, [isCreatedBill]);
+  // To calculate valid qty in selected item unique
+  const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
+    []
+  );
 
   const {
     register,
@@ -140,6 +120,7 @@ const BillAddForm = () => {
     defaultValues: {
       bill_items: [],
       bill_services: [],
+      dag_payments:[]
     },
   });
 
@@ -152,58 +133,7 @@ const BillAddForm = () => {
     name: "dag_payments"
   })
 
-  // filtering supplier tyres
-  useEffect(() => {
-    const newly = allReceivedSupplierTyres.map((tyre) => {
-      return {
-        ...tyre,
-        job_no: allSendSupplierTyres.find(
-          (sendTyre) => sendTyre.id === parseInt(tyre.send_supplier_tyre)
-        )?.job_no,
-      };
-    });
-
-    const filtered = newly.filter((tyre) => {
-      const isAvailable = allDagPayments.some(
-        (pay) => pay.received_supplier_tyre === tyre.id
-      );
-
-      return !isAvailable;
-    });
-
-    setFilteredSupplierTyres([...filtered]);
-  }, []);
-
-  // calculate Sub Total
-
-  useEffect(() => {
-    let subTotal = 0;
-    console.log(selectedServicesPrice);
-
-    const serviceTotal = selectedServicesPrice.reduce(
-      (currentValue, nextValue) => currentValue + parseInt(nextValue + ""),
-      0
-    );
-    if (billItemsWatch || dagPaymentsWatch) {
-      const customerPrice = billItemsWatch?.reduce(
-        (currentValue, currentItem) =>
-          currentValue + parseFloat(currentItem.customer_price + ""),
-        0
-      );
-      const dagPayment = dagPaymentsWatch?.reduce(
-        (currentValue, currentItem)=>(currentValue + parseFloat(currentItem.customer_price + '')),0
-      )
-      subTotal = +(customerPrice + serviceTotal + dagPayment);
-      setSubTotal(subTotal);
-      setValue("sub_total", Math.round(subTotal * 100) / 100);
-    }
-    
-  }, [billItemsWatch, selectedServicesPrice, dagPaymentsWatch]);
-
-  // To calculate valid qty in selected item unique
-  const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
-    []
-  );
+  // fieldArrays
 
   let {
     fields: itemsArray,
@@ -232,6 +162,82 @@ const BillAddForm = () => {
     control,
   });
 
+  useEffect(() => {
+    const { request, cancel } = stockItemService.getAll<StockItemDefault>();
+
+    request
+      .then((res) => setStockItems([...res.data]))
+      .catch((error) => {
+        console.log(error.message);
+      });
+
+    const { request: stockItemUniqueRequest } =
+      stockItemUniqueService.getAll<StockItemUnique>();
+
+    stockItemUniqueRequest
+      .then((res) => setStockItemsUnique([...res.data]))
+      .catch((err) => console.log(err.message));
+
+    return () => cancel();
+  }, [isCreatedBill]);
+  
+
+
+  // filtering supplier tyres
+  useEffect(() => {
+    const newly = allReceivedSupplierTyres.map((tyre) => {
+      return {
+        ...tyre,
+        job_no: allSendSupplierTyres.find(
+          (sendTyre) => sendTyre.id === parseInt(tyre.send_supplier_tyre)
+        )?.job_no,
+      };
+    });
+
+    console.log('not filtered', allReceivedSupplierTyres)
+    
+
+
+
+    const filtered = newly.filter((tyre) => {
+      const isAvailable = allDagPayments.some(
+        (pay) => pay.received_supplier_tyre === tyre.id
+      );
+
+      return !isAvailable;
+    });
+
+    console.log('filtered', filtered)
+
+    setFilteredSupplierTyres([...filtered]);
+  }, []);
+
+  // calculate Sub Total
+  useEffect(() => {
+    let subTotal = 0;
+
+    const serviceTotal = selectedServicesPrice.reduce(
+      (currentValue, nextValue) => currentValue + parseInt(nextValue + ""),
+      0
+    );
+    if (dagPaymentsWatch || billItemsWatch ) {
+      const customerPrice = billItemsWatch?.reduce(
+        (currentValue, currentItem) =>
+          currentValue + parseFloat(currentItem.customer_price + ""),
+        0
+      );
+      // console.log('billItemsWatch',billItemsWatch)
+      const dagPayment = dagPaymentsWatch?.reduce(
+        (currentValue, currentItem)=>currentValue + parseFloat(currentItem.customer_price + ''),0
+      )
+
+      // console.log('customerPrice', customerPrice)
+      subTotal = +(customerPrice + serviceTotal + dagPayment);
+      setSubTotal(subTotal);
+      setValue("sub_total", Math.round(subTotal * 100) / 100);
+    }
+    
+  }, [billItemsWatch, selectedServicesPrice, dagPaymentsWatch]);
   
 
   // Ui Item Fix
@@ -246,7 +252,6 @@ const BillAddForm = () => {
 
     // Filter Same price and adding
 
-    console.log("seleted", newFilteredArray[rowIndex]);
   }, [selectedItem, rowIndex, isCreatedBill]);
 
   const onSubmit = (data: Bill) => {
@@ -266,6 +271,7 @@ const BillAddForm = () => {
         setBills([res.data, ...bills]);
         setIsCreatedBill(true);
         setBill(res.data);
+        setAllDagPayments([...allDagPayments, ...res.data.dag_payments])
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -525,7 +531,6 @@ const BillAddForm = () => {
                 type="button"
                 onClick={() => {
                   itemAppend({} as BillItem);
-                  // setSeletedItemCountList(seletedItemCountList);
                 }}
               >
                 Add Item
@@ -663,7 +668,7 @@ const BillAddForm = () => {
                       defaultValue={0}
                       step="0.01"
                       {...register(`dag_payments.${index}.customer_price`)}
-                      onChange={e => onChangeCustomerPrice(e, setValue, subTotal)}
+                      // onChange={e => onChangeCustomerPrice(e, setValue, subTotal)}
                     />
                   </Flex>
 

@@ -3,8 +3,8 @@ import { Bill } from "../../../services/Billing/bill-page-service";
 import { Service } from "../../../services/Registration/services-service";
 import { StockItemUnique } from "../../../services/Stock/stock-item-unique-service";
 import { StockItemDefault } from "../../../services/Stock/stock-item-service";
-import { ReceivedSupplierTyre } from "../../../services/Rebuild/Received/received-tyre-service";
 import { ReceiveTyreNew } from "../BillAddForm";
+
 
 let currentPrice = 0
 let discountList:number[] = []
@@ -27,7 +27,7 @@ export const onchangeBillStockItemUnique = (
         const customerPrice = seletedStockItemUnique?.unit_price * qty
         currentPrice = customerPrice
         const customerDiscount = calculateCustomerDiscount(seletedStockItemUnique, stockItems, watch, index, qty)
-        console.log('discount', customerDiscount)
+        
         setValue(`bill_items.${index}.qty`, qty)
         setValue(`bill_items.${index}.customer_discount`, customerDiscount)
         setValue(`bill_items.${index}.customer_price`, customerPrice)
@@ -43,9 +43,7 @@ const calculateCustomerDiscount = (selectedStockItemUnique:StockItemUnique, stoc
         const customerUnitDiscount = (((item.retail_price/item.max_qty)*item.customer_discount)/100)
         discountList[index] = customerUnitDiscount        
     }) 
-    console.log('discountList', discountList);
-    
-    
+      
     
     discount = (discount + (currentQtyValue * discountList[index])) || 0  
 
@@ -64,7 +62,7 @@ export const onChangeBillQty = (
     const qty = parseInt(e.currentTarget.value)
     if (seletedStockItemUnique !== undefined){
         const discount = calculateCustomerDiscount(seletedStockItemUnique, stockItems, watch, index, qty) && 0
-        console.log('discount', discount);
+        
         setValue(`bill_items.${index}.customer_discount`, discount)
         
         setValue(`bill_items.${index}.customer_price`, (seletedStockItemUnique?.unit_price * qty))
@@ -125,5 +123,6 @@ export const onChangeDagTyreChange = (
     const cost = filteredSupplierTyres[e.currentTarget.selectedIndex] !== undefined ? filteredSupplierTyres[e.currentTarget.selectedIndex].cost: 0
 
     setValue(`dag_payments.${index}.cost`, cost)
+    setValue(`dag_payments.${index}.customer_price`, cost)
     setValue('sub_total', (parseFloat(subTotalVal+'') + parseFloat(cost+'.00')))
 }
