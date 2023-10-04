@@ -46,7 +46,7 @@ import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext"
 import stockItemUniqueService, {
   StockItemUnique,
 } from "../../services/Stock/stock-item-unique-service";
-import BillShowDrawer from "./BillShowDrawer";
+import BillShowDrawer from "./BillShow/BillShowDrawer";
 import AllReceivedSupplierTyresContext from "../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 import AllSendSupplierTyresContext from "../../Contexts/Rebuild/AllSendSupplierContext";
 import AllDagPaymentsContext from "../../Contexts/Bill/AlldagPaymentsContext";
@@ -101,7 +101,9 @@ const BillAddForm = () => {
     AllReceivedSupplierTyresContext
   );
   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
-  const { allDagPayments, setAllDagPayments } = useContext(AllDagPaymentsContext);
+  const { allDagPayments, setAllDagPayments } = useContext(
+    AllDagPaymentsContext
+  );
 
   // To calculate valid qty in selected item unique
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
@@ -120,7 +122,7 @@ const BillAddForm = () => {
     defaultValues: {
       bill_items: [],
       bill_services: [],
-      dag_payments:[]
+      dag_payments: [],
     },
   });
 
@@ -130,8 +132,8 @@ const BillAddForm = () => {
   });
   const dagPaymentsWatch = useWatch({
     control,
-    name: "dag_payments"
-  })
+    name: "dag_payments",
+  });
 
   // fieldArrays
 
@@ -180,8 +182,6 @@ const BillAddForm = () => {
 
     return () => cancel();
   }, [isCreatedBill]);
-  
-
 
   // filtering supplier tyres
   useEffect(() => {
@@ -193,12 +193,6 @@ const BillAddForm = () => {
         )?.job_no,
       };
     });
-
-    console.log('not filtered', allReceivedSupplierTyres)
-    
-
-
-
     const filtered = newly.filter((tyre) => {
       const isAvailable = allDagPayments.some(
         (pay) => pay.received_supplier_tyre === tyre.id
@@ -206,8 +200,6 @@ const BillAddForm = () => {
 
       return !isAvailable;
     });
-
-    console.log('filtered', filtered)
 
     setFilteredSupplierTyres([...filtered]);
   }, []);
@@ -220,7 +212,7 @@ const BillAddForm = () => {
       (currentValue, nextValue) => currentValue + parseInt(nextValue + ""),
       0
     );
-    if (dagPaymentsWatch || billItemsWatch ) {
+    if (dagPaymentsWatch || billItemsWatch) {
       const customerPrice = billItemsWatch?.reduce(
         (currentValue, currentItem) =>
           currentValue + parseFloat(currentItem.customer_price + ""),
@@ -228,17 +220,17 @@ const BillAddForm = () => {
       );
       // console.log('billItemsWatch',billItemsWatch)
       const dagPayment = dagPaymentsWatch?.reduce(
-        (currentValue, currentItem)=>currentValue + parseFloat(currentItem.customer_price + ''),0
-      )
+        (currentValue, currentItem) =>
+          currentValue + parseFloat(currentItem.customer_price + ""),
+        0
+      );
 
       // console.log('customerPrice', customerPrice)
       subTotal = +(customerPrice + serviceTotal + dagPayment);
       setSubTotal(subTotal);
       setValue("sub_total", Math.round(subTotal * 100) / 100);
     }
-    
   }, [billItemsWatch, selectedServicesPrice, dagPaymentsWatch]);
-  
 
   // Ui Item Fix
   useEffect(() => {
@@ -251,7 +243,6 @@ const BillAddForm = () => {
     setSeletedFilteredListSet([...newFilteredArray]);
 
     // Filter Same price and adding
-
   }, [selectedItem, rowIndex, isCreatedBill]);
 
   const onSubmit = (data: Bill) => {
@@ -271,7 +262,7 @@ const BillAddForm = () => {
         setBills([res.data, ...bills]);
         setIsCreatedBill(true);
         setBill(res.data);
-        setAllDagPayments([...allDagPayments, ...res.data.dag_payments])
+        setAllDagPayments([...allDagPayments, ...res.data.dag_payments]);
       })
       .catch((err) => setErrorBillCreate(err.message));
   };
@@ -638,7 +629,15 @@ const BillAddForm = () => {
                       marginRight={BILL_ITEM_MARGIN_LEFT}
                       width={BILL_ITEM_WIDTH}
                       marginBottom={BILL_ITEM_MARGIN_BOTTOM}
-                      onChange={(e)=> onChangeDagTyreChange(e, setValue, subTotal, index, filteredSupplierTyres)}
+                      onChange={(e) =>
+                        onChangeDagTyreChange(
+                          e,
+                          setValue,
+                          subTotal,
+                          index,
+                          filteredSupplierTyres
+                        )
+                      }
                     >
                       <option>Received Tyre</option>
                       {filteredSupplierTyres.map((tyre, index) => (
@@ -681,7 +680,8 @@ const BillAddForm = () => {
                         type="button"
                         onClick={() => {
                           // setSelectedIndex(-1)
-                          dagPaymentRemove(index)}}
+                          dagPaymentRemove(index);
+                        }}
                       >
                         Remove
                       </Button>

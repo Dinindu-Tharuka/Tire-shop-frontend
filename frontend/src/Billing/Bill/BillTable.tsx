@@ -18,7 +18,7 @@ import {
 import { useContext, useState } from "react";
 import BillDelete from "./BillDelete";
 import useCustomer from "../../hooks/Customer/useCustomer";
-import BillShowDrawer from "./BillShowDrawer";
+import BillShowDrawer from "./BillShow/BillShowDrawer";
 import BillContext from "../../Contexts/Bill/BillContext";
 import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
@@ -84,8 +84,9 @@ const BillTable = () => {
                 <Td>{bill.invoice_id}</Td>
                 <Td>
                   {
-                    allCustomers.find((customer) => customer.id === bill.customer)
-                      ?.name
+                    allCustomers.find(
+                      (customer) => customer.id === bill.customer
+                    )?.name
                   }
                 </Td>
                 <Td>{makeUpDate(bill.date)}</Td>
