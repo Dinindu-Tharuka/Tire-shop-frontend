@@ -25,7 +25,7 @@ import AllReceivedTyresContext from "../Contexts/Rebuild/Received/AllReceivedtyr
 import useAllReceivedSupplierTyres from "../hooks/Rebuild/Received/useAllReceivedSupplierTyres";
 import AllReceivedSupplierTyresContext from "../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 import useAllDagPayments from "../hooks/Billing/useAllDagPayments";
-import AllDagPaymentsContext from "../Contexts/Bill/AlldagPaymentsContext";
+import AllDagPaymentContext from "../Contexts/Bill/AllDagPaymentContext";
 
 const GridSection = () => {
   const [userMe, setUserMe] = useState<User>({} as User);
@@ -130,7 +130,7 @@ const GridSection = () => {
   }, []);
 
   return (
-    <AllDagPaymentsContext.Provider
+    <AllDagPaymentContext.Provider
       value={{
         allDagPayments,
         setAllDagPayments,
@@ -260,7 +260,7 @@ const GridSection = () => {
           </ReceivedTyreContext.Provider>
         </AllReceivedTyresContext.Provider>
       </AllReceivedSupplierTyresContext.Provider>
-    </AllDagPaymentsContext.Provider>
+    </AllDagPaymentContext.Provider>
   );
 };
 
