@@ -25,14 +25,11 @@ const Login = () => {
     console.log("data", data);
 
     axiosInstance.post("/jwt/create/", data).then((res) => {
-      console.log(res);
       localStorage.clear();
-      console.log("responce", res.data);
-
-      localStorage.setItem('tokens', JSON.stringify(res.data))
 
       localStorage.setItem("access", res.data.access);
       localStorage.setItem("refresh", res.data.refresh);
+      localStorage.setItem("isReloaded", 'false')
       setAccessToken(res.data.access);
     });
   };

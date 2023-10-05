@@ -14,7 +14,7 @@ export interface UserToken{
 const axiosInstance =  axios.create({
     baseURL:'http://127.0.0.1:8000/api',
     headers:{
-        "Authorization":`Bearer ${JSON.parse(localStorage.getItem('tokens') || '').access}`,
+        "Authorization":`JWT ${localStorage.getItem('access') || ''}`,
         "Content-Type":'application/json',
     }
    

@@ -30,6 +30,15 @@ import AllDagPaymentsContext from "../Contexts/Bill/AlldagPaymentsContext";
 const GridSection = () => {
   const [userMe, setUserMe] = useState<User>({} as User);
 
+  useEffect(()=>{
+    const isReloaded = localStorage.getItem("isReloaded")
+
+    if (isReloaded === 'false'){
+      window.location.reload()
+      localStorage.setItem('isReloaded', 'true')
+    }
+  })
+
   const {
     allDagPayments,
     setAllDagPayments,
