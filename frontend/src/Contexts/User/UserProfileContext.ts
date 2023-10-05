@@ -1,7 +1,7 @@
 
 import { Dispatch, SetStateAction } from "react";
 import React from "react";
-import { UserProfile } from "../../services/User/user-service";
+import { UserProfile } from "../../services/User/user-profile-service";
 
 
 interface UserProfileContextType{

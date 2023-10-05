@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import { UserProfile } from "../../services/User/user-service";
-import userProfileService from "../../services/User/user-profile-service";
+import userProfileService, { UserProfile } from "../../services/User/user-profile-service";
 
 const useUserProfile = () => {
     const [userProfiles, setUsersProfiles] = useState<UserProfile[]>([])

@@ -55,7 +55,7 @@ const UserListTable = () => {
                   <Td>{user.id}</Td>
                   <Td>{user.user_name}</Td>
                   <Td>{user.email}</Td>    
-                  <Td>{user.is_manager ? 'Manager': user.is_superuser ? 'Superuser': 'Cashier'}</Td>  
+                  <Td>{user.is_manager ? 'Manager': user.id === 1 ? 'Superuser': 'Cashier'}</Td>  
                 </Tr>
               );
             })}
