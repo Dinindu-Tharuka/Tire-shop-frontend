@@ -49,7 +49,7 @@ import stockItemUniqueService, {
 import BillShowDrawer from "./BillShow/BillShowDrawer";
 import AllReceivedSupplierTyresContext from "../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 import AllSendSupplierTyresContext from "../../Contexts/Rebuild/AllSendSupplierContext";
-import AllDagPaymentsContext from "../../Contexts/Bill/AlldagPaymentsContext";
+import AllDagPaymentContext from "../../Contexts/Bill/AllDagPaymentContext";
 
 export interface ReceiveTyreNew {
   id: number;
@@ -102,7 +102,7 @@ const BillAddForm = () => {
   );
   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
   const { allDagPayments, setAllDagPayments } = useContext(
-    AllDagPaymentsContext
+    AllDagPaymentContext
   );
 
   // To calculate valid qty in selected item unique
