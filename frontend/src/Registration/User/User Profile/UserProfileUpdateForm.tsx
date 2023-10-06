@@ -24,18 +24,35 @@ const UserProfileUpdateForm = ({ onClose }: Props) => {
   );
 
   const onUpdate = (data: UserProfile) => {
-    const newly = {
-      ...data,
-      user_account_id: userMe.id,
-      id: currentUserProfile?.id,
-    };
-    userProfileService
-      .update(newly, `${currentUserProfile?.id}`)
-      .then((res) => {
-        setSucces("Updated Successfully...")
-        setUsersProfiles(userProfiles.map( profle => profle.id === res.data.id ? res.data: profle))
-    })
-      .catch((err) => setError("Updated not Sucessfull."));
+    if (currentUserProfile?.id !== undefined){
+      const newly = {
+        ...data,
+        user_account_id: userMe.id,
+        id: currentUserProfile?.id,
+      };
+      userProfileService
+        .update(newly, `${currentUserProfile?.id}`)
+        .then((res) => {
+          setSucces("Updated Successfully...")
+          setUsersProfiles(userProfiles.map( profle => profle.id === res.data.id ? res.data: profle))
+      })
+        .catch((err) => setError("Updated not Sucessfull."));
+
+    }else{
+      const newly = {
+        ...data,
+        user_account_id: userMe.id
+      };
+      console.log(newly)
+      userProfileService
+        .create(newly)
+        .then(res => {
+          setSucces("Updated Successfully...")
+          setUsersProfiles([...userProfiles, res.data])
+        })
+        .catch((err) => setError("Updated not Sucessfull."));
+
+    }
   };
   return (
     <>
