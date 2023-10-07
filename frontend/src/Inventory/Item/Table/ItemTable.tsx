@@ -26,7 +26,7 @@ import getCutUrl, {
 } from "../../../services/pagination-cut-link";
 import useStockItem from "../../../hooks/Stock/useStockItems";
 import calculateStockitemCount from "../Calculations/CountStockItems";
-import ItemTableReport from "./ItemTableReport";
+import ItemTableModel from "./ItemTableModel";
 import { AllItemContext } from "../../../Contexts/Inventory/AllItemContest";
 
 const ItemTable = () => {
@@ -44,22 +44,27 @@ const ItemTable = () => {
     setItemBrandQuery,
   } = useContext(ItemPageContext);
 
-  const {allItems, setAllItemQuery, setAllItemBrandQuery, setAllItemSizeQuery} = useContext(AllItemContext)
+  const {
+    allItems,
+    setAllItemQuery,
+    setAllItemBrandQuery,
+    setAllItemSizeQuery,
+  } = useContext(AllItemContext);
   const numOfPages = Math.ceil(itemCount / MAXIMUM_PAGES_PER_PAGE);
   const { colorMode } = useColorMode();
 
   const onTypeId = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setItemQuery(event.currentTarget.value);
-    setAllItemQuery(event.currentTarget.value)
+    setAllItemQuery(event.currentTarget.value);
   };
   const onTypeSize = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setItemSizeQuery(event.currentTarget.value);
-    setAllItemSizeQuery(event.currentTarget.value)
+    setAllItemSizeQuery(event.currentTarget.value);
   };
   const onTypeBrand = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.currentTarget.value)
+    console.log(event.currentTarget.value);
     setItemBrandQuery(event.currentTarget.value);
-    setAllItemBrandQuery(event.currentTarget.value)
+    setAllItemBrandQuery(event.currentTarget.value);
   };
 
   const { stockItems } = useStockItem();
@@ -73,7 +78,7 @@ const ItemTable = () => {
         <Input placeholder="Search Item" onKeyUp={onTypeId} />
         <Input placeholder="Search Size" onKeyUp={onTypeSize} />
         <Input placeholder="Search Brand" onKeyUp={onTypeBrand} />
-        <ItemTableReport items={allItems}/>
+        <ItemTableModel items={allItems} />
       </HStack>
       <TableContainer>
         <Table>

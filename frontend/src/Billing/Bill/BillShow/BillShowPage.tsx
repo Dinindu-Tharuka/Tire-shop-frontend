@@ -29,10 +29,12 @@ interface Props {
 }
 
 const BillShowPage = ({ seletedBill }: Props) => {
+  // For downloading pdf
   const [loader, setLoader] = useState(false);
-  const { customers } = useCustomer();
-
   const pdfRef = useRef<HTMLDivElement>(null);
+
+  // contexts & hooks
+  const { customers } = useCustomer();
   const { billPayments } = useContext(BillPaymentContext);
 
   const dowloadPdf = () => {
