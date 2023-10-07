@@ -14,6 +14,8 @@ import { useRef } from "react";
 import BillService, { Bill } from "../../services/Billing/bill-page-service";
 import BillContext from "../../Contexts/Bill/BillContext";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
+import useAllDagPayments from "../../hooks/Billing/useAllDagPayments";
+import AllDagPaymentContext from "../../Contexts/Bill/AllDagPaymentContext";
 
 interface Props {
   selectedDeleteBill: Bill;
@@ -24,6 +26,7 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
   const cancelRef = useRef(null);
   const deleteToast = useToast();
   const { bills, setBills, setBillFetchError } = useContext(BillContext);
+  const { allDagPayments, setAllDagPayments} = useContext(AllDagPaymentContext)
 
   
 
@@ -34,10 +37,7 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
 
     
 
-    setBills(
-      bills.filter((bill) => bill.invoice_id !== seletedBill.invoice_id)
-    );
-
+    
     BillService.delete(`${seletedBill.invoice_id}`)
       .then((res) => {
 
@@ -49,6 +49,11 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
             duration: 2000,
             isClosable: true,
           });
+          setAllDagPayments([...allDagPayments, ...selectedDeleteBill.dag_payments])
+          setBills(
+            bills.filter((bill) => bill.invoice_id !== seletedBill.invoice_id)
+          );
+      
         }
         setBillFetchError('')
       })

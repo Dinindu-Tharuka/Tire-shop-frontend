@@ -19,6 +19,7 @@ import CustomerContext from "../../../Contexts/Customer/CustomerContext";
 import VehicleContext from "../../../Contexts/Customer/VehicleContext";
 
 import AddCustomerTakenTyre from "./Add/AddCustomerTakenTyre";
+import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
 
 interface Props {
   selectedTakenTyre: TyreTaken;
@@ -32,7 +33,7 @@ export const TakenTyreUpdate = ({ selectedTakenTyre }: Props) => {
   const { colorMode } = useColorMode();
 
   const { takenTyres, setTakenTyres } = useContext(TakenTyreContext);
-  const { customers } = useContext(CustomerContext);
+  const { allCustomers } = useContext(AllCustomerContext);
   const { vehicles } = useContext(VehicleContext);
 
   const onUpdate = (data: TyreTaken) => {
@@ -64,12 +65,12 @@ export const TakenTyreUpdate = ({ selectedTakenTyre }: Props) => {
             <Select {...register("customer")}>
               <option value={selectedTakenTyre.customer}>
                 {
-                  customers.find(
+                  allCustomers.find(
                     (customer) => customer.id === selectedTakenTyre.customer
                   )?.name
                 }
               </option>
-              {customers.map((customer) => (
+              {allCustomers.map((customer) => (
                 <option value={customer.id}>{customer.name}</option>
               ))}
             </Select>

@@ -30,6 +30,7 @@ import useVehicles from "../../../hooks/Customer/useVehicles";
 import { makeUpDate } from "../../UI/MakeUpDate";
 import TakenTyreDelete from "./TakenTyreDelete";
 import TakenTyreUpdateDrawer from "./TakenTyreUpdateDrawer";
+import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
 
 const TyreTakenTable = () => {
   const { colorMode } = useColorMode();
@@ -49,7 +50,7 @@ const TyreTakenTable = () => {
     setTakenTyreNameFilter,
   } = useContext(TakenTyreContext);
 
-  const { customers } = useContext(CustomerContext);
+  const { allCustomers } = useContext(AllCustomerContext);
 
   const { vehicles, setVehicles } = useVehicles();
 
@@ -85,7 +86,7 @@ const TyreTakenTable = () => {
                 </Th>
                 <Td>
                   {
-                    customers.find((customer) => customer.id === tyre.customer)
+                    allCustomers.find((customer) => customer.id === tyre.customer)
                       ?.name
                   }
                 </Td>

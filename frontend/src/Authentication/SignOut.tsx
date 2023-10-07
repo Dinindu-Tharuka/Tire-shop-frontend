@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Center,
   Flex,
@@ -9,21 +8,15 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useContext} from "react";
+import { useContext } from "react";
 import UserMeContext from "../Contexts/User/UserMe";
-import useUser from "../hooks/User/useUser";
 import UserProfileContext from "../Contexts/User/UserProfileContext";
 import { UserProfile } from "../Registration/User/User Profile/UserProfile";
 
 const SignOut = () => {
   const { colorMode } = useColorMode();
-
-  const { userProfiles } = useContext(UserProfileContext)
-
-  console.log('userProfiles', userProfiles)
- 
-  const userMe = useContext(UserMeContext)
-  const {users} = useUser() 
+  const { userProfiles } = useContext(UserProfileContext);
+  const userMe = useContext(UserMeContext);
 
   const signOut = () => {
     localStorage.removeItem("access");
@@ -48,19 +41,30 @@ const SignOut = () => {
             fontSize="2xl"
             textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}
           >
-            {userProfiles.find( user => user.user_account_id === userMe.id)?.first_name}
+            {
+              userProfiles.find((user) => user.user_account_id === userMe.id)
+                ?.first_name
+            }
           </Heading>
           <Heading
             fontSize="2xl"
             textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}
           >
-            {userProfiles.find( user => user.user_account_id === userMe.id)?.last_name}
+            {
+              userProfiles.find((user) => user.user_account_id === userMe.id)
+                ?.last_name
+            }
           </Heading>
         </VStack>
         <VStack>
           <Text textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}>
-          {userMe.id === 1? 'Admin': userMe.is_manager ? 'Manager':"Cashier"}
+            {userMe.id === 1
+              ? "Superuser"
+              : userMe.is_manager
+              ? "Manager"
+              : "Cashier"}
           </Text>
+          <UserProfile />
           <Button
             bg={colorMode === "light" ? "#e3a99c" : "#252528"}
             paddingX={10}
@@ -72,9 +76,8 @@ const SignOut = () => {
             marginBottom={2}
             onClick={signOut}
           >
-            <Link to="/login">Sign Out</Link>            
+            <Link to="/login">Sign Out</Link>
           </Button>
-          <UserProfile/>
         </VStack>
       </Flex>
     </Center>

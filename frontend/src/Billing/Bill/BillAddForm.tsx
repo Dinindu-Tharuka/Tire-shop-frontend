@@ -88,7 +88,7 @@ const BillAddForm = () => {
     []
   );
   const { bills, setBills } = useContext(BillContext);
-  const { items } = useAllItems();
+  const { allItems } = useAllItems();
 
   const { customers } = useCustomer();
   const { services } = useService();
@@ -364,7 +364,7 @@ const BillAddForm = () => {
                       }}
                     >
                       <option value="">Select Item</option>
-                      {items.map((item, index) => (
+                      {allItems.map((item, index) => (
                         <option key={index} value={item.item_id}>
                           {item.item_id} (
                           {calculateStockitemCount(item, stockItems)})

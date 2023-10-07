@@ -120,7 +120,7 @@ export const onChangeDagTyreChange = (
     filteredSupplierTyres:ReceiveTyreNew[]
 )=>{
 
-    const cost = filteredSupplierTyres[e.currentTarget.selectedIndex] !== undefined ? filteredSupplierTyres[e.currentTarget.selectedIndex].cost: 0
+    const cost = filteredSupplierTyres[e.currentTarget.selectedIndex-1] !== undefined ? filteredSupplierTyres[e.currentTarget.selectedIndex-1].cost: 0
 
     setValue(`dag_payments.${index}.cost`, cost)
     setValue(`dag_payments.${index}.customer_price`, cost)

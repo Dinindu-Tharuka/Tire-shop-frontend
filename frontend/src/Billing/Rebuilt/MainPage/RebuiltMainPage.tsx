@@ -9,6 +9,7 @@ import {
 import TyreTakenTable from "../TyreTaken/TyreTakenTable";
 import SendTyreTable from "../SendTyre/SendTyreTable";
 import ReceivedTyreTable from "../ReceivedTyre/ReceivedTyreTable";
+import RebuiltReports from "../Report/RebuiltReports";
 
 const RebuiltMainPage = () => {
   return (
@@ -17,6 +18,7 @@ const RebuiltMainPage = () => {
         <Tab>Accepting Tyres</Tab>
         <Tab>Send Tyre</Tab>
         <Tab>Received Tyre</Tab>
+        <Tab>Reports</Tab>
       </TabList>
 
       <TabPanels>
@@ -34,6 +36,9 @@ const RebuiltMainPage = () => {
         <Flex width="60vw" height="80vh">
           <ReceivedTyreTable/>
         </Flex>
+        </TabPanel>
+        <TabPanel>
+          <RebuiltReports/>
         </TabPanel>
       </TabPanels>
     </Tabs>
