@@ -1,10 +1,8 @@
-import html2canvas from "html2canvas";
 import AllStockItemsContext from "../../../Contexts/Stock/AllStockItemContext";
 import { Item } from "../../../services/Inventory/item-page-service";
 import calculateStockitemCount from "../Calculations/CountStockItems";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Button, HStack, ModalHeader, Text } from "@chakra-ui/react";
-import jsPDF from "jspdf";
 import DownloadPdf from "../../../PDF/DownloadPdf";
 
 interface Props {
@@ -16,13 +14,12 @@ const FilteredItemShow = ({ items }: Props) => {
   const { stockItems } = useContext(AllStockItemsContext);
 
   // For downloading pdf
-  const [capture, setCapture] = useState<HTMLDivElement | null>(null)
+  const [capture, setCapture] = useState<HTMLDivElement | null>(null);
   const [loader, setLoader] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
-  useEffect(()=>{
+  useEffect(() => {
     setCapture(pdfRef.current);
-
-  }, [])
+  }, []);
 
   // date
   const currntDate = new Date();
@@ -32,7 +29,7 @@ const FilteredItemShow = ({ items }: Props) => {
       <div ref={pdfRef}>
         <ModalHeader>Stock In Hand Report</ModalHeader>
         <Text marginLeft={10}>
-          {currntDate.getFullYear()}-{currntDate.getMonth()+1}-
+          {currntDate.getFullYear()}-{currntDate.getMonth() + 1}-
           {currntDate.getDate()}
         </Text>
         <table className="table">
@@ -59,7 +56,9 @@ const FilteredItemShow = ({ items }: Props) => {
         </table>
       </div>
       <HStack>
-        <Button onClick={() =>DownloadPdf(capture, setLoader)} bg='red.300'>PDF</Button>
+        <Button onClick={() => DownloadPdf(capture, setLoader)} bg="red.300">
+          PDF
+        </Button>
       </HStack>
     </>
   );
