@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import GridSection from "../MainPages/GridSection";
 import Inventory from "../Inventory/MainPages/Inventory";
 import MainImage from "../Inventory/MainImage";
-import ItemTable from "../Inventory/Item/ItemTable";
+import ItemTable from "../Inventory/Item/Table/ItemTable";
 import CategoryTable from "../Inventory/Category/CategoryTable";
 import SupplierTable from "../Registration/Supplier/SupplierTable";
 import RegistraionMainPage from "../Registration/MainPage/RegistrationMainPage";

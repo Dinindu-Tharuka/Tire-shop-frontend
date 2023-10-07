@@ -5,17 +5,21 @@ import axios from "axios"
 
 
 
-const useItems = () => {
-    const [items, setItems] = useState<Item[]>([])
+const useAllItems = () => {
+    const [allItems, setAllItems] = useState<Item[]>([])
     const [error, setError] = useState('')
+    const [itemQuery, setAllItemQuery] = useState('')
+    const [itemSizeQuery, setAllItemSizeQuery] = useState('')
+    const [itemBrandQuery, setAllItemBrandQuery] = useState('')
 
+    console.log(itemBrandQuery)
 
     useEffect(()=>{
-        const {request, cancel} = ItemService.getAll<Item>()
+        const {request, cancel} = ItemService.getAll<Item>({params: { itemQuery, itemSizeQuery, itemBrandQuery }})
         
         request     
             .then(res=> {
-                setItems(res.data)
+                setAllItems(res.data)
                 
             })
             .catch(error=>{
@@ -23,10 +27,10 @@ const useItems = () => {
             });
   
           return ()=>cancel();
-      }, [])
+      }, [itemQuery, itemSizeQuery, itemBrandQuery])
 
-    return {items, setItems, setError , error}
+    return {allItems, setAllItems, setError , error, setAllItemQuery, setAllItemSizeQuery, setAllItemBrandQuery}
   
 }
 
-export default useItems
+export default useAllItems

@@ -16,7 +16,7 @@ import StockInvoiceService, {
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 import useSupplier from "../../hooks/Registration/useSupplier";
 import { StockItem } from "../../services/Stock/stock-item-service";
-import useItems from "../../hooks/Inventory/useItems";
+import useAllItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import {
   STOCK_ITEM_MARIGIN_BOTTOM,
@@ -43,10 +43,10 @@ import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 const StockAddForm = () => {
   const [watchingCost, setWatchingCost] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
-  const [stockInvoice, setStockInvoice] = useState<StockInvoice>()
+  const [stockInvoice, setStockInvoice] = useState<StockInvoice>();
 
   //for supplier menus
-  const [selectedSupplier, setSelectedSupplier] = useState<Supplier>()
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier>();
   const { register, handleSubmit, control, reset, watch, getValues, setValue } =
     useForm<StockInvoice>();
 
@@ -56,10 +56,10 @@ const StockAddForm = () => {
   const { setStockItemsUnique } = useContext(StockItemUniqueContext);
 
   //Supplier context
-  const { suppliers, setFilterSupplierParams } = useContext(SupplierContext)
+  const { suppliers, setFilterSupplierParams } = useContext(SupplierContext);
 
-  console.log('suppliers', suppliers);
-  
+  console.log("suppliers", suppliers);
+
   const {
     fields: stockItemArray,
     append: stockItemAppend,
@@ -103,7 +103,7 @@ const StockAddForm = () => {
   const { stockInvoices, setStockInvoices } = useContext(
     StockInvoicePageContext
   );
-  const { items } = useItems();
+  const { items } = useAllItems();
   const { stockItems, setStockItems } = useContext(StockItemContext);
 
   const onSubmit = (data: StockInvoice) => {
@@ -112,7 +112,11 @@ const StockAddForm = () => {
         ? { ...item, retail_price: "0" }
         : { ...item }
     );
-    const newly = { ...data, supplier:selectedSupplier?.id , stock_items: [...stockItemss] };
+    const newly = {
+      ...data,
+      supplier: selectedSupplier?.id,
+      stock_items: [...stockItemss],
+    };
     console.log(newly);
 
     StockInvoiceService.create(newly)
@@ -121,7 +125,7 @@ const StockAddForm = () => {
         setStockInvoices([res.data, ...stockInvoices]);
         setStockItems([...res.data.stock_items, ...stockItems]);
         setIsCreatedBill(true);
-        setStockInvoice(res.data)
+        setStockInvoice(res.data);
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -152,7 +156,9 @@ const StockAddForm = () => {
               />
             </div>
             <div className="mb-3">
-              <SupplierFilter selectedSupplier={(sup)=>setSelectedSupplier(sup)} />
+              <SupplierFilter
+                selectedSupplier={(sup) => setSelectedSupplier(sup)}
+              />
             </div>
           </div>
 
@@ -346,7 +352,7 @@ const StockAddForm = () => {
           <Flex>
             <Button
               type="button"
-              width='10vw'
+              width="10vw"
               bg={colorMode === "light" ? "#e3a99c" : "#575757"}
               onClick={() => {
                 setStockinvoiceCreate("");
@@ -359,7 +365,9 @@ const StockAddForm = () => {
               Reset
             </Button>
           </Flex>
-            {stockInvoice !== undefined && stockInvoice && <StockInvoiceShowDrawer selectedStockInvoice={stockInvoice}/>}
+          {stockInvoice !== undefined && stockInvoice && (
+            <StockInvoiceShowDrawer selectedStockInvoice={stockInvoice} />
+          )}
         </HStack>
       </form>
     </>

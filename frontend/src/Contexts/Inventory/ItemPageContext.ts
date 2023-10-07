@@ -16,6 +16,7 @@ interface ItemPAgeContextType{
     itemCount:number;
     setItemQuery:Dispatch<SetStateAction<string>>;
     setItemSizeQuery:Dispatch<SetStateAction<string>>;
+    setItemBrandQuery:Dispatch<SetStateAction<string>>
 }
 
 const ItemPageContext = React.createContext<ItemPAgeContextType>({} as ItemPAgeContextType)

@@ -12,12 +12,13 @@ const useItemsPagination = () => {
     const [itemCount, setItemCount] = useState(0)
     const [itemQuery, setItemQuery] = useState('')
     const [itemSizeQuery, setItemSizeQuery] = useState('')
+    const [itemBrandQuery, setItemBrandQuery] = useState('')
     
 
 
     useEffect(()=>{
         setIsLoadingItems(true)
-        const {request, cancel} = ItemService.getAll<ItemPageStructure>(filterItemPageParams, {params: { itemQuery, itemSizeQuery }})   
+        const {request, cancel} = ItemService.getAll<ItemPageStructure>(filterItemPageParams, {params: { itemQuery, itemSizeQuery, itemBrandQuery }})   
         request     
             .then(res=> {
                 setItems(res.data.results)
@@ -32,9 +33,9 @@ const useItemsPagination = () => {
             });
   
           return ()=>cancel();
-      }, [filterItemPageParams, itemQuery, itemSizeQuery])
+      }, [filterItemPageParams, itemQuery, itemSizeQuery, itemBrandQuery])
 
-    return {items, setItems, nextItemPageUrl, previousItemPageUrl, filterItemPageParams, setFilterItemPageParams, error, isLoadingItems, setError, itemCount, setItemQuery, setItemSizeQuery}
+    return {items, setItems, nextItemPageUrl, previousItemPageUrl, filterItemPageParams, setFilterItemPageParams, error, isLoadingItems, setError, itemCount, setItemQuery, setItemSizeQuery, setItemBrandQuery}
   
 }
 

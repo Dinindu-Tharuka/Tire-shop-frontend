@@ -20,7 +20,7 @@ import BillServices, {
 import useCustomer from "../../hooks/Customer/useCustomer";
 import useService from "../../hooks/Registration/useService";
 import useEmployee from "../../hooks/Registration/useEmployee";
-import useItems from "../../hooks/Inventory/useItems";
+import useAllItems from "../../hooks/Inventory/useItems";
 import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import calculateStockitemCount from "../../Inventory/Item/Calculations/CountStockItems";
 import {
@@ -88,7 +88,7 @@ const BillAddForm = () => {
     []
   );
   const { bills, setBills } = useContext(BillContext);
-  const { items } = useItems();
+  const { items } = useAllItems();
 
   const { customers } = useCustomer();
   const { services } = useService();
@@ -101,9 +101,8 @@ const BillAddForm = () => {
     AllReceivedSupplierTyresContext
   );
   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
-  const { allDagPayments, setAllDagPayments } = useContext(
-    AllDagPaymentContext
-  );
+  const { allDagPayments, setAllDagPayments } =
+    useContext(AllDagPaymentContext);
 
   // To calculate valid qty in selected item unique
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(

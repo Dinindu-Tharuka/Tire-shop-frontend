@@ -31,6 +31,7 @@ const SideBarOptionList = () => {
     "Billing",
     "Inventory",
     "Registration",
+    
   ];
   const links_lg = [
     "/",
@@ -46,6 +47,7 @@ const SideBarOptionList = () => {
     "Inventory",
     "Registration",
     "Sign out",
+    
   ];
   const links_base = [
     "/",

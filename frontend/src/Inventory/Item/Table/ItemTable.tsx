@@ -13,25 +13,26 @@ import {
   Text,
   Input,
 } from "@chakra-ui/react";
-import UpdateItem from "./UpdateItemDrawer";
+import UpdateItem from "../UpdateItemDrawer";
 import { useContext, useState } from "react";
-import ItemPageContext from "../../Contexts/Inventory/ItemPageContext";
+import ItemPageContext from "../../../Contexts/Inventory/ItemPageContext";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import ItemDelete from "./ItemDelete";
+import ItemDelete from "../ItemDelete";
 import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
-} from "../../services/pagination-cut-link";
-import useStockItem from "../../hooks/Stock/useStockItems";
-import calculateStockitemCount from "./Calculations/CountStockItems";
+} from "../../../services/pagination-cut-link";
+import useStockItem from "../../../hooks/Stock/useStockItems";
+import calculateStockitemCount from "../Calculations/CountStockItems";
+import ItemTableReport from "./ItemTableReport";
+import { AllItemContext } from "../../../Contexts/Inventory/AllItemContest";
 
 const ItemTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const {
     items,
-    setItems,
     nextItemPageUrl,
     previousItemPageUrl,
     setError,
@@ -40,16 +41,25 @@ const ItemTable = () => {
     itemCount,
     setItemQuery,
     setItemSizeQuery,
+    setItemBrandQuery,
   } = useContext(ItemPageContext);
 
+  const {allItems, setAllItemQuery, setAllItemBrandQuery, setAllItemSizeQuery} = useContext(AllItemContext)
   const numOfPages = Math.ceil(itemCount / MAXIMUM_PAGES_PER_PAGE);
   const { colorMode } = useColorMode();
 
   const onTypeId = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setItemQuery(event.currentTarget.value);
+    setAllItemQuery(event.currentTarget.value)
   };
   const onTypeSize = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setItemSizeQuery(event.currentTarget.value);
+    setAllItemSizeQuery(event.currentTarget.value)
+  };
+  const onTypeBrand = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(event.currentTarget.value)
+    setItemBrandQuery(event.currentTarget.value);
+    setAllItemBrandQuery(event.currentTarget.value)
   };
 
   const { stockItems } = useStockItem();
@@ -62,6 +72,8 @@ const ItemTable = () => {
       <HStack>
         <Input placeholder="Search Item" onKeyUp={onTypeId} />
         <Input placeholder="Search Size" onKeyUp={onTypeSize} />
+        <Input placeholder="Search Brand" onKeyUp={onTypeBrand} />
+        <ItemTableReport items={allItems}/>
       </HStack>
       <TableContainer>
         <Table>

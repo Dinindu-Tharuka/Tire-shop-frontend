@@ -37,6 +37,7 @@ const Inventory = () => {
     itemCount,
     setItemQuery,
     setItemSizeQuery,
+    setItemBrandQuery
   } = useItemsPagination();
   const {
     categories,
@@ -82,6 +83,7 @@ const Inventory = () => {
           itemCount,
           setItemQuery,
           setItemSizeQuery,
+          setItemBrandQuery
         }}
       >
         <ItemCategoryContext.Provider

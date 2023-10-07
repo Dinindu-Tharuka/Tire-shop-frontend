@@ -55,20 +55,7 @@ const UserAddForm = () => {
           <div className="mb-3 h-75">
             <Input {...register("email")} type="email" placeholder="Email" />
           </div>
-          <div className="mb-3 h-75">
-            <Input
-              {...register("first_name")}
-              type="text"
-              placeholder="First Name"
-            />
-          </div>
-          <div className="mb-3 h-75">
-            <Input
-              {...register("last_name")}
-              type="text"
-              placeholder="Last Name"
-            />
-          </div>
+          
           <div className="mb-3 h-75">
             <RadioGroup value={value} onChange={setValue}>
               <Stack direction="row">
