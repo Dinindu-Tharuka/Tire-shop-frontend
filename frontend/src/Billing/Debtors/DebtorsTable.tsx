@@ -16,7 +16,7 @@ import { calculateTotalPayment } from "../Bill/Calculations/CalculateTotalPaymen
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import { makeUpDate } from "../UI/MakeUpDate";
 
-const CreditorsTable = () => {
+const DebtorsTable = () => {
   const { bills } = useContext(BillContext);
   const { customers } = useContext(CustomerContext);
   const { billPayments } = useContext(BillPaymentContext);
@@ -57,7 +57,7 @@ const CreditorsTable = () => {
               <Th>Customer</Th>
               <Th>Sub Total</Th>
               <Th>Total Payment</Th>
-              <Th>Credit Amount</Th>
+              <Th>Debit Amount</Th>
               <Th>Date</Th>
             </Tr>
           </Thead>
@@ -98,4 +98,4 @@ const CreditorsTable = () => {
   );
 };
 
-export default CreditorsTable;
+export default DebtorsTable;

@@ -11,8 +11,6 @@ import {
   Tr,
   useColorMode,
   Text,
-  Spinner,
-  Input,
 } from "@chakra-ui/react";
 
 import { useContext, useState } from "react";
