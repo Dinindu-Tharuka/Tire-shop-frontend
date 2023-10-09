@@ -9,6 +9,7 @@ const usePageRebuildReports = () => {
     const [filterRebuildPageReportsParams, setFilterRebuildPageReportsParams] = useState<string | null>('')
     const [isLoadingRebuildPageReportsPage, setIsLoadingRebuildPageReportsPage] = useState(false)
     const [rebuildPageReportsCount, setRebuildPageReportsCount] = useState(0)
+    const [reFetchPageReports, setReFetchPageReports] = useState('')
 
     useEffect(()=>{
       setIsLoadingRebuildPageReportsPage(true)
@@ -30,8 +31,8 @@ const usePageRebuildReports = () => {
           })
 
         return ()=> cancel();
-    }, [filterRebuildPageReportsParams])
-  return {rebuildPageReports, setRebuildPageReports, errorFetchRebuildPageReports, setErrorFetchRebuildPageReports, nextRebuildPageReportsUrl, previousRebuildPageReportsUrl, setFilterRebuildPageReportsParams, rebuildPageReportsCount, isLoadingRebuildPageReportsPage}
+    }, [filterRebuildPageReportsParams, reFetchPageReports])
+  return {rebuildPageReports, setRebuildPageReports, errorFetchRebuildPageReports, setErrorFetchRebuildPageReports, nextRebuildPageReportsUrl, previousRebuildPageReportsUrl, setFilterRebuildPageReportsParams, rebuildPageReportsCount, isLoadingRebuildPageReportsPage, setReFetchPageReports}
 }
 
 export default usePageRebuildReports

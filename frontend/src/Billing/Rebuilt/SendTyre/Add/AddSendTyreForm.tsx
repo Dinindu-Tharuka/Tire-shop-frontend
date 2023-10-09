@@ -2,7 +2,6 @@ import {
   Button,
   useColorMode,
   Text,
-  Select,
   HStack,
   Input,
 } from "@chakra-ui/react";
@@ -12,11 +11,12 @@ import sendTyreService, {
   SendTyre,
 } from "../../../../services/Rebuild/send-tyre-service";
 import SendTyreContext from "../../../../Contexts/Rebuild/SendTyreContext";
-import SupplierContext from "../../../../Contexts/Registration/SupplierContext";
 import AddSendSupplierTyres from "./AddSendSupplierTyres";
 import SupplierFilter from "../../../../Registration/Supplier/SupplierFilter";
 import { Supplier } from "../../../../services/Registration/supplier-service";
 import AllSendSupplierTyresContext from "../../../../Contexts/Rebuild/AllSendSupplierContext";
+import RebuildReportsPageContext from "../../../../Contexts/Reports/RebuildReortsContext";
+import AllRebuildReportsContext from "../../../../Contexts/Reports/AllRebuildReportsContext";
 
 const AddSendTyreForm = () => {
   const { register, handleSubmit, control } = useForm<SendTyre>();
@@ -30,6 +30,13 @@ const AddSendTyreForm = () => {
   const { setAllSendSupplierTyres, allSendSupplierTyres } = useContext(
     AllSendSupplierTyresContext
   );
+
+  // For refetch reports
+  const { setReFetchPageReports } = useContext(RebuildReportsPageContext)
+  const { setRefetchRebuildAllReports } = useContext(AllRebuildReportsContext)
+  const date = new Date()
+  const milliseconds = date.getMilliseconds()
+  
 
   const onCreate = (data: SendTyre) => {
     const newly = { ...data, supplier: seletedSuplier?.id };
@@ -47,6 +54,11 @@ const AddSendTyreForm = () => {
           ...allSendSupplierTyres,
           ...res.data.send_tyres,
         ]);
+
+        // Refetch
+        setReFetchPageReports(''+milliseconds)
+        setRefetchRebuildAllReports(''+milliseconds)
+        
       })
       .catch((err) => {
         setErrorSendTyreCreate("Not Succefully created.");

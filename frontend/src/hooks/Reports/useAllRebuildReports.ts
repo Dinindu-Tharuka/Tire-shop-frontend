@@ -6,7 +6,7 @@ const useAllRebuildReports = () => {
     const [allRebuildReports, setAllRebuildReports] = useState<RebuildReport[]>([])
     const [errorFetchRebuildAllReports, setErrorFetchRebuildAllReports] = useState('');
     const [isLoadingRebuildAllReportsPage, setIsLoadingRebuildAllReportsPage] = useState(false)
-    
+    const [refetchRebuildAllReports, setRefetchRebuildAllReports] = useState('')
 
     useEffect(()=>{
       setIsLoadingRebuildAllReportsPage(true)
@@ -23,8 +23,8 @@ const useAllRebuildReports = () => {
           })
 
         return ()=> cancel();
-    }, [])
-  return {allRebuildReports, setAllRebuildReports, errorFetchRebuildAllReports, setErrorFetchRebuildAllReports, isLoadingRebuildAllReportsPage}
+    }, [refetchRebuildAllReports])
+  return {allRebuildReports, setAllRebuildReports, errorFetchRebuildAllReports, setErrorFetchRebuildAllReports, isLoadingRebuildAllReportsPage, setRefetchRebuildAllReports}
 }
 
 export default useAllRebuildReports

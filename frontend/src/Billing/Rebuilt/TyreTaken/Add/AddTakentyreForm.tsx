@@ -1,7 +1,6 @@
 import { Button, useColorMode, Text, Select, HStack } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import TakenTyreContext from "../../../../Contexts/Rebuild/TakenTyreContext";
-import CustomerContext from "../../../../Contexts/Customer/CustomerContext";
 import VehicleContext from "../../../../Contexts/Customer/VehicleContext";
 import { useForm } from "react-hook-form";
 import tyreTakenService, {
@@ -9,8 +8,11 @@ import tyreTakenService, {
 } from "../../../../services/Rebuild/tyre-taken-service";
 import AddCustomerTakenTyre from "./AddCustomerTakenTyre";
 import AllCustomerContext from "../../../../Contexts/Customer/AllCustomerContext";
+import RebuildReportsPageContext from "../../../../Contexts/Reports/RebuildReortsContext";
+import AllRebuildReportsContext from "../../../../Contexts/Reports/AllRebuildReportsContext";
 
 export const AddTakentyreForm = () => {
+  // useForm
   const { register, handleSubmit, control } = useForm<TyreTaken>();
 
   const [errorTakenTyreCreate, setErrorTakenTyreCreate] = useState("");
@@ -20,6 +22,13 @@ export const AddTakentyreForm = () => {
   const { takenTyres, setTakenTyres } = useContext(TakenTyreContext);
   const { allCustomers } = useContext(AllCustomerContext);
   const { vehicles } = useContext(VehicleContext);
+  
+  // For refetch reports
+  const { setReFetchPageReports } = useContext(RebuildReportsPageContext)
+  const { setRefetchRebuildAllReports } = useContext(AllRebuildReportsContext)
+  const date = new Date()
+  const milliseconds = date.getMilliseconds()
+
 
   const onCreate = (data: TyreTaken) => {
     console.log(data, "create");
@@ -29,9 +38,12 @@ export const AddTakentyreForm = () => {
       .create(data)
       .then((res) => {
         setSuccess("Succefully created.");
-        console.log(res.data, "response");
 
         setTakenTyres([res.data, ...takenTyres]);
+
+        //refetch reports
+        setReFetchPageReports(''+ milliseconds)
+        setRefetchRebuildAllReports(''+ milliseconds)
       })
       .catch((err) => {
         setErrorTakenTyreCreate("Not Succefully created.");

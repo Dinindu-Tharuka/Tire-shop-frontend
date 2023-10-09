@@ -8,6 +8,7 @@ interface AllRebuildReportsContextType{
     errorFetchRebuildAllReports:string;
     setErrorFetchRebuildAllReports:Dispatch<SetStateAction<string>>;
     isLoadingRebuildAllReportsPage:boolean;
+    setRefetchRebuildAllReports:Dispatch<SetStateAction<string>>;
 }
 
 const AllRebuildReportsContext = React.createContext<AllRebuildReportsContextType>({} as AllRebuildReportsContextType)

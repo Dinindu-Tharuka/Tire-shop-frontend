@@ -46,6 +46,7 @@ const GridSection = () => {
     errorFetchRebuildAllReports,
     setErrorFetchRebuildAllReports,
     isLoadingRebuildAllReportsPage,
+    setRefetchRebuildAllReports,
   } = useAllRebuildReports();
 
   const {
@@ -58,6 +59,7 @@ const GridSection = () => {
     setFilterRebuildPageReportsParams,
     rebuildPageReportsCount,
     isLoadingRebuildPageReportsPage,
+    setReFetchPageReports,
   } = usePageRebuildReports();
 
   const {
@@ -182,6 +184,7 @@ const GridSection = () => {
         errorFetchRebuildAllReports,
         setErrorFetchRebuildAllReports,
         isLoadingRebuildAllReportsPage,
+        setRefetchRebuildAllReports,
       }}
     >
       <RebuildReportsPageContext.Provider
@@ -195,6 +198,7 @@ const GridSection = () => {
           setFilterRebuildPageReportsParams,
           rebuildPageReportsCount,
           isLoadingRebuildPageReportsPage,
+          setReFetchPageReports
         }}
       >
         <AllItemContext.Provider

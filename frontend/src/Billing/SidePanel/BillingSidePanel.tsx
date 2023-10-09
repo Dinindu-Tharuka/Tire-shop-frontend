@@ -5,18 +5,13 @@ import {
     AccordionItem,
     AccordionPanel,
     Box,
-    Button,
     Flex,
     HStack,
-    Menu,
-    MenuButton,
-    MenuList,
     Show,
     Text,
     VStack,
     useColorMode,
   } from "@chakra-ui/react";
-  import { AiOutlineDown } from "react-icons/ai";
   import { Link } from "react-router-dom";
 import StockAddDrawer from "../StockInvoice/StockAddDrawer";
 import BillAddDrawer from "../Bill/BillAddDrawer";
@@ -27,7 +22,7 @@ import RebuildSideBarOptions from "../Rebuilt/SideBarOptions/RebuildSideBarOptio
 const BillingSidePanel = () => {
     const billingList = ["Invoice", "Rebuilt", "Stock", "Debtors"];
   const billing_links = ["", "rebuilt", "stock-invoice", "debtors"];
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const options = ["ADD"];
 

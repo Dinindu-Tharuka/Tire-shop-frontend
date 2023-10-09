@@ -12,6 +12,7 @@ interface RebuildReportsPageContextType{
     setFilterRebuildPageReportsParams:Dispatch<SetStateAction<string | null>>;
     rebuildPageReportsCount:number;
     isLoadingRebuildPageReportsPage:boolean;
+    setReFetchPageReports:Dispatch<SetStateAction<string>>;
 }
 
 const RebuildReportsPageContext = React.createContext<RebuildReportsPageContextType>({} as RebuildReportsPageContextType)
