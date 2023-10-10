@@ -31,15 +31,20 @@ import { makeUpDate } from "../../UI/MakeUpDate";
 import RebuildReportsPageContext from "../../../Contexts/Reports/RebuildReortsContext";
 import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
 import VehicleContext from "../../../Contexts/Customer/VehicleContext";
-import { onChangRebuildId, onChangeJobId, onChangeSelectCustomer } from "./fiteringRebuildForms";
+import {
+  onChangRebuildId,
+  onChangeJobId,
+  onChangeSelectCustomer,
+} from "./fiteringRebuildForms";
 import VehicleFilter from "../../../Customer/Vehicle/VehicleFilter";
+import FilterCustomer from "../../../Customer/Customer/FilterCustomer";
+import useAllCustomers from "../../../hooks/Customer/useAllCustomers";
 
 const RebuiltReports = () => {
   const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
 
-  const { allCustomers } = useContext(AllCustomerContext);
-  const { vehicles } = useContext(VehicleContext);
+  const { allCustomers } = useAllCustomers()
 
   const {
     rebuildPageReports,
@@ -53,7 +58,7 @@ const RebuiltReports = () => {
     setPageReportsRebuildIdFilter,
     setPageReportsJobNoFilter,
     setPageReportsCustomerFilter,
-    setPageReportVehicleFilter
+    setPageReportVehicleFilter,
   } = useContext(RebuildReportsPageContext);
 
   const numOfPages = Math.ceil(
@@ -61,50 +66,42 @@ const RebuiltReports = () => {
   );
   return (
     <Flex alignItems="center" flexDir="column">
-     <VStack marginBottom={10} >
+      <VStack marginBottom={10}>
+        {/* // Date range */}
+        <HStack>
+          <InputGroup>
+            <InputLeftAddon children="Start" />
+            <Input type="date" />
+          </InputGroup>
+          <InputGroup>
+            <InputLeftAddon children="End" />
+            <Input type="date" />
+          </InputGroup>
+        </HStack>
 
-      {/* // Date range */}
-      <HStack>
-        <InputGroup>
-          <InputLeftAddon children="Start" />
-          <Input type="date" />
-        </InputGroup>
-        <InputGroup>
-          <InputLeftAddon children="End" />
-          <Input type="date" />
-        </InputGroup>
-      </HStack>
-
-      {/* // Others */}
-      <HStack>
-        <Box marginEnd={5}>
-        {
-          isLoadingRebuildPageReportsPage && <Spinner/>
-        }
-
-        </Box>
-        <Input placeholder="Rebuild Id" onChange={(e)=>{
-          setErrorFetchRebuildPageReports('')
-          onChangRebuildId(e, setPageReportsRebuildIdFilter)
-          }}/>
-        <Input placeholder="Job No" onChange={(e)=>{
-          setErrorFetchRebuildPageReports('')
-          onChangeJobId(e, setPageReportsJobNoFilter)
-        }}/>
-        <Select onChange={(e)=> {
-          setErrorFetchRebuildPageReports('')
-          onChangeSelectCustomer(e, setPageReportsCustomerFilter)}}>
-          <option value=''>Customer</option>
-          {allCustomers.map((customer) => (
-            <option key={customer.id} value={customer.id}>
-              {customer.name}
-            </option>
-          ))}
-        </Select>
-        <VehicleFilter selectedVehicle={(vehicle)=> setPageReportVehicleFilter(typeof vehicle !== 'string'? vehicle.vehical_no : '')}/>
-      </HStack>
-
-     </VStack>
+        {/* // Others */}
+        <HStack>
+          <Box marginEnd={5}>
+            {isLoadingRebuildPageReportsPage && <Spinner />}
+          </Box>
+          <Input
+            placeholder="Rebuild Id"
+            onChange={(e) => {
+              setErrorFetchRebuildPageReports("");
+              onChangRebuildId(e, setPageReportsRebuildIdFilter);
+            }}
+          />
+          <Input
+            placeholder="Job No"
+            onChange={(e) => {
+              setErrorFetchRebuildPageReports("");
+              onChangeJobId(e, setPageReportsJobNoFilter);
+            }}
+          />
+          <FilterCustomer />
+          <VehicleFilter/>
+        </HStack>
+      </VStack>
       {errorFetchRebuildPageReports && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}

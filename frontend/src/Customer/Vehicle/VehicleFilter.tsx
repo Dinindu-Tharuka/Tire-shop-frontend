@@ -10,15 +10,15 @@ import { useContext, useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
 import { Vehicle } from "../../services/Customer/vehicle-service";
 import VehicleContext from "../../Contexts/Customer/VehicleContext";
+import RebuildReportsPageContext from "../../Contexts/Reports/RebuildReortsContext";
 
-interface Props {
-  selectedVehicle: (vehicle: Vehicle | string) => void;
-}
 
-const VehicleFilter = ({ selectedVehicle }: Props) => {
+
+const VehicleFilter = () => {
   const { setVehicleNoFilter, vehicles } = useContext(VehicleContext);
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
-  const [buttoneName , setButtoneName] = useState('Vehicle')
+  const [buttoneName , setButtoneName] = useState('All Vehicle')
+  const { setPageReportVehicleFilter, setErrorFetchRebuildPageReports } = useContext(RebuildReportsPageContext)
 
   const onVehicleType = (event: React.KeyboardEvent<HTMLInputElement>) => {
     let currentValue = event.currentTarget.value;
@@ -41,16 +41,18 @@ const VehicleFilter = ({ selectedVehicle }: Props) => {
           <MenuItem onClick={()=>{
             setVehicle(null)
             setButtoneName('All Vehicles')
-            selectedVehicle('')
+            setPageReportVehicleFilter('')
+            setErrorFetchRebuildPageReports('')
             }} className="dropdown-item">All Vehicles</MenuItem>
           {vehicles.filter((veh, index)=> index < 10).map((vehicle) => (
             <MenuItem  
                    
               key={vehicle.vehical_no}
               onClick={() => {
-                selectedVehicle(vehicle);
                 setVehicle(vehicle);
                 setButtoneName(vehicle.vehical_no)
+                setPageReportVehicleFilter(vehicle.vehical_no)
+                setErrorFetchRebuildPageReports('')
               }}
               className="dropdown-item"
             >

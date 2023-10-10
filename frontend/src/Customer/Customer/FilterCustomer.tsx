@@ -9,39 +9,62 @@ import {
 import { useContext, useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
 import { Customer } from "../../services/Customer/customer-service";
-import CustomerContext from "../../Contexts/Customer/CustomerContext";
+import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
+import RebuildReportsPageContext from "../../Contexts/Reports/RebuildReortsContext";
 
-interface Props {
-  selectedCustomer: (customer: Customer) => void;
-}
 
-const FilterCustomer = ({ selectedCustomer }: Props) => {
-  const { setCustomerNameFilter, customers } = useContext(CustomerContext);
-  const [customer, setCustomer] = useState<Customer>();
+const FilterCustomer = () => {
+  const { setAllCustomerNameFilter, allCustomers } =
+    useContext(AllCustomerContext);
+  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [buttoneName, setButtoneName] = useState("All Customer");
+  const { setErrorFetchRebuildPageReports, setPageReportsCustomerFilter } = useContext(RebuildReportsPageContext)
 
-  const onCategoryType = (event: React.KeyboardEvent<HTMLInputElement>) => {
+
+  const onCustomerType = (event: React.KeyboardEvent<HTMLInputElement>) => {
     let currentValue = event.currentTarget.value;
-    setCustomerNameFilter(currentValue);
+    setAllCustomerNameFilter(currentValue);
   };
   return (
     <div>
       <Menu>
-        <MenuButton as={Button} rightIcon={<AiOutlineDown />} width="100%">
-          {customer === null ? "Select Category" : customer?.name}
+        <MenuButton
+          minWidth={180}
+          as={Button}
+          rightIcon={<AiOutlineDown />}
+          width="100%"
+        >
+          {buttoneName}
         </MenuButton>
         <MenuList>
-          {customers.map((customer) => (
-            <MenuItem
-              onClick={() => {
-                selectedCustomer(customer);
-                setCustomer(customer);
-              }}
-              className="dropdown-item"
-            >
-              {customer.name}
-            </MenuItem>
-          ))}
-          <Input onKeyUp={onCategoryType} placeholder="Search" />
+          <Input onKeyUp={onCustomerType} placeholder="Search" />
+          <MenuItem
+            onClick={() => {
+              setCustomer(null);
+              setButtoneName("All Customers");
+              setErrorFetchRebuildPageReports('')
+              setPageReportsCustomerFilter('')
+            }}
+            className="dropdown-item"
+          >
+            All Customers
+          </MenuItem>
+          {allCustomers
+            .filter((cus, index) => index < 10)
+            .map((customer) => (
+              <MenuItem
+                key={customer.id}
+                onClick={() => {
+                  setCustomer(customer);
+                  setButtoneName(customer.name);
+                  setErrorFetchRebuildPageReports('')
+                  setPageReportsCustomerFilter(customer.id+'')
+                }}
+                className="dropdown-item"
+              >
+                {customer.name}
+              </MenuItem>
+            ))}
         </MenuList>
       </Menu>
     </div>

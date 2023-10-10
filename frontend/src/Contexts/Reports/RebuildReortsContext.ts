@@ -16,7 +16,7 @@ interface RebuildReportsPageContextType{
     // filter
     setPageReportsRebuildIdFilter:Dispatch<SetStateAction<string>>;
     setPageReportsJobNoFilter:Dispatch<SetStateAction<string>>;
-    setPageReportsCustomerFilter:Dispatch<SetStateAction<number>>;
+    setPageReportsCustomerFilter:Dispatch<SetStateAction<string>>;
     setPageReportVehicleFilter:Dispatch<SetStateAction<string>>;
 }
 

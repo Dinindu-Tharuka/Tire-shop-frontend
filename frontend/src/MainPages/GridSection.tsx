@@ -46,6 +46,14 @@ const GridSection = () => {
     useVehicles();
 
   const {
+    allCustomers,
+    setAllCustomers,
+    errorAllCustomerFetch,
+    setErrorAllCustomerFetch,
+    setAllCustomerNameFilter,
+  } = useAllCustomers();
+
+  const {
     allRebuildReports,
     setAllRebuildReports,
     errorFetchRebuildAllReports,
@@ -158,12 +166,7 @@ const GridSection = () => {
     isLoadingAllSupplierPage,
     setIsLoadingAllSupplierPage,
   } = useAllSuppliers();
-  const {
-    allCustomers,
-    setAllCustomers,
-    errorAllCustomerFetch,
-    setErrorAllCustomerFetch,
-  } = useAllCustomers();
+
   const {
     users,
     setUsers,
@@ -321,6 +324,7 @@ const GridSection = () => {
                                     setAllCustomers,
                                     errorAllCustomerFetch,
                                     setErrorAllCustomerFetch,
+                                    setAllCustomerNameFilter,
                                   }}
                                 >
                                   <UserMeContext.Provider value={userMe}>

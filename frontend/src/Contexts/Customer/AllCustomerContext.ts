@@ -7,6 +7,7 @@ interface AllCustomerContextType{
     setAllCustomers:Dispatch<SetStateAction<Customer[]>>;
     errorAllCustomerFetch:string;
     setErrorAllCustomerFetch:Dispatch<SetStateAction<string>>;
+    setAllCustomerNameFilter:Dispatch<SetStateAction<string>>;
 }
 
 const AllCustomerContext = React.createContext<AllCustomerContextType>({} as AllCustomerContextType)
