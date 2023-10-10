@@ -16,10 +16,10 @@ import {
   InputGroup,
   InputLeftAddon,
   VStack,
+  Spinner,
+  Box,
 } from "@chakra-ui/react";
-
 import { useContext, useState } from "react";
-
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -31,7 +31,7 @@ import { makeUpDate } from "../../UI/MakeUpDate";
 import RebuildReportsPageContext from "../../../Contexts/Reports/RebuildReortsContext";
 import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
 import VehicleContext from "../../../Contexts/Customer/VehicleContext";
-import { onChangRebuildId } from "./fiteringRebuildForms";
+import { onChangRebuildId, onChangeJobId } from "./fiteringRebuildForms";
 
 const RebuiltReports = () => {
   const { colorMode } = useColorMode();
@@ -42,7 +42,6 @@ const RebuiltReports = () => {
 
   const {
     rebuildPageReports,
-    setRebuildPageReports,
     errorFetchRebuildPageReports,
     setErrorFetchRebuildPageReports,
     nextRebuildPageReportsUrl,
@@ -51,6 +50,7 @@ const RebuiltReports = () => {
     rebuildPageReportsCount,
     isLoadingRebuildPageReportsPage,
     setPageReportsRebuildIdFilter,
+    setPageReportsJobNoFilter
   } = useContext(RebuildReportsPageContext);
 
   const numOfPages = Math.ceil(
@@ -58,7 +58,7 @@ const RebuiltReports = () => {
   );
   return (
     <Flex alignItems="center" flexDir="column">
-     <VStack marginBottom={10}>
+     <VStack marginBottom={10} >
 
       {/* // Date range */}
       <HStack>
@@ -74,11 +74,20 @@ const RebuiltReports = () => {
 
       {/* // Others */}
       <HStack>
+        <Box marginEnd={5}>
+        {
+          isLoadingRebuildPageReportsPage && <Spinner/>
+        }
+
+        </Box>
         <Input placeholder="Rebuild Id" onChange={(e)=>{
           setErrorFetchRebuildPageReports('')
           onChangRebuildId(e, setPageReportsRebuildIdFilter)
           }}/>
-        <Input placeholder="Job No" />
+        <Input placeholder="Job No" onChange={(e)=>{
+          setErrorFetchRebuildPageReports('')
+          onChangeJobId(e, setPageReportsJobNoFilter)
+        }}/>
         <Select>
           <option value=''>Customer</option>
           {allCustomers.map((customer) => (
