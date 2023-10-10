@@ -31,7 +31,8 @@ import { makeUpDate } from "../../UI/MakeUpDate";
 import RebuildReportsPageContext from "../../../Contexts/Reports/RebuildReortsContext";
 import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
 import VehicleContext from "../../../Contexts/Customer/VehicleContext";
-import { onChangRebuildId, onChangeJobId } from "./fiteringRebuildForms";
+import { onChangRebuildId, onChangeJobId, onChangeSelectCustomer } from "./fiteringRebuildForms";
+import VehicleFilter from "../../../Customer/Vehicle/VehicleFilter";
 
 const RebuiltReports = () => {
   const { colorMode } = useColorMode();
@@ -50,7 +51,9 @@ const RebuiltReports = () => {
     rebuildPageReportsCount,
     isLoadingRebuildPageReportsPage,
     setPageReportsRebuildIdFilter,
-    setPageReportsJobNoFilter
+    setPageReportsJobNoFilter,
+    setPageReportsCustomerFilter,
+    setPageReportVehicleFilter
   } = useContext(RebuildReportsPageContext);
 
   const numOfPages = Math.ceil(
@@ -88,7 +91,9 @@ const RebuiltReports = () => {
           setErrorFetchRebuildPageReports('')
           onChangeJobId(e, setPageReportsJobNoFilter)
         }}/>
-        <Select>
+        <Select onChange={(e)=> {
+          setErrorFetchRebuildPageReports('')
+          onChangeSelectCustomer(e, setPageReportsCustomerFilter)}}>
           <option value=''>Customer</option>
           {allCustomers.map((customer) => (
             <option key={customer.id} value={customer.id}>
@@ -96,14 +101,7 @@ const RebuiltReports = () => {
             </option>
           ))}
         </Select>
-        <Select>
-          <option value=''>Vehicle</option>
-          {vehicles.map((vehicle) => (
-            <option key={vehicle.vehical_no} value={vehicle.vehical_no}>
-              {vehicle.vehical_no}
-            </option>
-          ))}
-        </Select>
+        <VehicleFilter selectedVehicle={(vehicle)=> setPageReportVehicleFilter(typeof vehicle !== 'string'? vehicle.vehical_no : '')}/>
       </HStack>
 
      </VStack>

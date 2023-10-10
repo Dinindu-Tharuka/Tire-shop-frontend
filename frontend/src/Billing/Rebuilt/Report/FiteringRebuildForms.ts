@@ -7,3 +7,9 @@ export const onChangRebuildId = (e : React.ChangeEvent<HTMLInputElement>, setPag
 export const onChangeJobId = (e : React.ChangeEvent<HTMLInputElement>, setPageReportsJobNoFilter:Dispatch<SetStateAction<string>>)=>{
     setPageReportsJobNoFilter(e.currentTarget.value)
 }
+
+export const onChangeSelectCustomer = (e : React.ChangeEvent<HTMLSelectElement>, setPageReportsCustomerFilter:Dispatch<SetStateAction<number>>)=>{
+
+    console.log(e.currentTarget.value)
+    setPageReportsCustomerFilter(parseInt(e.currentTarget.value))
+}

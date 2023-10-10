@@ -6,6 +6,7 @@ interface VehicleContextType{
     vehicles:Vehicle[];
     setVehicles:Dispatch<SetStateAction<Vehicle[]>>;
     setVehicleNoFilter:Dispatch<SetStateAction<string>>;
+    errorVehicleFetch:string;
 }
 
 const VehicleContext = React.createContext<VehicleContextType>({} as VehicleContextType)

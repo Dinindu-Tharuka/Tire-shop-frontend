@@ -18,7 +18,7 @@ const useVehicles = () => {
             })
             .catch(err => setErrorVehicleFetch(err.message !== 'canceled'? err.message : ''))
         return ()=> cancel()
-    }, [])
+    }, [vehicleNoFilter])
   return {vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch}
 }
 
