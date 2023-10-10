@@ -60,6 +60,7 @@ const GridSection = () => {
     rebuildPageReportsCount,
     isLoadingRebuildPageReportsPage,
     setReFetchPageReports,
+    setPageReportsRebuildIdFilter,
   } = usePageRebuildReports();
 
   const {
@@ -198,7 +199,8 @@ const GridSection = () => {
           setFilterRebuildPageReportsParams,
           rebuildPageReportsCount,
           isLoadingRebuildPageReportsPage,
-          setReFetchPageReports
+          setReFetchPageReports,
+          setPageReportsRebuildIdFilter
         }}
       >
         <AllItemContext.Provider

@@ -11,6 +11,11 @@ import {
   Tr,
   useColorMode,
   Text,
+  Input,
+  Select,
+  InputGroup,
+  InputLeftAddon,
+  VStack,
 } from "@chakra-ui/react";
 
 import { useContext, useState } from "react";
@@ -24,10 +29,16 @@ import getCutUrl, {
 } from "../../../services/pagination-cut-link";
 import { makeUpDate } from "../../UI/MakeUpDate";
 import RebuildReportsPageContext from "../../../Contexts/Reports/RebuildReortsContext";
+import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
+import VehicleContext from "../../../Contexts/Customer/VehicleContext";
+import { onChangRebuildId } from "./fiteringRebuildForms";
 
 const RebuiltReports = () => {
   const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
+
+  const { allCustomers } = useContext(AllCustomerContext);
+  const { vehicles } = useContext(VehicleContext);
 
   const {
     rebuildPageReports,
@@ -39,12 +50,54 @@ const RebuiltReports = () => {
     setFilterRebuildPageReportsParams,
     rebuildPageReportsCount,
     isLoadingRebuildPageReportsPage,
+    setPageReportsRebuildIdFilter,
   } = useContext(RebuildReportsPageContext);
 
-  const numOfPages = Math.ceil(rebuildPageReportsCount / MAXIMUM_PAGES_PER_PAGE);
+  const numOfPages = Math.ceil(
+    rebuildPageReportsCount / MAXIMUM_PAGES_PER_PAGE
+  );
   return (
     <Flex alignItems="center" flexDir="column">
-      {/* <Input placeholder="Search Bill No" onKeyUp={onTypeFilter} /> */}
+     <VStack marginBottom={10}>
+
+      {/* // Date range */}
+      <HStack>
+        <InputGroup>
+          <InputLeftAddon children="Start" />
+          <Input type="date" />
+        </InputGroup>
+        <InputGroup>
+          <InputLeftAddon children="End" />
+          <Input type="date" />
+        </InputGroup>
+      </HStack>
+
+      {/* // Others */}
+      <HStack>
+        <Input placeholder="Rebuild Id" onChange={(e)=>{
+          setErrorFetchRebuildPageReports('')
+          onChangRebuildId(e, setPageReportsRebuildIdFilter)
+          }}/>
+        <Input placeholder="Job No" />
+        <Select>
+          <option value=''>Customer</option>
+          {allCustomers.map((customer) => (
+            <option key={customer.id} value={customer.id}>
+              {customer.name}
+            </option>
+          ))}
+        </Select>
+        <Select>
+          <option value=''>Vehicle</option>
+          {vehicles.map((vehicle) => (
+            <option key={vehicle.vehical_no} value={vehicle.vehical_no}>
+              {vehicle.vehical_no}
+            </option>
+          ))}
+        </Select>
+      </HStack>
+
+     </VStack>
       {errorFetchRebuildPageReports && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}
@@ -57,6 +110,7 @@ const RebuiltReports = () => {
               <Th>Job No</Th>
               <Th>Customer</Th>
               <Th>Vehicle</Th>
+              <Th>Cost</Th>
               <Th>Status</Th>
               <Th>Taken Date</Th>
               <Th>Send Date</Th>
@@ -66,17 +120,30 @@ const RebuiltReports = () => {
           <Tbody>
             {rebuildPageReports.map((report, index) => (
               <Tr key={index}>
-                <Th>
-                  {/* Show */}
-                </Th>
+                <Th>{/* Show */}</Th>
                 <Td>{report.rebuild_id}</Td>
-                <Td>{report.job_no !== null ? report.job_no : 'No'}</Td>
-                <Td>{report.customer}</Td>
+                <Td>{report.job_no !== null ? report.job_no : "No"}</Td>
+                <Td>
+                  {
+                    allCustomers.find(
+                      (customer) => customer.id === report.customer
+                    )?.name
+                  }
+                </Td>
                 <Td>{report.vehicle}</Td>
-                <Td>{report.status !== null ? report.status : 'not send'}</Td>
+                <Td>{report.cost ? report.cost : "not received"}</Td>
+                <Td>{report.status !== null ? report.status : "not send"}</Td>
                 <Td>{makeUpDate(report.taken_date)}</Td>
-                <Td>{report.send_date !== null ? makeUpDate(report.send_date) : 'not send'} </Td>
-                <Td>{report.received_date !== null ? makeUpDate(report.received_date) : 'not received'}</Td>
+                <Td>
+                  {report.send_date !== null
+                    ? makeUpDate(report.send_date)
+                    : "not send"}{" "}
+                </Td>
+                <Td>
+                  {report.received_date !== null
+                    ? makeUpDate(report.received_date)
+                    : "not received"}
+                </Td>
               </Tr>
             ))}
           </Tbody>
@@ -88,7 +155,8 @@ const RebuiltReports = () => {
           isDisabled={currentPageNum === 1 ? true : false}
           onClick={() => {
             setFilterRebuildPageReportsParams(
-              getCutUrl(previousRebuildPageReportsUrl, "rebuild-page-reports") + ""
+              getCutUrl(previousRebuildPageReportsUrl, "rebuild-page-reports") +
+                ""
             );
             setCurrentPageNum(currentPageNum - 1);
             setErrorFetchRebuildPageReports("");
