@@ -60,6 +60,10 @@ const GridSection = () => {
     setErrorFetchRebuildAllReports,
     isLoadingRebuildAllReportsPage,
     setRefetchRebuildAllReports,
+    setReportsRebuildIdFilter,
+    setReportsJobNoFilter,
+    setReportsCustomerFilter,
+    setReportVehicleFilter,
   } = useAllRebuildReports();
 
   const {
@@ -200,6 +204,10 @@ const GridSection = () => {
           setErrorFetchRebuildAllReports,
           isLoadingRebuildAllReportsPage,
           setRefetchRebuildAllReports,
+          setReportsRebuildIdFilter,
+          setReportsJobNoFilter,
+          setReportsCustomerFilter,
+          setReportVehicleFilter,
         }}
       >
         <RebuildReportsPageContext.Provider

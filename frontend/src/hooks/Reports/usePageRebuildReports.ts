@@ -15,18 +15,12 @@ const usePageRebuildReports = () => {
     const [pageReportsRebuildIdFilter, setPageReportsRebuildIdFilter] = useState('')
     const [pageReportsJobNoFilter, setPageReportsJobNoFilter] = useState('')
     const [pageReportsCustomerFilter, setPageReportsCustomerFilter] = useState('')
-    const [pageReportVehicleFilter, setPageReportVehicleFilter] = useState('')
-
-    console.log('setPageReportsCustomerFilter', pageReportsCustomerFilter)
-
-    
+    const [pageReportVehicleFilter, setPageReportVehicleFilter] = useState('')    
 
     useEffect(()=>{
       setIsLoadingRebuildPageReportsPage(true)
         const {request, cancel} = rebuildReportService.getAll<RebuildReportPageStructure>(filterRebuildPageReportsParams, { params : {pageReportsRebuildIdFilter, pageReportsJobNoFilter, pageReportsCustomerFilter, pageReportVehicleFilter}})
-        
-      
-        
+              
         request
           .then(res=>{
             setRebuildPageReports(res.data.results)

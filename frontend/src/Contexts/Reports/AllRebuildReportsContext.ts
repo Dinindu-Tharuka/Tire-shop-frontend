@@ -9,6 +9,10 @@ interface AllRebuildReportsContextType{
     setErrorFetchRebuildAllReports:Dispatch<SetStateAction<string>>;
     isLoadingRebuildAllReportsPage:boolean;
     setRefetchRebuildAllReports:Dispatch<SetStateAction<string>>;
+    setReportsRebuildIdFilter:Dispatch<SetStateAction<string>>;
+    setReportsJobNoFilter:Dispatch<SetStateAction<string>>;
+    setReportsCustomerFilter:Dispatch<SetStateAction<string>>;
+    setReportVehicleFilter:Dispatch<SetStateAction<string>>;
 }
 
 const AllRebuildReportsContext = React.createContext<AllRebuildReportsContextType>({} as AllRebuildReportsContextType)
