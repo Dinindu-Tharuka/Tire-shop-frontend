@@ -12,9 +12,6 @@ import {
   useColorMode,
   Text,
   Input,
-  Select,
-  InputGroup,
-  InputLeftAddon,
   VStack,
   Spinner,
   Box,
@@ -29,8 +26,6 @@ import getCutUrl, {
 } from "../../../services/pagination-cut-link";
 import { makeUpDate } from "../../UI/MakeUpDate";
 import RebuildReportsPageContext from "../../../Contexts/Reports/RebuildReortsContext";
-import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
-import VehicleContext from "../../../Contexts/Customer/VehicleContext";
 import {
   onChangRebuildId,
   onChangeJobId,
@@ -39,12 +34,14 @@ import {
 import VehicleFilter from "../../../Customer/Vehicle/VehicleFilter";
 import FilterCustomer from "../../../Customer/Customer/FilterCustomer";
 import useAllCustomers from "../../../hooks/Customer/useAllCustomers";
+import RebuiltCustomerInformation from "./RebuildCustomerInformation/RebuiltCustomerInformation";
+import RebuildDatedFormModel from "./RebuildDatedReport.tsx/RebuildDatedFormModel";
 
 const RebuiltReports = () => {
   const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
 
-  const { allCustomers } = useAllCustomers()
+  const { allCustomers } = useAllCustomers();
 
   const {
     rebuildPageReports,
@@ -58,7 +55,7 @@ const RebuiltReports = () => {
     setPageReportsRebuildIdFilter,
     setPageReportsJobNoFilter,
     setPageReportsCustomerFilter,
-    setPageReportVehicleFilter,
+    setPageReportVehicleFilter, 
   } = useContext(RebuildReportsPageContext);
 
   const numOfPages = Math.ceil(
@@ -68,7 +65,7 @@ const RebuiltReports = () => {
     <Flex alignItems="center" flexDir="column">
       <VStack marginBottom={10}>
         {/* // Date range */}
-        <HStack>
+        {/* <HStack>
           <InputGroup>
             <InputLeftAddon children="Start" />
             <Input type="date" />
@@ -77,6 +74,11 @@ const RebuiltReports = () => {
             <InputLeftAddon children="End" />
             <Input type="date" />
           </InputGroup>
+        </HStack> */}
+
+        <HStack width='60vw'>
+          <RebuiltCustomerInformation reports={rebuildPageReports} />
+          <RebuildDatedFormModel reports={rebuildPageReports}/>
         </HStack>
 
         {/* // Others */}
@@ -99,7 +101,7 @@ const RebuiltReports = () => {
             }}
           />
           <FilterCustomer />
-          <VehicleFilter/>
+          <VehicleFilter />
         </HStack>
       </VStack>
       {errorFetchRebuildPageReports && (
