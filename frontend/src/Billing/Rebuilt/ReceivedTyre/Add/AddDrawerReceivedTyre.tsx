@@ -33,7 +33,7 @@ const AddDrawerReceivedTyre = () => {
         onClick={onOpen}
         
       >
-        add received tyre
+        Add Received Tyre
       </Button>
       <Drawer
         isOpen={isOpen}

@@ -35,7 +35,7 @@ const RebuiltCustomerInformation = ({ reports }: Props) => {
         </Button>
       </Tooltip>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="3xl">
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />

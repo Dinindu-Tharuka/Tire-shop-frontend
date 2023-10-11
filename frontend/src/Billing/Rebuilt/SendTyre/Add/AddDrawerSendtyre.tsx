@@ -31,7 +31,7 @@ const AddDrawerSendtyre = () => {
         width="500px"
         onClick={onOpen}
       >
-        add send tyre
+        Add Send Tyre
       </Button>
       <Drawer
         isOpen={isOpen}

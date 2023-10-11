@@ -15,8 +15,10 @@ import {
   VStack,
   Spinner,
   Box,
+  Stack,
+  Checkbox,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -26,22 +28,32 @@ import getCutUrl, {
 } from "../../../services/pagination-cut-link";
 import { makeUpDate } from "../../UI/MakeUpDate";
 import RebuildReportsPageContext from "../../../Contexts/Reports/RebuildReortsContext";
-import {
-  onChangRebuildId,
-  onChangeJobId,
-  onChangeSelectCustomer,
-} from "./fiteringRebuildForms";
+
 import VehicleFilter from "../../../Customer/Vehicle/VehicleFilter";
 import FilterCustomer from "../../../Customer/Customer/FilterCustomer";
 import useAllCustomers from "../../../hooks/Customer/useAllCustomers";
 import RebuiltCustomerInformation from "./RebuildCustomerInformation/RebuiltCustomerInformation";
 import RebuildDatedFormModel from "./RebuildDatedReport.tsx/RebuildDatedFormModel";
+import {
+  onChangRebuildId,
+  onChangeJobId,
+  onChangeSelectCustomer,
+} from "./FiteringRebuildForms";
+import { RebuildReport } from "../../../services/Reports/rebuild-report-service";
 
 const RebuiltReports = () => {
+  //Sending status
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+  const [isReceived, setIsReceived] = useState(false);
+
+  // to Filtering
+  const [reportArrayList, setReportArrayList] = useState<RebuildReport[]>([])
+
   const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
 
-  const { allCustomers } = useAllCustomers();
+  const { allCustomers } = useAllCustomers(); 
 
   const {
     rebuildPageReports,
@@ -55,8 +67,26 @@ const RebuiltReports = () => {
     setPageReportsRebuildIdFilter,
     setPageReportsJobNoFilter,
     setPageReportsCustomerFilter,
-    setPageReportVehicleFilter, 
+    setPageReportVehicleFilter,
   } = useContext(RebuildReportsPageContext);
+  
+  useEffect(()=>{
+    
+    setReportArrayList(rebuildPageReports)
+    
+    if (isAccepted){
+
+      setReportArrayList(reportArrayList.filter( report => report.taken_date && !report.send_date && !report.received_date))
+    }
+
+    if (isSent){
+      setReportArrayList(reportArrayList.filter(report => report.send_date && !report.received_date))
+    }
+
+    if (isReceived){
+      setReportArrayList(reportArrayList.filter(report => report.received_date))
+    }
+  }, [isSent, isAccepted, isReceived, rebuildPageReports])
 
   const numOfPages = Math.ceil(
     rebuildPageReportsCount / MAXIMUM_PAGES_PER_PAGE
@@ -76,9 +106,9 @@ const RebuiltReports = () => {
           </InputGroup>
         </HStack> */}
 
-        <HStack width='60vw'>
-          <RebuiltCustomerInformation reports={rebuildPageReports} />
-          <RebuildDatedFormModel reports={rebuildPageReports}/>
+        <HStack width="60vw">
+          <RebuiltCustomerInformation reports={reportArrayList} />
+          <RebuildDatedFormModel reports={reportArrayList} />
         </HStack>
 
         {/* // Others */}
@@ -103,6 +133,38 @@ const RebuiltReports = () => {
           <FilterCustomer />
           <VehicleFilter />
         </HStack>
+        <HStack>
+          <Stack spacing={[1, 5]} direction={["column", "row"]}>
+            <Checkbox
+              size="lg"
+              colorScheme="orange"
+              onChange={() => {
+                isAccepted === false ? setIsAccepted(true) : setIsAccepted(false);
+              }}
+            >
+              Accepted
+            </Checkbox>
+
+            <Checkbox
+              size="lg"
+              colorScheme="orange"
+              onChange={() => {
+                isSent === false ? setIsSent(true) : setIsSent(false);
+              }}
+            >
+              Send
+            </Checkbox>
+            <Checkbox
+              size="lg"
+              colorScheme="orange"
+              onChange={() => {
+                isReceived === false ? setIsReceived(true) : setIsReceived(false);
+              }}
+            >
+              Received
+            </Checkbox>
+          </Stack>
+        </HStack>
       </VStack>
       {errorFetchRebuildPageReports && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>
@@ -124,7 +186,7 @@ const RebuiltReports = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {rebuildPageReports.map((report, index) => (
+            {reportArrayList.map((report, index) => (
               <Tr key={index}>
                 <Th>{/* Show */}</Th>
                 <Td>{report.rebuild_id}</Td>
