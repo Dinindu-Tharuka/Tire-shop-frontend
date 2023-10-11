@@ -1,15 +1,13 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-export const onChangRebuildId = (e : React.ChangeEvent<HTMLInputElement>, setPageReportsRebuildIdFilter:Dispatch<SetStateAction<string>>)=>{
+export const onChangRebuildId = (e : React.ChangeEvent<HTMLInputElement>, setPageReportsRebuildIdFilter:Dispatch<SetStateAction<string>>, setReportsRebuildIdFilter:Dispatch<SetStateAction<string>>)=>{
     setPageReportsRebuildIdFilter(e.currentTarget.value)
+    setReportsRebuildIdFilter(e.currentTarget.value)
+    
 }
 
-export const onChangeJobId = (e : React.ChangeEvent<HTMLInputElement>, setPageReportsJobNoFilter:Dispatch<SetStateAction<string>>)=>{
+export const onChangeJobId = (e : React.ChangeEvent<HTMLInputElement>, setPageReportsJobNoFilter:Dispatch<SetStateAction<string>>, setReportsJobNoFilter:Dispatch<SetStateAction<string>>)=>{
     setPageReportsJobNoFilter(e.currentTarget.value)
+    setReportsJobNoFilter(e.currentTarget.value)
 }
 
-export const onChangeSelectCustomer = (e : React.ChangeEvent<HTMLSelectElement>, setPageReportsCustomerFilter:Dispatch<SetStateAction<number>>)=>{
-
-    console.log(e.currentTarget.value)
-    setPageReportsCustomerFilter(parseInt(e.currentTarget.value))
-}

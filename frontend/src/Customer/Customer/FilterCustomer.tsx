@@ -11,6 +11,7 @@ import { AiOutlineDown } from "react-icons/ai";
 import { Customer } from "../../services/Customer/customer-service";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 import RebuildReportsPageContext from "../../Contexts/Reports/RebuildReortsContext";
+import AllRebuildReportsContext from "../../Contexts/Reports/AllRebuildReportsContext";
 
 
 const FilterCustomer = () => {
@@ -19,7 +20,7 @@ const FilterCustomer = () => {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [buttoneName, setButtoneName] = useState("All Customer");
   const { setErrorFetchRebuildPageReports, setPageReportsCustomerFilter } = useContext(RebuildReportsPageContext)
-
+  const {setReportsCustomerFilter } = useContext(AllRebuildReportsContext)
 
   const onCustomerType = (event: React.KeyboardEvent<HTMLInputElement>) => {
     let currentValue = event.currentTarget.value;
@@ -44,6 +45,7 @@ const FilterCustomer = () => {
               setButtoneName("All Customers");
               setErrorFetchRebuildPageReports('')
               setPageReportsCustomerFilter('')
+              setReportsCustomerFilter('')
             }}
             className="dropdown-item"
           >
@@ -59,6 +61,7 @@ const FilterCustomer = () => {
                   setButtoneName(customer.name);
                   setErrorFetchRebuildPageReports('')
                   setPageReportsCustomerFilter(customer.id+'')
+                  setReportsCustomerFilter(customer.id+'')
                 }}
                 className="dropdown-item"
               >

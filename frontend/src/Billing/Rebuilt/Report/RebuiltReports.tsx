@@ -28,7 +28,6 @@ import getCutUrl, {
 } from "../../../services/pagination-cut-link";
 import { makeUpDate } from "../../UI/MakeUpDate";
 import RebuildReportsPageContext from "../../../Contexts/Reports/RebuildReortsContext";
-
 import VehicleFilter from "../../../Customer/Vehicle/VehicleFilter";
 import FilterCustomer from "../../../Customer/Customer/FilterCustomer";
 import useAllCustomers from "../../../hooks/Customer/useAllCustomers";
@@ -37,9 +36,9 @@ import RebuildDatedFormModel from "./RebuildDatedReport.tsx/RebuildDatedFormMode
 import {
   onChangRebuildId,
   onChangeJobId,
-  onChangeSelectCustomer,
 } from "./FiteringRebuildForms";
 import { RebuildReport } from "../../../services/Reports/rebuild-report-service";
+import AllRebuildReportsContext from "../../../Contexts/Reports/AllRebuildReportsContext";
 
 const RebuiltReports = () => {
   //Sending status
@@ -47,13 +46,16 @@ const RebuiltReports = () => {
   const [isSent, setIsSent] = useState(false);
   const [isReceived, setIsReceived] = useState(false);
 
+  // avoid fitltering
+  const [typeRebuildId, setTypeRebuildId] = useState('')
+  const [typeJobNo, setTypeJobNo] = useState('')
+
   // to Filtering
-  const [reportArrayList, setReportArrayList] = useState<RebuildReport[]>([])
+  const [reportArrayList, setReportArrayList] = useState<RebuildReport[]>([]);
 
   const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
-
-  const { allCustomers } = useAllCustomers(); 
+  const { allCustomers } = useAllCustomers();
 
   const {
     rebuildPageReports,
@@ -69,24 +71,48 @@ const RebuiltReports = () => {
     setPageReportsCustomerFilter,
     setPageReportVehicleFilter,
   } = useContext(RebuildReportsPageContext);
-  
-  useEffect(()=>{
-    
-    setReportArrayList(rebuildPageReports)
-    
-    if (isAccepted){
 
-      setReportArrayList(reportArrayList.filter( report => report.taken_date && !report.send_date && !report.received_date))
+  const {
+    allRebuildReports,
+    setAllRebuildReports,
+    setReportsRebuildIdFilter,
+    setReportsJobNoFilter,
+  } = useContext(AllRebuildReportsContext);
+
+  useEffect(() => {
+    if (typeRebuildId.length === 0 && typeJobNo.length === 0){
+      setReportArrayList(rebuildPageReports);
+
+    }else{
+      setReportArrayList(allRebuildReports)
     }
 
-    if (isSent){
-      setReportArrayList(reportArrayList.filter(report => report.send_date && !report.received_date))
+    if (isAccepted) {
+      // for ui
+      setReportArrayList(
+        allRebuildReports.filter(
+          (report) =>
+            report.taken_date && !report.send_date && !report.received_date
+        )
+      );
     }
 
-    if (isReceived){
-      setReportArrayList(reportArrayList.filter(report => report.received_date))
+    if (isSent) {
+      // for ui
+      setReportArrayList(
+        allRebuildReports.filter(
+          (report) => report.send_date && !report.received_date
+        )
+      );
     }
-  }, [isSent, isAccepted, isReceived, rebuildPageReports])
+
+    if (isReceived) {
+      // for ui
+      setReportArrayList(
+        allRebuildReports.filter((report) => report.received_date)
+      );
+    }
+  }, [isSent, isAccepted, isReceived, rebuildPageReports]);
 
   const numOfPages = Math.ceil(
     rebuildPageReportsCount / MAXIMUM_PAGES_PER_PAGE
@@ -120,14 +146,16 @@ const RebuiltReports = () => {
             placeholder="Rebuild Id"
             onChange={(e) => {
               setErrorFetchRebuildPageReports("");
-              onChangRebuildId(e, setPageReportsRebuildIdFilter);
+              onChangRebuildId(e, setPageReportsRebuildIdFilter, setReportsRebuildIdFilter);
+              setTypeRebuildId(e.currentTarget.value)
             }}
           />
           <Input
             placeholder="Job No"
             onChange={(e) => {
               setErrorFetchRebuildPageReports("");
-              onChangeJobId(e, setPageReportsJobNoFilter);
+              onChangeJobId(e, setPageReportsJobNoFilter, setReportsJobNoFilter);
+              setTypeJobNo(e.currentTarget.value)
             }}
           />
           <FilterCustomer />
@@ -139,7 +167,9 @@ const RebuiltReports = () => {
               size="lg"
               colorScheme="orange"
               onChange={() => {
-                isAccepted === false ? setIsAccepted(true) : setIsAccepted(false);
+                isAccepted === false
+                  ? setIsAccepted(true)
+                  : setIsAccepted(false);
               }}
             >
               Accepted
@@ -158,7 +188,9 @@ const RebuiltReports = () => {
               size="lg"
               colorScheme="orange"
               onChange={() => {
-                isReceived === false ? setIsReceived(true) : setIsReceived(false);
+                isReceived === false
+                  ? setIsReceived(true)
+                  : setIsReceived(false);
               }}
             >
               Received
