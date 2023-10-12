@@ -18,6 +18,7 @@ import LoginPage from "../Authentication/LoginPage";
 import PasswordReset from "../Authentication/PasswordReset";
 import UserListTable from "../Registration/User/UserListTable";
 import DebtorsTable from "../Billing/Debtors/DebtorsTable";
+import StockInvoiceMainPage from "../Billing/StockInvoice/MainPage/StockInvoiceMainPage";
 
 const routes = createBrowserRouter([
   {
@@ -61,7 +62,7 @@ const routes = createBrowserRouter([
             children: [
               { path: "", element: <BillTable /> },
               { path: "rebuilt", element: <RebuiltMainPage /> },
-              { path: "stock-invoice", element: <StockInvoiceTable /> },
+              { path: "stock-invoice", element: <StockInvoiceMainPage /> },
               { path: "debtors", element: <DebtorsTable /> },
             ],
           },

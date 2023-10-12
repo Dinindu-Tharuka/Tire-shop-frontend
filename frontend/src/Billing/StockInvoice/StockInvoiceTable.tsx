@@ -55,7 +55,7 @@ const StockInvoiceTable = () => {
 
   return (
     <Flex alignItems="center" flexDir="column">
-      <Input placeholder="Search Stock Bill No" onKeyUp={onTypeFilter} />
+      <Input placeholder="Search Bill No" onKeyUp={onTypeFilter} />
       {errorFetchStockInvoice && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}
