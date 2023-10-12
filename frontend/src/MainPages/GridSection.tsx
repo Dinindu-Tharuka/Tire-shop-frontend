@@ -64,6 +64,8 @@ const GridSection = () => {
     setReportsJobNoFilter,
     setReportsCustomerFilter,
     setReportVehicleFilter,
+    setReportEndDateFilter,
+    setReportStartDateFilter
   } = useAllRebuildReports();
 
   const {
@@ -81,6 +83,8 @@ const GridSection = () => {
     setPageReportsJobNoFilter,
     setPageReportsCustomerFilter,
     setPageReportVehicleFilter,
+    setPageReportEndDateFilter,
+    setPageReportStartDateFilter
   } = usePageRebuildReports();
 
   const {
@@ -208,6 +212,8 @@ const GridSection = () => {
           setReportsJobNoFilter,
           setReportsCustomerFilter,
           setReportVehicleFilter,
+          setReportEndDateFilter,
+          setReportStartDateFilter,
         }}
       >
         <RebuildReportsPageContext.Provider
@@ -226,6 +232,8 @@ const GridSection = () => {
             setPageReportsJobNoFilter,
             setPageReportsCustomerFilter,
             setPageReportVehicleFilter,
+            setPageReportEndDateFilter,
+            setPageReportStartDateFilter,
           }}
         >
           <AllItemContext.Provider

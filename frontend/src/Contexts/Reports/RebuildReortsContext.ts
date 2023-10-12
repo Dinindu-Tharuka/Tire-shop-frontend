@@ -18,6 +18,8 @@ interface RebuildReportsPageContextType{
     setPageReportsJobNoFilter:Dispatch<SetStateAction<string>>;
     setPageReportsCustomerFilter:Dispatch<SetStateAction<string>>;
     setPageReportVehicleFilter:Dispatch<SetStateAction<string>>;
+    setPageReportStartDateFilter:Dispatch<SetStateAction<string>>; 
+    setPageReportEndDateFilter:Dispatch<SetStateAction<string>>;
 }
 
 const RebuildReportsPageContext = React.createContext<RebuildReportsPageContextType>({} as RebuildReportsPageContextType)

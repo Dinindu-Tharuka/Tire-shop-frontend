@@ -17,6 +17,8 @@ import {
   Box,
   Stack,
   Checkbox,
+  InputGroup,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -33,10 +35,7 @@ import FilterCustomer from "../../../Customer/Customer/FilterCustomer";
 import useAllCustomers from "../../../hooks/Customer/useAllCustomers";
 import RebuiltCustomerInformation from "./RebuildCustomerInformation/RebuiltCustomerInformation";
 import RebuildDatedFormModel from "./RebuildDatedReport.tsx/RebuildDatedFormModel";
-import {
-  onChangRebuildId,
-  onChangeJobId,
-} from "./FiteringRebuildForms";
+import { onChangRebuildId, onChangeEndDate, onChangeJobId, onChangeStartDate } from "./FiteringRebuildForms";
 import { RebuildReport } from "../../../services/Reports/rebuild-report-service";
 import AllRebuildReportsContext from "../../../Contexts/Reports/AllRebuildReportsContext";
 
@@ -47,8 +46,8 @@ const RebuiltReports = () => {
   const [isReceived, setIsReceived] = useState(false);
 
   // avoid fitltering
-  const [typeRebuildId, setTypeRebuildId] = useState('')
-  const [typeJobNo, setTypeJobNo] = useState('')
+  const [typeRebuildId, setTypeRebuildId] = useState("");
+  const [typeJobNo, setTypeJobNo] = useState("");
 
   // to Filtering
   const [reportArrayList, setReportArrayList] = useState<RebuildReport[]>([]);
@@ -70,6 +69,8 @@ const RebuiltReports = () => {
     setPageReportsJobNoFilter,
     setPageReportsCustomerFilter,
     setPageReportVehicleFilter,
+    setPageReportStartDateFilter,
+    setPageReportEndDateFilter,
   } = useContext(RebuildReportsPageContext);
 
   const {
@@ -77,14 +78,15 @@ const RebuiltReports = () => {
     setAllRebuildReports,
     setReportsRebuildIdFilter,
     setReportsJobNoFilter,
+    setReportStartDateFilter,
+    setReportEndDateFilter,
   } = useContext(AllRebuildReportsContext);
 
   useEffect(() => {
-    if (typeRebuildId.length === 0 && typeJobNo.length === 0){
+    if (typeRebuildId.length === 0 && typeJobNo.length === 0) {
       setReportArrayList(rebuildPageReports);
-
-    }else{
-      setReportArrayList(allRebuildReports)
+    } else {
+      setReportArrayList(allRebuildReports);
     }
 
     if (isAccepted) {
@@ -120,21 +122,26 @@ const RebuiltReports = () => {
   return (
     <Flex alignItems="center" flexDir="column">
       <VStack marginBottom={10}>
-        {/* // Date range */}
-        {/* <HStack>
-          <InputGroup>
-            <InputLeftAddon children="Start" />
-            <Input type="date" />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon children="End" />
-            <Input type="date" />
-          </InputGroup>
-        </HStack> */}
-
         <HStack width="60vw">
           <RebuiltCustomerInformation reports={reportArrayList} />
           <RebuildDatedFormModel reports={reportArrayList} />
+        </HStack>
+
+        {/* // Date range */}
+        <HStack>
+          <InputGroup>
+            <InputLeftAddon children="Start" />
+            <Input type="date" onChange={(e)=> {
+              onChangeStartDate(e, setPageReportStartDateFilter, setReportStartDateFilter)
+              setErrorFetchRebuildPageReports('')
+              }}/>
+          </InputGroup>
+          <InputGroup>
+            <InputLeftAddon children="End" />
+            <Input type="date" onChange={(e)=> {
+              setErrorFetchRebuildPageReports('')
+              onChangeEndDate(e, setPageReportEndDateFilter, setReportEndDateFilter)}}/>
+          </InputGroup>
         </HStack>
 
         {/* // Others */}
@@ -146,16 +153,24 @@ const RebuiltReports = () => {
             placeholder="Rebuild Id"
             onChange={(e) => {
               setErrorFetchRebuildPageReports("");
-              onChangRebuildId(e, setPageReportsRebuildIdFilter, setReportsRebuildIdFilter);
-              setTypeRebuildId(e.currentTarget.value)
+              onChangRebuildId(
+                e,
+                setPageReportsRebuildIdFilter,
+                setReportsRebuildIdFilter
+              );
+              setTypeRebuildId(e.currentTarget.value);
             }}
           />
           <Input
             placeholder="Job No"
             onChange={(e) => {
               setErrorFetchRebuildPageReports("");
-              onChangeJobId(e, setPageReportsJobNoFilter, setReportsJobNoFilter);
-              setTypeJobNo(e.currentTarget.value)
+              onChangeJobId(
+                e,
+                setPageReportsJobNoFilter,
+                setReportsJobNoFilter
+              );
+              setTypeJobNo(e.currentTarget.value);
             }}
           />
           <FilterCustomer />

@@ -15,11 +15,13 @@ const usePageRebuildReports = () => {
     const [pageReportsRebuildIdFilter, setPageReportsRebuildIdFilter] = useState('')
     const [pageReportsJobNoFilter, setPageReportsJobNoFilter] = useState('')
     const [pageReportsCustomerFilter, setPageReportsCustomerFilter] = useState('')
-    const [pageReportVehicleFilter, setPageReportVehicleFilter] = useState('')    
+    const [pageReportVehicleFilter, setPageReportVehicleFilter] = useState('')  
+    const [pageReportStartDateFilter, setPageReportStartDateFilter] = useState('')
+    const [pageReportEndDateFilter, setPageReportEndDateFilter] = useState('')
 
     useEffect(()=>{
       setIsLoadingRebuildPageReportsPage(true)
-        const {request, cancel} = rebuildReportService.getAll<RebuildReportPageStructure>(filterRebuildPageReportsParams, { params : {pageReportsRebuildIdFilter, pageReportsJobNoFilter, pageReportsCustomerFilter, pageReportVehicleFilter}})
+        const {request, cancel} = rebuildReportService.getAll<RebuildReportPageStructure>(filterRebuildPageReportsParams, { params : {pageReportsRebuildIdFilter, pageReportsJobNoFilter, pageReportsCustomerFilter, pageReportVehicleFilter, pageReportStartDateFilter, pageReportEndDateFilter}})
               
         request
           .then(res=>{
@@ -35,8 +37,8 @@ const usePageRebuildReports = () => {
           })
 
         return ()=> cancel();
-    }, [filterRebuildPageReportsParams, reFetchPageReports, pageReportsRebuildIdFilter, pageReportsJobNoFilter, pageReportsCustomerFilter, pageReportVehicleFilter])
-  return {rebuildPageReports, setRebuildPageReports, errorFetchRebuildPageReports, setErrorFetchRebuildPageReports, nextRebuildPageReportsUrl, previousRebuildPageReportsUrl, setFilterRebuildPageReportsParams, rebuildPageReportsCount, isLoadingRebuildPageReportsPage, setReFetchPageReports, setPageReportsRebuildIdFilter, setPageReportsJobNoFilter, setPageReportsCustomerFilter, setPageReportVehicleFilter}
+    }, [filterRebuildPageReportsParams, reFetchPageReports, pageReportsRebuildIdFilter, pageReportsJobNoFilter, pageReportsCustomerFilter, pageReportVehicleFilter, pageReportStartDateFilter, pageReportEndDateFilter])
+  return {rebuildPageReports, setRebuildPageReports, errorFetchRebuildPageReports, setErrorFetchRebuildPageReports, nextRebuildPageReportsUrl, previousRebuildPageReportsUrl, setFilterRebuildPageReportsParams, rebuildPageReportsCount, isLoadingRebuildPageReportsPage, setReFetchPageReports, setPageReportsRebuildIdFilter, setPageReportsJobNoFilter, setPageReportsCustomerFilter, setPageReportVehicleFilter, setPageReportStartDateFilter, setPageReportEndDateFilter}
 }
 
 export default usePageRebuildReports

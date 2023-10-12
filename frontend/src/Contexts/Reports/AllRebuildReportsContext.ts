@@ -13,6 +13,8 @@ interface AllRebuildReportsContextType{
     setReportsJobNoFilter:Dispatch<SetStateAction<string>>;
     setReportsCustomerFilter:Dispatch<SetStateAction<string>>;
     setReportVehicleFilter:Dispatch<SetStateAction<string>>;
+    setReportStartDateFilter:Dispatch<SetStateAction<string>>; 
+    setReportEndDateFilter :Dispatch<SetStateAction<string>>;
 }
 
 const AllRebuildReportsContext = React.createContext<AllRebuildReportsContextType>({} as AllRebuildReportsContextType)

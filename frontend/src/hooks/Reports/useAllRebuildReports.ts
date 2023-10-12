@@ -13,10 +13,12 @@ const useAllRebuildReports = () => {
     const [reportsJobNoFilter, setReportsJobNoFilter] = useState('')
     const [reportsCustomerFilter, setReportsCustomerFilter] = useState('')
     const [reportVehicleFilter, setReportVehicleFilter] = useState('')
+    const [reportStartDateFilter, setReportStartDateFilter] = useState('')
+    const [reportEndDateFilter, setReportEndDateFilter] = useState('')
 
     useEffect(()=>{
       setIsLoadingRebuildAllReportsPage(true)
-        const {request, cancel} = allRebuildReportsService.getAll<RebuildReport>({ params:{ reportsRebuildIdFilter, reportsJobNoFilter, reportsCustomerFilter, reportVehicleFilter}})      
+        const {request, cancel} = allRebuildReportsService.getAll<RebuildReport>({ params:{ reportsRebuildIdFilter, reportsJobNoFilter, reportsCustomerFilter, reportVehicleFilter, reportStartDateFilter, reportEndDateFilter}})      
         
         request
           .then(res=>{
@@ -29,8 +31,8 @@ const useAllRebuildReports = () => {
           })
 
         return ()=> cancel();
-    }, [refetchRebuildAllReports, reportsRebuildIdFilter, reportsJobNoFilter, reportsCustomerFilter, reportVehicleFilter])
-  return {allRebuildReports, setAllRebuildReports, errorFetchRebuildAllReports, setErrorFetchRebuildAllReports, isLoadingRebuildAllReportsPage, setRefetchRebuildAllReports, setReportsRebuildIdFilter, setReportsJobNoFilter, setReportsCustomerFilter, setReportVehicleFilter }
+    }, [refetchRebuildAllReports, reportsRebuildIdFilter, reportsJobNoFilter, reportsCustomerFilter, reportVehicleFilter, reportStartDateFilter, reportEndDateFilter])
+  return {allRebuildReports, setAllRebuildReports, errorFetchRebuildAllReports, setErrorFetchRebuildAllReports, isLoadingRebuildAllReportsPage, setRefetchRebuildAllReports, setReportsRebuildIdFilter, setReportsJobNoFilter, setReportsCustomerFilter, setReportVehicleFilter, setReportStartDateFilter, setReportEndDateFilter }
 }
 
 export default useAllRebuildReports
