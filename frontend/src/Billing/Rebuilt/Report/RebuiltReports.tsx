@@ -246,18 +246,18 @@ const RebuiltReports = () => {
                   }
                 </Td>
                 <Td>{report.vehicle}</Td>
-                <Td>{report.cost ? report.cost : "not received"}</Td>
-                <Td>{report.status !== null ? report.status : "not send"}</Td>
+                <Td>{report.cost ? report.cost : "No"}</Td>
+                <Td>{report.status === 'received' ? 'Received' : report.status === 'send'? 'Send': "Not Send"}</Td>
                 <Td>{makeUpDate(report.taken_date)}</Td>
                 <Td>
                   {report.send_date !== null
                     ? makeUpDate(report.send_date)
-                    : "not send"}{" "}
+                    : "Not Send"}{" "}
                 </Td>
                 <Td>
                   {report.received_date !== null
                     ? makeUpDate(report.received_date)
-                    : "not received"}
+                    : "Not Received"}
                 </Td>
               </Tr>
             ))}
