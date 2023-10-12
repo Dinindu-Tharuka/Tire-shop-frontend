@@ -1,6 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import React from "react";
 import StockInvoiceTable from "../StockInvoiceTable";
+import StockItemsReport from "../Reports/StockItemsReport";
 
 const StockInvoiceMainPage = () => {
   return (
@@ -15,7 +15,7 @@ const StockInvoiceMainPage = () => {
           <StockInvoiceTable />
         </TabPanel>
         <TabPanel>
-          <p>two!</p>
+          <StockItemsReport/>
         </TabPanel>
       </TabPanels>
     </Tabs>
