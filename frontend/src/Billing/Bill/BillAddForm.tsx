@@ -40,7 +40,7 @@ import {
   onChangeDagTyreChange,
   onChangeService,
   onchangeBillStockItemUnique,
-} from "./Calculations/BillCalculations";
+} from "./Calculations/BillOnChangeCalculations";
 import BillSaveConfirmation from "./BillSaveConfirmation";
 import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
 import stockItemUniqueService, {

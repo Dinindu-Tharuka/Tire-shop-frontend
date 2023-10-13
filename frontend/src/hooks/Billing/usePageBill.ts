@@ -10,13 +10,18 @@ const usePageBill = () => {
     const [filterBillPageParams, setFilterBillPageParams] = useState<string | null>('')
     const [isLoadingBills, setIsLoadingBills] = useState(false)
     const [billCount, setBillCount] = useState(0)   
+    
+    // Filtering
     const [billIdFilter, setBillIdFilter] = useState('')
     const [billFilterCustomer, setBillFilterCustomer] = useState('')
+    const [billVehicleFilter, setBillVehicleFilter] = useState('')
+    const [billStartDateFilter, setBillStartDateFilter] = useState('')
+    const [billEndDateFilter, setBillEndDateFilter] = useState('')
 
 
     useEffect(()=>{
         setIsLoadingBills(true)
-        const {request, cancel} = BillService.getAll<BillPageStructure>(filterBillPageParams, {params: { billIdFilter, billFilterCustomer }})   
+        const {request, cancel} = BillService.getAll<BillPageStructure>(filterBillPageParams, {params: { billIdFilter, billFilterCustomer, billVehicleFilter, billStartDateFilter, billEndDateFilter }})   
         request     
             .then(res=> {
                 setBills(res.data.results)
@@ -26,14 +31,14 @@ const usePageBill = () => {
                 setBillCount(res.data.count)
             })
             .catch(error=>{
-                setBillFetchError(error.message === 'canceled'? '':error.message)
+                setBillFetchError(error.message === 'canceled'? '': error.message)
                 setIsLoadingBills(false)
             });
   
           return ()=>cancel();
-      }, [filterBillPageParams, billIdFilter, billFilterCustomer])
+      }, [filterBillPageParams, billIdFilter, billFilterCustomer, billVehicleFilter, billStartDateFilter, billEndDateFilter])
 
-    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills, billCount, setBillFetchError, setBillIdFilter, setBillFilterCustomer}
+    return {bills, setBills, nextBillPageUrl, previousBillPageUrl, filterBillPageParams, setFilterBillPageParams, billFetchError, isLoadingBills, billCount, setBillFetchError, setBillIdFilter, setBillFilterCustomer, setBillVehicleFilter, setBillStartDateFilter, setBillEndDateFilter}
   
 }
 

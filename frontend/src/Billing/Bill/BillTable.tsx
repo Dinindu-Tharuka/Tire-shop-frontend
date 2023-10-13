@@ -17,7 +17,6 @@ import {
 
 import { useContext, useState } from "react";
 import BillDelete from "./BillDelete";
-import useCustomer from "../../hooks/Customer/useCustomer";
 import BillShowDrawer from "./BillShow/BillShowDrawer";
 import BillContext from "../../Contexts/Bill/BillContext";
 import getCutUrl, {
@@ -29,6 +28,7 @@ import {
 } from "react-icons/io";
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
+import { onTypeBillIdFilter } from "./Filtering/BillTableFiltering";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -49,13 +49,30 @@ const BillTable = () => {
 
   const numOfPages = Math.ceil(billCount / MAXIMUM_PAGES_PER_PAGE);
 
-  const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    setBillIdFilter(event.currentTarget.value);
-  };
-
   return (
     <Flex alignItems="center" flexDir="column">
-      <Input placeholder="Search Bill No" onKeyUp={onTypeFilter} />
+      <HStack>
+        <Input
+          placeholder="Bill No"
+          onKeyUp={(e) => {
+            setBillFetchError("");
+            onTypeBillIdFilter(e, setBillIdFilter);
+          }}
+        />
+        <Input
+          placeholder="Customer"
+          onKeyUp={(e) => {
+            setBillFetchError("");
+          }}
+        />
+        <Input
+          placeholder="Vehicle"
+          onKeyUp={(e) => {
+            setBillFetchError("");
+          }}
+        />
+      </HStack>
+      <HStack></HStack>
       {billFetchError && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}

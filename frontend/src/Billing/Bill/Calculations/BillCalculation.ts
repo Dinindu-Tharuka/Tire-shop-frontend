@@ -1,6 +1,6 @@
 
-import { Bill } from "../../services/Billing/bill-page-service";
-import { Service } from "../../services/Registration/services-service";
+import { Bill } from "../../../services/Billing/bill-page-service";
+import { Service } from "../../../services/Registration/services-service";
 
 const calculateSubTotal = (data:Bill, services:Service[])=>{    
 

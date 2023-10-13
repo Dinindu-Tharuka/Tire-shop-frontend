@@ -15,6 +15,9 @@ interface BillContextType{
     setBillFetchError: Dispatch<SetStateAction<string>>;
     setBillIdFilter:Dispatch<SetStateAction<string>>;
     setBillFilterCustomer:Dispatch<SetStateAction<string>>;
+    setBillVehicleFilter:Dispatch<SetStateAction<string>>
+    setBillStartDateFilter:Dispatch<SetStateAction<string>>; 
+    setBillEndDateFilter:Dispatch<SetStateAction<string>>
 }
 
 const BillContext = React.createContext<BillContextType>({} as BillContextType)

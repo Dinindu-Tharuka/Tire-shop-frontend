@@ -63,7 +63,7 @@ const BillingMainPage = () => {
     setStockPaymentsFetchError,
   } = useStockpayment();
 
-  const { vehicles, setVehicles, setVehicleNoFilter } = useVehicles();
+  const { vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch } = useVehicles();
 
   const {
     customers,
@@ -124,20 +124,7 @@ const BillingMainPage = () => {
     setIsLoadingBillPayments,
   } = useBillPayment();
 
-  const {
-    bills,
-    setBills,
-    nextBillPageUrl,
-    previousBillPageUrl,
-    filterBillPageParams,
-    setFilterBillPageParams,
-    billFetchError,
-    isLoadingBills,
-    billCount,
-    setBillFetchError,
-    setBillIdFilter,
-    setBillFilterCustomer,
-  } = usePageBill();
+  
 
   const { stockItems, setStockItems } = useStockItem();
 
@@ -158,7 +145,7 @@ const BillingMainPage = () => {
       }}
     >
       <VehicleContext.Provider
-        value={{ vehicles, setVehicles, setVehicleNoFilter }}
+        value={{ vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch }}
       >
         <TakenTyreContext.Provider
           value={{
@@ -252,22 +239,7 @@ const BillingMainPage = () => {
                         <StockItemContext.Provider
                           value={{ stockItems, setStockItems }}
                         >
-                          <BillContext.Provider
-                            value={{
-                              bills,
-                              setBills,
-                              nextBillPageUrl,
-                              previousBillPageUrl,
-                              filterBillPageParams,
-                              setFilterBillPageParams,
-                              billFetchError,
-                              isLoadingBills,
-                              billCount,
-                              setBillFetchError,
-                              setBillIdFilter,
-                              setBillFilterCustomer,
-                            }}
-                          >
+                          
                             <Grid
                               templateAreas={{
                                 lg: `"main aside"`,
@@ -293,7 +265,6 @@ const BillingMainPage = () => {
                                 <BillingSidePanel />
                               </GridItem>
                             </Grid>
-                          </BillContext.Provider>
                         </StockItemContext.Provider>
                       </BillPaymentContext.Provider>
                     </StockInvoicePageContext.Provider>

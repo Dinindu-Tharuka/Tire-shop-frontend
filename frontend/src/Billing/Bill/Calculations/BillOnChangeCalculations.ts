@@ -107,9 +107,6 @@ export const onChangeCustomerPrice = (
 )=>{
     const value = parseInt(e.currentTarget.value)
     setValue('sub_total', (subTotalVal + value))
-    
-    
-
 }
 
 export const onChangeDagTyreChange = (
