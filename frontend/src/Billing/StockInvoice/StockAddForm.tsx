@@ -103,7 +103,7 @@ const StockAddForm = () => {
   const { stockInvoices, setStockInvoices } = useContext(
     StockInvoicePageContext
   );
-  const { items } = useAllItems();
+  const { allItems } = useAllItems();
   const { stockItems, setStockItems } = useContext(StockItemContext);
 
   const onSubmit = (data: StockInvoice) => {
@@ -185,7 +185,7 @@ const StockAddForm = () => {
                     className="select w-100 p-2"
                   >
                     <option>Select Item</option>
-                    {items.map((item, index) => (
+                    {allItems.map((item, index) => (
                       <option className="mt-3" key={index} value={item.item_id}>
                         {item.item_id}
                       </option>

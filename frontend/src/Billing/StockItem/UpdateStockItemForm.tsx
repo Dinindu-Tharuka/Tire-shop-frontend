@@ -33,7 +33,7 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
   const onUpdate = (data: StockItem) => {
     const newly = {
       ...data,
-      stock_item_invoice: selectedStockItem.stock_invoice,
+      stock_item_invoice: selectedStockItem.id,
     };
 
     StockItemService.update(newly, `${selectedStockItem.id}`)
@@ -67,7 +67,7 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
               required
               width="50%"
             >
-              <option value={selectedStockItem.id}>
+              <option value={selectedStockItem.item}>
                 {selectedStockItem.item}
               </option>
               {items.map((item, index) => (
@@ -100,9 +100,9 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
             />
           </div>
           <div className="mb-3 d-flex justify-content-between">
-            <FormLabel whiteSpace="nowrap">Selling Price</FormLabel>
+            <FormLabel whiteSpace="nowrap">Customer Price</FormLabel>
             <Input
-              {...register("selling_price")}
+              {...register("customer_price")}
               type="text"
               placeholder="Selling Price"
               defaultValue={selectedStockItem.customer_price}
@@ -128,17 +128,6 @@ const UpdateStockItemForm = ({ selectedStockItem }: Props) => {
               type="text"
               placeholder="Qty"
               defaultValue={selectedStockItem.qty}
-              width="50%"
-            />
-          </div>
-
-          <div className="mb-3 d-flex justify-content-between">
-            <FormLabel whiteSpace="nowrap">Sold Qty</FormLabel>
-            <Input
-              {...register("sold_qty")}
-              type="text"
-              placeholder="Sold Qty"
-              defaultValue={selectedStockItem.customer_unit_price}
               width="50%"
             />
           </div>

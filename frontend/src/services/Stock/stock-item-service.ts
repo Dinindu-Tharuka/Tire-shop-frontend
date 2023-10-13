@@ -13,8 +13,9 @@ export interface StockItem{
 }
 export interface StockItemDefault{
     id:number;
-    item:string;
+    stock_invoice:string;
     stock_item_unique:number;
+    item:string;
     retail_price:number;
     cost:number;
     customer_price:number;
@@ -22,6 +23,7 @@ export interface StockItemDefault{
     sales_discount:number;
     customer_discount:number;
     qty:number;
+    customer_unit_price:number;
     max_qty:number
 }
 

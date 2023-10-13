@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 import React from "react";
-import { StockItem } from "../../services/Stock/stock-item-service";
+import { StockItem, StockItemDefault } from "../../services/Stock/stock-item-service";
 
 interface StockItemsPageContextType{
-    pageStockItems:StockItem[];
-    setPageStockItems:Dispatch<SetStateAction<StockItem[]>>;
+    pageStockItems:StockItemDefault[];
+    setPageStockItems:Dispatch<SetStateAction<StockItemDefault[]>>;
     errorFetchPageStockItems:string;
     setErrorFetchPageStockItems:Dispatch<SetStateAction<string>>;
     nextPageStockItemsTyresUrl:string|null;
@@ -12,6 +12,12 @@ interface StockItemsPageContextType{
     setFilterPageStockItemsParams:Dispatch<SetStateAction<string | null>>;
     isLoadingPageStockItems:boolean;
     pageStockItemsCount:number;
+    setPageStockItemsInvoiceNoFilter:Dispatch<SetStateAction<string>>;
+    setPageStockItemsItemIdFilter:Dispatch<SetStateAction<string>>;
+    setPageStockItemsBrandFilter:Dispatch<SetStateAction<string>>;
+    setPageStockItemsSizeFilter:Dispatch<SetStateAction<string>>;
+    setPageStockItemsStartDateFilter:Dispatch<SetStateAction<string>>;
+    setPageStockItemsEndDateFilter:Dispatch<SetStateAction<string>>;
 }
 
 const StockItemsPageContext = React.createContext<StockItemsPageContextType>({} as StockItemsPageContextType)

@@ -59,6 +59,12 @@ const GridSection = () => {
     isLoadingPageStockItems,
     pageStockItemsCount,
     setPageStockItemsNameFilter,
+    setPageStockItemsInvoiceNoFilter,
+    setPageStockItemsItemIdFilter,
+    setPageStockItemsBrandFilter,
+    setPageStockItemsSizeFilter,
+    setPageStockItemsStartDateFilter,
+    setPageStockItemsEndDateFilter,
   } = usePageStockItems();
 
   const {
@@ -224,6 +230,12 @@ const GridSection = () => {
         setFilterPageStockItemsParams,
         isLoadingPageStockItems,
         pageStockItemsCount,
+        setPageStockItemsInvoiceNoFilter,
+        setPageStockItemsItemIdFilter,
+        setPageStockItemsBrandFilter,
+        setPageStockItemsSizeFilter,
+        setPageStockItemsStartDateFilter,
+        setPageStockItemsEndDateFilter,
       }}
     >
       <VehicleContext.Provider
