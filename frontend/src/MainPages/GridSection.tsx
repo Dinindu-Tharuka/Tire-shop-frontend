@@ -124,6 +124,12 @@ const GridSection = () => {
     setStockItems,
     errorFetchStockItems,
     setErrorFetchStockItems,
+    setStockItemsInvoiceNoFilter,
+    setStockItemsItemIdFilter,
+    setStockItemsBrandFilter,
+    setStockItemsSizeFilter,
+    setStockItemsStartDateFilter,
+    setStockItemsEndDateFilter,
   } = useStockItem();
 
   const {
@@ -292,6 +298,12 @@ const GridSection = () => {
                   setStockItems,
                   errorFetchStockItems,
                   setErrorFetchStockItems,
+                  setStockItemsInvoiceNoFilter,
+                  setStockItemsItemIdFilter,
+                  setStockItemsBrandFilter,
+                  setStockItemsSizeFilter,
+                  setStockItemsStartDateFilter,
+                  setStockItemsEndDateFilter,
                 }}
               >
                 <UserProfileContext.Provider

@@ -35,12 +35,25 @@ import {
   onChangeStartDate,
 } from "./StockItemsReportsFiltering";
 import { AllItemContext } from "../../../Contexts/Inventory/AllItemContest";
+import AllStockItemsContext from "../../../Contexts/Stock/AllStockItemContext";
+import GrnReportModel from "./GRN Report/GrnReportModel";
 
 const StockItemsReport = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const { colorMode } = useColorMode();
 
-  const { allItems } = useContext(AllItemContext)
+  const { allItems } = useContext(AllItemContext);
+
+  const {
+    stockItems,
+    setStockItemsInvoiceNoFilter,
+    setStockItemsItemIdFilter,
+    setStockItemsBrandFilter,
+    setStockItemsSizeFilter,
+    setStockItemsStartDateFilter,
+    setStockItemsEndDateFilter,
+  } = useContext(AllStockItemsContext);
+
   const {
     pageStockItemsCount,
     errorFetchPageStockItems,
@@ -65,24 +78,37 @@ const StockItemsReport = () => {
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}
       <VStack>
+        <HStack width='58vw'>
+          <GrnReportModel stockItems={stockItems}/>
+        </HStack>
         <HStack>
           <Input
             placeholder="Invoice No"
-            onChange={(e) =>
-              onChangeInvoiceNo(e, setPageStockItemsInvoiceNoFilter)
-            }
+            onChange={(e) => {
+              setErrorFetchPageStockItems("");
+              onChangeInvoiceNo(e, setPageStockItemsInvoiceNoFilter, setStockItemsInvoiceNoFilter);
+            }}
           />
           <Input
             placeholder="Item Id"
-            onChange={(e) => onChangeItemId(e, setPageStockItemsItemIdFilter)}
+            onChange={(e) => {
+              setErrorFetchPageStockItems("");
+              onChangeItemId(e, setPageStockItemsItemIdFilter, setStockItemsItemIdFilter);
+            }}
           />
           <Input
             placeholder="Brand"
-            onChange={(e) => onChangeBrand(e, setPageStockItemsBrandFilter)}
+            onChange={(e) => {
+              setErrorFetchPageStockItems("");
+              onChangeBrand(e, setPageStockItemsBrandFilter, setStockItemsBrandFilter);
+            }}
           />
           <Input
             placeholder="Size"
-            onChange={(e) => onChangeSize(e, setPageStockItemsSizeFilter)}
+            onChange={(e) => {
+              setErrorFetchPageStockItems("");
+              onChangeSize(e, setPageStockItemsSizeFilter, setStockItemsSizeFilter);
+            }}
           />
         </HStack>
         <HStack>
@@ -90,14 +116,19 @@ const StockItemsReport = () => {
             <InputLeftAddon children="Start" />
             <Input
               type="date"
-              onChange={(e) => onChangeStartDate(e, setPageStockItemsStartDateFilter)}
+              onChange={(e) =>{
+                setErrorFetchPageStockItems("");
+                onChangeStartDate(e, setPageStockItemsStartDateFilter, setStockItemsStartDateFilter)
+              }}
             />
           </InputGroup>
           <InputGroup>
             <InputLeftAddon children="End" />
             <Input
               type="date"
-              onChange={(e) => onChangeEndDate(e, setPageStockItemsEndDateFilter)}
+              onChange={(e) =>
+                onChangeEndDate(e, setPageStockItemsEndDateFilter, setStockItemsEndDateFilter)
+              }
             />
           </InputGroup>
         </HStack>
@@ -122,8 +153,18 @@ const StockItemsReport = () => {
               <Tr key={index}>
                 <Td>{stockitem.stock_invoice}</Td>
                 <Td>{stockitem.item}</Td>
-                <Td>{allItems.find(item => item.item_id === stockitem.item)?.brand}</Td>
-                <Td>{allItems.find(item => item.item_id === stockitem.item)?.size}</Td>
+                <Td>
+                  {
+                    allItems.find((item) => item.item_id === stockitem.item)
+                      ?.brand
+                  }
+                </Td>
+                <Td>
+                  {
+                    allItems.find((item) => item.item_id === stockitem.item)
+                      ?.size
+                  }
+                </Td>
                 <Td>{stockitem.retail_price}</Td>
                 <Td>{stockitem.cost}</Td>
                 <Td>{stockitem.customer_price}</Td>
