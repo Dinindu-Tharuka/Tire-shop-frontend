@@ -20,8 +20,8 @@ import RebuildSideBarOptions from "../Rebuilt/SideBarOptions/RebuildSideBarOptio
  
 
 const BillingSidePanel = () => {
-    const billingList = ["Invoice", "Rebuilt", "GRN", "Debtors"];
-  const billing_links = ["", "rebuilt", "stock-invoice", "debtors"];
+    const billingList = ["Invoice", "Rebuilt", "GRN", "Debtors", "Cheques"];
+  const billing_links = ["", "rebuilt", "stock-invoice", "debtors", "cheques"];
   const { colorMode } = useColorMode();
 
   const options = ["ADD"];

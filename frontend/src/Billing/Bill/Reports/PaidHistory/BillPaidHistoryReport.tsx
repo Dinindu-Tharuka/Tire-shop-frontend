@@ -39,6 +39,7 @@ const BillPaidHistoryReport = ({ filteredBills }:Props) => {
               <th scope="col">Cheque</th>
               <th scope="col">Credit Card</th>
               <th scope="col">Credit</th>
+              <th scope="col">Balance</th>
               <th scope="col">Total</th>
             </tr>
           </thead>
@@ -49,6 +50,7 @@ const BillPaidHistoryReport = ({ filteredBills }:Props) => {
                 <td>{calculateCash(bill, billPayments)}</td>
                 <td>{calculateCheque(bill, billPayments)}</td>
                 <td>{calculateCreditCard(bill, billPayments)}</td>
+                <td>{bill.sub_total-calculateTotalPayment(billPayments, bill)}</td>
                 <td>{bill.sub_total-calculateTotalPayment(billPayments, bill)}</td>
                 <td>{bill.sub_total}</td>
               </tr>

@@ -19,6 +19,7 @@ import PasswordReset from "../Authentication/PasswordReset";
 import UserListTable from "../Registration/User/UserListTable";
 import DebtorsTable from "../Billing/Debtors/DebtorsTable";
 import StockInvoiceMainPage from "../Billing/StockInvoice/MainPage/StockInvoiceMainPage";
+import ChequesTable from "../Billing/Cheques/ChequesTable";
 
 const routes = createBrowserRouter([
   {
@@ -64,6 +65,7 @@ const routes = createBrowserRouter([
               { path: "rebuilt", element: <RebuiltMainPage /> },
               { path: "stock-invoice", element: <StockInvoiceMainPage /> },
               { path: "debtors", element: <DebtorsTable /> },
+              { path: "cheques", element: <ChequesTable/>}
             ],
           },
         ],
