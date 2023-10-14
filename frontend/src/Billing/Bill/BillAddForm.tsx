@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { useForm, useFieldArray, useWatch, Controller } from "react-hook-form";
-import BillContext from "../../Contexts/Bill/BillContext";
+import BillPageContext from "../../Contexts/Bill/BillContext";
 import { IoAddCircle } from "react-icons/io5";
 import BillServices, {
   Bill,
@@ -93,7 +93,7 @@ const BillAddForm = () => {
   const [selectedServicesPrice, setSelectedServicesPrice] = useState<number[]>(
     []
   );
-  const { bills, setBills } = useContext(BillContext);
+  const { bills, setBills } = useContext(BillPageContext);
   const { allItems } = useAllItems();
   const { allCustomers } = useContext(AllCustomerContext);
   const { vehicles } = useContext(VehicleContext);
@@ -317,15 +317,17 @@ const BillAddForm = () => {
             <div className="mb-3 w-25">
               <Select isDisabled={isCreatedBill} {...register("vehicle")}>
                 <option>Select Vehicle</option>
-                {vehicles.filter(veh => veh.customer === parseInt(selectedCustomer)).map((vehicle, index) => (
-                  <option
-                    className="mt-3"
-                    key={index}
-                    value={vehicle.vehical_no}
-                  >
-                    {vehicle.vehical_no}
-                  </option>
-                ))}
+                {vehicles
+                  .filter((veh) => veh.customer === parseInt(selectedCustomer))
+                  .map((vehicle, index) => (
+                    <option
+                      className="mt-3"
+                      key={index}
+                      value={vehicle.vehical_no}
+                    >
+                      {vehicle.vehical_no}
+                    </option>
+                  ))}
               </Select>
             </div>
           </Flex>

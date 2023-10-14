@@ -10,7 +10,7 @@ import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
 import useStockInvoice from "../../hooks/Stock/useStockInvoice";
 import usePageBill from "../../hooks/Billing/usePageBill";
-import BillContext from "../../Contexts/Bill/BillContext";
+import BillPageContext from "../../Contexts/Bill/BillContext";
 import useStockItemUnique from "../../hooks/Stock/useStockItemUnique";
 import StockItemUniqueContext from "../../Contexts/Stock/StockItemUniqueContext";
 import useSupplier from "../../hooks/Registration/useSupplier";
@@ -63,7 +63,8 @@ const BillingMainPage = () => {
     setStockPaymentsFetchError,
   } = useStockpayment();
 
-  const { vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch } = useVehicles();
+  const { vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch } =
+    useVehicles();
 
   const {
     customers,
@@ -123,8 +124,6 @@ const BillingMainPage = () => {
     isLoadingBillPayments,
     setIsLoadingBillPayments,
   } = useBillPayment();
-
-  
 
   const { stockItems, setStockItems } = useStockItem();
 
@@ -239,32 +238,31 @@ const BillingMainPage = () => {
                         <StockItemContext.Provider
                           value={{ stockItems, setStockItems }}
                         >
-                          
-                            <Grid
-                              templateAreas={{
-                                lg: `"main aside"`,
-                                base: `"aside" "main"`,
-                              }}
+                          <Grid
+                            templateAreas={{
+                              lg: `"main aside"`,
+                              base: `"aside" "main"`,
+                            }}
+                          >
+                            <GridItem
+                              area="main"
+                              height={{ base: "10vh", lg: "85vh" }}
+                              width={{ base: "100vw", lg: "60vw" }}
                             >
-                              <GridItem
-                                area="main"
-                                height={{ base: "10vh", lg: "85vh" }}
-                                width={{ base: "100vw", lg: "60vw" }}
-                              >
-                                <Outlet />
-                              </GridItem>
-                              <GridItem
-                                area="aside"
-                                height={{ base: "10vh", lg: "85vh" }}
-                                width={{ base: "100vw", lg: "15vw" }}
-                                boxShadow="dark-lg"
-                                borderRadius={30}
-                                padding={5}
-                                bg={colorMode === "light" ? "#ca5c4f" : ""}
-                              >
-                                <BillingSidePanel />
-                              </GridItem>
-                            </Grid>
+                              <Outlet />
+                            </GridItem>
+                            <GridItem
+                              area="aside"
+                              height={{ base: "10vh", lg: "85vh" }}
+                              width={{ base: "100vw", lg: "15vw" }}
+                              boxShadow="dark-lg"
+                              borderRadius={30}
+                              padding={5}
+                              bg={colorMode === "light" ? "#ca5c4f" : ""}
+                            >
+                              <BillingSidePanel />
+                            </GridItem>
+                          </Grid>
                         </StockItemContext.Provider>
                       </BillPaymentContext.Provider>
                     </StockInvoicePageContext.Provider>

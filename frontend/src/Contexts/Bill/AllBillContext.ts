@@ -2,11 +2,17 @@ import { Dispatch, SetStateAction } from "react"
 import React from "react";
 import { Bill } from "../../services/Billing/bill-page-service";
 
+
 interface AllBillContextType{
-    bills:Bill[];
-    setBills:Dispatch<SetStateAction<Bill[]>>;    
+    allBills:Bill[];
+    setAllBills:Dispatch<SetStateAction<Bill[]>>;    
     isLoadingBills:boolean; 
-    billFetchError:string
+    allBillFetchError:string;
+    setAllBillIdFilter:Dispatch<SetStateAction<string>>;
+    setAllBillFilterCustomer:Dispatch<SetStateAction<string>>; 
+    setAllBillVehicleFilter:Dispatch<SetStateAction<string>> 
+    setAllBillStartDateFilter:Dispatch<SetStateAction<string>>;
+    setAllBillEndDateFilter:Dispatch<SetStateAction<string>>
     
 }
 

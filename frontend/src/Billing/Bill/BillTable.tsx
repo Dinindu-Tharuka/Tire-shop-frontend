@@ -20,7 +20,7 @@ import {
 import { useContext, useState } from "react";
 import BillDelete from "./BillDelete";
 import BillShowDrawer from "./BillShow/BillShowDrawer";
-import BillContext from "../../Contexts/Bill/BillContext";
+import BillPageContext from "../../Contexts/Bill/BillContext";
 import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
 } from "../../services/pagination-cut-link";
@@ -30,7 +30,13 @@ import {
 } from "react-icons/io";
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
-import { onTypeBillIdFilter, onTypeCustomerFilter, onTypeEndDateFilter, onTypeStartDateFilter, onTypeVehicleFilter } from "./Filtering/BillTableFiltering";
+import {
+  onTypeBillIdFilter,
+  onTypeCustomerFilter,
+  onTypeEndDateFilter,
+  onTypeStartDateFilter,
+  onTypeVehicleFilter,
+} from "./Filtering/BillTableFiltering";
 import BillPaidHistoryModel from "./Reports/PaidHistory/BillPaidHistoryModel";
 
 const BillTable = () => {
@@ -50,16 +56,16 @@ const BillTable = () => {
     setBillFilterCustomer,
     setBillVehicleFilter,
     setBillStartDateFilter,
-    setBillEndDateFilter
-  } = useContext(BillContext);
+    setBillEndDateFilter,
+  } = useContext(BillPageContext);
   const { allCustomers } = useContext(AllCustomerContext);
 
   const numOfPages = Math.ceil(billCount / MAXIMUM_PAGES_PER_PAGE);
 
   return (
     <Flex alignItems="center" flexDir="column">
-      <HStack width='58vw' marginBottom={3}>
-          <BillPaidHistoryModel filteredBills={bills}/>
+      <HStack width="58vw" marginBottom={3}>
+        <BillPaidHistoryModel filteredBills={bills} />
       </HStack>
       <HStack marginBottom={5}>
         <Input
@@ -73,39 +79,39 @@ const BillTable = () => {
           placeholder="Customer"
           onKeyUp={(e) => {
             setBillFetchError("");
-            onTypeCustomerFilter(e, setBillFilterCustomer)
+            onTypeCustomerFilter(e, setBillFilterCustomer);
           }}
-        /> 
+        />
         <Input
           placeholder="Vehicle"
           onKeyUp={(e) => {
             setBillFetchError("");
-            onTypeVehicleFilter(e, setBillVehicleFilter)
+            onTypeVehicleFilter(e, setBillVehicleFilter);
           }}
-        />        
+        />
       </HStack>
       <HStack>
-          <InputGroup>
-            <InputLeftAddon children="Start" />
-            <Input
-              type="date"
-              onChange={(e) =>{
-                setBillFetchError("");
-                onTypeStartDateFilter(e, setBillStartDateFilter)
-              }}
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon children="End" />
-            <Input
-              type="date"
-              onChange={(e) =>{
-                setBillFetchError("");
-                onTypeEndDateFilter(e, setBillEndDateFilter)
-              }}
-            />
-          </InputGroup>
-        </HStack>
+        <InputGroup>
+          <InputLeftAddon children="Start" />
+          <Input
+            type="date"
+            onChange={(e) => {
+              setBillFetchError("");
+              onTypeStartDateFilter(e, setBillStartDateFilter);
+            }}
+          />
+        </InputGroup>
+        <InputGroup>
+          <InputLeftAddon children="End" />
+          <Input
+            type="date"
+            onChange={(e) => {
+              setBillFetchError("");
+              onTypeEndDateFilter(e, setBillEndDateFilter);
+            }}
+          />
+        </InputGroup>
+      </HStack>
       {billFetchError && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}

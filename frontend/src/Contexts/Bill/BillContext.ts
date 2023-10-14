@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react"
 import React from "react";
 import { Bill } from "../../services/Billing/bill-page-service";
 
-interface BillContextType{
+interface BillPageContextType{
     bills:Bill[];
     setBills:Dispatch<SetStateAction<Bill[]>>;
     nextBillPageUrl:string|null;
@@ -20,6 +20,6 @@ interface BillContextType{
     setBillEndDateFilter:Dispatch<SetStateAction<string>>
 }
 
-const BillContext = React.createContext<BillContextType>({} as BillContextType)
+const BillPageContext = React.createContext<BillPageContextType>({} as BillPageContextType)
 
-export default BillContext;
+export default BillPageContext;

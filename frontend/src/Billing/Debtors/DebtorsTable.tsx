@@ -10,14 +10,14 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
-import BillContext from "../../Contexts/Bill/BillContext";
+import BillPageContext from "../../Contexts/Bill/BillContext";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import { calculateTotalPayment } from "../Bill/Calculations/CalculateTotalPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import { makeUpDate } from "../UI/MakeUpDate";
 
 const DebtorsTable = () => {
-  const { bills } = useContext(BillContext);
+  const { bills } = useContext(BillPageContext);
   const { customers } = useContext(CustomerContext);
   const { billPayments } = useContext(BillPaymentContext);
 
