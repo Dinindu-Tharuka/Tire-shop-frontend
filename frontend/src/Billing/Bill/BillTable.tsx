@@ -38,10 +38,20 @@ import {
   onTypeVehicleFilter,
 } from "./Filtering/BillTableFiltering";
 import BillPaidHistoryModel from "./Reports/PaidHistory/BillPaidHistoryModel";
+import AllBillContext from "../../Contexts/Bill/AllBillContext";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
+
+  const {
+    allBills,
+    setAllBillIdFilter,
+    setAllBillFilterCustomer,
+    setAllBillVehicleFilter,
+    setAllBillStartDateFilter,
+    setAllBillEndDateFilter,
+  } = useContext(AllBillContext);
 
   const {
     bills,
@@ -65,28 +75,28 @@ const BillTable = () => {
   return (
     <Flex alignItems="center" flexDir="column">
       <HStack width="58vw" marginBottom={3}>
-        <BillPaidHistoryModel filteredBills={bills} />
+        <BillPaidHistoryModel filteredBills={allBills} />
       </HStack>
       <HStack marginBottom={5}>
         <Input
           placeholder="Bill No"
           onKeyUp={(e) => {
             setBillFetchError("");
-            onTypeBillIdFilter(e, setBillIdFilter);
+            onTypeBillIdFilter(e, setBillIdFilter, setAllBillIdFilter);
           }}
         />
         <Input
           placeholder="Customer"
           onKeyUp={(e) => {
             setBillFetchError("");
-            onTypeCustomerFilter(e, setBillFilterCustomer);
+            onTypeCustomerFilter(e, setBillFilterCustomer, setAllBillFilterCustomer);
           }}
         />
         <Input
           placeholder="Vehicle"
           onKeyUp={(e) => {
             setBillFetchError("");
-            onTypeVehicleFilter(e, setBillVehicleFilter);
+            onTypeVehicleFilter(e, setBillVehicleFilter, setAllBillVehicleFilter);
           }}
         />
       </HStack>
@@ -97,7 +107,7 @@ const BillTable = () => {
             type="date"
             onChange={(e) => {
               setBillFetchError("");
-              onTypeStartDateFilter(e, setBillStartDateFilter);
+              onTypeStartDateFilter(e, setBillStartDateFilter, setAllBillStartDateFilter);
             }}
           />
         </InputGroup>
@@ -107,7 +117,7 @@ const BillTable = () => {
             type="date"
             onChange={(e) => {
               setBillFetchError("");
-              onTypeEndDateFilter(e, setBillEndDateFilter);
+              onTypeEndDateFilter(e, setBillEndDateFilter, setAllBillEndDateFilter);
             }}
           />
         </InputGroup>

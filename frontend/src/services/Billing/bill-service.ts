@@ -2,4 +2,4 @@ import create from "../http-service";
 
 
 
-export default create('/bills/')
+export default create('/all-bills/')
