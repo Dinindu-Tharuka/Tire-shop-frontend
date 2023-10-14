@@ -18,8 +18,6 @@ const usePageBill = () => {
     const [billStartDateFilter, setBillStartDateFilter] = useState('')
     const [billEndDateFilter, setBillEndDateFilter] = useState('')
 
-    console.log('billVehicleFilter2', billVehicleFilter)
-
 
     useEffect(()=>{
         setIsLoadingBills(true)

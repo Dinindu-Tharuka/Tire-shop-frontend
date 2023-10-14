@@ -31,6 +31,7 @@ import {
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 import { onTypeBillIdFilter, onTypeCustomerFilter, onTypeEndDateFilter, onTypeStartDateFilter, onTypeVehicleFilter } from "./Filtering/BillTableFiltering";
+import BillPaidHistoryModel from "./Reports/PaidHistory/BillPaidHistoryModel";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -57,6 +58,9 @@ const BillTable = () => {
 
   return (
     <Flex alignItems="center" flexDir="column">
+      <HStack width='58vw' marginBottom={3}>
+          <BillPaidHistoryModel filteredBills={bills}/>
+      </HStack>
       <HStack marginBottom={5}>
         <Input
           placeholder="Bill No"

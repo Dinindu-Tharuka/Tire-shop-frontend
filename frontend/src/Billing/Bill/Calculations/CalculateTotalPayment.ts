@@ -1,5 +1,7 @@
 import { Bill, BillPayment } from "../../../services/Billing/bill-page-service";
 
+
+
 export const calculateTotalPayment = (payments : BillPayment[], seletedBill:Bill)=>{
     let totalPaidPrice = 0;
 

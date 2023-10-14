@@ -32,7 +32,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
 
   useEffect(()=>{
     setCapture(pdfRef.current)
-  })
+  },[])
 
   // contexts & hooks
   const { customers } = useCustomer();

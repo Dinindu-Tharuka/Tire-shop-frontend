@@ -49,6 +49,7 @@ const BillAddPayment = ({ createdBill }: Props) => {
       .then((res) => {
         setSuccess('Successfully do paments.')
         setBillPayments([...billPayments, res.data])
+        
       })
       .catch((err) => setError(err.message));
   };
