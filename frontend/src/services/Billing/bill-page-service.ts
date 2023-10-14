@@ -9,7 +9,7 @@ export interface DagPayment{
 
 export interface BillItem{
     id:number;
-    item:number;
+    item:string;
     stock_item_unique:number;
     bill:number;
     qty:number;

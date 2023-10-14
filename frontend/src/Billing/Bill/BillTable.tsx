@@ -39,6 +39,7 @@ import {
 } from "./Filtering/BillTableFiltering";
 import BillPaidHistoryModel from "./Reports/PaidHistory/BillPaidHistoryModel";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
+import DailyItemSaleReportModel from "./Reports/DailyItemSale/DailyItemSaleReportModel";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -76,6 +77,7 @@ const BillTable = () => {
     <Flex alignItems="center" flexDir="column">
       <HStack width="58vw" marginBottom={3}>
         <BillPaidHistoryModel filteredBills={allBills} />
+        <DailyItemSaleReportModel filteredBills={allBills} />
       </HStack>
       <HStack marginBottom={5}>
         <Input
@@ -89,14 +91,22 @@ const BillTable = () => {
           placeholder="Customer"
           onKeyUp={(e) => {
             setBillFetchError("");
-            onTypeCustomerFilter(e, setBillFilterCustomer, setAllBillFilterCustomer);
+            onTypeCustomerFilter(
+              e,
+              setBillFilterCustomer,
+              setAllBillFilterCustomer
+            );
           }}
         />
         <Input
           placeholder="Vehicle"
           onKeyUp={(e) => {
             setBillFetchError("");
-            onTypeVehicleFilter(e, setBillVehicleFilter, setAllBillVehicleFilter);
+            onTypeVehicleFilter(
+              e,
+              setBillVehicleFilter,
+              setAllBillVehicleFilter
+            );
           }}
         />
       </HStack>
@@ -107,7 +117,11 @@ const BillTable = () => {
             type="date"
             onChange={(e) => {
               setBillFetchError("");
-              onTypeStartDateFilter(e, setBillStartDateFilter, setAllBillStartDateFilter);
+              onTypeStartDateFilter(
+                e,
+                setBillStartDateFilter,
+                setAllBillStartDateFilter
+              );
             }}
           />
         </InputGroup>
@@ -117,7 +131,11 @@ const BillTable = () => {
             type="date"
             onChange={(e) => {
               setBillFetchError("");
-              onTypeEndDateFilter(e, setBillEndDateFilter, setAllBillEndDateFilter);
+              onTypeEndDateFilter(
+                e,
+                setBillEndDateFilter,
+                setAllBillEndDateFilter
+              );
             }}
           />
         </InputGroup>

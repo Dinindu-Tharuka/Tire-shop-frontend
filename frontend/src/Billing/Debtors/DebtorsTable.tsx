@@ -57,7 +57,7 @@ const DebtorsTable = () => {
               <Th>Customer</Th>
               <Th>Sub Total</Th>
               <Th>Total Payment</Th>
-              <Th>Debit Amount</Th>
+              <Th>Credit</Th>
               <Th>Date</Th>
             </Tr>
           </Thead>

@@ -26,7 +26,7 @@ const BillPaidHistoryReport = ({ filteredBills }:Props) => {
   return (
     <>
       <div ref={pdfRef}>
-        <ModalHeader>GRN Report</ModalHeader>
+        <ModalHeader>Paid History Report</ModalHeader>
         <Text marginLeft={10}>
           {currntDate.getFullYear()}-{currntDate.getMonth() + 1}-
           {currntDate.getDate()}
