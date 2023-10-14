@@ -1,10 +1,4 @@
-import {
-  Button,
-  useColorMode,
-  Text,
-  HStack,
-  Input,
-} from "@chakra-ui/react";
+import { Button, useColorMode, Text, HStack, Input } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import receivedTyreService, {
@@ -13,8 +7,8 @@ import receivedTyreService, {
 import ReceivedTyreContext from "../../../../Contexts/Rebuild/Received/ReceivedTyreContex";
 import AddSupplierReceivedTyres from "./AddSupplierReceivedTyres";
 import AllReceivedSupplierTyresContext from "../../../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
-import RebuildReportsPageContext from "../../../../Contexts/Reports/RebuildReortsContext";
-import AllRebuildReportsContext from "../../../../Contexts/Reports/AllRebuildReportsContext";
+import RebuildReportsPageContext from "../../../../Contexts/Rebuild/Reports/RebuildReortsContext";
+import AllRebuildReportsContext from "../../../../Contexts/Rebuild/Reports/AllRebuildReportsContext";
 
 const AddReceivedTyreForm = () => {
   const { register, handleSubmit, control } = useForm<ReceivedTyre>();
@@ -23,15 +17,16 @@ const AddReceivedTyreForm = () => {
   const { colorMode } = useColorMode();
 
   const { receivedTyres, setReceivedTyres } = useContext(ReceivedTyreContext);
-  const { setAllReceivedSupplierTyres , allReceivedSupplierTyres} = useContext(AllReceivedSupplierTyresContext)
-
+  const { setAllReceivedSupplierTyres, allReceivedSupplierTyres } = useContext(
+    AllReceivedSupplierTyresContext
+  );
 
   // For refetch reports
-  const { setReFetchPageReports } = useContext(RebuildReportsPageContext)
-  const { setRefetchRebuildAllReports } = useContext(AllRebuildReportsContext)
-  const date = new Date()
-  const milliseconds = date.getMilliseconds()
-  
+  const { setReFetchPageReports } = useContext(RebuildReportsPageContext);
+  const { setRefetchRebuildAllReports } = useContext(AllRebuildReportsContext);
+  const date = new Date();
+  const milliseconds = date.getMilliseconds();
+
   const onCreate = (data: ReceivedTyre) => {
     console.log(data, "submitted");
     const originalTakenTyres = [...receivedTyres];
@@ -43,11 +38,14 @@ const AddReceivedTyreForm = () => {
         console.log(res.data, "response");
 
         setReceivedTyres([res.data, ...receivedTyres]);
-        setAllReceivedSupplierTyres([...allReceivedSupplierTyres, ...res.data.received_tyres])
+        setAllReceivedSupplierTyres([
+          ...allReceivedSupplierTyres,
+          ...res.data.received_tyres,
+        ]);
 
         // refetch
-        setReFetchPageReports(''+milliseconds)
-        setRefetchRebuildAllReports(''+milliseconds)
+        setReFetchPageReports("" + milliseconds);
+        setRefetchRebuildAllReports("" + milliseconds);
       })
       .catch((err) => {
         setErrorSendTyreCreate("Not Succefully created.");

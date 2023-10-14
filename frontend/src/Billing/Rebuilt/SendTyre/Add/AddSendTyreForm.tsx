@@ -1,10 +1,4 @@
-import {
-  Button,
-  useColorMode,
-  Text,
-  HStack,
-  Input,
-} from "@chakra-ui/react";
+import { Button, useColorMode, Text, HStack, Input } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import sendTyreService, {
@@ -15,8 +9,8 @@ import AddSendSupplierTyres from "./AddSendSupplierTyres";
 import SupplierFilter from "../../../../Registration/Supplier/SupplierFilter";
 import { Supplier } from "../../../../services/Registration/supplier-service";
 import AllSendSupplierTyresContext from "../../../../Contexts/Rebuild/AllSendSupplierContext";
-import RebuildReportsPageContext from "../../../../Contexts/Reports/RebuildReortsContext";
-import AllRebuildReportsContext from "../../../../Contexts/Reports/AllRebuildReportsContext";
+import RebuildReportsPageContext from "../../../../Contexts/Rebuild/Reports/RebuildReortsContext";
+import AllRebuildReportsContext from "../../../../Contexts/Rebuild/Reports/AllRebuildReportsContext";
 
 const AddSendTyreForm = () => {
   const { register, handleSubmit, control } = useForm<SendTyre>();
@@ -32,11 +26,10 @@ const AddSendTyreForm = () => {
   );
 
   // For refetch reports
-  const { setReFetchPageReports } = useContext(RebuildReportsPageContext)
-  const { setRefetchRebuildAllReports } = useContext(AllRebuildReportsContext)
-  const date = new Date()
-  const milliseconds = date.getMilliseconds()
-  
+  const { setReFetchPageReports } = useContext(RebuildReportsPageContext);
+  const { setRefetchRebuildAllReports } = useContext(AllRebuildReportsContext);
+  const date = new Date();
+  const milliseconds = date.getMilliseconds();
 
   const onCreate = (data: SendTyre) => {
     const newly = { ...data, supplier: seletedSuplier?.id };
@@ -56,9 +49,8 @@ const AddSendTyreForm = () => {
         ]);
 
         // Refetch
-        setReFetchPageReports(''+milliseconds)
-        setRefetchRebuildAllReports(''+milliseconds)
-        
+        setReFetchPageReports("" + milliseconds);
+        setRefetchRebuildAllReports("" + milliseconds);
       })
       .catch((err) => {
         setErrorSendTyreCreate("Not Succefully created.");

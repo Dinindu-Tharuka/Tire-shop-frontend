@@ -50,6 +50,9 @@ import BillShowDrawer from "./BillShow/BillShowDrawer";
 import AllReceivedSupplierTyresContext from "../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 import AllSendSupplierTyresContext from "../../Contexts/Rebuild/AllSendSupplierContext";
 import AllDagPaymentContext from "../../Contexts/Bill/AllDagPaymentContext";
+import useVehicles from "../../hooks/Customer/useVehicles";
+import VehicleContext from "../../Contexts/Customer/VehicleContext";
+import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 
 export interface ReceiveTyreNew {
   id: number;
@@ -78,6 +81,9 @@ const BillAddForm = () => {
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Forfiltering vehicles
+  const [selectedCustomer, setselectedCustomer] = useState("0");
+
   // filtering for dag payment section
   const [filteredSupplierTyres, setFilteredSupplierTyres] = useState<
     ReceiveTyreNew[]
@@ -89,8 +95,8 @@ const BillAddForm = () => {
   );
   const { bills, setBills } = useContext(BillContext);
   const { allItems } = useAllItems();
-
-  const { customers } = useCustomer();
+  const { allCustomers } = useContext(AllCustomerContext);
+  const { vehicles } = useContext(VehicleContext);
   const { services } = useService();
   const { employees } = useEmployee();
   const { stockItems, setStockItems } = useContext(StockItemContext);
@@ -293,12 +299,31 @@ const BillAddForm = () => {
               <Text textColor="red.600">{errors.invoice_id?.message}</Text>
             </div>
 
-            <div className="mb-3 w-25">
-              <Select isDisabled={isCreatedBill} {...register("customer")}>
+            <div className="mb-3 w-25 me-3">
+              <Select
+                isDisabled={isCreatedBill}
+                {...register("customer")}
+                onChange={(e) => setselectedCustomer(e.currentTarget.value)}
+              >
                 <option>Select Customer</option>
-                {customers.map((customer, index) => (
+                {allCustomers.map((customer, index) => (
                   <option className="mt-3" key={index} value={customer.id}>
                     {customer.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+
+            <div className="mb-3 w-25">
+              <Select isDisabled={isCreatedBill} {...register("vehicle")}>
+                <option>Select Vehicle</option>
+                {vehicles.filter(veh => veh.customer === parseInt(selectedCustomer)).map((vehicle, index) => (
+                  <option
+                    className="mt-3"
+                    key={index}
+                    value={vehicle.vehical_no}
+                  >
+                    {vehicle.vehical_no}
                   </option>
                 ))}
               </Select>

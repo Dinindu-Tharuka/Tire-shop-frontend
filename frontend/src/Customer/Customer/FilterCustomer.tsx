@@ -10,17 +10,17 @@ import { useContext, useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
 import { Customer } from "../../services/Customer/customer-service";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
-import RebuildReportsPageContext from "../../Contexts/Reports/RebuildReortsContext";
-import AllRebuildReportsContext from "../../Contexts/Reports/AllRebuildReportsContext";
-
+import RebuildReportsPageContext from "../../Contexts/Rebuild/Reports/RebuildReortsContext";
+import AllRebuildReportsContext from "../../Contexts/Rebuild/Reports/AllRebuildReportsContext";
 
 const FilterCustomer = () => {
   const { setAllCustomerNameFilter, allCustomers } =
     useContext(AllCustomerContext);
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [buttoneName, setButtoneName] = useState("All Customer");
-  const { setErrorFetchRebuildPageReports, setPageReportsCustomerFilter } = useContext(RebuildReportsPageContext)
-  const {setReportsCustomerFilter } = useContext(AllRebuildReportsContext)
+  const { setErrorFetchRebuildPageReports, setPageReportsCustomerFilter } =
+    useContext(RebuildReportsPageContext);
+  const { setReportsCustomerFilter } = useContext(AllRebuildReportsContext);
 
   const onCustomerType = (event: React.KeyboardEvent<HTMLInputElement>) => {
     let currentValue = event.currentTarget.value;
@@ -43,9 +43,9 @@ const FilterCustomer = () => {
             onClick={() => {
               setCustomer(null);
               setButtoneName("All Customers");
-              setErrorFetchRebuildPageReports('')
-              setPageReportsCustomerFilter('')
-              setReportsCustomerFilter('')
+              setErrorFetchRebuildPageReports("");
+              setPageReportsCustomerFilter("");
+              setReportsCustomerFilter("");
             }}
             className="dropdown-item"
           >
@@ -59,9 +59,9 @@ const FilterCustomer = () => {
                 onClick={() => {
                   setCustomer(customer);
                   setButtoneName(customer.name);
-                  setErrorFetchRebuildPageReports('')
-                  setPageReportsCustomerFilter(customer.id+'')
-                  setReportsCustomerFilter(customer.id+'')
+                  setErrorFetchRebuildPageReports("");
+                  setPageReportsCustomerFilter(customer.id + "");
+                  setReportsCustomerFilter(customer.id + "");
                 }}
                 className="dropdown-item"
               >

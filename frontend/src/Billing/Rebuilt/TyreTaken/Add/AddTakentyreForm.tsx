@@ -8,8 +8,8 @@ import tyreTakenService, {
 } from "../../../../services/Rebuild/tyre-taken-service";
 import AddCustomerTakenTyre from "./AddCustomerTakenTyre";
 import AllCustomerContext from "../../../../Contexts/Customer/AllCustomerContext";
-import RebuildReportsPageContext from "../../../../Contexts/Reports/RebuildReortsContext";
-import AllRebuildReportsContext from "../../../../Contexts/Reports/AllRebuildReportsContext";
+import RebuildReportsPageContext from "../../../../Contexts/Rebuild/Reports/RebuildReortsContext";
+import AllRebuildReportsContext from "../../../../Contexts/Rebuild/Reports/AllRebuildReportsContext";
 
 export const AddTakentyreForm = () => {
   // useForm
@@ -22,13 +22,12 @@ export const AddTakentyreForm = () => {
   const { takenTyres, setTakenTyres } = useContext(TakenTyreContext);
   const { allCustomers } = useContext(AllCustomerContext);
   const { vehicles } = useContext(VehicleContext);
-  
-  // For refetch reports
-  const { setReFetchPageReports } = useContext(RebuildReportsPageContext)
-  const { setRefetchRebuildAllReports } = useContext(AllRebuildReportsContext)
-  const date = new Date()
-  const milliseconds = date.getMilliseconds()
 
+  // For refetch reports
+  const { setReFetchPageReports } = useContext(RebuildReportsPageContext);
+  const { setRefetchRebuildAllReports } = useContext(AllRebuildReportsContext);
+  const date = new Date();
+  const milliseconds = date.getMilliseconds();
 
   const onCreate = (data: TyreTaken) => {
     console.log(data, "create");
@@ -42,8 +41,8 @@ export const AddTakentyreForm = () => {
         setTakenTyres([res.data, ...takenTyres]);
 
         //refetch reports
-        setReFetchPageReports(''+ milliseconds)
-        setRefetchRebuildAllReports(''+ milliseconds)
+        setReFetchPageReports("" + milliseconds);
+        setRefetchRebuildAllReports("" + milliseconds);
       })
       .catch((err) => {
         setErrorTakenTyreCreate("Not Succefully created.");

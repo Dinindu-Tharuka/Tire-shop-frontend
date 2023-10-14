@@ -76,6 +76,7 @@ export interface BillPayment{
 export interface Bill{
     invoice_id:string;
     customer:number;
+    vehicle:number;
     date:string;
     discount_amount:number;
     sub_total:number;

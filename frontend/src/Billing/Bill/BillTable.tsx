@@ -13,6 +13,8 @@ import {
   Text,
   Spinner,
   Input,
+  InputGroup,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 
 import { useContext, useState } from "react";
@@ -28,7 +30,7 @@ import {
 } from "react-icons/io";
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
-import { onTypeBillIdFilter } from "./Filtering/BillTableFiltering";
+import { onTypeBillIdFilter, onTypeCustomerFilter, onTypeEndDateFilter, onTypeStartDateFilter, onTypeVehicleFilter } from "./Filtering/BillTableFiltering";
 
 const BillTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -44,6 +46,10 @@ const BillTable = () => {
     billCount,
     setBillFetchError,
     setBillIdFilter,
+    setBillFilterCustomer,
+    setBillVehicleFilter,
+    setBillStartDateFilter,
+    setBillEndDateFilter
   } = useContext(BillContext);
   const { allCustomers } = useContext(AllCustomerContext);
 
@@ -51,7 +57,7 @@ const BillTable = () => {
 
   return (
     <Flex alignItems="center" flexDir="column">
-      <HStack>
+      <HStack marginBottom={5}>
         <Input
           placeholder="Bill No"
           onKeyUp={(e) => {
@@ -63,16 +69,32 @@ const BillTable = () => {
           placeholder="Customer"
           onKeyUp={(e) => {
             setBillFetchError("");
+            onTypeCustomerFilter(e, setBillFilterCustomer)
           }}
-        />
-        <Input
-          placeholder="Vehicle"
-          onKeyUp={(e) => {
-            setBillFetchError("");
-          }}
-        />
+        />        
       </HStack>
-      <HStack></HStack>
+      <HStack>
+          <InputGroup>
+            <InputLeftAddon children="Start" />
+            <Input
+              type="date"
+              onChange={(e) =>{
+                setBillFetchError("");
+                onTypeStartDateFilter(e, setBillStartDateFilter)
+              }}
+            />
+          </InputGroup>
+          <InputGroup>
+            <InputLeftAddon children="End" />
+            <Input
+              type="date"
+              onChange={(e) =>{
+                setBillFetchError("");
+                onTypeEndDateFilter(e, setBillEndDateFilter)
+              }}
+            />
+          </InputGroup>
+        </HStack>
       {billFetchError && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}

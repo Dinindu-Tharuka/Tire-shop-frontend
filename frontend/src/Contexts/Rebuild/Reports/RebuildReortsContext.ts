@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import React from "react";
-import { RebuildReport } from "../../services/Reports/rebuild-report-service";
+import { RebuildReport } from "../../../services/Reports/rebuild-report-service";
 
 interface RebuildReportsPageContextType{
     rebuildPageReports:RebuildReport[];

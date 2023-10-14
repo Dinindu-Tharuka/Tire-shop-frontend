@@ -29,15 +29,20 @@ import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
 } from "../../../services/pagination-cut-link";
 import { makeUpDate } from "../../UI/MakeUpDate";
-import RebuildReportsPageContext from "../../../Contexts/Reports/RebuildReortsContext";
+import RebuildReportsPageContext from "../../../Contexts/Rebuild/Reports/RebuildReortsContext";
 import VehicleFilter from "../../../Customer/Vehicle/VehicleFilter";
 import FilterCustomer from "../../../Customer/Customer/FilterCustomer";
 import useAllCustomers from "../../../hooks/Customer/useAllCustomers";
 import RebuiltCustomerInformation from "./RebuildCustomerInformation/RebuiltCustomerInformation";
 import RebuildDatedFormModel from "./RebuildDatedReport.tsx/RebuildDatedFormModel";
-import { onChangRebuildId, onChangeEndDate, onChangeJobId, onChangeStartDate } from "./FiteringRebuildForms";
+import {
+  onChangRebuildId,
+  onChangeEndDate,
+  onChangeJobId,
+  onChangeStartDate,
+} from "./FiteringRebuildForms";
 import { RebuildReport } from "../../../services/Reports/rebuild-report-service";
-import AllRebuildReportsContext from "../../../Contexts/Reports/AllRebuildReportsContext";
+import AllRebuildReportsContext from "../../../Contexts/Rebuild/Reports/AllRebuildReportsContext";
 
 const RebuiltReports = () => {
   //Sending status
@@ -131,16 +136,31 @@ const RebuiltReports = () => {
         <HStack>
           <InputGroup>
             <InputLeftAddon children="Start" />
-            <Input type="date" onChange={(e)=> {
-              onChangeStartDate(e, setPageReportStartDateFilter, setReportStartDateFilter)
-              setErrorFetchRebuildPageReports('')
-              }}/>
+            <Input
+              type="date"
+              onChange={(e) => {
+                onChangeStartDate(
+                  e,
+                  setPageReportStartDateFilter,
+                  setReportStartDateFilter
+                );
+                setErrorFetchRebuildPageReports("");
+              }}
+            />
           </InputGroup>
           <InputGroup>
             <InputLeftAddon children="End" />
-            <Input type="date" onChange={(e)=> {
-              setErrorFetchRebuildPageReports('')
-              onChangeEndDate(e, setPageReportEndDateFilter, setReportEndDateFilter)}}/>
+            <Input
+              type="date"
+              onChange={(e) => {
+                setErrorFetchRebuildPageReports("");
+                onChangeEndDate(
+                  e,
+                  setPageReportEndDateFilter,
+                  setReportEndDateFilter
+                );
+              }}
+            />
           </InputGroup>
         </HStack>
 
@@ -247,7 +267,13 @@ const RebuiltReports = () => {
                 </Td>
                 <Td>{report.vehicle}</Td>
                 <Td>{report.cost ? report.cost : "No"}</Td>
-                <Td>{report.status === 'received' ? 'Received' : report.status === 'send'? 'Send': "Not Send"}</Td>
+                <Td>
+                  {report.status === "received"
+                    ? "Received"
+                    : report.status === "send"
+                    ? "Send"
+                    : "Not Send"}
+                </Td>
                 <Td>{makeUpDate(report.taken_date)}</Td>
                 <Td>
                   {report.send_date !== null
