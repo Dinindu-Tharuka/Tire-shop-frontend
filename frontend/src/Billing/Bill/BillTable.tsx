@@ -71,6 +71,13 @@ const BillTable = () => {
             setBillFetchError("");
             onTypeCustomerFilter(e, setBillFilterCustomer)
           }}
+        /> 
+        <Input
+          placeholder="Vehicle"
+          onKeyUp={(e) => {
+            setBillFetchError("");
+            onTypeVehicleFilter(e, setBillVehicleFilter)
+          }}
         />        
       </HStack>
       <HStack>
@@ -106,6 +113,7 @@ const BillTable = () => {
               <Th></Th>
               <Th>Bill No</Th>
               <Th>Customer</Th>
+              <Th>Vehicle</Th>
               <Th>Date</Th>
               <Th>Sub Total</Th>
               <Th>Customer Item Value</Th>
@@ -128,6 +136,7 @@ const BillTable = () => {
                     )?.name
                   }
                 </Td>
+                <Td>{bill.vehicle}</Td>
                 <Td>{makeUpDate(bill.date)}</Td>
                 <Td>{bill.sub_total}</Td>
                 <Td>{bill.custome_item_value}</Td>
