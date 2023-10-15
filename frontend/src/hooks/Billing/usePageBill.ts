@@ -27,8 +27,8 @@ const usePageBill = () => {
                 setBills(res.data.results)
                 setnextBillPageUrl(res.data.next)
                 setPreviousBillPageUrl(res.data.previous)
-                setIsLoadingBills(false)
                 setBillCount(res.data.count)
+                setIsLoadingBills(false)
             })
             .catch(error=>{
                 setBillFetchError(error.message === 'canceled'? '': error.message)

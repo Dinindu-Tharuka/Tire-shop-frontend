@@ -46,12 +46,29 @@ import useAllBill from "../hooks/Billing/useBill";
 import AllBillContext from "../Contexts/Bill/AllBillContext";
 import useAllPaymentscheques from "../hooks/Billing/Payments/useAllPaymentsCheques";
 import AllPaymentChequeContext from "../Contexts/Bill/Payments/AllPaymentsChequesContext";
+import usePagePaymentscheques from "../hooks/Billing/Payments/usePagePaymentsCheques";
+import PagePaymentChequeContext from "../Contexts/Bill/Payments/PagePaymentChequesContext";
 
 const GridSection = () => {
   const [userMe, setUserMe] = useState<User>({} as User);
 
   const { vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch } =
     useVehicles();
+
+  const {
+    pagePaymentCheques,
+    setPagePaymentCheques,
+    pagePaymentChequesFetchError,
+    setPagePaymentChequesFetchError,
+    isLoadingPagePaymentCheques,
+    setIsLoadingPagePaymentCheques,
+    setPAgePaymentChequesBillStartDateFilter,
+    setPagePaymentChequesEndDateFilter,
+    nextpagePaymentChequesUrl,
+    previousPagePaymentChequesUrl,
+    pagePaymentChequesCount,
+    setFilterPagePaymentChequesParams,
+  } = usePagePaymentscheques();
 
   const {
     allPaymentCheques,
@@ -274,304 +291,321 @@ const GridSection = () => {
   }, []);
 
   return (
-    <AllPaymentChequeContext.Provider
-      value={
-        {allPaymentCheques,
-        setAllPaymentCheques,
-        allBillFetchError,
-        allPaymentChequesFetchError,
-        setAllPaymentChequesFetchError,
-        isLoadingAllPaymentCheques,
-        setPaymentChequesBillStartDateFilter,
-        setAllPaymentChequesEndDateFilter}
-      }
+    <PagePaymentChequeContext.Provider
+      value={{
+        pagePaymentCheques,
+        setPagePaymentCheques,
+        pagePaymentChequesFetchError,
+        setPagePaymentChequesFetchError,
+        isLoadingPagePaymentCheques,
+        setPAgePaymentChequesBillStartDateFilter,
+        setPagePaymentChequesEndDateFilter,
+        nextpagePaymentChequesUrl,
+        previousPagePaymentChequesUrl,
+        pagePaymentChequesCount,
+        setFilterPagePaymentChequesParams,
+        filterBillPageParams
+      }}
     >
-      <AllBillContext.Provider
+      <AllPaymentChequeContext.Provider
         value={{
-          allBills,
-          setAllBills,
+          allPaymentCheques,
+          setAllPaymentCheques,
           allBillFetchError,
-          isLoadingBills,
-          setAllBillIdFilter,
-          setAllBillFilterCustomer,
-          setAllBillVehicleFilter,
-          setAllBillStartDateFilter,
-          setAllBillEndDateFilter,
+          allPaymentChequesFetchError,
+          setAllPaymentChequesFetchError,
+          isLoadingAllPaymentCheques,
+          setPaymentChequesBillStartDateFilter,
+          setAllPaymentChequesEndDateFilter,
         }}
       >
-        <BillPageContext.Provider
+        <AllBillContext.Provider
           value={{
-            bills,
-            setBills,
-            nextBillPageUrl,
-            previousBillPageUrl,
-            filterBillPageParams,
-            setFilterBillPageParams,
-            billFetchError,
+            allBills,
+            setAllBills,
+            allBillFetchError,
             isLoadingBills,
-            billCount,
-            setBillFetchError,
-            setBillIdFilter,
-            setBillFilterCustomer,
-            setBillVehicleFilter,
-            setBillStartDateFilter,
-            setBillEndDateFilter,
+            setAllBillIdFilter,
+            setAllBillFilterCustomer,
+            setAllBillVehicleFilter,
+            setAllBillStartDateFilter,
+            setAllBillEndDateFilter,
           }}
         >
-          <StockItemsPageContext.Provider
+          <BillPageContext.Provider
             value={{
-              pageStockItems,
-              setPageStockItems,
-              errorFetchPageStockItems,
-              setErrorFetchPageStockItems,
-              nextPageStockItemsTyresUrl,
-              previousPageStockItemsUrl,
-              setFilterPageStockItemsParams,
-              isLoadingPageStockItems,
-              pageStockItemsCount,
-              setPageStockItemsInvoiceNoFilter,
-              setPageStockItemsItemIdFilter,
-              setPageStockItemsBrandFilter,
-              setPageStockItemsSizeFilter,
-              setPageStockItemsStartDateFilter,
-              setPageStockItemsEndDateFilter,
+              bills,
+              setBills,
+              nextBillPageUrl,
+              previousBillPageUrl,
+              filterBillPageParams,
+              setFilterBillPageParams,
+              billFetchError,
+              isLoadingBills,
+              billCount,
+              setBillFetchError,
+              setBillIdFilter,
+              setBillFilterCustomer,
+              setBillVehicleFilter,
+              setBillStartDateFilter,
+              setBillEndDateFilter,
             }}
           >
-            <VehicleContext.Provider
+            <StockItemsPageContext.Provider
               value={{
-                vehicles,
-                setVehicles,
-                setVehicleNoFilter,
-                errorVehicleFetch,
+                pageStockItems,
+                setPageStockItems,
+                errorFetchPageStockItems,
+                setErrorFetchPageStockItems,
+                nextPageStockItemsTyresUrl,
+                previousPageStockItemsUrl,
+                setFilterPageStockItemsParams,
+                isLoadingPageStockItems,
+                pageStockItemsCount,
+                setPageStockItemsInvoiceNoFilter,
+                setPageStockItemsItemIdFilter,
+                setPageStockItemsBrandFilter,
+                setPageStockItemsSizeFilter,
+                setPageStockItemsStartDateFilter,
+                setPageStockItemsEndDateFilter,
               }}
             >
-              <AllRebuildReportsContext.Provider
+              <VehicleContext.Provider
                 value={{
-                  allRebuildReports,
-                  setAllRebuildReports,
-                  errorFetchRebuildAllReports,
-                  setErrorFetchRebuildAllReports,
-                  isLoadingRebuildAllReportsPage,
-                  setRefetchRebuildAllReports,
-                  setReportsRebuildIdFilter,
-                  setReportsJobNoFilter,
-                  setReportsCustomerFilter,
-                  setReportVehicleFilter,
-                  setReportEndDateFilter,
-                  setReportStartDateFilter,
+                  vehicles,
+                  setVehicles,
+                  setVehicleNoFilter,
+                  errorVehicleFetch,
                 }}
               >
-                <RebuildReportsPageContext.Provider
+                <AllRebuildReportsContext.Provider
                   value={{
-                    rebuildPageReports,
-                    setRebuildPageReports,
-                    errorFetchRebuildPageReports,
-                    setErrorFetchRebuildPageReports,
-                    nextRebuildPageReportsUrl,
-                    previousRebuildPageReportsUrl,
-                    setFilterRebuildPageReportsParams,
-                    rebuildPageReportsCount,
-                    isLoadingRebuildPageReportsPage,
-                    setReFetchPageReports,
-                    setPageReportsRebuildIdFilter,
-                    setPageReportsJobNoFilter,
-                    setPageReportsCustomerFilter,
-                    setPageReportVehicleFilter,
-                    setPageReportEndDateFilter,
-                    setPageReportStartDateFilter,
+                    allRebuildReports,
+                    setAllRebuildReports,
+                    errorFetchRebuildAllReports,
+                    setErrorFetchRebuildAllReports,
+                    isLoadingRebuildAllReportsPage,
+                    setRefetchRebuildAllReports,
+                    setReportsRebuildIdFilter,
+                    setReportsJobNoFilter,
+                    setReportsCustomerFilter,
+                    setReportVehicleFilter,
+                    setReportEndDateFilter,
+                    setReportStartDateFilter,
                   }}
                 >
-                  <AllItemContext.Provider
+                  <RebuildReportsPageContext.Provider
                     value={{
-                      allItems,
-                      setAllItems,
-                      setAllItemQuery,
-                      setAllItemSizeQuery,
-                      setAllItemBrandQuery,
+                      rebuildPageReports,
+                      setRebuildPageReports,
+                      errorFetchRebuildPageReports,
+                      setErrorFetchRebuildPageReports,
+                      nextRebuildPageReportsUrl,
+                      previousRebuildPageReportsUrl,
+                      setFilterRebuildPageReportsParams,
+                      rebuildPageReportsCount,
+                      isLoadingRebuildPageReportsPage,
+                      setReFetchPageReports,
+                      setPageReportsRebuildIdFilter,
+                      setPageReportsJobNoFilter,
+                      setPageReportsCustomerFilter,
+                      setPageReportVehicleFilter,
+                      setPageReportEndDateFilter,
+                      setPageReportStartDateFilter,
                     }}
                   >
-                    <AllStockItemsContext.Provider
+                    <AllItemContext.Provider
                       value={{
-                        stockItems,
-                        setStockItems,
-                        errorFetchStockItems,
-                        setErrorFetchStockItems,
-                        setStockItemsInvoiceNoFilter,
-                        setStockItemsItemIdFilter,
-                        setStockItemsBrandFilter,
-                        setStockItemsSizeFilter,
-                        setStockItemsStartDateFilter,
-                        setStockItemsEndDateFilter,
+                        allItems,
+                        setAllItems,
+                        setAllItemQuery,
+                        setAllItemSizeQuery,
+                        setAllItemBrandQuery,
                       }}
                     >
-                      <UserProfileContext.Provider
+                      <AllStockItemsContext.Provider
                         value={{
-                          userProfiles,
-                          setUsersProfiles,
-                          errorFetchUserProfiles,
-                          setErrorFetchUserProfiles,
-                          isLoadingUserProfile,
+                          stockItems,
+                          setStockItems,
+                          errorFetchStockItems,
+                          setErrorFetchStockItems,
+                          setStockItemsInvoiceNoFilter,
+                          setStockItemsItemIdFilter,
+                          setStockItemsBrandFilter,
+                          setStockItemsSizeFilter,
+                          setStockItemsStartDateFilter,
+                          setStockItemsEndDateFilter,
                         }}
                       >
-                        <AllDagPaymentContext.Provider
+                        <UserProfileContext.Provider
                           value={{
-                            allDagPayments,
-                            setAllDagPayments,
-                            allDagPaymentsFetchError,
-                            isLoadingallDagPayments,
+                            userProfiles,
+                            setUsersProfiles,
+                            errorFetchUserProfiles,
+                            setErrorFetchUserProfiles,
+                            isLoadingUserProfile,
                           }}
                         >
-                          <AllReceivedSupplierTyresContext.Provider
+                          <AllDagPaymentContext.Provider
                             value={{
-                              allReceivedSupplierTyres,
-                              setAllReceivedSupplierTyres,
-                              allReceivedSupplierTyresFetchError,
-                              setAllReceivedSupplierTyresFetchError,
+                              allDagPayments,
+                              setAllDagPayments,
+                              allDagPaymentsFetchError,
+                              isLoadingallDagPayments,
                             }}
                           >
-                            <AllReceivedTyresContext.Provider
+                            <AllReceivedSupplierTyresContext.Provider
                               value={{
-                                allReceivedTyres,
-                                setAllReceivedTyres,
-                                allReceivedTyresFetchError,
-                                setAllReceivedTyresFetchError,
+                                allReceivedSupplierTyres,
+                                setAllReceivedSupplierTyres,
+                                allReceivedSupplierTyresFetchError,
+                                setAllReceivedSupplierTyresFetchError,
                               }}
                             >
-                              <ReceivedTyreContext.Provider
+                              <AllReceivedTyresContext.Provider
                                 value={{
-                                  receivedTyres,
-                                  setReceivedTyres,
-                                  errorFetchReceivedTyres,
-                                  setErrorFetchReceivedTyres,
-                                  nextReceivedTyresUrl,
-                                  previousReceivedTyresUrl,
-                                  filterReceivedTyreParams,
-                                  setFilterReceivedTyreParams,
-                                  isLoadingReceivedTyre,
-                                  receivedTyreCount,
-                                  setReceivedTyreNameFilter,
+                                  allReceivedTyres,
+                                  setAllReceivedTyres,
+                                  allReceivedTyresFetchError,
+                                  setAllReceivedTyresFetchError,
                                 }}
                               >
-                                <AllSendSupplierTyresContext.Provider
+                                <ReceivedTyreContext.Provider
                                   value={{
-                                    allSendSupplierTyres,
-                                    setAllSendSupplierTyres,
-                                    allSendTyresSupplierFetchError,
-                                    setAllSendSupplierTyresFetchError,
+                                    receivedTyres,
+                                    setReceivedTyres,
+                                    errorFetchReceivedTyres,
+                                    setErrorFetchReceivedTyres,
+                                    nextReceivedTyresUrl,
+                                    previousReceivedTyresUrl,
+                                    filterReceivedTyreParams,
+                                    setFilterReceivedTyreParams,
+                                    isLoadingReceivedTyre,
+                                    receivedTyreCount,
+                                    setReceivedTyreNameFilter,
                                   }}
                                 >
-                                  <AllSendTyresContext.Provider
+                                  <AllSendSupplierTyresContext.Provider
                                     value={{
-                                      allSendTyres,
-                                      setAllSendTyres,
-                                      allSendTyresFetchError,
-                                      setAllSendTyresFetchError,
+                                      allSendSupplierTyres,
+                                      setAllSendSupplierTyres,
+                                      allSendTyresSupplierFetchError,
+                                      setAllSendSupplierTyresFetchError,
                                     }}
                                   >
-                                    <AllCustomerTakenTyresContext.Provider
+                                    <AllSendTyresContext.Provider
                                       value={{
-                                        customerTyresTaken,
-                                        setCustomerTyresTaken,
-                                        customerTyresTakenFetchError,
-                                        setCustomerTyresTakenFetchError,
+                                        allSendTyres,
+                                        setAllSendTyres,
+                                        allSendTyresFetchError,
+                                        setAllSendTyresFetchError,
                                       }}
                                     >
-                                      <AllSupplierContext.Provider
+                                      <AllCustomerTakenTyresContext.Provider
                                         value={{
-                                          allSuppliers,
-                                          setAllSuppliers,
-                                          errorFetchAllSupplier,
-                                          setErrorFetchAllSupplier,
-                                          isLoadingAllSupplierPage,
+                                          customerTyresTaken,
+                                          setCustomerTyresTaken,
+                                          customerTyresTakenFetchError,
+                                          setCustomerTyresTakenFetchError,
                                         }}
                                       >
-                                        <AllCustomerContext.Provider
+                                        <AllSupplierContext.Provider
                                           value={{
-                                            allCustomers,
-                                            setAllCustomers,
-                                            errorAllCustomerFetch,
-                                            setErrorAllCustomerFetch,
-                                            setAllCustomerNameFilter,
+                                            allSuppliers,
+                                            setAllSuppliers,
+                                            errorFetchAllSupplier,
+                                            setErrorFetchAllSupplier,
+                                            isLoadingAllSupplierPage,
                                           }}
                                         >
-                                          <UserMeContext.Provider
-                                            value={userMe}
+                                          <AllCustomerContext.Provider
+                                            value={{
+                                              allCustomers,
+                                              setAllCustomers,
+                                              errorAllCustomerFetch,
+                                              setErrorAllCustomerFetch,
+                                              setAllCustomerNameFilter,
+                                            }}
                                           >
-                                            <UserContext.Provider
-                                              value={{
-                                                users,
-                                                setUsers,
-                                                errorFetchUsers,
-                                                setErrorFetchUser,
-                                                isLoadingUsers,
-                                              }}
+                                            <UserMeContext.Provider
+                                              value={userMe}
                                             >
-                                              <Grid
-                                                templateAreas={{
-                                                  base: `"nav" "side" "main"`,
-                                                  lg: `"nav nav" "side main"`,
+                                              <UserContext.Provider
+                                                value={{
+                                                  users,
+                                                  setUsers,
+                                                  errorFetchUsers,
+                                                  setErrorFetchUser,
+                                                  isLoadingUsers,
                                                 }}
                                               >
-                                                <GridItem
-                                                  area="nav"
-                                                  height={{
-                                                    base: "10vh",
-                                                    lg: "10vh",
+                                                <Grid
+                                                  templateAreas={{
+                                                    base: `"nav" "side" "main"`,
+                                                    lg: `"nav nav" "side main"`,
                                                   }}
-                                                  marginBottom={5}
                                                 >
-                                                  <Navbar />
-                                                </GridItem>
+                                                  <GridItem
+                                                    area="nav"
+                                                    height={{
+                                                      base: "10vh",
+                                                      lg: "10vh",
+                                                    }}
+                                                    marginBottom={5}
+                                                  >
+                                                    <Navbar />
+                                                  </GridItem>
 
-                                                <GridItem
-                                                  area="side"
-                                                  height={{
-                                                    base: "10vh",
-                                                    lg: "85vh",
-                                                  }}
-                                                  width={{
-                                                    base: "100vw",
-                                                    lg: "20vw",
-                                                  }}
-                                                >
-                                                  <SideBarOptionList />
-                                                </GridItem>
+                                                  <GridItem
+                                                    area="side"
+                                                    height={{
+                                                      base: "10vh",
+                                                      lg: "85vh",
+                                                    }}
+                                                    width={{
+                                                      base: "100vw",
+                                                      lg: "20vw",
+                                                    }}
+                                                  >
+                                                    <SideBarOptionList />
+                                                  </GridItem>
 
-                                                <GridItem
-                                                  area="main"
-                                                  height={{
-                                                    base: "80vh",
-                                                    lg: "85vh",
-                                                  }}
-                                                  width={{
-                                                    base: "100vw",
-                                                    lg: "80vw",
-                                                  }}
-                                                >
-                                                  <Outlet />
-                                                </GridItem>
-                                              </Grid>
-                                            </UserContext.Provider>
-                                          </UserMeContext.Provider>
-                                        </AllCustomerContext.Provider>
-                                      </AllSupplierContext.Provider>
-                                    </AllCustomerTakenTyresContext.Provider>
-                                  </AllSendTyresContext.Provider>
-                                </AllSendSupplierTyresContext.Provider>
-                              </ReceivedTyreContext.Provider>
-                            </AllReceivedTyresContext.Provider>
-                          </AllReceivedSupplierTyresContext.Provider>
-                        </AllDagPaymentContext.Provider>
-                      </UserProfileContext.Provider>
-                    </AllStockItemsContext.Provider>
-                  </AllItemContext.Provider>
-                </RebuildReportsPageContext.Provider>
-              </AllRebuildReportsContext.Provider>
-            </VehicleContext.Provider>
-          </StockItemsPageContext.Provider>
-        </BillPageContext.Provider>
-      </AllBillContext.Provider>
-    </AllPaymentChequeContext.Provider>
+                                                  <GridItem
+                                                    area="main"
+                                                    height={{
+                                                      base: "80vh",
+                                                      lg: "85vh",
+                                                    }}
+                                                    width={{
+                                                      base: "100vw",
+                                                      lg: "80vw",
+                                                    }}
+                                                  >
+                                                    <Outlet />
+                                                  </GridItem>
+                                                </Grid>
+                                              </UserContext.Provider>
+                                            </UserMeContext.Provider>
+                                          </AllCustomerContext.Provider>
+                                        </AllSupplierContext.Provider>
+                                      </AllCustomerTakenTyresContext.Provider>
+                                    </AllSendTyresContext.Provider>
+                                  </AllSendSupplierTyresContext.Provider>
+                                </ReceivedTyreContext.Provider>
+                              </AllReceivedTyresContext.Provider>
+                            </AllReceivedSupplierTyresContext.Provider>
+                          </AllDagPaymentContext.Provider>
+                        </UserProfileContext.Provider>
+                      </AllStockItemsContext.Provider>
+                    </AllItemContext.Provider>
+                  </RebuildReportsPageContext.Provider>
+                </AllRebuildReportsContext.Provider>
+              </VehicleContext.Provider>
+            </StockItemsPageContext.Provider>
+          </BillPageContext.Provider>
+        </AllBillContext.Provider>
+      </AllPaymentChequeContext.Provider>
+    </PagePaymentChequeContext.Provider>
   );
 };
 
