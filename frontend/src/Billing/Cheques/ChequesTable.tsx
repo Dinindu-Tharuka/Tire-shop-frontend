@@ -13,22 +13,19 @@ import { useContext, useEffect, useState } from "react";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
-import { PaymentCheque } from "../../services/Billing/bill-page-service";
+import AllPaymentChequeContext from "../../Contexts/Bill/Payments/AllPaymentsChequesContext";
 
 const ChequesTable = () => {
   const { allBills } = useContext(AllBillContext);
   const { allCustomers } = useContext(AllCustomerContext);
   const { billPayments } = useContext(BillPaymentContext);
-  const [selectedDate, setSelectedDate] = useState('')
-  const [filteredCheques, setFilteredCheques] = useState<PaymentCheque[]>([])
+  const { allPaymentCheques } = useContext(AllPaymentChequeContext);
 
-
-
-  
-
+  console.log('allPaymentCheques', allPaymentCheques)
+  console.log('billPayments', billPayments)
 
   const onChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.currentTarget.value);
+    
   };
 
   return (
@@ -54,27 +51,29 @@ const ChequesTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {billPayments.map((payment) => (
+            {allPaymentCheques.map((cheque) => (
               <>
-                {payment.payment_cheques.map((cheque) => (
-                  <Tr>
-                    <Td>{cheque.cheque_date}</Td>
-                    <Td>{cheque.amount}</Td>
-                    <Td>{cheque.cheque_no}</Td>
-                    <Td>{cheque.bank}</Td>
-                    <Td>{cheque.branch}</Td>
-                    <Td>
-                      {
-                        allCustomers.find(
-                          (customer) =>
-                            allBills.find(
-                              (bill) => bill.invoice_id === payment.bill_id
-                            )?.customer === customer.id
-                        )?.name
-                      }
-                    </Td>
-                  </Tr>
-                ))}
+                <Tr>
+                  <Td>{cheque.cheque_date}</Td>
+                  <Td>{cheque.amount}</Td>
+                  <Td>{cheque.cheque_no}</Td>
+                  <Td>{cheque.bank}</Td>
+                  <Td>{cheque.branch}</Td>
+                  <Td>
+                    {
+                      allCustomers.find(
+                        (customer) =>
+                          allBills.find(
+                            (bill) =>
+                              bill.invoice_id ===
+                              billPayments.find(
+                                (payment) => payment.id === parseInt(cheque.bill_payment_id+'')
+                              )?.bill_id
+                          )?.customer === customer.id
+                      )?.name
+                    }
+                  </Td>
+                </Tr>
               </>
             ))}
           </Tbody>

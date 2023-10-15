@@ -34,7 +34,7 @@ export interface PaymentCash{
 
 export interface PaymentCheque{
     id:number;
-    bill_payment:number;
+    bill_payment_id:number;
     date:string;
     amount:number;
     cheque_no:string;
