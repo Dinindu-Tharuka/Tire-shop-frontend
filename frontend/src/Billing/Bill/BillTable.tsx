@@ -75,11 +75,11 @@ const BillTable = () => {
 
   return (
     <Flex alignItems="center" flexDir="column">
-      <HStack width="58vw" marginBottom={3}>
+      <HStack width="58vw" marginBottom={2}>
         <BillPaidHistoryModel filteredBills={allBills} />
         <DailyItemSaleReportModel filteredBills={allBills} />
       </HStack>
-      <HStack marginBottom={5}>
+      <HStack width="58vw" marginBottom={2}>
         <Input
           placeholder="Bill No"
           onKeyUp={(e) => {
@@ -110,7 +110,7 @@ const BillTable = () => {
           }}
         />
       </HStack>
-      <HStack>
+      <HStack width="58vw" marginBottom={5}>
         <InputGroup>
           <InputLeftAddon children="Start" />
           <Input

@@ -12,6 +12,8 @@ import {
   Tr,
   useColorMode,
   Text,
+  InputGroup,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
@@ -19,39 +21,54 @@ import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
 import AllPaymentChequeContext from "../../Contexts/Bill/Payments/AllPaymentsChequesContext";
 import PagePaymentChequeContext from "../../Contexts/Bill/Payments/PagePaymentChequesContext";
-import getCutUrl, { MAXIMUM_PAGES_PER_PAGE } from "../../services/pagination-cut-link";
-import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import getCutUrl, {
+  MAXIMUM_PAGES_PER_PAGE,
+} from "../../services/pagination-cut-link";
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from "react-icons/io";
 
 const ChequesTable = () => {
   const { allBills } = useContext(AllBillContext);
   const { allCustomers } = useContext(AllCustomerContext);
   const { billPayments } = useContext(BillPaymentContext);
   const { allPaymentCheques } = useContext(AllPaymentChequeContext);
-  
+
   const {
     pagePaymentCheques,
     pagePaymentChequesCount,
     setFilterPagePaymentChequesParams,
     previousPagePaymentChequesUrl,
     nextpagePaymentChequesUrl,
-    setPagePaymentChequesFetchError
+    setPagePaymentChequesFetchError,
+    setPAgePaymentChequesBillStartDateFilter,
+    setPagePaymentChequesEndDateFilter
   } = useContext(PagePaymentChequeContext);
 
   const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
-  const numOfPages = Math.ceil(pagePaymentChequesCount / MAXIMUM_PAGES_PER_PAGE);
+  const numOfPages = Math.ceil(
+    pagePaymentChequesCount / MAXIMUM_PAGES_PER_PAGE
+  );
 
-  const onChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {};
+  const onChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPAgePaymentChequesBillStartDateFilter(event.currentTarget.value);
+    setPagePaymentChequesEndDateFilter(event.currentTarget.value);
+  };
 
   return (
     <Flex alignItems="center" flexDir="column">
       <Flex>
-        <Input
-          type="date"
-          width="20vw"
-          marginRight={10}
-          onChange={onChangeDate}
-        />
+        <InputGroup>
+          <InputLeftAddon children="SELECT" />
+          <Input
+            type="date"
+            width="20vw"
+            marginRight={10}
+            onChange={onChangeDate}
+          />
+        </InputGroup>
       </Flex>
       <TableContainer>
         <Table>
@@ -103,7 +120,8 @@ const ChequesTable = () => {
           isDisabled={currentPageNum === 1 ? true : false}
           onClick={() => {
             setFilterPagePaymentChequesParams(
-              getCutUrl(previousPagePaymentChequesUrl, "payments-page-cheque") + ""
+              getCutUrl(previousPagePaymentChequesUrl, "payments-page-cheque") +
+                ""
             );
             setCurrentPageNum(currentPageNum - 1);
             setPagePaymentChequesFetchError("");
