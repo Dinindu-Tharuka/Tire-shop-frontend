@@ -26,7 +26,7 @@ const GrnReportModel = ({ stockItems }:Props) => {
   return (
     <>
     <Tooltip label="GRN Report">
-      <Button onClick={onOpen} width="200px">
+      <Button onClick={onOpen} width="200px" bg='#e3a99c'>
         <Text marginEnd={5} marginTop={3}>
           GRN
         </Text>{" "}

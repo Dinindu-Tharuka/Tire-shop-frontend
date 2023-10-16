@@ -78,36 +78,49 @@ const StockItemsReport = () => {
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}
       <VStack>
-        <HStack width='58vw'>
-          <GrnReportModel stockItems={stockItems}/>
-        </HStack>
         <HStack>
           <Input
             placeholder="Invoice No"
             onChange={(e) => {
               setErrorFetchPageStockItems("");
-              onChangeInvoiceNo(e, setPageStockItemsInvoiceNoFilter, setStockItemsInvoiceNoFilter);
+              onChangeInvoiceNo(
+                e,
+                setPageStockItemsInvoiceNoFilter,
+                setStockItemsInvoiceNoFilter
+              );
             }}
           />
           <Input
             placeholder="Item Id"
             onChange={(e) => {
               setErrorFetchPageStockItems("");
-              onChangeItemId(e, setPageStockItemsItemIdFilter, setStockItemsItemIdFilter);
+              onChangeItemId(
+                e,
+                setPageStockItemsItemIdFilter,
+                setStockItemsItemIdFilter
+              );
             }}
           />
           <Input
             placeholder="Brand"
             onChange={(e) => {
               setErrorFetchPageStockItems("");
-              onChangeBrand(e, setPageStockItemsBrandFilter, setStockItemsBrandFilter);
+              onChangeBrand(
+                e,
+                setPageStockItemsBrandFilter,
+                setStockItemsBrandFilter
+              );
             }}
           />
           <Input
             placeholder="Size"
             onChange={(e) => {
               setErrorFetchPageStockItems("");
-              onChangeSize(e, setPageStockItemsSizeFilter, setStockItemsSizeFilter);
+              onChangeSize(
+                e,
+                setPageStockItemsSizeFilter,
+                setStockItemsSizeFilter
+              );
             }}
           />
         </HStack>
@@ -116,9 +129,13 @@ const StockItemsReport = () => {
             <InputLeftAddon children="Start" />
             <Input
               type="date"
-              onChange={(e) =>{
+              onChange={(e) => {
                 setErrorFetchPageStockItems("");
-                onChangeStartDate(e, setPageStockItemsStartDateFilter, setStockItemsStartDateFilter)
+                onChangeStartDate(
+                  e,
+                  setPageStockItemsStartDateFilter,
+                  setStockItemsStartDateFilter
+                );
               }}
             />
           </InputGroup>
@@ -127,7 +144,11 @@ const StockItemsReport = () => {
             <Input
               type="date"
               onChange={(e) =>
-                onChangeEndDate(e, setPageStockItemsEndDateFilter, setStockItemsEndDateFilter)
+                onChangeEndDate(
+                  e,
+                  setPageStockItemsEndDateFilter,
+                  setStockItemsEndDateFilter
+                )
               }
             />
           </InputGroup>
@@ -205,6 +226,10 @@ const StockItemsReport = () => {
         >
           <IoIosArrowDroprightCircle />
         </Button>
+      </HStack>
+
+      <HStack width="58vw">
+        <GrnReportModel stockItems={stockItems} />
       </HStack>
     </Flex>
   );

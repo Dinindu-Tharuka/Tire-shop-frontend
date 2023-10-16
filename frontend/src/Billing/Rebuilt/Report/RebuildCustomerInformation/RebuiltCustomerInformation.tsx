@@ -25,7 +25,7 @@ const RebuiltCustomerInformation = ({ reports }: Props) => {
   return (
     <>
       <Tooltip label="Rebuilt Customer Information Report">
-        <Button onClick={onOpen} width="200px">
+        <Button onClick={onOpen} width="200px" bg='#e3a99c'>
           <Text marginEnd={5} marginTop={3}>
             Customer
           </Text>{" "}

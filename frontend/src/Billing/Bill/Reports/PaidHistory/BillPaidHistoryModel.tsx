@@ -26,7 +26,7 @@ const BillPaidHistoryModel = ({ filteredBills }:Props) => {
   return (
     <>
     <Tooltip label="Paid History Report">
-      <Button onClick={onOpen} width="200px">
+      <Button onClick={onOpen} width="200px" bg='#e3a99c'>
         <Text marginEnd={5} marginTop={3}>
           Paid
         </Text>{" "}

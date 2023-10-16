@@ -75,10 +75,7 @@ const BillTable = () => {
 
   return (
     <Flex alignItems="center" flexDir="column">
-      <HStack width="58vw" marginBottom={2}>
-        <BillPaidHistoryModel filteredBills={allBills} />
-        <DailyItemSaleReportModel filteredBills={allBills} />
-      </HStack>
+      
       <HStack width="58vw" marginBottom={2}>
         <Input
           placeholder="Bill No"
@@ -211,6 +208,10 @@ const BillTable = () => {
         >
           <IoIosArrowDroprightCircle />
         </Button>
+      </HStack>
+      <HStack width="58vw" marginTop={2}>
+        <BillPaidHistoryModel filteredBills={allBills} />
+        <DailyItemSaleReportModel filteredBills={allBills} />
       </HStack>
     </Flex>
   );

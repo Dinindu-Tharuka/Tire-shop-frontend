@@ -25,7 +25,7 @@ const RebuildDatedFormModel = ({ reports }:Props) => {
   return (
     <div>
       <Tooltip label="Rebuilt Dated Report">
-        <Button onClick={onOpen} width="200px">
+        <Button onClick={onOpen} width="200px" bg='#e3a99c'>
           <Text marginEnd={5} marginTop={3}>
             Dated
           </Text>{" "}

@@ -126,43 +126,9 @@ const RebuiltReports = () => {
   );
   return (
     <Flex alignItems="center" flexDir="column">
-      <VStack marginBottom={10}>
-        <HStack width="60vw">
-          <RebuiltCustomerInformation reports={reportArrayList} />
-          <RebuildDatedFormModel reports={reportArrayList} />
-        </HStack>
+      <VStack marginBottom={10}>        
 
-        {/* // Date range */}
-        <HStack>
-          <InputGroup>
-            <InputLeftAddon children="Start" />
-            <Input
-              type="date"
-              onChange={(e) => {
-                onChangeStartDate(
-                  e,
-                  setPageReportStartDateFilter,
-                  setReportStartDateFilter
-                );
-                setErrorFetchRebuildPageReports("");
-              }}
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon children="End" />
-            <Input
-              type="date"
-              onChange={(e) => {
-                setErrorFetchRebuildPageReports("");
-                onChangeEndDate(
-                  e,
-                  setPageReportEndDateFilter,
-                  setReportEndDateFilter
-                );
-              }}
-            />
-          </InputGroup>
-        </HStack>
+        
 
         {/* // Others */}
         <HStack>
@@ -196,6 +162,39 @@ const RebuiltReports = () => {
           <FilterCustomer />
           <VehicleFilter />
         </HStack>
+
+        {/* // Date range */}
+        <HStack>
+          <InputGroup>
+            <InputLeftAddon children="Start" />
+            <Input
+              type="date"
+              onChange={(e) => {
+                onChangeStartDate(
+                  e,
+                  setPageReportStartDateFilter,
+                  setReportStartDateFilter
+                );
+                setErrorFetchRebuildPageReports("");
+              }}
+            />
+          </InputGroup>
+          <InputGroup>
+            <InputLeftAddon children="End" />
+            <Input
+              type="date"
+              onChange={(e) => {
+                setErrorFetchRebuildPageReports("");
+                onChangeEndDate(
+                  e,
+                  setPageReportEndDateFilter,
+                  setReportEndDateFilter
+                );
+              }}
+            />
+          </InputGroup>
+        </HStack>
+        
         <HStack>
           <Stack spacing={[1, 5]} direction={["column", "row"]}>
             <Checkbox
@@ -322,6 +321,11 @@ const RebuiltReports = () => {
           <IoIosArrowDroprightCircle />
         </Button>
       </HStack>
+
+      <HStack width="58vw" marginTop={5}>
+          <RebuiltCustomerInformation reports={reportArrayList} />
+          <RebuildDatedFormModel reports={reportArrayList} />
+        </HStack>
     </Flex>
   );
 };
