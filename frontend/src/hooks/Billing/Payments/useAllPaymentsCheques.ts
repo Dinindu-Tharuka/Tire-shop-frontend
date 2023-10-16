@@ -7,8 +7,6 @@ const useAllPaymentscheques = () => {
     const [allPaymentChequesFetchError, setAllPaymentChequesFetchError] = useState('')
     const [isLoadingAllPaymentCheques, setIsLoadingAllPaymentCheques] = useState(false)
 
-    console.log('allPaymentCheques', allPaymentCheques)
-
     // Filtering 
     const [allPaymentChequesStartDateFilter, setPaymentChequesBillStartDateFilter] = useState('')
     const [allPaymentChequesEndDateFilter, setAllPaymentChequesEndDateFilter] = useState('')

@@ -28,12 +28,13 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
+import CheckBankDateReportModel from "./Reports/CheckBankDateReportModel";
 
 const ChequesTable = () => {
   const { allBills } = useContext(AllBillContext);
   const { allCustomers } = useContext(AllCustomerContext);
   const { billPayments } = useContext(BillPaymentContext);
-  const { allPaymentCheques } = useContext(AllPaymentChequeContext);
+  const { allPaymentCheques, setPaymentChequesBillStartDateFilter } = useContext(AllPaymentChequeContext);
 
   const {
     pagePaymentCheques,
@@ -43,7 +44,7 @@ const ChequesTable = () => {
     nextpagePaymentChequesUrl,
     setPagePaymentChequesFetchError,
     setPAgePaymentChequesBillStartDateFilter,
-    setPagePaymentChequesEndDateFilter
+    setPagePaymentChequesEndDateFilter,
   } = useContext(PagePaymentChequeContext);
 
   const { colorMode } = useColorMode();
@@ -54,22 +55,24 @@ const ChequesTable = () => {
 
   const onChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPAgePaymentChequesBillStartDateFilter(event.currentTarget.value);
-    setPagePaymentChequesEndDateFilter(event.currentTarget.value);
+    setPaymentChequesBillStartDateFilter(event.currentTarget.value);
   };
 
   return (
     <Flex alignItems="center" flexDir="column">
-      <Flex>
+      <HStack marginBottom={5}>
         <InputGroup>
           <InputLeftAddon children="SELECT" />
           <Input
             type="date"
             width="20vw"
-            marginRight={10}
             onChange={onChangeDate}
           />
         </InputGroup>
-      </Flex>
+
+        <CheckBankDateReportModel filteredCheques={allPaymentCheques} />
+      </HStack>
+
       <TableContainer>
         <Table>
           <Thead>
