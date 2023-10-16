@@ -15,6 +15,8 @@ import PaymentChequeInput from "./Payments/PaymentChequeInput";
 import PaymentCreditCardInput from "./Payments/PaymentCreditCardInput";
 import billPaymentService from "../../services/Billing/bill-payment-service";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
+import AllPaymentChequeContext from "../../Contexts/Bill/Payments/AllPaymentsChequesContext";
+import PagePaymentChequeContext from "../../Contexts/Bill/Payments/PagePaymentChequesContext";
 
 interface Props {
   createdBill: Bill;
@@ -25,6 +27,8 @@ const BillAddPayment = ({ createdBill }: Props) => {
   const { colorMode } = useColorMode();
   const { billPayments, setBillPayments } = useContext(BillPaymentContext);
   const [success, setSuccess] = useState('')
+  const { setAllPaymentCheques, allPaymentCheques } = useContext(AllPaymentChequeContext)
+  const { setPagePaymentCheques, pagePaymentCheques } = useContext(PagePaymentChequeContext)
 
   const {
     register,
@@ -49,6 +53,8 @@ const BillAddPayment = ({ createdBill }: Props) => {
       .then((res) => {
         setSuccess('Successfully do paments.')
         setBillPayments([...billPayments, res.data])
+        setPagePaymentCheques([...pagePaymentCheques, ...res.data.payment_cheques])
+        setAllPaymentCheques([...allPaymentCheques, ...res.data.payment_cheques])
         
       })
       .catch((err) => setError(err.message));

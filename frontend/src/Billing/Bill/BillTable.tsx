@@ -42,7 +42,7 @@ import AllBillContext from "../../Contexts/Bill/AllBillContext";
 import DailyItemSaleReportModel from "./Reports/DailyItemSale/DailyItemSaleReportModel";
 
 const BillTable = () => {
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
 
   const {

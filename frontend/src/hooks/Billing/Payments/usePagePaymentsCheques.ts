@@ -31,7 +31,7 @@ const usePagePaymentscheques = () => {
             });
   
           return ()=>cancel();
-      }, [pagePaymentChequesStartDateFilter, pagePaymentChequesEndDateFilter])
+      }, [pagePaymentChequesStartDateFilter, pagePaymentChequesEndDateFilter, filterPagePaymentChequesParams])
       
   return {pagePaymentCheques, setPagePaymentCheques, pagePaymentChequesFetchError, setPagePaymentChequesFetchError, isLoadingPagePaymentCheques, setIsLoadingPagePaymentCheques, setPAgePaymentChequesBillStartDateFilter, setPagePaymentChequesEndDateFilter, nextpagePaymentChequesUrl, previousPagePaymentChequesUrl, pagePaymentChequesCount, setFilterPagePaymentChequesParams}
 }
