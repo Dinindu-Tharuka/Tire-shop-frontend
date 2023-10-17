@@ -64,8 +64,8 @@ const CashReport = ({ startDate, endDate }: Props) => {
 
   return (
     <>
-      <Tag padding={3} width="58vw" fontWeight="bold">
-        Cash
+      <Tag padding={5} width="58vw" fontWeight="bold">
+        Cash Report
       </Tag>
 
       <TableContainer width="58vw">
@@ -101,7 +101,7 @@ const CashReport = ({ startDate, endDate }: Props) => {
                         }
                       </Td>
                       <Td>{cash.payeename}</Td>
-                      <Td>{cash.amount}</Td>
+                      <Td textAlign='right'>{cash.amount}</Td>
                     </Tr>
                   ))}
               </>
@@ -111,7 +111,7 @@ const CashReport = ({ startDate, endDate }: Props) => {
               <Td></Td>
               <Td></Td>
               <Td></Td>
-              <Td>{totalAmount}</Td>
+              <Td textAlign='right'>{totalAmount}</Td>
             </Tr>
           </Tbody>
         </Table>

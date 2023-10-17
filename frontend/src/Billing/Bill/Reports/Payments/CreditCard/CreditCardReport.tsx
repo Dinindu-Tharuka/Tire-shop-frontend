@@ -63,8 +63,8 @@ const CreditCardReport = ({ startDate, endDate}:Props) => {
   }, [startDate, endDate]);
   return (
     <>
-      <Tag padding={3} width="58vw" fontWeight="bold">
-        Credit Card
+      <Tag padding={5}  width="58vw" fontWeight="bold" >
+        Credit Card Report
       </Tag>
 
       <TableContainer width="58vw">
@@ -75,7 +75,7 @@ const CreditCardReport = ({ startDate, endDate}:Props) => {
               <Th>Date</Th>
               <Th>Customer</Th>
               <Th>Payee Name</Th>
-              <Th>Amount</Th>
+              <Th textAlign='right'>Amount</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -110,7 +110,7 @@ const CreditCardReport = ({ startDate, endDate}:Props) => {
               <Td></Td>
               <Td></Td>
               <Td></Td>
-              <Td>{totalAmount}</Td>
+              <Td textAlign='right'>{totalAmount}</Td>
             </Tr>
           </Tbody>
         </Table>

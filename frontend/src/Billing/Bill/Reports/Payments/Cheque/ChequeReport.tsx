@@ -63,8 +63,8 @@ const ChequeReport = ({ startDate, endDate }: Props) => {
     }, [startDate, endDate]);
   return (
     <>
-    <Tag padding={3} width="58vw" fontWeight="bold">
-      Cheque
+    <Tag padding={5} width="58vw" fontWeight="bold">
+      Cheque Report
     </Tag>
 
     <TableContainer width="58vw">
