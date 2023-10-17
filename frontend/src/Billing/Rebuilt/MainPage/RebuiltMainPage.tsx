@@ -10,15 +10,18 @@ import TyreTakenTable from "../TyreTaken/TyreTakenTable";
 import SendTyreTable from "../SendTyre/SendTyreTable";
 import ReceivedTyreTable from "../ReceivedTyre/ReceivedTyreTable";
 import RebuiltReports from "../Report/RebuiltReports";
+import { useContext } from "react";
+import UserMeContext from "../../../Contexts/User/UserMe";
 
 const RebuiltMainPage = () => {
+  const userMe = useContext(UserMeContext)
   return (
     <Tabs>
       <TabList>
         <Tab>Accepting Tyres</Tab>
         <Tab>Send Tyre</Tab>
         <Tab>Received Tyre</Tab>
-        <Tab>Reports</Tab>
+        {(userMe.is_superuser || userMe.is_manager) && <Tab>Reports</Tab>}
       </TabList>
 
       <TabPanels>
@@ -37,9 +40,9 @@ const RebuiltMainPage = () => {
           <ReceivedTyreTable/>
         </Flex>
         </TabPanel>
-        <TabPanel>
+        {(userMe.is_superuser || userMe.is_manager) && <TabPanel>
           <RebuiltReports/>
-        </TabPanel>
+        </TabPanel>}
       </TabPanels>
     </Tabs>
   );

@@ -58,7 +58,7 @@ const SignOut = () => {
         </VStack>
         <VStack>
           <Text textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}>
-            {userMe.id === 1
+            {userMe.is_superuser
               ? "Superuser"
               : userMe.is_manager
               ? "Manager"

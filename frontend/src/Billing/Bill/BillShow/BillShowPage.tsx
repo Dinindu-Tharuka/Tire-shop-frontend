@@ -19,12 +19,16 @@ import BillShowItems from "./BillShowItems";
 import BillShowServices from "./BillShowServices";
 import BillShowDagPayments from "./BillShowDagPayments";
 import DownloadPdf from "../../../PDF/DownloadPdf";
+import UserMeContext from "../../../Contexts/User/UserMe";
 
 interface Props {
   seletedBill: Bill;
 }
 
 const BillShowPage = ({ seletedBill }: Props) => {
+  // Administration
+  const userMe = useContext(UserMeContext)
+  
   // For downloading pdf
   const [loader, setLoader] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
@@ -123,7 +127,8 @@ const BillShowPage = ({ seletedBill }: Props) => {
           payments={billPayments}
           seletedBill={seletedBill}
         />
-        <BillAddPayment createdBill={seletedBill} />
+
+        {userMe.is_superuser && <BillAddPayment createdBill={seletedBill} />}
       </Flex>
     </Flex>
   );

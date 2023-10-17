@@ -23,12 +23,16 @@ import stockPaymentService, {
   StockPayment,
 } from "../../services/Stock/stock-payment-service";
 import StockPaymentContext from "../../Contexts/Stock/StockPaymentContext";
+import UserMeContext from "../../Contexts/User/UserMe";
 
 interface Props {
   seletedStockInvoice: StockInvoice;
 }
 
 const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
+  // administration
+  const userMe = useContext(UserMeContext);
+
   const [paymentSuccess, setPaymentSuccess] = useState("");
   const [paymentError, setPaymentError] = useState("");
   const { suppliers } = useContext(SupplierContext);
@@ -159,31 +163,36 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
           </Table>
         </Flex>
       </Flex>
-      <Flex fontWeight="bold" flexDir="column">
-        {paymentSuccess && <Text textColor="green.800">{paymentSuccess}</Text>}
-        {paymentError && <Text textColor="red.700">{paymentError}</Text>}
-        <Text>PAYMENTS</Text>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Select
-            marginBottom={5}
-            fontWeight="medium"
-            {...register("payment_method")}
-          >
-            <option value="select">PAYMENT METHOD</option>
-            <option value="cash">CASH</option>
-            <option value="credit_card">CREDIT CARD</option>
-          </Select>
-          <Input
-            placeholder="Amount"
-            marginBottom={5}
-            {...register("amount")}
-          ></Input>
 
-          <Button type="submit" bg="#f87454">
-            Pay
-          </Button>
-        </form>
-      </Flex>
+      {userMe.is_superuser && (
+        <Flex fontWeight="bold" flexDir="column">
+          {paymentSuccess && (
+            <Text textColor="green.800">{paymentSuccess}</Text>
+          )}
+          {paymentError && <Text textColor="red.700">{paymentError}</Text>}
+          <Text>PAYMENTS</Text>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Select
+              marginBottom={5}
+              fontWeight="medium"
+              {...register("payment_method")}
+            >
+              <option value="select">PAYMENT METHOD</option>
+              <option value="cash">CASH</option>
+              <option value="credit_card">CREDIT CARD</option>
+            </Select>
+            <Input
+              placeholder="Amount"
+              marginBottom={5}
+              {...register("amount")}
+            ></Input>
+
+            <Button type="submit" bg="#f87454">
+              Pay
+            </Button>
+          </form>
+        </Flex>
+      )}
     </Flex>
   );
 };

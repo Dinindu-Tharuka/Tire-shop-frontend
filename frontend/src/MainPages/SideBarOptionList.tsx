@@ -20,43 +20,79 @@ import { RxAvatar } from "react-icons/rx";
 import { RiShutDownLine } from "react-icons/ri";
 import SignOut from "../Authentication/SignOut";
 import { Link } from "react-router-dom";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useContext } from "react";
+import UserMeContext from "../Contexts/User/UserMe";
 
 const SideBarOptionList = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
-  const options_lg = [
+  const userMe = useContext(UserMeContext)
+
+  let options_lg = [
     "Main Dashbord",
     "Customer",
     "Billing",
     "Inventory",
-    "Registration",
     
   ];
-  const links_lg = [
+  let links_lg = [
     "/",
     "/customer",
     "/billing",
     "/inventory",
-    "/registration",
   ];
-  const options_base = [
+  let options_base = [
     "Main Dashbord",
     "Customer",
     "Billing",
     "Inventory",
-    "Registration",
     "Sign out",
     
   ];
-  const links_base = [
+  let links_base = [
     "/",
     "/customer",
     "/billing",
     "/inventory",
-    "/registration",
     "/login",
   ];
+
+  if (userMe.is_superuser || userMe.is_manager){
+
+    options_lg = [
+      "Main Dashbord",
+      "Customer",
+      "Billing",
+      "Inventory",
+      "Registration",
+      
+    ];
+    links_lg = [
+      "/",
+      "/customer",
+      "/billing",
+      "/inventory",
+      "/registration",
+    ];
+    options_base = [
+      "Main Dashbord",
+      "Customer",
+      "Billing",
+      "Inventory",
+      "Registration",
+      "Sign out",
+      
+    ];
+    links_base = [
+      "/",
+      "/customer",
+      "/billing",
+      "/inventory",
+      "/registration",
+      "/login",
+    ];
+
+  }
 
   const icons_lg = [
     AiOutlineHome,

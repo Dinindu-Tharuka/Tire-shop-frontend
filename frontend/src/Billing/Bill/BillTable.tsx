@@ -40,8 +40,12 @@ import {
 import BillPaidHistoryModel from "./Reports/PaidHistory/BillPaidHistoryModel";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
 import DailyItemSaleReportModel from "./Reports/DailyItemSale/DailyItemSaleReportModel";
+import UserMeContext from "../../Contexts/User/UserMe";
 
 const BillTable = () => {
+  // Administration
+  const userMe = useContext(UserMeContext);
+
   const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
 
@@ -75,7 +79,6 @@ const BillTable = () => {
 
   return (
     <Flex alignItems="center" flexDir="column">
-      
       <HStack width="58vw" marginBottom={2}>
         <Input
           placeholder="Bill No"
@@ -209,10 +212,12 @@ const BillTable = () => {
           <IoIosArrowDroprightCircle />
         </Button>
       </HStack>
-      <HStack width="58vw" marginTop={2}>
-        <BillPaidHistoryModel filteredBills={allBills} />
-        <DailyItemSaleReportModel filteredBills={allBills} />
-      </HStack>
+      {(userMe.is_superuser || userMe.is_manager) && (
+        <HStack width="58vw" marginTop={2}>
+          <BillPaidHistoryModel filteredBills={allBills} />
+          <DailyItemSaleReportModel filteredBills={allBills} />
+        </HStack>
+      )}
     </Flex>
   );
 };

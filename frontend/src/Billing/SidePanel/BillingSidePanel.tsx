@@ -1,27 +1,51 @@
 import {
-    Accordion,
-    AccordionButton,
-    AccordionIcon,
-    AccordionItem,
-    AccordionPanel,
-    Box,
-    Flex,
-    HStack,
-    Show,
-    Text,
-    VStack,
-    useColorMode,
-  } from "@chakra-ui/react";
-  import { Link } from "react-router-dom";
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Flex,
+  HStack,
+  Show,
+  Text,
+  VStack,
+  useColorMode,
+} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import StockAddDrawer from "../StockInvoice/StockAddDrawer";
 import BillAddDrawer from "../Bill/BillAddDrawer";
 import RebuildSideBarOptions from "../Rebuilt/SideBarOptions/RebuildSideBarOptions";
-  
- 
+import { useContext } from "react";
+import UserMeContext from "../../Contexts/User/UserMe";
 
 const BillingSidePanel = () => {
-    const billingList = ["Invoice", "Rebuilt", "GRN", "Debtors", "Banking Cheques"];
-  const billing_links = ["", "rebuilt", "stock-invoice", "debtors", "cheques"];
+  // Administration
+  const userMe = useContext(UserMeContext);
+  let billingList = [
+    "Invoice",
+    "Rebuilt",
+    "GRN",
+  ];
+  let billing_links = ["", "rebuilt", "stock-invoice"];
+  
+  if (userMe.is_superuser || userMe.is_manager) {
+    billingList = [
+      "Invoice",
+      "Rebuilt",
+      "GRN",
+      "Debtors",
+      "Banking Cheques",
+    ];
+    billing_links = [
+      "",
+      "rebuilt",
+      "stock-invoice",
+      "debtors",
+      "cheques",
+    ];
+  }
+
   const { colorMode } = useColorMode();
 
   const options = ["ADD"];
@@ -69,7 +93,7 @@ const BillingSidePanel = () => {
         <HStack>{inventoryMenuList}</HStack>
       </Show>
     </Box>
-  )
-}
+  );
+};
 
-export default BillingSidePanel
+export default BillingSidePanel;
