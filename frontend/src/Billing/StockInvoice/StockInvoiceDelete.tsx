@@ -15,7 +15,7 @@ import StockInvoiceService, {
   StockInvoice,
 } from "../../services/Stock/stock-invoice-page-service";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
-import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
+import AllStockInvoiceContext from "../../Contexts/Stock/AllStockInvoiceContext";
 
 interface Props {
   selectedStockInvoice: StockInvoice;
@@ -28,7 +28,6 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
   const { stockInvoices, setStockInvoices } = useContext(
     StockInvoicePageContext
   );
-  
 
   const name = "Stock Invoice";
 
@@ -41,18 +40,15 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
       )
     );
 
-    
-
     StockInvoiceService.delete(`${seletedStockInvoice.invoice_no}`)
       .then((res) => {
-          deleteToast({
-            title: `${name}`,
-            description: `${name} successfully deleted.`,
-            status: "success",
-            duration: 2000,
-            isClosable: true,
-          });
-        
+        deleteToast({
+          title: `${name}`,
+          description: `${name} successfully deleted.`,
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       })
       .catch((err) => {
         setStockInvoices(originalBills);
@@ -95,8 +91,8 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
                 colorScheme="red"
                 onClick={() => {
                   onClose();
-                  console.log('Ok');
-                  
+                  console.log("Ok");
+
                   onDeleteBill(selectedStockInvoice);
                 }}
                 ml={3}

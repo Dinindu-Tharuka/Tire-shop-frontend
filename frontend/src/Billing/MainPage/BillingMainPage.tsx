@@ -7,7 +7,7 @@ import StockItemContext from "../../Contexts/Stock/StockItemContext";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 import useBillPayment from "../../hooks/Billing/useBillPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
-import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
+import AllStockInvoiceContext from "../../Contexts/Stock/AllStockInvoiceContext";
 import useAllStockInvoice from "../../hooks/Stock/useAllStockInvoice";
 import usePageBill from "../../hooks/Billing/usePageBill";
 import BillPageContext from "../../Contexts/Bill/BillContext";
@@ -95,11 +95,13 @@ const BillingMainPage = () => {
     setSupplierNameFilter,
   } = useSupplier();
   const {
-    stockInvoices: stockAllInvoices,
+    stockInvoices:stockAllInvoices,
     setStockInvoices: setStockAllInvoices,
     isLoadingInvoices: isLoadingAllInvoices,
     errorFetchStockInvoice: errorFetchStockAllInvoice,
     setErrorFetchStockInvoice: setErrorFetchAllStockInvoice,
+    setFilterGrnNo,
+    setFilterInvoiceNo,
   } = useAllStockInvoice();
 
   const {
@@ -203,13 +205,15 @@ const BillingMainPage = () => {
                 <StockItemUniqueContext.Provider
                   value={{ stockItemsUnique, setStockItemsUnique }}
                 >
-                  <StockInvoiceContext.Provider
+                  <AllStockInvoiceContext.Provider
                     value={{
                       stockAllInvoices,
                       setStockAllInvoices,
                       isLoadingAllInvoices,
                       errorFetchStockAllInvoice,
                       setErrorFetchAllStockInvoice,
+                      setFilterGrnNo,
+                      setFilterInvoiceNo,
                     }}
                   >
                     <StockInvoicePageContext.Provider
@@ -268,7 +272,7 @@ const BillingMainPage = () => {
                         </StockItemContext.Provider>
                       </BillPaymentContext.Provider>
                     </StockInvoicePageContext.Provider>
-                  </StockInvoiceContext.Provider>
+                  </AllStockInvoiceContext.Provider>
                 </StockItemUniqueContext.Provider>
               </SupplierContext.Provider>
             </CustomerContext.Provider>
