@@ -25,6 +25,7 @@ import stockPaymentService, {
 import StockPaymentContext from "../../Contexts/Stock/StockPaymentContext";
 import UserMeContext from "../../Contexts/User/UserMe";
 import DownloadPdf from "../../PDF/DownloadPdf";
+import StockInvoicePayments from "./Payments/StockInvoicePayments";
 
 interface Props {
   seletedStockInvoice: StockInvoice;
@@ -43,25 +44,12 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
     setCapture(pdfRef.current);
   }, []);
 
-  const [paymentSuccess, setPaymentSuccess] = useState("");
-  const [paymentError, setPaymentError] = useState("");
+  
   const { suppliers } = useContext(SupplierContext);
   const { colorMode } = useColorMode();
-  const { handleSubmit, register } = useForm<StockPayment>();
   const { stockPayments, setStockPayments } = useContext(StockPaymentContext);
 
-  const onSubmit = (data: StockPayment) => {
-    const newly = { ...data, stock_invoice: seletedStockInvoice.invoice_no };
-    console.log("payments", newly);
-
-    stockPaymentService
-      .create(newly)
-      .then((res) => {
-        setStockPayments([...stockPayments, res.data]);
-        setPaymentSuccess("Payment Succesfull.");
-      })
-      .catch((err) => setPaymentError(err.message));
-  };
+  
 
   return (
     <Flex>
@@ -184,36 +172,7 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
         </Button>
       </Flex>
 
-      {userMe.is_superuser && (
-        <Flex fontWeight="bold" flexDir="column">
-          {paymentSuccess && (
-            <Text textColor="green.800">{paymentSuccess}</Text>
-          )}
-          {paymentError && <Text textColor="red.700">{paymentError}</Text>}
-          <Text>PAYMENTS</Text>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Select
-              marginBottom={5}
-              fontWeight="medium"
-              {...register("payment_method")}
-            >
-              <option value="select">PAYMENT METHOD</option>
-              <option value="cash">CASH</option>
-              <option value="cheque">CHEQUE</option>
-              <option value="credit_card">CREDIT CARD</option>
-            </Select>
-            <Input
-              placeholder="Amount"
-              marginBottom={5}
-              {...register("amount")}
-            ></Input>
-
-            <Button type="submit" bg="#f87454">
-              Pay
-            </Button>
-          </form>
-        </Flex>
-      )}
+      {userMe.is_superuser && <StockInvoicePayments seletedStockInvoice={seletedStockInvoice}/>}
     </Flex>
   );
 };

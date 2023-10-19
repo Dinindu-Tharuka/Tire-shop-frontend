@@ -46,18 +46,26 @@ const StockInvoiceTable = () => {
     invoicesCount,
     setErrorFetchStockInvoice,
     setInvoiceIdFilter,
+    setInvoiceBillIdFilter
   } = useContext(StockInvoicePageContext);
 
   const numOfPages = Math.ceil(invoicesCount / MAXIMUM_PAGES_PER_PAGE);
 
-  const { allSuppliers } = useContext(AllSupplierContext)
-  const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const { allSuppliers } = useContext(AllSupplierContext);
+  const onTypeGRnNoFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setInvoiceIdFilter(event.currentTarget.value);
+  };
+
+  const onTypeInvoiceNoFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    setInvoiceBillIdFilter(event.currentTarget.value);
   };
 
   return (
     <Flex alignItems="center" flexDir="column">
-      <Input placeholder="Search Bill No" onKeyUp={onTypeFilter} />
+      <HStack>
+        <Input placeholder="GRN No" onKeyUp={onTypeGRnNoFilter} />
+        <Input placeholder="Invoice No" onKeyUp={onTypeInvoiceNoFilter} />
+      </HStack>
       {errorFetchStockInvoice && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>
       )}
@@ -67,7 +75,8 @@ const StockInvoiceTable = () => {
             <Tr>
               <Th></Th>
               <Th></Th>
-              <Th>Bill No</Th>
+              <Th>GRN No</Th>
+              <Th>Invoice No</Th>
               <Th>Date</Th>
               <Th>Total Amount</Th>
               <Th>supplier</Th>
@@ -83,10 +92,14 @@ const StockInvoiceTable = () => {
                   <StockInvoiceDelete selectedStockInvoice={invoice} />
                 </Th>
                 <Td>{invoice.invoice_no}</Td>
+                <Td>{invoice.bill_invoice_no}</Td>
                 <Td>{makeUpDate(invoice.date)}</Td>
                 <Td>{invoice.total_amount}</Td>
                 <Td>
-                  {allSuppliers.find((sup) => sup.id === invoice.supplier)?.name}
+                  {
+                    allSuppliers.find((sup) => sup.id === invoice.supplier)
+                      ?.name
+                  }
                 </Td>
               </Tr>
             ))}

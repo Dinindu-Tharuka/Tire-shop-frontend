@@ -114,6 +114,7 @@ const BillingMainPage = () => {
     invoicesCount,
     setErrorFetchStockInvoice,
     setInvoiceIdFilter,
+    setInvoiceBillIdFilter,
   } = useStockInvoicePage();
 
   const {
@@ -224,6 +225,7 @@ const BillingMainPage = () => {
                         invoicesCount,
                         setErrorFetchStockInvoice,
                         setInvoiceIdFilter,
+                        setInvoiceBillIdFilter,
                       }}
                     >
                       <BillPaymentContext.Provider
