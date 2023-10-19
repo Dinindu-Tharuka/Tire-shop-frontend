@@ -3,14 +3,18 @@ import { StockInvoice } from "../../services/Stock/stock-invoice-page-service";
 import stockInvoiceService from "../../services/Stock/stock-invoice-service";
 
 
-const useStockInvoice = () => {
+const useAllStockInvoice = () => {
     const [stockInvoices, setStockInvoices] = useState<StockInvoice[]>([])
     const [errorFetchStockInvoice, setErrorFetchStockInvoice] = useState('');
     const [isLoadingInvoices, setIsLoadingInvoices] = useState(false) 
 
+    // Fltering
+    const [filterGrnNo, setFilterGrnNo] = useState('')
+    const [filterInvoiceNo, setFilterInvoiceNo] = useState('')
+
     useEffect(()=>{
       setIsLoadingInvoices(true)
-        const {request, cancel} = stockInvoiceService.getAll<StockInvoice>()
+        const {request, cancel} = stockInvoiceService.getAll<StockInvoice>({params:{ filterGrnNo, filterInvoiceNo }})
         request
           .then(res=>{
             
@@ -23,8 +27,8 @@ const useStockInvoice = () => {
           })
 
         return ()=> cancel();
-    }, [])
-  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, isLoadingInvoices, setErrorFetchStockInvoice}
+    }, [filterGrnNo, filterInvoiceNo])
+  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, isLoadingInvoices, setErrorFetchStockInvoice, setFilterGrnNo, setFilterInvoiceNo}
 }
 
-export default useStockInvoice
+export default useAllStockInvoice

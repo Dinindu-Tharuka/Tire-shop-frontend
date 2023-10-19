@@ -8,7 +8,7 @@ import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContex
 import useBillPayment from "../../hooks/Billing/useBillPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import StockInvoiceContext from "../../Contexts/Stock/StockInvoiceContext";
-import useStockInvoice from "../../hooks/Stock/useStockInvoice";
+import useAllStockInvoice from "../../hooks/Stock/useAllStockInvoice";
 import usePageBill from "../../hooks/Billing/usePageBill";
 import BillPageContext from "../../Contexts/Bill/BillContext";
 import useStockItemUnique from "../../hooks/Stock/useStockItemUnique";
@@ -100,7 +100,7 @@ const BillingMainPage = () => {
     isLoadingInvoices: isLoadingAllInvoices,
     errorFetchStockInvoice: errorFetchStockAllInvoice,
     setErrorFetchStockInvoice: setErrorFetchAllStockInvoice,
-  } = useStockInvoice();
+  } = useAllStockInvoice();
 
   const {
     stockInvoices,
