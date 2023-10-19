@@ -10,6 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
+import PayMultipleStockInvoicesPage from "./PayMultipleStockInvoicesPage";
 
 const PayMultipleStockInvoices = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,7 +25,9 @@ const PayMultipleStockInvoices = () => {
         <ModalContent>
           <ModalHeader>GRN Payments</ModalHeader>
           <ModalCloseButton />
-          <ModalBody></ModalBody>
+          <ModalBody>
+            <PayMultipleStockInvoicesPage/>
+          </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="orange" mr={3} onClick={onClose}>

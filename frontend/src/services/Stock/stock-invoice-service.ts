@@ -1,4 +1,4 @@
 import create from "../http-service";
 
 
-export default create('/stock-items-invoices/')
+export default create('/all-stock-items-invoices/')

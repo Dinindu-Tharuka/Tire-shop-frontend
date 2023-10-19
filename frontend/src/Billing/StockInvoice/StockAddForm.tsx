@@ -364,7 +364,7 @@ const StockAddForm = () => {
           </div>
         </div>
         <HStack justifyContent="space-between" width="30vw">
-          <StockInvoiceSaveConfirmation onSubmit={submitForm} />
+          <StockInvoiceSaveConfirmation onSubmit={submitForm} isDiabled={isCreatedBill}/>
           <Flex>
             <Button
               type="button"

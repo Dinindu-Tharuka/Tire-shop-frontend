@@ -13,10 +13,11 @@ import {
   import React from "react";
 
 interface Props{
-    onSubmit:()=>void
+    onSubmit:()=>void;
+    isDiabled:boolean
 }
 
-const StockInvoiceSaveConfirmation = ({onSubmit}:Props) => {
+const StockInvoiceSaveConfirmation = ({onSubmit, isDiabled}:Props) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef(null);
@@ -26,6 +27,7 @@ const StockInvoiceSaveConfirmation = ({onSubmit}:Props) => {
         width="10vw"
         bg={colorMode === "light" ? "#e3a99c" : "#575757"}
         onClick={onOpen}
+        isDisabled={isDiabled}
       >
         save
       </Button>
