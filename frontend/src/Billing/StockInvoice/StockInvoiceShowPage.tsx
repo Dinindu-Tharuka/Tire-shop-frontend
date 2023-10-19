@@ -15,7 +15,7 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { StockInvoice } from "../../services/Stock/stock-invoice-page-service";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,7 @@ import stockPaymentService, {
 } from "../../services/Stock/stock-payment-service";
 import StockPaymentContext from "../../Contexts/Stock/StockPaymentContext";
 import UserMeContext from "../../Contexts/User/UserMe";
+import DownloadPdf from "../../PDF/DownloadPdf";
 
 interface Props {
   seletedStockInvoice: StockInvoice;
@@ -32,6 +33,15 @@ interface Props {
 const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
   // administration
   const userMe = useContext(UserMeContext);
+
+  // For downloading pdf
+  const [loader, setLoader] = useState(false);
+  const pdfRef = useRef<HTMLDivElement>(null);
+  const [capture, setCapture] = useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setCapture(pdfRef.current);
+  }, []);
 
   const [paymentSuccess, setPaymentSuccess] = useState("");
   const [paymentError, setPaymentError] = useState("");
@@ -58,7 +68,7 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
       <Flex flexDir="column">
         <Flex flexDir="column" width="70vw" marginRight={10}>
           <div className="w-100 d-flex flex-column">
-            <div>
+            <div ref={pdfRef}>
               <TableContainer>
                 <Table>
                   <Tbody>
@@ -162,6 +172,16 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
             </Tr>
           </Table>
         </Flex>
+
+        <Button
+          alignSelf="center"
+          width="300px"
+          disabled={!(loader === false)}
+          onClick={() => DownloadPdf(capture, setLoader)}
+          marginTop={5}
+        >
+          {loader ? "Downloading" : "Print"}
+        </Button>
       </Flex>
 
       {userMe.is_superuser && (
@@ -179,6 +199,7 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
             >
               <option value="select">PAYMENT METHOD</option>
               <option value="cash">CASH</option>
+              <option value="cheque">CHEQUE</option>
               <option value="credit_card">CREDIT CARD</option>
             </Select>
             <Input

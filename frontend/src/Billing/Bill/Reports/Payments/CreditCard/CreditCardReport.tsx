@@ -64,7 +64,7 @@ const CreditCardReport = ({ startDate, endDate}:Props) => {
   return (
     <>
       <Tag padding={5}  width="58vw" fontWeight="bold" >
-        Credit Card Report
+        Daily Credit Card Payments
       </Tag>
 
       <TableContainer width="58vw">

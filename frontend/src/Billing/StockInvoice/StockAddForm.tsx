@@ -39,6 +39,7 @@ import SupplierContext from "../../Contexts/Registration/SupplierContext";
 import { Supplier } from "../../services/Registration/supplier-service";
 import SupplierFilter from "../../Registration/Supplier/SupplierFilter";
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
+import { GenerateBillNumber } from "../../Common/GenerateBillNumbers";
 
 const StockAddForm = () => {
   const [watchingCost, setWatchingCost] = useState("");
@@ -58,8 +59,6 @@ const StockAddForm = () => {
   //Supplier context
   const { suppliers, setFilterSupplierParams } = useContext(SupplierContext);
 
-  console.log("suppliers", suppliers);
-
   const {
     fields: stockItemArray,
     append: stockItemAppend,
@@ -68,6 +67,14 @@ const StockAddForm = () => {
     name: "stock_items",
     control,
   });
+
+  // set rangom grnnumber
+  useEffect(()=>{
+    const randomGrnNumber = new GenerateBillNumber('GRN')
+    // setGrnNo(randomGrnNumber.generate())
+    setValue('invoice_no', randomGrnNumber.generate())
+
+  }, [isCreatedBill])
 
   //Refetch stock item uniques
   useEffect(() => {
@@ -152,7 +159,16 @@ const StockAddForm = () => {
                 width={STOCK_ITEM_WIDTH}
                 {...register("invoice_no")}
                 type="text"
-                placeholder="Bill No"
+                placeholder="GRN No"
+              />
+            </div>
+            <div className="mb-3 me-3 h-75">
+              <Input
+                isDisabled={isCreatedBill}
+                width={STOCK_ITEM_WIDTH}
+                {...register("bill_invoice_no")}
+                type="text"
+                placeholder="Invoice No"
               />
             </div>
             <div className="mb-3">

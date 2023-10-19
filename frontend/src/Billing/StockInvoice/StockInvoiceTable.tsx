@@ -28,6 +28,8 @@ import {
 import StockInvoiceShowPage from "./StockInvoiceShowPage";
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 import { makeUpDate } from "../UI/MakeUpDate";
+import allSupplierSevice from "../../services/Registration/all-supplier-sevice";
+import AllSupplierContext from "../../Contexts/Registration/AllSupplierContext";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -48,7 +50,7 @@ const StockInvoiceTable = () => {
 
   const numOfPages = Math.ceil(invoicesCount / MAXIMUM_PAGES_PER_PAGE);
 
-  const { suppliers } = useSupplier();
+  const { allSuppliers } = useContext(AllSupplierContext)
   const onTypeFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setInvoiceIdFilter(event.currentTarget.value);
   };
@@ -84,7 +86,7 @@ const StockInvoiceTable = () => {
                 <Td>{makeUpDate(invoice.date)}</Td>
                 <Td>{invoice.total_amount}</Td>
                 <Td>
-                  {suppliers.find((sup) => sup.id === invoice.supplier)?.name}
+                  {allSuppliers.find((sup) => sup.id === invoice.supplier)?.name}
                 </Td>
               </Tr>
             ))}

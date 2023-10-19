@@ -17,7 +17,6 @@ import BillServices, {
   BillService,
   DagPayment,
 } from "../../services/Billing/bill-page-service";
-import useCustomer from "../../hooks/Customer/useCustomer";
 import useService from "../../hooks/Registration/useService";
 import useEmployee from "../../hooks/Registration/useEmployee";
 import useAllItems from "../../hooks/Inventory/useItems";
@@ -32,7 +31,6 @@ import stockItemService, {
   StockItem,
   StockItemDefault,
 } from "../../services/Stock/stock-item-service";
-import { BillNumberGenerate } from "./Calculations/BillNumberGenerator";
 import {
   onChangeBillCustomItemValue,
   onChangeBillQty,
@@ -50,9 +48,9 @@ import BillShowDrawer from "./BillShow/BillShowDrawer";
 import AllReceivedSupplierTyresContext from "../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 import AllSendSupplierTyresContext from "../../Contexts/Rebuild/AllSendSupplierContext";
 import AllDagPaymentContext from "../../Contexts/Bill/AllDagPaymentContext";
-import useVehicles from "../../hooks/Customer/useVehicles";
 import VehicleContext from "../../Contexts/Customer/VehicleContext";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
+import { GenerateBillNumber } from "../../Common/GenerateBillNumbers";
 
 export interface ReceiveTyreNew {
   id: number;
@@ -169,6 +167,7 @@ const BillAddForm = () => {
     control,
   });
 
+
   useEffect(() => {
     const { request, cancel } = stockItemService.getAll<StockItemDefault>();
 
@@ -187,6 +186,13 @@ const BillAddForm = () => {
 
     return () => cancel();
   }, [isCreatedBill]);
+
+  //Set Bill Number
+  useEffect(()=>{
+    const generateBillNumber = new GenerateBillNumber('TYRE')
+    setValue('invoice_id',generateBillNumber.generate())
+
+  },[isCreatedBill])
 
   // filtering supplier tyres
   useEffect(() => {
@@ -294,7 +300,6 @@ const BillAddForm = () => {
                 })}
                 type="text"
                 placeholder="Bill No"
-                defaultValue={BillNumberGenerate()}
               />
               <Text textColor="red.600">{errors.invoice_id?.message}</Text>
             </div>

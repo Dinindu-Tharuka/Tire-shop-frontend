@@ -65,7 +65,7 @@ const CashReport = ({ startDate, endDate }: Props) => {
   return (
     <>
       <Tag padding={5} width="58vw" fontWeight="bold">
-        Cash Report
+        Daily Cash Payment
       </Tag>
 
       <TableContainer width="58vw">

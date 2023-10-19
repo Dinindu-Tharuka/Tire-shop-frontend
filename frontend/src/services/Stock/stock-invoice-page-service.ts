@@ -3,6 +3,7 @@ import { StockItem } from "./stock-item-service";
 
 export interface StockInvoice{
     invoice_no:string;
+    bill_invoice_no:string;
     date:string;
     total_amount:number;   
     total_discount:number;   
