@@ -31,7 +31,32 @@ const StockInvoicePayments = ({ seletedStockInvoice }: Props) => {
   const [value, setValue] = useState("1");
 
   const onSubmit = (data: StockPayment) => {
-    const newly = { ...data, stock_invoice: seletedStockInvoice.invoice_no };
+    const isCash = value === "1" ? true : false;
+    const isCheque = value === "2" ? true : false;
+    const isCreditCard = value === "3" ? true : false;
+    let newly = {}
+    if (isCheque){
+      newly = {
+        is_cash: isCash,
+        is_cheque: isCheque,
+        is_credit_card: isCreditCard,
+        amount:data.amount,
+        bank:data.bank,
+        branch:data.branch,
+        cheque_date:data.cheque_date,
+        stock_invoice: seletedStockInvoice.invoice_no,
+      };
+
+    }else{
+      newly = {
+        is_cash: isCash,
+        is_cheque: isCheque,
+        is_credit_card: isCreditCard,
+        amount:data.amount,        
+        stock_invoice: seletedStockInvoice.invoice_no,
+      };
+
+    }
     console.log("payments", newly);
 
     stockPaymentService
@@ -49,7 +74,11 @@ const StockInvoicePayments = ({ seletedStockInvoice }: Props) => {
       <Text marginBottom={5}>PAYMENTS</Text>
       <Text>Select Payment Method</Text>
 
-      <RadioGroup onChange={setValue} value={value} marginBottom={3}>
+      <RadioGroup onChange={(value)=>{
+       setValue(value)
+       setPaymentSuccess('')
+       setPaymentError('')
+      }} value={value} marginBottom={3}>
         <Stack direction="row">
           <Radio value="1">Cash</Radio>
           <Radio value="2">Cheque</Radio>
@@ -57,15 +86,18 @@ const StockInvoicePayments = ({ seletedStockInvoice }: Props) => {
         </Stack>
       </RadioGroup>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {value === "2" && <>
-          <VStack alignItems='left' marginBottom={3}>
-          <Text fontWeight='normal' marginBottom={0}>Check Date</Text>
-          <Input type="date"/>
-        </VStack>
-        <Input type="text" placeholder="Bank" marginBottom={3}/>
-        <Input type="text" placeholder="Branch" marginBottom={3}/>
-        </>
-        }
+        {value === "2" && (
+          <>
+            <VStack alignItems="left" marginBottom={3}>
+              <Text fontWeight="normal" marginBottom={0}>
+                Check Date
+              </Text>
+              <Input type="date" {...register("cheque_date")}/>
+            </VStack>
+            <Input type="text" placeholder="Bank" marginBottom={3} {...register("bank")}/>
+            <Input type="text" placeholder="Branch" marginBottom={3} {...register("branch")}/>
+          </>
+        )}
         <Input placeholder="Amount" marginBottom={5} {...register("amount")} />
 
         <Button type="submit" bg="#f87454">

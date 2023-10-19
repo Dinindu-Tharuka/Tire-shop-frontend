@@ -16,7 +16,6 @@ import {
 
 import { useContext, useState } from "react";
 import StockInvoiceDelete from "./StockInvoiceDelete";
-import useSupplier from "../../hooks/Registration/useSupplier";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 import getCutUrl, {
   MAXIMUM_PAGES_PER_PAGE,
@@ -25,24 +24,20 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import StockInvoiceShowPage from "./StockInvoiceShowPage";
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 import { makeUpDate } from "../UI/MakeUpDate";
-import allSupplierSevice from "../../services/Registration/all-supplier-sevice";
 import AllSupplierContext from "../../Contexts/Registration/AllSupplierContext";
+import PayMultipleStockInvoices from "./Payments/PayMultipleStockInvoices";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const { colorMode } = useColorMode();
   const {
     stockInvoices,
-    setStockInvoices,
     errorFetchStockInvoice,
     nextStockInvoiceUrl,
     previousStockInvoiceUrl,
-    filterStockInvoiceParams,
     setFilterStockInvoiceParams,
-    isLoadingInvoices,
     invoicesCount,
     setErrorFetchStockInvoice,
     setInvoiceIdFilter,
@@ -63,6 +58,7 @@ const StockInvoiceTable = () => {
   return (
     <Flex alignItems="center" flexDir="column">
       <HStack>
+        <PayMultipleStockInvoices/>
         <Input placeholder="GRN No" onKeyUp={onTypeGRnNoFilter} />
         <Input placeholder="Invoice No" onKeyUp={onTypeInvoiceNoFilter} />
       </HStack>
