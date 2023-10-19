@@ -13,6 +13,8 @@ const useAllStockInvoice = () => {
     const [filterInvoiceNo, setFilterInvoiceNo] = useState('')
     const [filterSupplier, setFilterSupplier] = useState('')
 
+    console.log(filterGrnNo)
+
     useEffect(()=>{
       setIsLoadingInvoices(true)
         const {request, cancel} = stockInvoiceService.getAll<StockInvoice>({params:{ filterGrnNo, filterInvoiceNo, filterSupplier }})

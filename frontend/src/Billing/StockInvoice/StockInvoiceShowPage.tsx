@@ -1,31 +1,26 @@
 import {
   Button,
-  Flex,
-  Input,
-  Select,
+  Flex,  
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
   Text,
-  Tfoot,
   Th,
   Thead,
   Tr,
   useColorMode,
+  IconButton,
 } from "@chakra-ui/react";
+import { CloseIcon } from '@chakra-ui/icons'
 import { useContext, useEffect, useRef, useState } from "react";
 import { StockInvoice } from "../../services/Stock/stock-invoice-page-service";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
-import { useForm } from "react-hook-form";
-import stockPaymentService, {
-  StockPayment,
-} from "../../services/Stock/stock-payment-service";
 import StockPaymentContext from "../../Contexts/Stock/StockPaymentContext";
 import UserMeContext from "../../Contexts/User/UserMe";
 import DownloadPdf from "../../PDF/DownloadPdf";
 import StockInvoicePayments from "./Payments/StockInvoicePayments";
+import { stockInvoicePaymentTotal } from "./Calculations/StockInvoiceCalculation";
 
 interface Props {
   seletedStockInvoice: StockInvoice;
@@ -44,12 +39,9 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
     setCapture(pdfRef.current);
   }, []);
 
-  
   const { suppliers } = useContext(SupplierContext);
   const { colorMode } = useColorMode();
   const { stockPayments, setStockPayments } = useContext(StockPaymentContext);
-
-  
 
   return (
     <Flex>
@@ -140,17 +132,9 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
               <Td>{seletedStockInvoice.total_discount}</Td>
               <Th whiteSpace="nowrap">Total Payment</Th>
               <Td>
-                {stockPayments
-                  .filter(
-                    (payment) =>
-                      seletedStockInvoice.invoice_no === payment.stock_invoice
-                  )
-                  .reduce(
-                    (currentValue, stockPayment) =>
-                      currentValue + parseFloat(stockPayment.amount + ""),
-                    0
-                  )}
+                {stockInvoicePaymentTotal(stockPayments, seletedStockInvoice)}
               </Td>
+              
             </Tr>
             <Tr>
               <Th whiteSpace="nowrap">Sub Total</Th>
@@ -172,7 +156,9 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
         </Button>
       </Flex>
 
-      {userMe.is_superuser && <StockInvoicePayments seletedStockInvoice={seletedStockInvoice}/>}
+      {userMe.is_superuser && (
+        <StockInvoicePayments seletedStockInvoice={seletedStockInvoice} />
+      )}
     </Flex>
   );
 };
