@@ -11,10 +11,11 @@ const useAllStockInvoice = () => {
     // Fltering
     const [filterGrnNo, setFilterGrnNo] = useState('')
     const [filterInvoiceNo, setFilterInvoiceNo] = useState('')
+    const [filterSupplier, setFilterSupplier] = useState('')
 
     useEffect(()=>{
       setIsLoadingInvoices(true)
-        const {request, cancel} = stockInvoiceService.getAll<StockInvoice>({params:{ filterGrnNo, filterInvoiceNo }})
+        const {request, cancel} = stockInvoiceService.getAll<StockInvoice>({params:{ filterGrnNo, filterInvoiceNo, filterSupplier }})
         request
           .then(res=>{
             
@@ -27,8 +28,8 @@ const useAllStockInvoice = () => {
           })
 
         return ()=> cancel();
-    }, [filterGrnNo, filterInvoiceNo])
-  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, isLoadingInvoices, setErrorFetchStockInvoice, setFilterGrnNo, setFilterInvoiceNo}
+    }, [filterGrnNo, filterInvoiceNo, filterSupplier])
+  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, isLoadingInvoices, setErrorFetchStockInvoice, setFilterGrnNo, setFilterInvoiceNo, setFilterSupplier}
 }
 
 export default useAllStockInvoice
