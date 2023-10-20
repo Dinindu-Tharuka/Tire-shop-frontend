@@ -15,6 +15,7 @@ interface StockInvoicePageContextType{
     setErrorFetchStockInvoice:Dispatch<SetStateAction<string>>;
     setInvoiceIdFilter:Dispatch<SetStateAction<string>>;
     setInvoiceBillIdFilter:Dispatch<SetStateAction<string>>;
+    setInvoiceStockSupplierFilter:Dispatch<SetStateAction<string>>;
 }
 
 const StockInvoicePageContext = React.createContext<StockInvoicePageContextType>({} as StockInvoicePageContextType)

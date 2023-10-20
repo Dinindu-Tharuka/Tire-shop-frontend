@@ -12,6 +12,7 @@ import {
   useColorMode,
   Text,
   Input,
+  Select,
 } from "@chakra-ui/react";
 
 import { useContext, useState } from "react";
@@ -27,7 +28,7 @@ import {
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllSupplierContext from "../../Contexts/Registration/AllSupplierContext";
-import PayMultipleStockInvoices from "./Payments/PayMultipleStockInvoices";
+import PayMultipleStockInvoicesModel from "./Payments/PayMultipleStockInvoicesModel";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -41,7 +42,7 @@ const StockInvoiceTable = () => {
     invoicesCount,
     setErrorFetchStockInvoice,
     setInvoiceIdFilter,
-    setInvoiceBillIdFilter
+    setInvoiceBillIdFilter,
   } = useContext(StockInvoicePageContext);
 
   const numOfPages = Math.ceil(invoicesCount / MAXIMUM_PAGES_PER_PAGE);
@@ -51,16 +52,26 @@ const StockInvoiceTable = () => {
     setInvoiceIdFilter(event.currentTarget.value);
   };
 
-  const onTypeInvoiceNoFilter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onTypeInvoiceNoFilter = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     setInvoiceBillIdFilter(event.currentTarget.value);
   };
 
   return (
     <Flex alignItems="center" flexDir="column">
       <HStack>
-        <PayMultipleStockInvoices/>
+        <Flex>
+          <PayMultipleStockInvoicesModel />
+        </Flex>
         <Input placeholder="GRN No" onKeyUp={onTypeGRnNoFilter} />
         <Input placeholder="Invoice No" onKeyUp={onTypeInvoiceNoFilter} />
+        <Select>
+          <option>Supplier</option>
+          {allSuppliers.map((supplier) => (
+            <option value={supplier.id}>{supplier.name}</option>
+          ))}
+        </Select>
       </HStack>
       {errorFetchStockInvoice && (
         <Text textColor="red">Unable to fetch data from the internet.</Text>

@@ -117,6 +117,9 @@ const PayMultipleStockInvoicesPage = () => {
                     <IconButton
                       icon={<AiOutlineCloseCircle />}
                       aria-label=""
+                      _hover={{
+                        backgroundColor:"orange"
+                      }}
                       onClick={() =>
                         setSelectedStockInvoices([
                           ...selectedStockInvoices.filter(
