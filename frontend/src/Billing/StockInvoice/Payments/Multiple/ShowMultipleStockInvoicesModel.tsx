@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
-import ShowMultipleStockInvoicesPage from "../ShowMultipleStockInvoicesPage";
+import ShowMultipleStockInvoicesPage from "./ShowMultipleStockInvoicesPage";
 
 const ShowMultipleStockInvoicesModel = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

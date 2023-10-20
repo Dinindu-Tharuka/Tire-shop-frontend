@@ -1,4 +1,5 @@
 import {
+  Button,
   Flex,
   HStack,
   IconButton,
@@ -13,16 +14,16 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
-import AllStockInvoiceContext from "../../../Contexts/Stock/AllStockInvoiceContext";
-import { StockInvoice } from "../../../services/Stock/stock-invoice-page-service";
+import AllStockInvoiceContext from "../../../../Contexts/Stock/AllStockInvoiceContext";
+import { StockInvoice } from "../../../../services/Stock/stock-invoice-page-service";
 import {
   stockInvoicePaymentTotal,
   stockInvoiceTotal,
-} from "../Calculations/StockInvoiceCalculation";
-import StockPaymentContext from "../../../Contexts/Stock/StockPaymentContext";
+} from "../../Calculations/StockInvoiceCalculation";
+import StockPaymentContext from "../../../../Contexts/Stock/StockPaymentContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import AllSupplierContext from "../../../Contexts/Registration/AllSupplierContext";
-import DoMultiplePaymentModel from "./Multiple/DoMultiplePaymentModel";
+import AllSupplierContext from "../../../../Contexts/Registration/AllSupplierContext";
+import DoMultiplePaymentModel from "./DoMultiplePaymentModel";
 const ShowMultipleStockInvoicesPage = () => {
   const {
     stockAllInvoices,
@@ -80,11 +81,14 @@ const ShowMultipleStockInvoicesPage = () => {
                     bg={
                       selectedStockInvoices.includes(invoice) ? "#f1cac1" : ""
                     }
-                    onClick={() =>
-                      setSelectedStockInvoices([
-                        ...selectedStockInvoices,
-                        invoice,
-                      ])
+                    onClick={() =>{
+                      if (!selectedStockInvoices.includes(invoice)){
+
+                        setSelectedStockInvoices([
+                          ...selectedStockInvoices,
+                          invoice,
+                        ])}
+                      }
                     }
                   >
                     <Td>{invoice.invoice_no}</Td>
@@ -149,6 +153,9 @@ const ShowMultipleStockInvoicesPage = () => {
                     />
                   )}
                 </Td>
+              </Tr>
+              <Tr>
+                <Td><Button onClick={()=> setSelectedStockInvoices([])}>Clear</Button></Td>
               </Tr>
             </Tbody>
           </Table>

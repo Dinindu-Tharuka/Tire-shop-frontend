@@ -1,5 +1,4 @@
 import {
-  Button,
   Flex,
   HStack,
   Input,
@@ -45,10 +44,17 @@ const DoMultiplePaymentsForm = ({
   const [paymentSuccess, setPaymentSuccess] = useState("");
   const [paymentError, setPaymentError] = useState("");
   const { handleSubmit, register, setValue } = useForm<StockPayment>();
-  const { stockPayments, setStockPayments } = useContext(StockPaymentContext);
-
+  
   // selected Payment method
   const [selectedValue, setSelectedValue] = useState("1");
+  
+  // for refetching 
+  const { stockPayments, setRefetchStockPayments } = useContext(StockPaymentContext);
+  const { setRefetchStockInvoices } = useContext(AllStockInvoiceContext)
+  const { setRefetchPageStockInvocie } = useContext(StockInvoicePageContext)
+  const dateNow = new Date()
+  console.log(dateNow)
+  
 
   useEffect(() => {
     const totalDebit = stockInvoiceTotal(stockPayments, selectedInvoices);
@@ -94,6 +100,12 @@ const DoMultiplePaymentsForm = ({
         .then((res) => {          
           setPaymentSuccess("Payment Succesfull.");
           setIsPaymentBillCreated(true);
+
+          // For refetching
+          setRefetchStockPayments(dateNow+'') 
+          setRefetchStockInvoices(dateNow+'') 
+          setRefetchPageStockInvocie(dateNow+'')
+
         })
         .catch((err) => setPaymentError(err.message));
 
