@@ -9,17 +9,21 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { StockInvoice } from "../../../../services/Stock/stock-invoice-page-service";
-import DoMultiplePayments from "./DoMultiplePayments";
+import DoMultiplePaymentsForm from "./DoMultiplePaymentsForm";
+import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   selectedInvoices: StockInvoice[];
+  setSelectedInvoices: Dispatch<SetStateAction<StockInvoice[]>>;
 }
 
-const DoMultiplePaymentModel = ({ selectedInvoices }: Props) => {
+const DoMultiplePaymentModel = ({ selectedInvoices, setSelectedInvoices }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button onClick={onOpen} bg="orange">Pay</Button>
+      <Button onClick={onOpen} bg="orange">
+        Pay
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -27,7 +31,7 @@ const DoMultiplePaymentModel = ({ selectedInvoices }: Props) => {
           <ModalHeader>Pay</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <DoMultiplePayments selectedInvoices={selectedInvoices} />
+            <DoMultiplePaymentsForm selectedInvoices={selectedInvoices} setSelectedInvoices={setSelectedInvoices} />
           </ModalBody>
         </ModalContent>
       </Modal>

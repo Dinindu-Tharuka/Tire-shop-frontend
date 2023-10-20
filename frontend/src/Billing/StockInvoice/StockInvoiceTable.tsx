@@ -28,7 +28,7 @@ import {
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllSupplierContext from "../../Contexts/Registration/AllSupplierContext";
-import PayMultipleStockInvoicesModel from "./Payments/Multiple/PayMultipleStockInvoicesModel";
+import ShowMultipleStockInvoicesModel from "./Payments/Multiple/ShowMultipleStockInvoicesModel";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -63,7 +63,7 @@ const StockInvoiceTable = () => {
     <Flex alignItems="center" flexDir="column">
       <HStack>
         <Flex>
-          <PayMultipleStockInvoicesModel />
+          <ShowMultipleStockInvoicesModel />
         </Flex>
         <Input placeholder="GRN No" onKeyUp={onTypeGRnNoFilter} />
         <Input placeholder="Invoice No" onKeyUp={onTypeInvoiceNoFilter} />

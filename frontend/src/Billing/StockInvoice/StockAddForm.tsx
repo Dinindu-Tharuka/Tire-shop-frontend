@@ -40,6 +40,7 @@ import { Supplier } from "../../services/Registration/supplier-service";
 import SupplierFilter from "../../Registration/Supplier/SupplierFilter";
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 import { GenerateBillNumber } from "../../Common/GenerateBillNumbers";
+import AllStockInvoiceContext from "../../Contexts/Stock/AllStockInvoiceContext";
 
 const StockAddForm = () => {
   const [watchingCost, setWatchingCost] = useState("");
@@ -110,6 +111,7 @@ const StockAddForm = () => {
   const { stockInvoices, setStockInvoices } = useContext(
     StockInvoicePageContext
   );
+  const { stockAllInvoices, setStockAllInvoices} = useContext(AllStockInvoiceContext)
   const { allItems } = useAllItems();
   const { stockItems, setStockItems } = useContext(StockItemContext);
 
@@ -129,10 +131,11 @@ const StockAddForm = () => {
     StockInvoiceService.create(newly)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
-        setStockInvoices([res.data, ...stockInvoices]);
         setStockItems([...res.data.stock_items, ...stockItems]);
         setIsCreatedBill(true);
         setStockInvoice(res.data);
+        setStockInvoices([res.data, ...stockInvoices]);
+        setStockAllInvoices([...stockAllInvoices, res.data])
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -381,7 +384,7 @@ const StockAddForm = () => {
               Reset
             </Button>
           </Flex>
-          {stockInvoice !== undefined && stockInvoice && (
+          {stockInvoice !== undefined && stockInvoice && isCreatedBill && (
             <StockInvoiceShowDrawer selectedStockInvoice={stockInvoice} />
           )}
         </HStack>

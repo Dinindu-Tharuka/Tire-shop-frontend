@@ -23,7 +23,7 @@ import StockPaymentContext from "../../../Contexts/Stock/StockPaymentContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import AllSupplierContext from "../../../Contexts/Registration/AllSupplierContext";
 import DoMultiplePaymentModel from "./Multiple/DoMultiplePaymentModel";
-const PayMultipleStockInvoicesPage = () => {
+const ShowMultipleStockInvoicesPage = () => {
   const {
     stockAllInvoices,
     setFilterGrnNo,
@@ -77,7 +77,9 @@ const PayMultipleStockInvoicesPage = () => {
                     _hover={{
                       backgroundColor: "#f1cac1",
                     }}
-                    bg={selectedStockInvoices.includes(invoice) ? "#f1cac1" : ''}
+                    bg={
+                      selectedStockInvoices.includes(invoice) ? "#f1cac1" : ""
+                    }
                     onClick={() =>
                       setSelectedStockInvoices([
                         ...selectedStockInvoices,
@@ -109,7 +111,7 @@ const PayMultipleStockInvoicesPage = () => {
                   <Td>{invoice.invoice_no}</Td>
                   <Td>{invoice.bill_invoice_no}</Td>
                   <Td>{stockInvoicePaymentTotal(stockPayments, invoice)}</Td>
-                  <Td textAlign='right'>
+                  <Td textAlign="right">
                     {invoice.total_amount -
                       stockInvoicePaymentTotal(stockPayments, invoice)}
                   </Td>
@@ -135,7 +137,7 @@ const PayMultipleStockInvoicesPage = () => {
                 <Td>Total Payment</Td>
                 <Td></Td>
                 <Td></Td>
-                <Td textAlign='right'>
+                <Td textAlign="right">
                   {stockInvoiceTotal(stockPayments, selectedStockInvoices)}
                 </Td>
                 <Td>
@@ -143,6 +145,7 @@ const PayMultipleStockInvoicesPage = () => {
                     0 && (
                     <DoMultiplePaymentModel
                       selectedInvoices={selectedStockInvoices}
+                      setSelectedInvoices={setSelectedStockInvoices}
                     />
                   )}
                 </Td>
@@ -155,4 +158,4 @@ const PayMultipleStockInvoicesPage = () => {
   );
 };
 
-export default PayMultipleStockInvoicesPage;
+export default ShowMultipleStockInvoicesPage;

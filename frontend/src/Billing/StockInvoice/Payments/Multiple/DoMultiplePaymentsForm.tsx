@@ -12,21 +12,36 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { StockInvoice } from "../../../../services/Stock/stock-invoice-page-service";
-import { useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import StockPaymentContext from "../../../../Contexts/Stock/StockPaymentContext";
-import stockPaymentService, { StockPayment } from "../../../../services/Stock/stock-payment-service";
+import stockPaymentService, {
+  StockPayment,
+} from "../../../../services/Stock/stock-payment-service";
 import {
   stockInvoicePaymentTotal,
   stockInvoiceTotal,
 } from "../../Calculations/StockInvoiceCalculation";
 import MultiplePaymentConfirmation from "./MultiplePaymentConfirmation";
+import AllStockInvoiceContext from "../../../../Contexts/Stock/AllStockInvoiceContext";
+import StockInvoicePageContext from "../../../../Contexts/Stock/StockInvoicePageContext";
 
 interface Props {
   selectedInvoices: StockInvoice[];
+  setSelectedInvoices: Dispatch<SetStateAction<StockInvoice[]>>;
 }
 
-const DoMultiplePayments = ({ selectedInvoices}: Props) => {
+const DoMultiplePaymentsForm = ({
+  selectedInvoices,
+  setSelectedInvoices,
+}: Props) => {
+  const [isPaymentBillCreated, setIsPaymentBillCreated] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState("");
   const [paymentError, setPaymentError] = useState("");
   const { handleSubmit, register, setValue } = useForm<StockPayment>();
@@ -40,10 +55,13 @@ const DoMultiplePayments = ({ selectedInvoices}: Props) => {
     setValue("amount", totalDebit);
   }, []);
 
-  const onSubmit = (data: StockPayment) => {
+ 
+
+  const onSubmit = async (data: StockPayment) => {
     const isCash = selectedValue === "1" ? true : false;
     const isCheque = selectedValue === "2" ? true : false;
     const isCreditCard = selectedValue === "3" ? true : false;
+
     let newly = {};
     for (let seletedStockInvoice of selectedInvoices) {
       if (isCheque) {
@@ -70,22 +88,25 @@ const DoMultiplePayments = ({ selectedInvoices}: Props) => {
           stock_invoice: seletedStockInvoice.invoice_no,
         };
       }
+      
+      await stockPaymentService
+        .create(newly)
+        .then((res) => {          
+          setPaymentSuccess("Payment Succesfull.");
+          setIsPaymentBillCreated(true);
+        })
+        .catch((err) => setPaymentError(err.message));
 
-      // stockPaymentService
-      // .create(newly)
-      // .then((res) => {
-      //   setStockPayments([...stockPayments, res.data]);
-      //   setPaymentSuccess("Payment Succesfull.");
-      // })
-      // .catch((err) => setPaymentError(err.message));
-
-      console.log(newly);
+      
     }
+    
+
+    
   };
 
-  const onConfirm = ()=>{
-    handleSubmit(onSubmit)()
-  }
+  const onConfirm = () => {
+    handleSubmit(onSubmit)();
+  };
   return (
     <Flex fontWeight="bold" flexDir="column">
       {paymentSuccess && <Text textColor="green.800">{paymentSuccess}</Text>}
@@ -106,6 +127,7 @@ const DoMultiplePayments = ({ selectedInvoices}: Props) => {
                 setPaymentSuccess("");
                 setPaymentError("");
               }}
+              isDisabled={isPaymentBillCreated}
               value={selectedValue}
               marginBottom={3}
             >
@@ -146,12 +168,12 @@ const DoMultiplePayments = ({ selectedInvoices}: Props) => {
             />
           </>
         </VStack>
-        <MultiplePaymentConfirmation onConfirm={onConfirm}/>
-
-       
+        {!isPaymentBillCreated && (
+          <MultiplePaymentConfirmation onConfirm={onConfirm} />
+        )}
       </form>
     </Flex>
   );
 };
 
-export default DoMultiplePayments;
+export default DoMultiplePaymentsForm;
