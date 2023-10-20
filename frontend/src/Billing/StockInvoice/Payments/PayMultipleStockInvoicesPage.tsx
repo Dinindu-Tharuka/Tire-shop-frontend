@@ -22,7 +22,7 @@ import {
 import StockPaymentContext from "../../../Contexts/Stock/StockPaymentContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import AllSupplierContext from "../../../Contexts/Registration/AllSupplierContext";
-import DoMultiplePaymentModel from "./DoMultiplePaymentModel";
+import DoMultiplePaymentModel from "./Multiple/DoMultiplePaymentModel";
 const PayMultipleStockInvoicesPage = () => {
   const {
     stockAllInvoices,
@@ -47,10 +47,9 @@ const PayMultipleStockInvoicesPage = () => {
           placeholder="Invoice No"
           onChange={(e) => setFilterInvoiceNo(e.currentTarget.value)}
         />
-        
 
-        <Select onChange={(e)=> setFilterSupplier(e.currentTarget.value)}>
-          <option value=''>Supplier</option>
+        <Select onChange={(e) => setFilterSupplier(e.currentTarget.value)}>
+          <option value="">Supplier</option>
           {allSuppliers.map((supplier) => (
             <option value={supplier.id}>{supplier.name}</option>
           ))}
@@ -78,6 +77,7 @@ const PayMultipleStockInvoicesPage = () => {
                     _hover={{
                       backgroundColor: "#f1cac1",
                     }}
+                    bg={selectedStockInvoices.includes(invoice) ? "#f1cac1" : ''}
                     onClick={() =>
                       setSelectedStockInvoices([
                         ...selectedStockInvoices,
@@ -99,7 +99,8 @@ const PayMultipleStockInvoicesPage = () => {
             <Thead>
               <Th>GRN NO</Th>
               <Th>Invoice No</Th>
-              <Th>Payment</Th>
+              <Th>Payments</Th>
+              <Th>Debit</Th>
               <Th></Th>
             </Thead>
             <Tbody>
@@ -107,7 +108,8 @@ const PayMultipleStockInvoicesPage = () => {
                 <Tr>
                   <Td>{invoice.invoice_no}</Td>
                   <Td>{invoice.bill_invoice_no}</Td>
-                  <Td>
+                  <Td>{stockInvoicePaymentTotal(stockPayments, invoice)}</Td>
+                  <Td textAlign='right'>
                     {invoice.total_amount -
                       stockInvoicePaymentTotal(stockPayments, invoice)}
                   </Td>
@@ -116,7 +118,7 @@ const PayMultipleStockInvoicesPage = () => {
                       icon={<AiOutlineCloseCircle />}
                       aria-label=""
                       _hover={{
-                        backgroundColor:"orange"
+                        backgroundColor: "orange",
                       }}
                       onClick={() =>
                         setSelectedStockInvoices([
@@ -132,11 +134,17 @@ const PayMultipleStockInvoicesPage = () => {
               <Tr>
                 <Td>Total Payment</Td>
                 <Td></Td>
-                <Td>
+                <Td></Td>
+                <Td textAlign='right'>
                   {stockInvoiceTotal(stockPayments, selectedStockInvoices)}
                 </Td>
                 <Td>
-                  {stockInvoiceTotal(stockPayments, selectedStockInvoices) > 0 && <DoMultiplePaymentModel selectedInvoices={selectedStockInvoices}/>}
+                  {stockInvoiceTotal(stockPayments, selectedStockInvoices) >
+                    0 && (
+                    <DoMultiplePaymentModel
+                      selectedInvoices={selectedStockInvoices}
+                    />
+                  )}
                 </Td>
               </Tr>
             </Tbody>

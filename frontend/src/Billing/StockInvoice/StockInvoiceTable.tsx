@@ -28,7 +28,7 @@ import {
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllSupplierContext from "../../Contexts/Registration/AllSupplierContext";
-import PayMultipleStockInvoicesModel from "./Payments/PayMultipleStockInvoicesModel";
+import PayMultipleStockInvoicesModel from "./Payments/Multiple/PayMultipleStockInvoicesModel";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -43,7 +43,7 @@ const StockInvoiceTable = () => {
     setErrorFetchStockInvoice,
     setInvoiceIdFilter,
     setInvoiceBillIdFilter,
-    setInvoiceStockSupplierFilter
+    setInvoiceStockSupplierFilter,
   } = useContext(StockInvoicePageContext);
 
   const numOfPages = Math.ceil(invoicesCount / MAXIMUM_PAGES_PER_PAGE);
@@ -67,10 +67,13 @@ const StockInvoiceTable = () => {
         </Flex>
         <Input placeholder="GRN No" onKeyUp={onTypeGRnNoFilter} />
         <Input placeholder="Invoice No" onKeyUp={onTypeInvoiceNoFilter} />
-        <Select onChange={(e)=> {
-          setErrorFetchStockInvoice('')
-          setInvoiceStockSupplierFilter(e.currentTarget.value)}}>
-          <option value=''>Supplier</option>
+        <Select
+          onChange={(e) => {
+            setErrorFetchStockInvoice("");
+            setInvoiceStockSupplierFilter(e.currentTarget.value);
+          }}
+        >
+          <option value="">Supplier</option>
           {allSuppliers.map((supplier) => (
             <option value={supplier.id}>{supplier.name}</option>
           ))}

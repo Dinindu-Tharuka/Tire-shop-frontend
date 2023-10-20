@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
-import PayMultipleStockInvoicesPage from "./PayMultipleStockInvoicesPage";
+import PayMultipleStockInvoicesPage from "../PayMultipleStockInvoicesPage";
 
 const PayMultipleStockInvoicesModel = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,7 +31,7 @@ const PayMultipleStockInvoicesModel = () => {
           <ModalCloseButton />
           <ModalBody>
             <PayMultipleStockInvoicesPage />
-          </ModalBody>          
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>
