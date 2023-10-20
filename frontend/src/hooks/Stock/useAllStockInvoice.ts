@@ -13,6 +13,8 @@ const useAllStockInvoice = () => {
     const [filterInvoiceNo, setFilterInvoiceNo] = useState('')
     const [filterSupplier, setFilterSupplier] = useState('')
 
+    const [refetchStockInvoices, setRefetchStockInvoices] = useState('')
+
     console.log(filterGrnNo)
 
     useEffect(()=>{
@@ -30,8 +32,8 @@ const useAllStockInvoice = () => {
           })
 
         return ()=> cancel();
-    }, [filterGrnNo, filterInvoiceNo, filterSupplier])
-  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, isLoadingInvoices, setErrorFetchStockInvoice, setFilterGrnNo, setFilterInvoiceNo, setFilterSupplier}
+    }, [filterGrnNo, filterInvoiceNo, filterSupplier, refetchStockInvoices])
+  return {stockInvoices, setStockInvoices, errorFetchStockInvoice, isLoadingInvoices, setErrorFetchStockInvoice, setFilterGrnNo, setFilterInvoiceNo, setFilterSupplier, setRefetchStockInvoices}
 }
 
 export default useAllStockInvoice

@@ -11,6 +11,7 @@ interface AllStockInvoiceContextType{
     setFilterGrnNo:Dispatch<SetStateAction<string>>; 
     setFilterInvoiceNo:Dispatch<SetStateAction<string>>;
     setFilterSupplier:Dispatch<SetStateAction<string>>;
+    setRefetchStockInvoices:Dispatch<SetStateAction<string>>;
 }
 
 const AllStockInvoiceContext = React.createContext<AllStockInvoiceContextType>({} as AllStockInvoiceContextType)

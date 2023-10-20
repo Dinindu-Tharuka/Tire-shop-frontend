@@ -102,7 +102,8 @@ const BillingMainPage = () => {
     setErrorFetchStockInvoice: setErrorFetchAllStockInvoice,
     setFilterGrnNo,
     setFilterInvoiceNo,
-    setFilterSupplier
+    setFilterSupplier,
+    setRefetchStockInvoices
   } = useAllStockInvoice();
 
   const {
@@ -217,7 +218,8 @@ const BillingMainPage = () => {
                       setErrorFetchAllStockInvoice,
                       setFilterGrnNo,
                       setFilterInvoiceNo,
-                      setFilterSupplier
+                      setFilterSupplier,
+                      setRefetchStockInvoices
                     }}
                   >
                     <StockInvoicePageContext.Provider
