@@ -8,6 +8,7 @@ interface StockPaymentContextType{
     setStockPayments:Dispatch<SetStateAction<StockPayment[]>>; 
     stockPaymentsFetchError:string;
     setStockPaymentsFetchError:Dispatch<SetStateAction<string>>;
+    setRefetchStockPayments:Dispatch<SetStateAction<string>>;
 }
 
 const StockPaymentContext = React.createContext<StockPaymentContextType>({} as StockPaymentContextType)

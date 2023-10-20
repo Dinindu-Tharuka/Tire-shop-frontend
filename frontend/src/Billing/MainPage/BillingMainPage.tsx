@@ -60,6 +60,7 @@ const BillingMainPage = () => {
     setStockPayments,
     stockPaymentsFetchError,
     setStockPaymentsFetchError,
+    setRefetchStockPayments,
   } = useStockpayment();
 
   const { vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch } =
@@ -171,6 +172,7 @@ const BillingMainPage = () => {
               setStockPayments,
               stockPaymentsFetchError,
               setStockPaymentsFetchError,
+              setRefetchStockPayments,
             }}
           >
             <CustomerContext.Provider

@@ -5,6 +5,8 @@ import stockPaymentService, { StockPayment } from '../../services/Stock/stock-pa
 const useStockpayment = () => {
     const [stockPayments, setStockPayments] = useState<StockPayment[]>([])
     const [stockPaymentsFetchError, setStockPaymentsFetchError] = useState('')
+
+    const [refetchStockPayments, setRefetchStockPayments] = useState('')
   
     useEffect(()=>{
 
@@ -18,9 +20,9 @@ const useStockpayment = () => {
                 }
             })
         return ()=> cancel();
-    }, [])
+    }, [refetchStockPayments])
 
-    return {stockPayments, setStockPayments, stockPaymentsFetchError, setStockPaymentsFetchError}
+    return {stockPayments, setStockPayments, stockPaymentsFetchError, setStockPaymentsFetchError, setRefetchStockPayments}
 }
 
 export default useStockpayment
