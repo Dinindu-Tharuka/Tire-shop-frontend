@@ -1,12 +1,9 @@
 import {
-  Button,
-  Container,
   Flex,
   HStack,
   IconButton,
   Input,
   Select,
-  Stack,
   Table,
   Tbody,
   Td,
@@ -25,6 +22,7 @@ import {
 import StockPaymentContext from "../../../Contexts/Stock/StockPaymentContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import AllSupplierContext from "../../../Contexts/Registration/AllSupplierContext";
+import DoMultiplePaymentModel from "./DoMultiplePaymentModel";
 const PayMultipleStockInvoicesPage = () => {
   const {
     stockAllInvoices,
@@ -136,6 +134,9 @@ const PayMultipleStockInvoicesPage = () => {
                 <Td></Td>
                 <Td>
                   {stockInvoiceTotal(stockPayments, selectedStockInvoices)}
+                </Td>
+                <Td>
+                  {stockInvoiceTotal(stockPayments, selectedStockInvoices) > 0 && <DoMultiplePaymentModel selectedInvoices={selectedStockInvoices}/>}
                 </Td>
               </Tr>
             </Tbody>

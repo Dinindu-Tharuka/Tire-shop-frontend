@@ -1,5 +1,6 @@
 import createPagination from "../http-pagination-service";
 import { StockItem } from "./stock-item-service";
+import { StockPayment } from "./stock-payment-service";
 
 export interface StockInvoice{
     invoice_no:string;
@@ -9,6 +10,7 @@ export interface StockInvoice{
     total_discount:number;   
     supplier:number;
     stock_items:StockItem[]
+    stock_payments:StockPayment[]
 }
 
 export interface StockInvoicePageStructure{
