@@ -120,6 +120,7 @@ const BillingMainPage = () => {
     setInvoiceIdFilter,
     setInvoiceBillIdFilter,
     setInvoiceStockSupplierFilter,
+    setRefetchPageStockInvocie,
   } = useStockInvoicePage();
 
   const {
@@ -237,6 +238,7 @@ const BillingMainPage = () => {
                         setInvoiceIdFilter,
                         setInvoiceBillIdFilter,
                         setInvoiceStockSupplierFilter,
+                        setRefetchPageStockInvocie,
                       }}
                     >
                       <BillPaymentContext.Provider
