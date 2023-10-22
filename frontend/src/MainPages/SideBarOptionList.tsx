@@ -9,7 +9,7 @@ import {
   MenuList,
   Show,
   useColorMode,
-  useColorModeValue
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { AiOutlineHome, AiOutlineMenu } from "react-icons/ai";
 import { MdOutlineInventory } from "react-icons/md";
@@ -26,57 +26,31 @@ import UserMeContext from "../Contexts/User/UserMe";
 
 const SideBarOptionList = () => {
   const { toggleColorMode, colorMode } = useColorMode();
-  const [selectedLGIndex, setSelectedLGIndex] = useState(-1)
-  const color = useColorModeValue("#595959" , "#d9d9d9")
+  const [selectedLGIndex, setSelectedLGIndex] = useState(-1);
+  const color = useColorModeValue("#595959", "#d9d9d9");
 
-  const userMe = useContext(UserMeContext)
+  const userMe = useContext(UserMeContext);
 
-  let options_lg = [
-    "Main Dashbord",
-    "Customer",
-    "Billing",
-    "Inventory",
-    
-  ];
-  let links_lg = [
-    "/",
-    "/customer",
-    "/billing",
-    "/inventory",
-  ];
+  let options_lg = ["Main Dashbord", "Customer", "Billing", "Inventory"];
+  let links_lg = ["/", "/customer", "/billing", "/inventory"];
   let options_base = [
     "Main Dashbord",
     "Customer",
     "Billing",
     "Inventory",
     "Sign out",
-    
   ];
-  let links_base = [
-    "/",
-    "/customer",
-    "/billing",
-    "/inventory",
-    "/login",
-  ];
+  let links_base = ["/", "/customer", "/billing", "/inventory", "/login"];
 
-  if (userMe.is_superuser || userMe.is_manager){
-
+  if (userMe.is_superuser || userMe.is_manager) {
     options_lg = [
       "Main Dashbord",
       "Customer",
       "Billing",
       "Inventory",
       "Registration",
-      
     ];
-    links_lg = [
-      "/",
-      "/customer",
-      "/billing",
-      "/inventory",
-      "/registration",
-    ];
+    links_lg = ["/", "/customer", "/billing", "/inventory", "/registration"];
     options_base = [
       "Main Dashbord",
       "Customer",
@@ -84,7 +58,6 @@ const SideBarOptionList = () => {
       "Inventory",
       "Registration",
       "Sign out",
-      
     ];
     links_base = [
       "/",
@@ -94,7 +67,6 @@ const SideBarOptionList = () => {
       "/registration",
       "/login",
     ];
-
   }
 
   const icons_lg = [
@@ -115,13 +87,11 @@ const SideBarOptionList = () => {
   ];
 
   //Sign Out
-  const signout = (option:string)=>{
-    if (option == 'Sign out'){
-      localStorage.clear()
+  const signout = (option: string) => {
+    if (option == "Sign out") {
+      localStorage.clear();
     }
-      
-
-  }
+  };
 
   // Large Screens
   const sideBar = options_lg.map((option, index) => (
@@ -133,23 +103,16 @@ const SideBarOptionList = () => {
           ? { background: "#fababb" }
           : { background: "#3e3d40" }
       }
-      bg={selectedLGIndex === index ? "#fababb": ""}
+      bg={selectedLGIndex === index ? "#fababb" : ""}
       boxShadow="1px 2px 2px 0 rgba(0, 0, 0, 0.2)"
       borderRadius={10}
-      
     >
       <HStack>
-        <Icon
-          color={color}
-          key={index}
-          as={icons_lg[index]}
-        />
-        <Button
-          textColor={color}
-          variant="link"
-          textAlign="left"
-        >
-          <Link to={links_lg[index]} onClick={()=> setSelectedLGIndex(index)}>{option}</Link>
+        <Icon color={color} key={index} as={icons_lg[index]} />
+        <Button textColor={colorMode === 'dark' && selectedLGIndex === index ? 'black': color} variant="link" textAlign="left">
+          <Link to={links_lg[index]} onClick={() => setSelectedLGIndex(index)}>
+            {option}
+          </Link>
         </Button>
       </HStack>
     </ListItem>
@@ -160,7 +123,9 @@ const SideBarOptionList = () => {
     <HStack padding={5} key={index}>
       <Icon color="gray.500" key={index} as={icons_base[index]} />
       <Button variant="link" textAlign="left">
-        <Link to={links_base[index]} onClick={()=>signout(option)}>{option}</Link>
+        <Link to={links_base[index]} onClick={() => signout(option)}>
+          {option}
+        </Link>
       </Button>
     </HStack>
   ));
