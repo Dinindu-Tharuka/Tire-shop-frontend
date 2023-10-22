@@ -9,6 +9,7 @@ import {
   MenuList,
   Show,
   useColorMode,
+  useColorModeValue
 } from "@chakra-ui/react";
 import { AiOutlineHome, AiOutlineMenu } from "react-icons/ai";
 import { MdOutlineInventory } from "react-icons/md";
@@ -20,11 +21,13 @@ import { RxAvatar } from "react-icons/rx";
 import { RiShutDownLine } from "react-icons/ri";
 import SignOut from "../Authentication/SignOut";
 import { Link } from "react-router-dom";
-import { MouseEventHandler, useContext } from "react";
+import { MouseEventHandler, useContext, useState } from "react";
 import UserMeContext from "../Contexts/User/UserMe";
 
 const SideBarOptionList = () => {
   const { toggleColorMode, colorMode } = useColorMode();
+  const [selectedLGIndex, setSelectedLGIndex] = useState(-1)
+  const color = useColorModeValue("#595959" , "#d9d9d9")
 
   const userMe = useContext(UserMeContext)
 
@@ -130,21 +133,23 @@ const SideBarOptionList = () => {
           ? { background: "#fababb" }
           : { background: "#3e3d40" }
       }
+      bg={selectedLGIndex === index ? "#fababb": ""}
       boxShadow="1px 2px 2px 0 rgba(0, 0, 0, 0.2)"
       borderRadius={10}
+      
     >
       <HStack>
         <Icon
-          color={colorMode === "light" ? "#595959" : "#d9d9d9"}
+          color={color}
           key={index}
           as={icons_lg[index]}
         />
         <Button
-          textColor={colorMode === "light" ? "#595959" : "#d9d9d9"}
+          textColor={color}
           variant="link"
           textAlign="left"
         >
-          <Link to={links_lg[index]}>{option}</Link>
+          <Link to={links_lg[index]} onClick={()=> setSelectedLGIndex(index)}>{option}</Link>
         </Button>
       </HStack>
     </ListItem>
