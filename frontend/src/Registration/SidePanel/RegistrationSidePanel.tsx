@@ -5,28 +5,25 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button,
   Flex,
   HStack,
-  Menu,
-  MenuButton,
-  MenuList,
   Show,
   Text,
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import AddItemDrawer from "../../Inventory/Item/AddItemDrawer";
 import AddSupplierDrawer from "../Supplier/AddSupplierDrawer";
 import AddServiceDrawer from "../Services/AddServiceDrawer";
 import AddEmployeeDrawer from "../Employee/AddEmployeeDrawer";
 import UserAddDrawer from "../User/UserAddDrawer";
+import { useState } from "react";
 
 const RegistrationSidePanel = () => {
+  const [selectedIndex, setSelectedIndex] = useState(-1)
   const registerList = ["Employees", "Suppliers", "Services", "User"];
   const register_links = ["", "suppliers", "services", "user"];
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const options = ["ADD"];
 
@@ -40,8 +37,8 @@ const RegistrationSidePanel = () => {
       >
         <AccordionItem borderRadius={10}>
           <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
+            <AccordionButton onClick={()=>setSelectedIndex(index)} padding={0}>
+              <Box as="span" flex="1" textAlign="left" bg={selectedIndex === index ? '#f1cac1':''} padding={3} borderRadius={10}>
                 <Link to={register_links[index]}>
                   <Text fontWeight="bold">{reg}</Text>
                 </Link>

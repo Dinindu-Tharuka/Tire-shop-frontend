@@ -11,15 +11,17 @@ import {
   Text,
   VStack,
   useColorMode,
+  useStatStyles,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import StockAddDrawer from "../StockInvoice/StockAddDrawer";
 import BillAddDrawer from "../Bill/BillAddDrawer";
 import RebuildSideBarOptions from "../Rebuilt/SideBarOptions/RebuildSideBarOptions";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserMeContext from "../../Contexts/User/UserMe";
 
 const BillingSidePanel = () => {
+  const [selectedIndex, setSelectedIndex] = useState(-1)
   // Administration
   const userMe = useContext(UserMeContext);
   let billingList = [
@@ -60,8 +62,8 @@ const BillingSidePanel = () => {
       >
         <AccordionItem borderRadius={10}>
           <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
+            <AccordionButton onClick={()=> setSelectedIndex(index) } padding={0}>
+              <Box as="span" flex="1" textAlign="left" bg={selectedIndex === index ? '#f1cac1':''} padding={3} borderRadius={10}>
                 <Link to={billing_links[index]}>
                   <Text fontWeight="bold">{bill}</Text>
                 </Link>

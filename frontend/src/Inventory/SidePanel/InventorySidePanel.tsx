@@ -15,8 +15,10 @@ import {
 import AddItemDrawer from "../Item/AddItemDrawer";
 import AddCategoryDrawer from "../Category/AddCategoryDrawer";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const InventorySidePanel = () => {
+  const [selectedIndex,setSelectedIndex] = useState(-1)
   const inventoryList = ["Item", "Category"];
   const inventory_links = ["", "categories"];
   const { colorMode } = useColorMode();
@@ -33,8 +35,8 @@ const InventorySidePanel = () => {
       >
         <AccordionItem borderRadius={10}>
           <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
+            <AccordionButton onClick={()=>setSelectedIndex(index)} padding={0}>
+              <Box as="span" flex="1" textAlign="left" bg={selectedIndex === index ? '#f1cac1':''} padding={3} borderRadius={10}>
                 <Link to={inventory_links[index]}>
                   <Text fontWeight="bold">{inventory}</Text>
                 </Link>

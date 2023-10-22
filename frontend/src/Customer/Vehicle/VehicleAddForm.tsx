@@ -79,7 +79,7 @@ const VehicleAddForm = () => {
 
           <div className="mb-3 h-75">
             <Select {...register("customer")}>
-              <option value={selectedCustomer.id}>{selectedCustomer.name}</option>
+              <option value={selectedCustomer.id} key={selectedCustomer.id}>{selectedCustomer.name}</option>
               {customers.map( cus=> <option value={cus.id}>{cus.name}</option>)}
 
             </Select>
