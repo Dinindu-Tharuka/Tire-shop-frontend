@@ -16,10 +16,14 @@ import {
 import { useContext, useState } from "react";
 import UserContext from "../../Contexts/User/UserContext";
 import UserDeleteDrawer from "./UserDeleteDrawer";
+import ShowUserProfile from "./User Profile/ShowUserProfile";
+import UserProfileContext from "../../Contexts/User/UserProfileContext";
+import ShowUserProfileModel from "./User Profile/ShowUserProfileModel";
 
 const UserListTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const [pageNum, setPageNum] = useState(1);
+  const {userProfiles} = useContext(UserProfileContext)
   const {
     users,
     setUsers,
@@ -41,6 +45,7 @@ const UserListTable = () => {
           <Thead>
             <Tr>
               <Th></Th>
+              <Th></Th>
               <Th>Id</Th>
               <Th>User Name</Th>
               <Th>Email</Th>  
@@ -51,6 +56,7 @@ const UserListTable = () => {
             {users?.map((user, index) => {
               return (
                 <Tr key={user.id}>
+                  <Td><ShowUserProfileModel userProfile={userProfiles.find(profile => profile.user_account_id === user.id)}/></Td>
                   <Td><UserDeleteDrawer selectedDeleteUser={user}/></Td>            
                   <Td>{user.id}</Td>
                   <Td>{user.user_name}</Td>
