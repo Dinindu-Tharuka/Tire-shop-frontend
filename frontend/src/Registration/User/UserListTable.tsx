@@ -19,11 +19,14 @@ import UserDeleteDrawer from "./UserDeleteDrawer";
 import ShowUserProfile from "./User Profile/ShowUserProfile";
 import UserProfileContext from "../../Contexts/User/UserProfileContext";
 import ShowUserProfileModel from "./User Profile/ShowUserProfileModel";
+import UserMeContext from "../../Contexts/User/UserMe";
 
 const UserListTable = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const [pageNum, setPageNum] = useState(1);
   const {userProfiles} = useContext(UserProfileContext)
+  const userME = useContext(UserMeContext)
+
   const {
     users,
     setUsers,
@@ -31,6 +34,8 @@ const UserListTable = () => {
     isLoadingUsers,
     setErrorFetchUser
   } = useContext(UserContext);
+
+  console.log(users)
   if (isLoadingUsers) return <Spinner />;
   return (
     <Flex alignItems="center" flexDir="column">
@@ -57,11 +62,11 @@ const UserListTable = () => {
               return (
                 <Tr key={user.id}>
                   <Td><ShowUserProfileModel userProfile={userProfiles.find(profile => profile.user_account_id === user.id)}/></Td>
-                  <Td><UserDeleteDrawer selectedDeleteUser={user}/></Td>            
+                  <Td>{!user.is_superuser && <UserDeleteDrawer selectedDeleteUser={user}/>}</Td>            
                   <Td>{user.id}</Td>
                   <Td>{user.user_name}</Td>
                   <Td>{user.email}</Td>    
-                  <Td>{user.is_manager ? 'Manager': user.id === 1 ? 'Superuser': 'Cashier'}</Td>  
+                  <Td>{user.is_manager ? 'Manager': user.is_superuser ? 'Superuser': 'Cashier'}</Td>  
                 </Tr>
               );
             })}

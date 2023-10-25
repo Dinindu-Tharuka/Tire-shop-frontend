@@ -7,7 +7,6 @@ export interface UserProfile{
     last_name:string;
     telephone:string;
     address:string;
-
 }
 
 export default create('/user-profiles/')
