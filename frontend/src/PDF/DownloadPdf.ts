@@ -2,6 +2,8 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import React, { SetStateAction } from 'react'
 
+
+
 const DownloadPdf = (capture : HTMLDivElement | null, setLoader:React.Dispatch<SetStateAction<boolean>>) => {
   
     setLoader(true);
@@ -27,7 +29,7 @@ const DownloadPdf = (capture : HTMLDivElement | null, setLoader:React.Dispatch<S
 
         const fileName = String(new Date().valueOf());
         await doc.save(fileName, { returnPromise: true });
-        window.open(doc.output("bloburl", { filename: fileName }), "_blank");
+        window.open(doc.output('bloburl', { filename: fileName })  , "_blank");
 
         setLoader(false);
       });

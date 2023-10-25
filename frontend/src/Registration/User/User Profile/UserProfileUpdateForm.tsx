@@ -71,6 +71,18 @@ const UserProfileUpdateForm = ({ onClose }: Props) => {
           {...register("last_name")}
           defaultValue={currentUserProfile?.last_name}
         />
+        <Input
+          placeholder="Telephone"
+          margin={3}
+          {...register("telephone")}
+          defaultValue={currentUserProfile?.telephone}
+        />
+        <Input
+          placeholder="Address"
+          margin={3}
+          {...register("address")}
+          defaultValue={currentUserProfile?.address}
+        />
 
         <HStack marginTop={5}>
           <Button variant="ghost" type="submit" onClick={()=>{ 
