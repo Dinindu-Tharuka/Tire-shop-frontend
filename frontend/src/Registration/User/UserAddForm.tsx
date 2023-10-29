@@ -33,6 +33,7 @@ const UserAddForm = () => {
         if (res.status === 201) {
           setSuccess("Successfully Created.");
           setUsers([res.data, ...users]);
+          console.log(res.data)
         }
       })
       .catch((err) => setErrorUserCreate("Not Successfully Created."));

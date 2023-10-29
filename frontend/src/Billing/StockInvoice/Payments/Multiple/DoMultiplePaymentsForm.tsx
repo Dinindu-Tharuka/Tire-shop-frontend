@@ -18,7 +18,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import StockPaymentContext from "../../../../Contexts/Stock/StockPaymentContext";
 import stockPaymentService, {
   StockPayment,
@@ -30,6 +30,8 @@ import {
 import MultiplePaymentConfirmation from "./MultiplePaymentConfirmation";
 import AllStockInvoiceContext from "../../../../Contexts/Stock/AllStockInvoiceContext";
 import StockInvoicePageContext from "../../../../Contexts/Stock/StockInvoicePageContext";
+import stockPaymentVoucherService from "../../../../services/Stock/stock-payment-voucher-service";
+import { GenerateBillNumber } from "../../../../Common/GenerateBillNumbers";
 
 interface Props {
   selectedInvoices: StockInvoice[];
@@ -44,30 +46,29 @@ const DoMultiplePaymentsForm = ({
   const [paymentSuccess, setPaymentSuccess] = useState("");
   const [paymentError, setPaymentError] = useState("");
   const { handleSubmit, register, setValue } = useForm<StockPayment>();
-  
+
   // selected Payment method
   const [selectedValue, setSelectedValue] = useState("1");
-  
-  // for refetching 
-  const { stockPayments, setRefetchStockPayments } = useContext(StockPaymentContext);
-  const { setRefetchStockInvoices } = useContext(AllStockInvoiceContext)
-  const { setRefetchPageStockInvocie } = useContext(StockInvoicePageContext)
-  const dateNow = new Date()
-  console.log(dateNow)
-  
+
+  // for refetching
+  const { stockPayments, setRefetchStockPayments } =
+    useContext(StockPaymentContext);
+  const { setRefetchStockInvoices } = useContext(AllStockInvoiceContext);
+  const { setRefetchPageStockInvocie } = useContext(StockInvoicePageContext);
+  const dateNow = new Date();
+  console.log(dateNow);
 
   useEffect(() => {
     const totalDebit = stockInvoiceTotal(stockPayments, selectedInvoices);
     setValue("amount", totalDebit);
   }, []);
 
- 
-
-  const onSubmit = async (data: StockPayment) => {
+  const onSubmit = async (data: FieldValues) => {
     const isCash = selectedValue === "1" ? true : false;
     const isCheque = selectedValue === "2" ? true : false;
     const isCreditCard = selectedValue === "3" ? true : false;
 
+    let payments = [];
     let newly = {};
     for (let seletedStockInvoice of selectedInvoices) {
       if (isCheque) {
@@ -94,26 +95,50 @@ const DoMultiplePaymentsForm = ({
           stock_invoice: seletedStockInvoice.invoice_no,
         };
       }
-      
-      await stockPaymentService
-        .create(newly)
-        .then((res) => {          
+
+      payments.push(newly);
+
+      // await stockPaymentService
+      //   .create(newly)
+      //   .then((res) => {
+      //     setPaymentSuccess("Payment Succesfull.");
+      //     setIsPaymentBillCreated(true);
+
+      //     // For refetching
+      //     setRefetchStockPayments(dateNow+'')
+      //     setRefetchStockInvoices(dateNow+'')
+      //     setRefetchPageStockInvocie(dateNow+'')
+
+      //   })
+      //   .catch((err) => setPaymentError(err.message));
+    }
+
+    const generateRandomNumber = new GenerateBillNumber("VCH");
+    const number = generateRandomNumber.generate();
+
+    
+
+
+    if (selectedInvoices.length === payments.length){
+      const newlyVoucher = {
+        voucher: number,
+        total_payment: data.amount,
+        stock_payments: payments,
+      };
+
+    await stockPaymentVoucherService
+        .create(newlyVoucher)
+        .then((res) => {
           setPaymentSuccess("Payment Succesfull.");
           setIsPaymentBillCreated(true);
-
-          // For refetching
-          setRefetchStockPayments(dateNow+'') 
-          setRefetchStockInvoices(dateNow+'') 
-          setRefetchPageStockInvocie(dateNow+'')
-
+          setRefetchStockPayments(dateNow + "");
+          setRefetchStockInvoices(dateNow + "");
+          setRefetchPageStockInvocie(dateNow + "");
         })
         .catch((err) => setPaymentError(err.message));
 
-      
     }
-    
 
-    
   };
 
   const onConfirm = () => {
@@ -124,9 +149,10 @@ const DoMultiplePaymentsForm = ({
       {paymentSuccess && <Text textColor="green.800">{paymentSuccess}</Text>}
       {paymentError && <Text textColor="red.700">{paymentError}</Text>}
 
-      <HStack marginBottom={5} justifyContent="space-between">
+      <VStack marginBottom={5} justifyContent="space-between" align="start">
+       
         <Text>PAYMENTS</Text>
-      </HStack>
+      </VStack>
 
       <form>
         <VStack>
