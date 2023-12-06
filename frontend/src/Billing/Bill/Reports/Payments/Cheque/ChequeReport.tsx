@@ -117,7 +117,7 @@ const ChequeReport = ({ startDate, endDate }: Props) => {
             <Td></Td>
             <Td></Td>
             <Td></Td>
-            <Td textAlign='right'>{totalAmount}</Td>
+            <Td textAlign='right'>{totalAmount.toFixed(2)}</Td>
           </Tr>
         </Tbody>
       </Table>

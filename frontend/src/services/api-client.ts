@@ -17,6 +17,8 @@ const axiosInstance =  axios.create({
         "Authorization":`JWT ${localStorage.getItem('access') || ''}`,
         "Content-Type":'application/json',
     }
+
+  
    
    
 })

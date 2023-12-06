@@ -100,7 +100,7 @@ const CreditCardReport = ({ startDate, endDate}:Props) => {
                         }
                       </Td>
                       <Td>{credit_card.payeename}</Td>
-                      <Td>{credit_card.amount}</Td>
+                      <Td textAlign='right'>{credit_card.amount}</Td>
                     </Tr>
                   ))}
               </>
@@ -110,7 +110,7 @@ const CreditCardReport = ({ startDate, endDate}:Props) => {
               <Td></Td>
               <Td></Td>
               <Td></Td>
-              <Td textAlign='right'>{totalAmount}</Td>
+              <Td textAlign='right'>{totalAmount.toFixed(2)}</Td>
             </Tr>
           </Tbody>
         </Table>

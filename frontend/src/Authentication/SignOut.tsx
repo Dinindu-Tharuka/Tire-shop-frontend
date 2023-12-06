@@ -21,6 +21,7 @@ const SignOut = () => {
   const signOut = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
+    localStorage.setItem("isReloaded", 'false')
   };
   return (
     <Center width="100%" marginTop={7}>

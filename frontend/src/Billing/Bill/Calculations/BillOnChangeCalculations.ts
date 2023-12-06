@@ -65,7 +65,7 @@ export const onChangeBillQty = (
         
         setValue(`bill_items.${index}.customer_discount`, discount)
         
-        setValue(`bill_items.${index}.customer_price`, (seletedStockItemUnique?.unit_price * qty))
+        setValue(`bill_items.${index}.customer_price`, Math.round(seletedStockItemUnique?.unit_price * qty))
     }
 
 }

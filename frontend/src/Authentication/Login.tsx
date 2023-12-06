@@ -27,6 +27,8 @@ const Login = () => {
     axiosInstance.post("/jwt/create/", data).then((res) => {
       localStorage.clear();
 
+      console.log(res.data)
+
       localStorage.setItem("access", res.data.access);
       localStorage.setItem("refresh", res.data.refresh);
       localStorage.setItem("isReloaded", 'false')
