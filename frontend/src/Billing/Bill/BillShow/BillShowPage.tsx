@@ -93,7 +93,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
                   <Tr>
                     <Th>Sub Total</Th>
                     <Td paddingRight={100} textAlign="right">
-                      {seletedBill.sub_total}
+                      {seletedBill.sub_total-seletedBill.discount_amount}
                     </Td>
                   </Tr>
                   <Tr>

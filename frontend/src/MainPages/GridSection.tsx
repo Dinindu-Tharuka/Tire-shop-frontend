@@ -218,6 +218,7 @@ const GridSection = () => {
     setAllReceivedSupplierTyres,
     allReceivedSupplierTyresFetchError,
     setAllReceivedSupplierTyresFetchError,
+    setRefetchallReceivedSupplierTyres
   } = useAllReceivedSupplierTyres();
 
   const {
@@ -462,6 +463,7 @@ const GridSection = () => {
                                 setAllReceivedSupplierTyres,
                                 allReceivedSupplierTyresFetchError,
                                 setAllReceivedSupplierTyresFetchError,
+                                setRefetchallReceivedSupplierTyres
                               }}
                             >
                               <AllReceivedTyresContext.Provider

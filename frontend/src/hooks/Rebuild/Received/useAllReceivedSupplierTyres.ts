@@ -5,6 +5,8 @@ import allReceivedSupplierTyresService from '../../../services/Rebuild/Received/
 const useAllReceivedSupplierTyres = () => {
     const [allReceivedSupplierTyres, setAllReceivedSupplierTyres] = useState<ReceivedSupplierTyre[]>([])
     const [allReceivedSupplierTyresFetchError, setAllReceivedSupplierTyresFetchError] = useState('')
+    const [refetchallReceivedSupplierTyres, setRefetchallReceivedSupplierTyres] = useState('')
+
 
     useEffect(()=>{
 
@@ -14,8 +16,8 @@ const useAllReceivedSupplierTyres = () => {
             .then(res => setAllReceivedSupplierTyres(res.data))
             .catch(error => setAllReceivedSupplierTyresFetchError(error.message))            
         return ()=>cancel()
-    },[])
-  return {allReceivedSupplierTyres, setAllReceivedSupplierTyres, allReceivedSupplierTyresFetchError, setAllReceivedSupplierTyresFetchError}
+    },[refetchallReceivedSupplierTyres])
+  return {allReceivedSupplierTyres, setAllReceivedSupplierTyres, allReceivedSupplierTyresFetchError, setAllReceivedSupplierTyresFetchError, setRefetchallReceivedSupplierTyres}
 }
 
 export default useAllReceivedSupplierTyres

@@ -6,6 +6,7 @@ interface AllReceivedSupplierTyreContextType{
     setAllReceivedSupplierTyres:Dispatch<SetStateAction<ReceivedSupplierTyre[]>>;
     allReceivedSupplierTyresFetchError:string;
     setAllReceivedSupplierTyresFetchError:Dispatch<SetStateAction<string>>;
+    setRefetchallReceivedSupplierTyres:Dispatch<SetStateAction<string>>;
 }
 
 const AllReceivedSupplierTyresContext = React.createContext<AllReceivedSupplierTyreContextType>({} as AllReceivedSupplierTyreContextType)

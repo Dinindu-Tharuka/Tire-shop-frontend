@@ -16,6 +16,7 @@ import BillPageContext from "../../Contexts/Bill/BillContext";
 import AllBillContext from "../../Contexts/Bill/AllBillContext";
 import useAllDagPayments from "../../hooks/Billing/useAllDagPayments";
 import AllDagPaymentContext from "../../Contexts/Bill/AllDagPaymentContext";
+import AllReceivedSupplierTyresContext from "../../Contexts/Rebuild/Received/AllReceivedSupplierTyre";
 
 interface Props {
   selectedDeleteBill: Bill;
@@ -33,10 +34,15 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
 
   const onDeleteBill = (seletedBill: Bill) => {
     const originalBills = [...bills];
+    const { setRefetchallReceivedSupplierTyres } = useContext(AllReceivedSupplierTyresContext)
 
     BillService.delete(`${seletedBill.invoice_id}`)
       .then((res) => {
         if (res.status === 204) {
+
+          // refetch supplier tyes
+          setRefetchallReceivedSupplierTyres(`${Date.now()}`)
+
           deleteToast({
             title: `${name}`,
             description: `${name} successfully deleted.`,

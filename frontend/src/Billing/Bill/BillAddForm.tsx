@@ -67,6 +67,9 @@ const BillAddForm = () => {
   const [isCreatedBill, setIsCreatedBill] = useState(false);
   const [bill, setBill] = useState<Bill>();
 
+  // for reseting bill
+  const [isResetBill, setIsResetBill] = useState(false)
+
   //
   const [seletedFilteredListSet, setSeletedFilteredListSet] = useState<
     StockItemUnique[][]
@@ -101,7 +104,7 @@ const BillAddForm = () => {
   const { stockItemsUnique, setStockItemsUnique } = useContext(
     StockItemUniqueContext
   );
-  const { allReceivedSupplierTyres } = useContext(
+  const { allReceivedSupplierTyres, setRefetchallReceivedSupplierTyres } = useContext(
     AllReceivedSupplierTyresContext
   );
   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
@@ -192,7 +195,7 @@ const BillAddForm = () => {
     const generateBillNumber = new GenerateBillNumber('TYRE')
     setValue('invoice_id',generateBillNumber.generate())
 
-  },[isCreatedBill])
+  },[isResetBill])
 
   // filtering supplier tyres
   useEffect(() => {
@@ -213,7 +216,7 @@ const BillAddForm = () => {
     });
 
     setFilteredSupplierTyres([...filtered]);
-  }, []);
+  }, [isResetBill]);
 
   // calculate Sub Total
   useEffect(() => {
@@ -283,6 +286,9 @@ const BillAddForm = () => {
     setSuccess("");
     // Programmatically trigger form submission
     handleSubmit(onSubmit)();
+
+    // for reseting
+    setIsResetBill(false)
   };
 
   return (
@@ -782,17 +788,21 @@ const BillAddForm = () => {
             onClick={() => {
               itemsArray.forEach((item, index) => itemRemove(index));
               serviceArray.forEach((service, index) => serviceRemove(index));
-              reset();
-
+              
               setIsCreatedBill(false);
               setSuccess("");
               setErrorBillCreate("");
+              selectedServicesPrice.length = 0
+              setIsResetBill(true)
+              setIsCreatedBill(false)
+              reset();
+              setRefetchallReceivedSupplierTyres(`${Date.now()}`)
             }}
           >
             Reset
           </Button>
 
-          {bill !== undefined && bill && <BillShowDrawer selectedBill={bill} />}
+          {bill !== undefined && bill && isCreatedBill && <BillShowDrawer selectedBill={bill} />}
         </HStack>
       </form>
     </>
