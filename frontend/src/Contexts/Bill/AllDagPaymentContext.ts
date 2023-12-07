@@ -6,7 +6,8 @@ interface AllDagPaymentContextType{
     allDagPayments:DagPayment[];
     setAllDagPayments:Dispatch<SetStateAction<DagPayment[]>>;    
     isLoadingallDagPayments:boolean; 
-    allDagPaymentsFetchError:string
+    allDagPaymentsFetchError:string;
+    setReFetchAllDagPayments:Dispatch<SetStateAction<string>>; 
     
 }
 

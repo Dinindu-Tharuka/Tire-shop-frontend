@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Bill, DagPayment } from '../../services/Billing/bill-page-service'
-import billService from '../../services/Billing/bill-service'
 import allDagPaymentService from '../../services/Billing/all-dag-payment-service'
 
 const useAllDagPayments = () => {
     const [allDagPayments, setAllDagPayments] = useState<DagPayment[]>([])
     const [allDagPaymentsFetchError, setAllDagPaymentsFetchError] = useState('')
     const [isLoadingallDagPayments, setIsLoadingallDagPayments] = useState(false)
+    const [reFetchAllDagPayments, setReFetchAllDagPayments] = useState('')
 
     useEffect(()=>{
         setIsLoadingallDagPayments(true)
@@ -22,9 +22,9 @@ const useAllDagPayments = () => {
             });
   
           return ()=>cancel();
-      }, [])
+      }, [reFetchAllDagPayments])
       
-  return {allDagPayments, setAllDagPayments, allDagPaymentsFetchError, setAllDagPaymentsFetchError, isLoadingallDagPayments, setIsLoadingallDagPayments}
+  return {allDagPayments, setAllDagPayments, allDagPaymentsFetchError, setAllDagPaymentsFetchError, isLoadingallDagPayments, setIsLoadingallDagPayments, setReFetchAllDagPayments}
 }
 
 export default useAllDagPayments

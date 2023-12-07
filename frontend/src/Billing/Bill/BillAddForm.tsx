@@ -104,12 +104,14 @@ const BillAddForm = () => {
   const { stockItemsUnique, setStockItemsUnique } = useContext(
     StockItemUniqueContext
   );
+  // For refetching tyres
   const { allReceivedSupplierTyres, setRefetchallReceivedSupplierTyres } = useContext(
     AllReceivedSupplierTyresContext
   );
+  const { allDagPayments, setAllDagPayments, setReFetchAllDagPayments } = useContext(AllDagPaymentContext);
+  
+  
   const { allSendSupplierTyres } = useContext(AllSendSupplierTyresContext);
-  const { allDagPayments, setAllDagPayments } =
-    useContext(AllDagPaymentContext);
 
   // To calculate valid qty in selected item unique
   const [seletedItemCountList, setSeletedItemCountList] = useState<number[]>(
@@ -207,6 +209,8 @@ const BillAddForm = () => {
         )?.job_no,
       };
     });
+
+    console.log('newly', newly)
     const filtered = newly.filter((tyre) => {
       const isAvailable = allDagPayments.some(
         (pay) => pay.received_supplier_tyre === tyre.id
@@ -216,7 +220,9 @@ const BillAddForm = () => {
     });
 
     setFilteredSupplierTyres([...filtered]);
-  }, [isResetBill]);
+
+    console.log(filtered)
+  }, [isResetBill, allReceivedSupplierTyres, allDagPayments]);
 
   // calculate Sub Total
   useEffect(() => {
@@ -797,6 +803,7 @@ const BillAddForm = () => {
               setIsCreatedBill(false)
               reset();
               setRefetchallReceivedSupplierTyres(`${Date.now()}`)
+              setReFetchAllDagPayments(`${Date.now()}`)
             }}
           >
             Reset

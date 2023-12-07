@@ -27,21 +27,24 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
   const cancelRef = useRef(null);
   const deleteToast = useToast();
   const { bills, setBills, setBillFetchError } = useContext(BillPageContext);
-  const { allDagPayments, setAllDagPayments } =
-    useContext(AllDagPaymentContext);
+  
+  // For refetching tyres
+  const { allDagPayments, setAllDagPayments, setReFetchAllDagPayments } = useContext(AllDagPaymentContext);
+  const { setRefetchallReceivedSupplierTyres } = useContext(
+    AllReceivedSupplierTyresContext
+  );
+ 
+  
+  
 
   const name = "Bill";
 
   const onDeleteBill = (seletedBill: Bill) => {
     const originalBills = [...bills];
-    const { setRefetchallReceivedSupplierTyres } = useContext(AllReceivedSupplierTyresContext)
 
     BillService.delete(`${seletedBill.invoice_id}`)
       .then((res) => {
-        if (res.status === 204) {
-
-          // refetch supplier tyes
-          setRefetchallReceivedSupplierTyres(`${Date.now()}`)
+        if (res.status === 204) {       
 
           deleteToast({
             title: `${name}`,
@@ -57,6 +60,11 @@ const BillDelete = ({ selectedDeleteBill }: Props) => {
           setBills(
             bills.filter((bill) => bill.invoice_id !== seletedBill.invoice_id)
           );
+
+          // For refetching dag tires
+          setReFetchAllDagPayments(`${Date.now()}`)
+          setRefetchallReceivedSupplierTyres(`${Date.now()}`)
+
         }
         setBillFetchError("");
       })

@@ -211,6 +211,7 @@ const GridSection = () => {
     setAllDagPayments,
     allDagPaymentsFetchError,
     isLoadingallDagPayments,
+    setReFetchAllDagPayments
   } = useAllDagPayments();
 
   const {
@@ -455,6 +456,7 @@ const GridSection = () => {
                               setAllDagPayments,
                               allDagPaymentsFetchError,
                               isLoadingallDagPayments,
+                              setReFetchAllDagPayments
                             }}
                           >
                             <AllReceivedSupplierTyresContext.Provider
