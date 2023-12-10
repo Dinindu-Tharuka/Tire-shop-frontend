@@ -18,13 +18,16 @@ const Login = () => {
   const [accessToken, setAccessToken] = useState<string | null>("");
   const [isShowEmailBox, setIsShowEmailBox] = useState(false);
   const [isResetEmailSuccess, setIsResetEmailSuccess] = useState(false);
+  const [err, setErr] = useState('')
 
   if (accessToken) return <Navigate to="/" />;
 
   const onSubmitForm = (data: LoginForm) => {
     console.log("data", data);
 
-    axiosInstance.post("/jwt/create/", data).then((res) => {
+    axiosInstance
+      .post("/jwt/create/", data)
+      .then((res) => {
       localStorage.clear();
 
       console.log(res.data)
@@ -33,7 +36,7 @@ const Login = () => {
       localStorage.setItem("refresh", res.data.refresh);
       localStorage.setItem("isReloaded", 'false')
       setAccessToken(res.data.access);
-    });
+    }).catch(() => setErr('Username or Password Incorrect.'))
   };
   const showEmailBox = () => {
     setIsShowEmailBox(true);
@@ -48,6 +51,7 @@ const Login = () => {
 
   return (
     <>
+    {err && <Text color='red'>{err}</Text>}
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <div className="mb-3 h-75">
           <Input
