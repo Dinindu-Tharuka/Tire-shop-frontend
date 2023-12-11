@@ -9,11 +9,11 @@ import {
     useColorMode,
     useDisclosure,
   } from "@chakra-ui/react";
-  import { useRef, useState } from "react";
+  import { useRef } from "react";
 import StockAddForm from "./StockAddForm";
 
 const StockAddDrawer = () => {
-    const { toggleColorMode, colorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = useRef(null);
   return (
@@ -44,7 +44,7 @@ const StockAddDrawer = () => {
       <DrawerOverlay />
       <DrawerContent height="100vh">
         <DrawerCloseButton />
-        <DrawerHeader>Add Stock Bill</DrawerHeader>
+        <DrawerHeader>Add Stock Invoice</DrawerHeader>
 
         <DrawerBody>
           <StockAddForm/>

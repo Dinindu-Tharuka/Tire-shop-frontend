@@ -9,7 +9,6 @@ export interface Item{
     country:string;
     vale_type:string;
     item_category:number;
-    supplier:number;
   }
 
 export interface ItemPageStructure{

@@ -49,7 +49,7 @@ const StockInvoiceShowDrawer = ({ selectedStockInvoice }:Props) => {
         <DrawerOverlay />
         <DrawerContent height="100vh">
           <DrawerCloseButton />
-          <DrawerHeader>Customer Bill</DrawerHeader>
+          <DrawerHeader>GRN Invoice</DrawerHeader>
 
           <DrawerBody>
             <StockInvoiceShowPage seletedStockInvoice={ selectedStockInvoice }/>

@@ -12,8 +12,6 @@ import ItemService, { Item } from "../../services/Inventory/item-page-service";
 import ItemPageContext from "../../Contexts/Inventory/ItemPageContext";
 import FilterCategory from "../Category/FilterCategory";
 import { Category } from "../../services/Inventory/category-page-service";
-import SupplierFilter from "../../Registration/Supplier/SupplierFilter";
-import { Supplier } from "../../services/Registration/supplier-service";
 
 const ItemAddForm = () => {
   const [errorItemCreate, setErrorItemCreate] = useState("");
@@ -23,15 +21,12 @@ const ItemAddForm = () => {
   const { colorMode } = useColorMode();
   const { items, setItems } = useContext(ItemPageContext);
   const [selectedCatgory, setSelectedCatgory] = useState<Category | null>(null);
-  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(
-    null
-  );
+  
 
   const onSubmit = (data: FieldValues) => {
     const newly = {
       ...data,
       item_category: selectedCatgory?.id,
-      supplier: selectedSupplier?.id,
     };
     console.log("Item", newly);
 
@@ -102,12 +97,7 @@ const ItemAddForm = () => {
               <option value="Long Valve">Long Valve</option>
               <option value="Short Valve">Short Valve</option>
             </Select>
-          </div>
-          <div className="mb-3">
-            <SupplierFilter
-              selectedSupplier={(sup) => setSelectedSupplier(sup)}
-            />
-          </div>
+          </div>          
         </div>
         <HStack justifyContent="space-between">
           <Button

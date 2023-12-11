@@ -11,7 +11,7 @@ interface Props {
 }
 
 const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<Item>();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { colorMode } = useColorMode();
@@ -135,22 +135,7 @@ const UpdateItemForm = ({ selectedUpdateItem }: Props) => {
               ))}
             </Select>
           </div>
-          <div className="mb-3">
-            <Select {...register("supplier")} className="select w-100 p-2">
-              <option>
-                {selectedUpdateItem.supplier !== null
-                  ? suppliers.find(
-                      (course) => course.id === selectedUpdateItem.supplier
-                    )?.name
-                  : "Select Supplier"}
-              </option>
-              {suppliers.map((supplier, index) => (
-                <option key={index} value={supplier.id}>
-                  {supplier.name}
-                </option>
-              ))}
-            </Select>
-          </div>
+          
         </div>
         <HStack justifyContent="space-between">
           <Button
