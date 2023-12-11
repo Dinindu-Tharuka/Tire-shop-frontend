@@ -56,31 +56,29 @@ const ItemTable = () => {
   const { colorMode } = useColorMode();
 
   const onTypeId = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    setItemQuery(event.currentTarget.value);
-    setAllItemQuery(event.currentTarget.value);
+    setItemQuery(event.currentTarget.value+'');
+    setAllItemQuery(event.currentTarget.value+'');
   };
   const onTypeSize = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    setItemSizeQuery(event.currentTarget.value);
-    setAllItemSizeQuery(event.currentTarget.value);
+    setItemSizeQuery(event.currentTarget.value+'');
+    setAllItemSizeQuery(event.currentTarget.value+'');
   };
   const onTypeBrand = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.currentTarget.value);
-    setItemBrandQuery(event.currentTarget.value);
-    setAllItemBrandQuery(event.currentTarget.value);
+    console.log(event.currentTarget.value+'');
+    setItemBrandQuery(event.currentTarget.value+'');
+    setAllItemBrandQuery(event.currentTarget.value+'');
   };
 
   const { stockItems } = useStockItem();
-
-  if (error)
-    return <Text textColor="red">Unable to fetch data from the internet.</Text>;
-
+  
   return (
     <Flex alignItems="center" flexDir="column">
+      {error && <Text textColor="red">Unable to fetch data from the internet.</Text>}
       <HStack>
         <Input placeholder="Search Item" onKeyUp={onTypeId} />
         <Input placeholder="Search Size" onKeyUp={onTypeSize} />
         <Input placeholder="Search Brand" onKeyUp={onTypeBrand} />
-        {userMe.is_superuser && <ItemTableModel items={allItems} />}
+        {(userMe.is_superuser || userMe.is_manager) && <ItemTableModel items={allItems} />}
       </HStack>
       <TableContainer>
         <Table>

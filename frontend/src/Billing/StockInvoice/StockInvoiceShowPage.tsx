@@ -10,7 +10,6 @@ import {
   Thead,
   Tr,
   useColorMode,
-  IconButton,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { StockInvoice } from "../../services/Stock/stock-invoice-page-service";

@@ -29,10 +29,12 @@ import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllSupplierContext from "../../Contexts/Registration/AllSupplierContext";
 import ShowMultipleStockInvoicesModel from "./Payments/Multiple/ShowMultipleStockInvoicesModel";
+import UserMeContext from "../../Contexts/User/UserMe";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const { colorMode } = useColorMode();
+  const userMe = useContext(UserMeContext)
   const {
     stockInvoices,
     errorFetchStockInvoice,
@@ -63,7 +65,7 @@ const StockInvoiceTable = () => {
     <Flex alignItems="center" flexDir="column">
       <HStack>
         <Flex>
-          <ShowMultipleStockInvoicesModel />
+          {userMe.is_superuser && <ShowMultipleStockInvoicesModel />}
         </Flex>
         <Input placeholder="GRN No" onKeyUp={onTypeGRnNoFilter} />
         <Input placeholder="Invoice No" onKeyUp={onTypeInvoiceNoFilter} />

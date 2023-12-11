@@ -20,6 +20,5 @@ export interface ItemPageStructure{
 }
 
 
-
 export default createPagination('/items-pagination/');;
 

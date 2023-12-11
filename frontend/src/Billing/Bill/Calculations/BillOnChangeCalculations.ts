@@ -29,8 +29,8 @@ export const onchangeBillStockItemUnique = (
         const customerDiscount = calculateCustomerDiscount(seletedStockItemUnique, stockItems, watch, index, qty)
         
         setValue(`bill_items.${index}.qty`, qty)
-        setValue(`bill_items.${index}.customer_discount`, customerDiscount)
-        setValue(`bill_items.${index}.customer_price`, customerPrice)
+        setValue(`bill_items.${index}.customer_discount`, Math.round(customerDiscount))
+        setValue(`bill_items.${index}.customer_price`, Math.round(customerPrice))
 
     }
 }

@@ -11,8 +11,9 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { useRef } from "react";
-import ItemService, { Item } from "../../services/Inventory/item-page-service";
+import { Item } from "../../services/Inventory/item-page-service";
 import ItemPageContext from "../../Contexts/Inventory/ItemPageContext";
+import itemService from "../../services/Inventory/item-service";
 
 interface Props {
   selectedDeleteItem: Item;
@@ -31,7 +32,7 @@ const ItemDelete = ({ selectedDeleteItem }: Props) => {
 
     setItems(items.filter((it) => it.item_id !== item.item_id));
 
-    ItemService.delete(`${item.item_id}`)
+    itemService.delete(`${item.item_id}`)
       .then((res) => {
         if (res.status === 204) {
           deleteToast({

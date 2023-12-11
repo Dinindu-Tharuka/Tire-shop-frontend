@@ -22,6 +22,8 @@ const useItemsPagination = () => {
         request     
             .then(res=> {
                 setItems(res.data.results)
+
+                console.log('items hook', res.data.results)
                 setnextItemPageUrl(res.data.next)
                 setPreviousItemPageUrl(res.data.previous)
                 setIsLoadingItems(false)

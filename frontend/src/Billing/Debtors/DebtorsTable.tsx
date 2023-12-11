@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import BillPageContext from "../../Contexts/Bill/BillContext";
-import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import { calculateTotalPayment } from "../Bill/Calculations/CalculateTotalPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import { makeUpDate } from "../UI/MakeUpDate";

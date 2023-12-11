@@ -287,7 +287,6 @@ const GridSection = () => {
       localStorage.setItem("isReloaded", "true");
     }
 
-    console.log('access', localStorage.getItem('access'))
     axiosInstance      
       .get<User>("/users/me/")
       .then((res) => setUserMe(res.data))
