@@ -1,6 +1,6 @@
 import {
   Button,
-  Flex,  
+  Flex,
   Table,
   TableContainer,
   Tbody,
@@ -12,7 +12,6 @@ import {
   useColorMode,
   IconButton,
 } from "@chakra-ui/react";
-import { CloseIcon } from '@chakra-ui/icons'
 import { useContext, useEffect, useRef, useState } from "react";
 import { StockInvoice } from "../../services/Stock/stock-invoice-page-service";
 import SupplierContext from "../../Contexts/Registration/SupplierContext";
@@ -46,22 +45,22 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
   return (
     <Flex>
       <Flex flexDir="column">
-        <Flex flexDir="column" width="70vw" marginRight={10}>
-          <div className="w-100 d-flex flex-column">
-            <div ref={pdfRef}>
+        <div ref={pdfRef}>
+          <Flex flexDir="column" width="70vw" marginRight={10}>
+            <div className="w-100 d-flex flex-column">
               <TableContainer>
                 <Table>
                   <Tbody>
                     <Tr>
                       <Th>Bill No</Th>
-                      <Td>{seletedStockInvoice.invoice_no}</Td>
+                      <Td>{seletedStockInvoice?.invoice_no}</Td>
                     </Tr>
                     <Tr>
                       <Th>Supplier</Th>
                       <Td>
                         {
                           suppliers.find(
-                            (sup) => sup.id === seletedStockInvoice.supplier
+                            (sup) => sup.id === seletedStockInvoice?.supplier
                           )?.name
                         }
                       </Td>
@@ -94,7 +93,7 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
                   </Thead>
 
                   <Tbody>
-                    {seletedStockInvoice.stock_items.map((item, index) => (
+                    {seletedStockInvoice?.stock_items.map((item, index) => (
                       <Tr key={index}>
                         <Td>
                           <Text>{item.retail_price}</Text>
@@ -123,27 +122,26 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
                 </Table>
               </TableContainer>
             </div>
-          </div>
-        </Flex>
-        <Flex width="30vw" flexDir="column">
-          <Table>
-            <Tr>
-              <Th whiteSpace="nowrap">Total Discount</Th>
-              <Td>{seletedStockInvoice.total_discount}</Td>
-              <Th whiteSpace="nowrap">Total Payment</Th>
-              <Td>
-                {stockInvoicePaymentTotal(stockPayments, seletedStockInvoice)}
-              </Td>
-              
-            </Tr>
-            <Tr>
-              <Th whiteSpace="nowrap">Sub Total</Th>
-              <Td>{seletedStockInvoice.total_amount}</Td>
-              <Th></Th>
-              <Td></Td>
-            </Tr>
-          </Table>
-        </Flex>
+          </Flex>
+          <Flex width="30vw" flexDir="column">
+            <Table>
+              <Tr>
+                <Th whiteSpace="nowrap">Total Discount</Th>
+                <Td>{seletedStockInvoice?.total_discount}</Td>
+                <Th whiteSpace="nowrap">Total Payment</Th>
+                <Td>
+                  {stockInvoicePaymentTotal(stockPayments, seletedStockInvoice)}
+                </Td>
+              </Tr>
+              <Tr>
+                <Th whiteSpace="nowrap">Sub Total</Th>
+                <Td>{seletedStockInvoice.total_amount}</Td>
+                <Th></Th>
+                <Td></Td>
+              </Tr>
+            </Table>
+          </Flex>
+        </div>
 
         <Button
           alignSelf="center"

@@ -3,6 +3,8 @@ import { useContext, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import CustomerService from "../../services/Customer/customer-service";
 import CustomerContext from "../../Contexts/Customer/CustomerContext";
+import allCustomerService from "../../services/Customer/all-customer-service";
+import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 
 const CustomerAddForm = () => {
     const { register, handleSubmit } = useForm();
@@ -12,14 +14,16 @@ const CustomerAddForm = () => {
     const { colorMode } = useColorMode();
 
     const {customers, setCustomers} = useContext(CustomerContext)
+    const {allCustomers, setAllCustomers} = useContext(AllCustomerContext)
 
     const onSubmit = (data: FieldValues)=>{
       
-      CustomerService
+      allCustomerService
       .create(data)
       .then(res => {
-        setSuccess(res.status === 201 ? 'Successfullt Created.':'')
+        setSuccess(res.status === 201 ? 'Successfully Created.':'')
         setCustomers([res.data, ...customers])
+        setAllCustomers([res.data, ...allCustomers])
           })
           .catch(err => setErrorCustomerCreate(err.message))
 

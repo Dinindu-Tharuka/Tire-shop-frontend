@@ -5,25 +5,18 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button,
   Flex,
   HStack,
-  Menu,
-  MenuButton,
-  MenuList,
   Show,
   Text,
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-import { AiOutlineDown } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import CustomerAddDrawer from "../Customer/CustomerAddDrawer";
-import VehicleAddDrawer from "../Vehicle/VehicleAddDrawer";
 const CustomerSidePanel = () => {
   const customerOptions = ["Customer"];
   const customerOptionLinks = ["", "categories"];
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const customerMenuList = customerOptions.map((option, index) => {
     return (

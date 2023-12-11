@@ -28,9 +28,11 @@ import useStockItem from "../../../hooks/Stock/useStockItems";
 import calculateStockitemCount from "../Calculations/CountStockItems";
 import ItemTableModel from "./ItemTableModel";
 import { AllItemContext } from "../../../Contexts/Inventory/AllItemContest";
+import UserMeContext from "../../../Contexts/User/UserMe";
 
 const ItemTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
+  const userMe = useContext(UserMeContext)
   const {
     items,
     nextItemPageUrl,
@@ -78,7 +80,7 @@ const ItemTable = () => {
         <Input placeholder="Search Item" onKeyUp={onTypeId} />
         <Input placeholder="Search Size" onKeyUp={onTypeSize} />
         <Input placeholder="Search Brand" onKeyUp={onTypeBrand} />
-        <ItemTableModel items={allItems} />
+        {userMe.is_superuser && <ItemTableModel items={allItems} />}
       </HStack>
       <TableContainer>
         <Table>

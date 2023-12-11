@@ -15,10 +15,11 @@ import CustomerContext from "../../Contexts/Customer/CustomerContext";
 import { calculateTotalPayment } from "../Bill/Calculations/CalculateTotalPayment";
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import { makeUpDate } from "../UI/MakeUpDate";
+import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 
 const DebtorsTable = () => {
   const { bills } = useContext(BillPageContext);
-  const { customers } = useContext(CustomerContext);
+  const { allCustomers } = useContext(AllCustomerContext);
   const { billPayments } = useContext(BillPaymentContext);
 
   // Filter Creditors values
@@ -66,19 +67,19 @@ const DebtorsTable = () => {
               .filter(
                 (bill) =>
                   bill.sub_total > calculateTotalPayment(billPayments, bill)
-              )
+              )   
               .filter((bill) => bill.invoice_id.startsWith(billIdFilter))
               .filter((bill) =>
-                customers
+                allCustomers
                   .find((customer) => customer.id === bill.customer)
                   ?.name.startsWith(billCustomerFilter)
-              )
+              )           
               .map((bill, index) => (
                 <Tr key={index}>
                   <Td>{bill.invoice_id}</Td>
                   <Td>
                     {
-                      customers.find(
+                      allCustomers.find(
                         (customer) => customer.id === bill.customer
                       )?.name
                     }

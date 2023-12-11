@@ -131,11 +131,13 @@ const StockAddForm = () => {
     StockInvoiceService.create(newly)
       .then((res) => {
         setSuccess(res.status === 201 ? "Successfully Created." : "");
+        setStockInvoice(res.data);
         setStockItems([...res.data.stock_items, ...stockItems]);
         setIsCreatedBill(true);
-        setStockInvoice(res.data);
         setStockInvoices([res.data, ...stockInvoices]);
         setStockAllInvoices([...stockAllInvoices, res.data])
+
+        console.log(res.data)
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -153,7 +155,7 @@ const StockAddForm = () => {
       )}
       {success && <Text textColor="#38e17e">{success}</Text>}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="vh-100">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="d-flex flex-column justify-content-between">
           <div className="w-50 d-flex flex-row">
             <div className="mb-3 me-3 h-75">
@@ -368,8 +370,11 @@ const StockAddForm = () => {
         </div>
         <HStack justifyContent="space-between" width="30vw">
           <StockInvoiceSaveConfirmation onSubmit={submitForm} isDiabled={isCreatedBill}/>
-          <Flex>
+        </HStack>
+      </form>
+          <Flex marginTop={5}>
             <Button
+            marginRight={5}
               type="button"
               width="10vw"
               bg={colorMode === "light" ? "#e3a99c" : "#575757"}
@@ -383,12 +388,10 @@ const StockAddForm = () => {
             >
               Reset
             </Button>
-          </Flex>
-          {stockInvoice !== undefined && stockInvoice && isCreatedBill && (
+          {stockInvoice !== undefined && isCreatedBill && (
             <StockInvoiceShowDrawer selectedStockInvoice={stockInvoice} />
           )}
-        </HStack>
-      </form>
+          </Flex>
     </>
   );
 };
