@@ -15,6 +15,7 @@ import {
   import BillPaymentContext from "../../../../../Contexts/Bill/BillPaymentContext";
   import AllBillContext from "../../../../../Contexts/Bill/AllBillContext";
   import AllCustomerContext from "../../../../../Contexts/Customer/AllCustomerContext";
+import VehicleContext from "../../../../../Contexts/Customer/VehicleContext";
   
   interface Props {
     startDate: string;
@@ -26,6 +27,7 @@ const CreditCardReport = ({ startDate, endDate}:Props) => {
   const { billPayments } = useContext(BillPaymentContext);
   const { allBills } = useContext(AllBillContext);
   const { allCustomers } = useContext(AllCustomerContext);
+  const { vehicles } = useContext(VehicleContext)
   let start = new Date(startDate);
   let end = new Date(endDate);
 
@@ -91,12 +93,12 @@ const CreditCardReport = ({ startDate, endDate}:Props) => {
                       <Td>{credit_card.date}</Td>
                       <Td>
                         {
-                          allCustomers.find(
-                            (customer) =>
-                              allBills.find(
-                                (bill) => bill.invoice_id === payment.bill_id
-                              )?.customer === customer.id
-                          )?.name
+                         allCustomers.find( customer => customer.id === vehicles.find(
+                          (vehicle) =>
+                            allBills.find(
+                              (bill) => bill.invoice_id === payment.bill_id
+                            )?.vehicle === vehicle.vehical_no
+                        )?.customer )?.name 
                         }
                       </Td>
                       <Td>{credit_card.payeename}</Td>

@@ -150,7 +150,6 @@ const BillTable = () => {
               <Th></Th>
               <Th></Th>
               <Th>Bill No</Th>
-              <Th>Customer</Th>
               <Th>Vehicle</Th>
               <Th>Date</Th>
               <Th>Sub Total</Th>
@@ -166,14 +165,7 @@ const BillTable = () => {
                 <Th>
                   <BillDelete selectedDeleteBill={bill} />
                 </Th>
-                <Td>{bill.invoice_id}</Td>
-                <Td>
-                  {
-                    allCustomers.find(
-                      (customer) => customer.id === bill.customer
-                    )?.name
-                  }
-                </Td>
+                <Td>{bill.invoice_id}</Td>                
                 <Td>{bill.vehicle}</Td>
                 <Td>{makeUpDate(bill.date)}</Td>
                 <Td>{bill.sub_total}</Td>

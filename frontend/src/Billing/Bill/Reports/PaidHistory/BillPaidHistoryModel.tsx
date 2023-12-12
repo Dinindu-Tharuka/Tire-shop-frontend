@@ -13,7 +13,6 @@ import {
   } from "@chakra-ui/react";
   
   import { BsPrinter } from "react-icons/bs";
-  import { StockItemDefault } from "../../../../services/Stock/stock-item-service";
 import BillPaidHistoryReport from "./BillPaidHistoryReport";
 import { Bill } from "../../../../services/Billing/bill-page-service";
   

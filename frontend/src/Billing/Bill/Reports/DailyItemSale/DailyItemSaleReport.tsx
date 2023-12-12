@@ -12,6 +12,8 @@ import { calculateTotalPayment } from "../../Calculations/CalculateTotalPayment"
 import AllCustomerContext from "../../../../Contexts/Customer/AllCustomerContext";
 import { AllItemContext } from "../../../../Contexts/Inventory/AllItemContest";
 import { makeUpDate } from "../../../UI/MakeUpDate";
+import AllBillContext from "../../../../Contexts/Bill/AllBillContext";
+import VehicleContext from "../../../../Contexts/Customer/VehicleContext";
 
 interface Props {
   filteredBills: Bill[];
@@ -21,6 +23,8 @@ const DailyItemSaleReport = ({ filteredBills }: Props) => {
   const { billPayments } = useContext(BillPaymentContext);
   const { allCustomers } = useContext(AllCustomerContext);
   const { allItems } = useContext(AllItemContext);
+  const { allBills } = useContext(AllBillContext);
+  const { vehicles } = useContext(VehicleContext)
 
   // For downloading pdf
   const [capture, setCapture] = useState<HTMLDivElement | null>(null);
@@ -62,9 +66,10 @@ const DailyItemSaleReport = ({ filteredBills }: Props) => {
                   <td>{makeUpDate(bill.date)}</td>
                   <td>
                     {
-                      allCustomers.find(
-                        (customer) => customer.id === bill.customer
-                      )?.name
+                       allCustomers.find( customer => customer.id === vehicles.find(
+                        (vehicle) =>
+                          bill.vehicle === vehicle.vehical_no
+                      )?.customer )?.name
                     }
                   </td>
                   <td>

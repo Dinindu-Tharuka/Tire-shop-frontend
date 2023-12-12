@@ -15,6 +15,7 @@ import { useContext, useEffect, useState } from "react";
 import BillPaymentContext from "../../../../../Contexts/Bill/BillPaymentContext";
 import AllBillContext from "../../../../../Contexts/Bill/AllBillContext";
 import AllCustomerContext from "../../../../../Contexts/Customer/AllCustomerContext";
+import VehicleContext from "../../../../../Contexts/Customer/VehicleContext";
 
 interface Props {
   startDate: string;
@@ -26,6 +27,7 @@ const ChequeReport = ({ startDate, endDate }: Props) => {
     const { billPayments } = useContext(BillPaymentContext);
     const { allBills } = useContext(AllBillContext);
     const { allCustomers } = useContext(AllCustomerContext);
+    const { vehicles } = useContext(VehicleContext)
     let start = new Date(startDate);
     let end = new Date(endDate);
   
@@ -95,12 +97,12 @@ const ChequeReport = ({ startDate, endDate }: Props) => {
                     <Td>{cheque.cheque_date}</Td>
                     <Td>
                       {
-                        allCustomers.find(
-                          (customer) =>
+                         allCustomers.find( customer => customer.id === vehicles.find(
+                          (vehicle) =>
                             allBills.find(
                               (bill) => bill.invoice_id === payment.bill_id
-                            )?.customer === customer.id
-                        )?.name
+                            )?.vehicle === vehicle.vehical_no
+                        )?.customer )?.name
                       }
                     </Td>
                     <Td>{cheque.payeename}</Td>

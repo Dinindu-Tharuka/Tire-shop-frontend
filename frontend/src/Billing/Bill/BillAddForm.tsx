@@ -325,20 +325,7 @@ const BillAddForm = () => {
               <Text textColor="red.600">{errors.invoice_id?.message}</Text>
             </div>
 
-            <div className="mb-3 w-25 me-3">
-              <Select
-                isDisabled={isCreatedBill}
-                {...register("customer")}
-                onChange={(e) => setselectedCustomer(e.currentTarget.value)}
-              >
-                <option>Select Customer</option>
-                {allCustomers.map((customer, index) => (
-                  <option className="mt-3" key={index} value={customer.id}>
-                    {customer.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
+            
 
             <div className="mb-3 w-25">
               <Select isDisabled={isCreatedBill} {...register("vehicle")}>

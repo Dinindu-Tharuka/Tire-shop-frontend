@@ -60,7 +60,7 @@ export const AddTakentyreForm = () => {
         <div className="d-flex flex-column justify-content-between">
           <div className="mb-3 w-50">
             <Select {...register("customer")}>
-              <option>select customer</option>
+              <option>Select Customer</option>
               {allCustomers.map((customer) => (
                 <option value={customer.id}>{customer.name}</option>
               ))}
@@ -69,7 +69,7 @@ export const AddTakentyreForm = () => {
 
           <div className="mb-3 w-50">
             <Select {...register("vehicle")}>
-              <option>select custmers</option>
+              <option>Select Vehicle</option>
               {vehicles.map((vehicle) => (
                 <option value={vehicle.vehical_no}>{vehicle.vehical_no}</option>
               ))}

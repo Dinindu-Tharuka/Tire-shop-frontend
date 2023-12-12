@@ -20,6 +20,8 @@ import BillShowServices from "./BillShowServices";
 import BillShowDagPayments from "./BillShowDagPayments";
 import DownloadPdf from "../../../PDF/DownloadPdf";
 import UserMeContext from "../../../Contexts/User/UserMe";
+import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
+import VehicleContext from "../../../Contexts/Customer/VehicleContext";
 
 interface Props {
   seletedBill: Bill;
@@ -39,7 +41,8 @@ const BillShowPage = ({ seletedBill }: Props) => {
   },[])
 
   // contexts & hooks
-  const { customers } = useCustomer();
+  const { allCustomers } = useContext(AllCustomerContext)
+  const { vehicles } = useContext(VehicleContext)
   const { billPayments } = useContext(BillPaymentContext);
 
  
@@ -58,8 +61,10 @@ const BillShowPage = ({ seletedBill }: Props) => {
                   <Th>Customer</Th>
                   <Td>
                     {
-                      customers.find((cus) => cus.id === seletedBill.customer)
-                        ?.name
+                     allCustomers.find( customer => customer.id === vehicles.find(
+                      (vehicle) =>
+                        seletedBill.vehicle === vehicle.vehical_no
+                    )?.customer )?.name
                     }
                   </Td>
                 </Tr>
