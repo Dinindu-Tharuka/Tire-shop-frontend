@@ -49,7 +49,7 @@ const FilteredItemShow = ({ items }: Props) => {
                 <td>{item.name}</td>
                 <td>{item.brand}</td>
                 <td>{item.size}</td>
-                <td>{calculateStockitemCount(item, stockItems)}</td>
+                <td>{calculateStockitemCount(stockItems, item )}</td>
               </tr>
             ))}
           </tbody>

@@ -87,6 +87,9 @@ const BillAddForm = () => {
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Item filter
+  const [itemFilter, setItemFilter] = useState("");
+
   // Forfiltering vehicles
   const [selectedCustomer, setselectedCustomer] = useState("0");
 
@@ -278,7 +281,9 @@ const BillAddForm = () => {
       0
     );
 
-    const newly = { ...data, discount_amount: total_discount };
+    const newly = { ...data, discount_amount: total_discount, bill_items:[...data.bill_items.map((item, index) => {
+      return {...item, item:selectedItemText[index]}
+    })] };
 
     BillServices.create<Bill>(newly)
       .then((res) => {
@@ -300,9 +305,6 @@ const BillAddForm = () => {
     // for reseting
     setIsResetBill(false);
   };
-
-  console.log("selected text", selectedItemText);
-  console.log("row", rowIndex);
 
   return (
     <>
@@ -406,35 +408,48 @@ const BillAddForm = () => {
                         marginBottom={BILL_ITEM_MARGIN_BOTTOM}
                         marginRight={BILL_ITEM_MARGIN_LEFT}
                         width={BILL_ITEM_WIDTH}
+                        isDisabled={isCreatedBill}
                       >
-                        {selectedItemText[rowIndex] !== undefined ? `${
-                          selectedItemText[rowIndex]
-                        }-${calculateStockitemCount(
-                          stockItems,
-                          allItems.find(
-                            (item) =>
-                              item.item_id === selectedItemText[rowIndex]
-                          )
-                        )}` : 'Select Item'}
+                        {selectedItemText[rowIndex] !== undefined
+                          ? `${
+                              selectedItemText[rowIndex]
+                            }-(${calculateStockitemCount(
+                              stockItems,
+                              allItems.find(
+                                (item) =>
+                                  item.item_id === selectedItemText[rowIndex]
+                              )
+                            )})`
+                          : "Select Item"}
                       </MenuButton>
                       <MenuList>
-                        {allItems.map((item, index) => (
-                          <MenuItem
-                            key={index}
-                            value={item.item_id}
-                            onClick={() => {
-                              setRowIndex(rowIndex);
-                              setSelectedItem(item.item_id);
-                              setSelectedItemText([
-                                ...selectedItemText,
-                                item.item_id,
-                              ]);
-                            }}
-                          >
-                            {item.item_id} (
-                            {calculateStockitemCount(stockItems, item)})
-                          </MenuItem>
-                        ))}
+                        <Input
+                          type="text"
+                          onKeyUp={(e) => setItemFilter(e.currentTarget.value)}
+                          
+                        />
+                        {allItems
+                          .filter((item) => item.item_id.startsWith(itemFilter))
+                          .map((item, index) => (
+                            <MenuItem
+                              key={index}
+                              value={item.item_id}
+                              onClick={() => {
+                                setRowIndex(rowIndex);
+                                setSelectedItem(item.item_id);
+                                const selectedItemsTests = [...selectedItemText]
+                                selectedItemsTests[rowIndex] = item.item_id
+                                setSelectedItemText([
+                                  ...selectedItemsTests
+                                ]);
+                              }}
+                              
+                              
+                            >
+                              {item.item_id} (
+                              {calculateStockitemCount(stockItems, item)})
+                            </MenuItem>
+                          ))}
                       </MenuList>
                     </Menu>
                   </Flex>
@@ -597,6 +612,7 @@ const BillAddForm = () => {
                 type="button"
                 onClick={() => {
                   itemAppend({} as BillItem);
+                  setItemFilter('')
                 }}
               >
                 Add Item
@@ -836,6 +852,9 @@ const BillAddForm = () => {
               reset();
               setRefetchallReceivedSupplierTyres(`${Date.now()}`);
               setReFetchAllDagPayments(`${Date.now()}`);
+              setItemFilter('')
+              setSelectedItemText([])
+              setSelectedStockItem([])
             }}
           >
             Reset

@@ -109,7 +109,7 @@ const ItemTable = () => {
                   <ItemDelete selectedDeleteItem={item} />
                 </Td>
                 <Td>{item.item_id}</Td>
-                <Td>{calculateStockitemCount(item, stockItems)}</Td>
+                <Td>{calculateStockitemCount(stockItems, item)}</Td>
                 <Td>{item.name}</Td>
                 <Td>{item.size}</Td>
                 <Td>{item.brand}</Td>
@@ -118,7 +118,6 @@ const ItemTable = () => {
                 <Td>{item.country}</Td>
                 <Td>{item.vale_type}</Td>
                 <Td>{item.item_category}</Td>
-                <Td>{item.supplier}</Td>
               </Tr>
             ))}
           </Tbody>
