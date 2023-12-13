@@ -13,6 +13,7 @@ import {
   Text,
   Input,
   Select,
+  IconButton,
 } from "@chakra-ui/react";
 
 import { useContext, useState } from "react";
@@ -30,11 +31,14 @@ import { makeUpDate } from "../UI/MakeUpDate";
 import AllSupplierContext from "../../Contexts/Registration/AllSupplierContext";
 import ShowMultipleStockInvoicesModel from "./Payments/Multiple/ShowMultipleStockInvoicesModel";
 import UserMeContext from "../../Contexts/User/UserMe";
+import { IoAdd } from "react-icons/io5";
+import { COLOURS } from "../../Generics/Constants";
+import StockAddDrawer from "./StockAddDrawer";
 
 const StockInvoiceTable = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const { colorMode } = useColorMode();
-  const userMe = useContext(UserMeContext)
+  const userMe = useContext(UserMeContext);
   const {
     stockInvoices,
     errorFetchStockInvoice,
@@ -63,10 +67,13 @@ const StockInvoiceTable = () => {
 
   return (
     <Flex alignItems="center" flexDir="column">
+      
+      <Flex position="absolute" top="12vh" right="5vw">
+        <StockAddDrawer/>
+      </Flex>
+
       <HStack>
-        <Flex>
-          {userMe.is_superuser && <ShowMultipleStockInvoicesModel />}
-        </Flex>
+        <Flex>{userMe.is_superuser && <ShowMultipleStockInvoicesModel />}</Flex>
         <Input placeholder="GRN No" onKeyUp={onTypeGRnNoFilter} />
         <Input placeholder="Invoice No" onKeyUp={onTypeInvoiceNoFilter} />
         <Select

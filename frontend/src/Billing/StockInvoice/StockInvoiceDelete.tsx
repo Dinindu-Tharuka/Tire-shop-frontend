@@ -16,6 +16,8 @@ import StockInvoiceService, {
 } from "../../services/Stock/stock-invoice-page-service";
 import StockInvoicePageContext from "../../Contexts/Stock/StockInvoicePageContext";
 import AllStockInvoiceContext from "../../Contexts/Stock/AllStockInvoiceContext";
+import { COLORS } from "html2canvas/dist/types/css/types/color";
+import { COLOURS } from "../../Generics/Constants";
 
 interface Props {
   selectedStockInvoice: StockInvoice;
@@ -64,7 +66,7 @@ const StockInvoiceDelete = ({ selectedStockInvoice }: Props) => {
   };
   return (
     <>
-      <Button bg="#f87454" onClick={onOpen}>
+      <Button bg={COLOURS.DELETE_BUTTON_COLOR} onClick={onOpen}>
         Delete
       </Button>
 

@@ -11,7 +11,6 @@ import {
   Tr,
   useColorMode,
   Text,
-  Spinner,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -29,7 +28,6 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import { makeUpDate } from "../UI/MakeUpDate";
-import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 import {
   onTypeBillIdFilter,
   onTypeCustomerFilter,
@@ -73,7 +71,6 @@ const BillTable = () => {
     setBillStartDateFilter,
     setBillEndDateFilter,
   } = useContext(BillPageContext);
-  const { allCustomers } = useContext(AllCustomerContext);
 
   const numOfPages = Math.ceil(billCount / MAXIMUM_PAGES_PER_PAGE);
 

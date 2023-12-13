@@ -35,14 +35,12 @@ const BillingSidePanel = () => {
     billingList = [
       "Invoice",
       "Rebuilt",
-      "GRN",
       "Debtors",
       "Banking Cheques",
     ];
     billing_links = [
       "",
       "rebuilt",
-      "stock-invoice",
       "debtors",
       "cheques",
     ];
