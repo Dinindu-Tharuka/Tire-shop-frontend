@@ -61,21 +61,20 @@ const routes = createBrowserRouter([
             element: <BillingMainPage />,
             children: [
               { path: "", element: <BillPageManager /> },
-              { path: "rebuilt", element: <RebuiltMainPage /> },
-              { path: "stock-invoice", element: <StockInvoiceMainPage /> },
               { path: "debtors", element: <DebtorsTable /> },
-              { path: "cheques", element: <ChequesTable/>}
             ],
           },
           {
-            path: "grn",
-            element:<StockInvoiceMainPage />
-          }
+            path: "grn", element: <StockInvoiceMainPage />,
+          },
+          {
+            path: "rebuilt", element: <RebuiltMainPage />,
+          },
+          { path: "cheques", element: <ChequesTable /> },
         ],
       },
     ],
   },
- 
 ]);
 
 export default routes;

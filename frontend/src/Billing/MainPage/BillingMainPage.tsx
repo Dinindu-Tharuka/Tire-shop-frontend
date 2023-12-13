@@ -27,37 +27,32 @@ import SendTyreContext from "../../Contexts/Rebuild/SendTyreContext";
 const BillingMainPage = () => {
   const { colorMode } = useColorMode();
 
- 
-  
-
   return (
-    
-                          <Grid
-                            templateAreas={{
-                              lg: `"main aside"`,
-                              base: `"aside" "main"`,
-                            }}
-                          >
-                            <GridItem
-                              area="main"
-                              height={{ base: "10vh", lg: "85vh" }}
-                              width={{ base: "100vw", lg: "60vw" }}
-                            >
-                              <Outlet />
-                            </GridItem>
-                            <GridItem
-                              area="aside"
-                              height={{ base: "10vh", lg: "85vh" }}
-                              width={{ base: "100vw", lg: "15vw" }}
-                              boxShadow="dark-lg"
-                              borderRadius={30}
-                              padding={5}
-                              bg={colorMode === "light" ? "#ca5c4f" : ""}
-                            >
-                              <BillingSidePanel />
-                            </GridItem>
-                          </Grid>
-                        
+    <Grid
+      templateAreas={{
+        lg: `"main aside"`,
+        base: `"aside" "main"`,
+      }}
+    >
+      <GridItem
+        area="main"
+        height={{ base: "10vh", lg: "85vh" }}
+        width={{ base: "100vw", lg: "60vw" }}
+      >
+        <Outlet />
+      </GridItem>
+      <GridItem
+        area="aside"
+        height={{ base: "10vh", lg: "85vh" }}
+        width={{ base: "100vw", lg: "15vw" }}
+        boxShadow="dark-lg"
+        borderRadius={30}
+        padding={5}
+        bg={colorMode === "light" ? "#ca5c4f" : ""}
+      >
+        <BillingSidePanel />
+      </GridItem>
+    </Grid>
   );
 };
 

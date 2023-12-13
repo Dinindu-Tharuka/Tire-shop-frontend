@@ -15,15 +15,16 @@ import { calculateTotalPayment } from "../Bill/Calculations/CalculateTotalPaymen
 import BillPaymentContext from "../../Contexts/Bill/BillPaymentContext";
 import { makeUpDate } from "../UI/MakeUpDate";
 import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
+import VehicleContext from "../../Contexts/Customer/VehicleContext";
 
 const DebtorsTable = () => {
   const { bills } = useContext(BillPageContext);
   const { allCustomers } = useContext(AllCustomerContext);
   const { billPayments } = useContext(BillPaymentContext);
-
+  const { vehicles } = useContext(VehicleContext);
   // Filter Creditors values
   const [billIdFilter, setBillIdFilter] = useState("");
-  const [billCustomerFilter, setBillCustomerFilter] = useState("");
+  const [billVehicleFilter, setVehicleFilter] = useState("");
 
   const onTypeFilterBillNo = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setBillIdFilter(event.currentTarget.value);
@@ -31,7 +32,7 @@ const DebtorsTable = () => {
   const onTypeFilterCustomer = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    setBillCustomerFilter(event.currentTarget.value);
+    setVehicleFilter(event.currentTarget.value);
   };
 
   return (
@@ -44,7 +45,7 @@ const DebtorsTable = () => {
           marginRight={10}
         />
         <Input
-          placeholder="Search Customer"
+          placeholder="Search Vehicle"
           onKeyUp={onTypeFilterCustomer}
           width="20vw"
         />
@@ -54,7 +55,8 @@ const DebtorsTable = () => {
           <Thead>
             <Tr>
               <Th>Bill No</Th>
-              <Th>Customer</Th>
+              <Th>Customer id</Th>
+              <Th>Vehicle</Th>
               <Th>Sub Total</Th>
               <Th>Total Payment</Th>
               <Th>Credit</Th>
@@ -66,23 +68,14 @@ const DebtorsTable = () => {
               .filter(
                 (bill) =>
                   bill.sub_total > calculateTotalPayment(billPayments, bill)
-              )   
+              )
               .filter((bill) => bill.invoice_id.startsWith(billIdFilter))
-              .filter((bill) =>
-                allCustomers
-                  .find((customer) => customer.id === bill.customer)
-                  ?.name.startsWith(billCustomerFilter)
-              )           
+              .filter((bill) => bill.vehicle.startsWith(billVehicleFilter))
               .map((bill, index) => (
                 <Tr key={index}>
                   <Td>{bill.invoice_id}</Td>
-                  <Td>
-                    {
-                      allCustomers.find(
-                        (customer) => customer.id === bill.customer
-                      )?.name
-                    }
-                  </Td>
+                  <Td>{vehicles.find(vehicle => vehicle.vehical_no === bill.vehicle)?.customer}</Td>
+                  <Td>{bill.vehicle}</Td>
                   <Td>{bill.sub_total}</Td>
                   <Td>{calculateTotalPayment(billPayments, bill)}</Td>
                   <Td>

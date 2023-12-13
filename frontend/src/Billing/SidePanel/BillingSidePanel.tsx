@@ -26,23 +26,18 @@ const BillingSidePanel = () => {
   const userMe = useContext(UserMeContext);
   let billingList = [
     "Invoice",
-    "Rebuilt",
     "GRN",
   ];
-  let billing_links = ["", "rebuilt", "stock-invoice"];
+  let billing_links = ["", "stock-invoice"];
   
   if (userMe.is_superuser || userMe.is_manager) {
     billingList = [
       "Invoice",
-      "Rebuilt",
       "Debtors",
-      "Banking Cheques",
     ];
     billing_links = [
       "",
-      "rebuilt",
       "debtors",
-      "cheques",
     ];
   }
 
@@ -73,10 +68,6 @@ const BillingSidePanel = () => {
             {options.map((option, num) =>
               index === 0 ? (
                 <BillAddDrawer key={num} />
-              ) : index === 1 ? (
-                <RebuildSideBarOptions key={num} />
-              ) : index === 2 ? (
-                <StockAddDrawer key={num} />
               ) : null
             )}
           </AccordionPanel>

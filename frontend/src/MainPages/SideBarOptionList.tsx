@@ -17,12 +17,12 @@ import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { BsBuildings, BsChevronDown } from "react-icons/bs";
 import { PiContactlessPayment } from "react-icons/pi";
 import { RxAvatar } from "react-icons/rx";
-
-import { RiShutDownLine } from "react-icons/ri";
+import { BsBuildingFill } from "react-icons/bs";
 import SignOut from "../Authentication/SignOut";
 import { Link } from "react-router-dom";
 import { MouseEventHandler, useContext, useState } from "react";
 import UserMeContext from "../Contexts/User/UserMe";
+import { BsBank } from "react-icons/bs";
 
 const SideBarOptionList = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -31,16 +31,45 @@ const SideBarOptionList = () => {
 
   const userMe = useContext(UserMeContext);
 
-  let options_lg = ["Main Dashbord", "Customer", "Billing", "Inventory",];
-  let links_lg = ["/", "/customer", "/billing","/grn", "/inventory"];
+  let options_lg = [
+    "Main Dashbord",
+    "Customer",
+    "Billing",
+    "Inventory",
+    "GRN",
+    "Rebuilt",
+    "Cheques",
+  ];
+  let links_lg = [
+    "/",
+    "/customer",
+    "/billing",
+    "/grn",
+    "/inventory",
+    "/grn",
+    "/rebuilt",
+    "/cheques",
+  ];
   let options_base = [
     "Main Dashbord",
     "Customer",
     "Billing",
     "Inventory",
+    "GRN",
+    "Rebuilt",
+    "Cheques",
     "Sign out",
   ];
-  let links_base = ["/", "/customer", "/billing", "/inventory", "/login"];
+  let links_base = [
+    "/",
+    "/customer",
+    "/billing",
+    "/inventory",
+    "/grn",
+    "/rebuilt",
+    "/cheques",
+    "/login",
+  ];
 
   if (userMe.is_superuser || userMe.is_manager) {
     options_lg = [
@@ -49,14 +78,27 @@ const SideBarOptionList = () => {
       "Billing",
       "Inventory",
       "GRN",
+      "Rebuilt",
+      "Cheques",
       "Registration",
     ];
-    links_lg = ["/", "/customer", "/billing", "/inventory", "/grn", "/registration"];
+    links_lg = [
+      "/",
+      "/customer",
+      "/billing",
+      "/inventory",
+      "/grn",
+      "/rebuilt",
+      "/cheques",
+      "/registration",
+    ];
     options_base = [
       "Main Dashbord",
       "Customer",
       "Billing",
       "Inventory",
+      "GRN",
+      "Rebuilt",
       "Registration",
       "Sign out",
     ];
@@ -65,6 +107,8 @@ const SideBarOptionList = () => {
       "/customer",
       "/billing",
       "/inventory",
+      "/grn",
+      "/rebuilt",
       "/registration",
       "/login",
     ];
@@ -76,6 +120,8 @@ const SideBarOptionList = () => {
     MdOutlineInventory,
     BsBuildings,
     PiContactlessPayment,
+    BsBuildingFill,
+    BsBank,
     RxAvatar,
   ];
   const icons_base = [
@@ -84,6 +130,7 @@ const SideBarOptionList = () => {
     MdOutlineInventory,
     BsBuildings,
     PiContactlessPayment,
+    BsBank,
     RxAvatar,
   ];
 
@@ -110,7 +157,13 @@ const SideBarOptionList = () => {
     >
       <HStack>
         <Icon color={color} key={index} as={icons_lg[index]} />
-        <Button textColor={colorMode === 'dark' && selectedLGIndex === index ? 'black': color} variant="link" textAlign="left">
+        <Button
+          textColor={
+            colorMode === "dark" && selectedLGIndex === index ? "black" : color
+          }
+          variant="link"
+          textAlign="left"
+        >
           <Link to={links_lg[index]} onClick={() => setSelectedLGIndex(index)}>
             {option}
           </Link>
