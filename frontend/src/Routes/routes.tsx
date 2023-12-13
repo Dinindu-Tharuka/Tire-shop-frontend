@@ -10,8 +10,6 @@ import CustomerMainPage from "../Customer/MainPage/CustomerMainPage";
 import EmployeeTable from "../Registration/Employee/EmployeeTable";
 import ServicesTable from "../Registration/Services/ServicesTable";
 import BillingMainPage from "../Billing/MainPage/BillingMainPage";
-import BillTable from "../Billing/Bill/BillTable";
-import StockInvoiceTable from "../Billing/StockInvoice/StockInvoiceTable";
 import RebuiltMainPage from "../Billing/Rebuilt/MainPage/RebuiltMainPage";
 import PrivateRoutes from "./PrivateRoutes";
 import LoginPage from "../Authentication/LoginPage";
@@ -69,10 +67,15 @@ const routes = createBrowserRouter([
               { path: "cheques", element: <ChequesTable/>}
             ],
           },
+          {
+            path: "grn",
+            element:<StockInvoiceMainPage />
+          }
         ],
       },
     ],
   },
+ 
 ]);
 
 export default routes;

@@ -31,8 +31,8 @@ const SideBarOptionList = () => {
 
   const userMe = useContext(UserMeContext);
 
-  let options_lg = ["Main Dashbord", "Customer", "Billing", "Inventory"];
-  let links_lg = ["/", "/customer", "/billing", "/inventory"];
+  let options_lg = ["Main Dashbord", "Customer", "Billing", "Inventory",];
+  let links_lg = ["/", "/customer", "/billing","/grn", "/inventory"];
   let options_base = [
     "Main Dashbord",
     "Customer",
@@ -48,9 +48,10 @@ const SideBarOptionList = () => {
       "Customer",
       "Billing",
       "Inventory",
+      "GRN",
       "Registration",
     ];
-    links_lg = ["/", "/customer", "/billing", "/inventory", "/registration"];
+    links_lg = ["/", "/customer", "/billing", "/inventory", "/grn", "/registration"];
     options_base = [
       "Main Dashbord",
       "Customer",

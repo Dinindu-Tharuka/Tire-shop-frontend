@@ -32,7 +32,6 @@ import {
   BILL_ITEM_WIDTH,
 } from "./UI Contastants/BillFormConstatnts";
 import stockItemService, {
-  StockItem,
   StockItemDefault,
 } from "../../services/Stock/stock-item-service";
 import {
@@ -53,7 +52,6 @@ import AllReceivedSupplierTyresContext from "../../Contexts/Rebuild/Received/All
 import AllSendSupplierTyresContext from "../../Contexts/Rebuild/AllSendSupplierContext";
 import AllDagPaymentContext from "../../Contexts/Bill/AllDagPaymentContext";
 import VehicleContext from "../../Contexts/Customer/VehicleContext";
-import AllCustomerContext from "../../Contexts/Customer/AllCustomerContext";
 import { GenerateBillNumber } from "../../Common/GenerateBillNumbers";
 import { AiOutlineDown } from "react-icons/ai";
 
@@ -87,6 +85,10 @@ const BillAddForm = () => {
   const [errorBillCreate, setErrorBillCreate] = useState("");
   const [success, setSuccess] = useState("");
 
+  // for filter vehilces
+  const [selectedVehilceFilter, setSelectedVehicleFilter] = useState("");
+  const [seletedVehicle, setSelectedVehicle] = useState("");
+
   // Item filter
   const [itemFilter, setItemFilter] = useState("");
 
@@ -104,7 +106,6 @@ const BillAddForm = () => {
   );
   const { bills, setBills } = useContext(BillPageContext);
   const { allItems } = useAllItems();
-  const { allCustomers } = useContext(AllCustomerContext);
   const { vehicles } = useContext(VehicleContext);
   const { services } = useService();
   const { employees } = useEmployee();
@@ -281,9 +282,16 @@ const BillAddForm = () => {
       0
     );
 
-    const newly = { ...data, discount_amount: total_discount, bill_items:[...data.bill_items.map((item, index) => {
-      return {...item, item:selectedItemText[index]}
-    })] };
+    const newly = {
+      ...data,
+      vehicle: seletedVehicle,
+      discount_amount: total_discount,
+      bill_items: [
+        ...data.bill_items.map((item, index) => {
+          return { ...item, item: selectedItemText[index] };
+        }),
+      ],
+    };
 
     BillServices.create<Bill>(newly)
       .then((res) => {
@@ -325,23 +333,38 @@ const BillAddForm = () => {
               <Text textColor="red.600">{errors.invoice_id?.message}</Text>
             </div>
 
-            
-
             <div className="mb-3 w-25">
-              <Select isDisabled={isCreatedBill} {...register("vehicle")}>
-                <option>Select Vehicle</option>
-                {vehicles
-                  .filter((veh) => veh.customer === parseInt(selectedCustomer))
-                  .map((vehicle, index) => (
-                    <option
-                      className="mt-3"
-                      key={index}
-                      value={vehicle.vehical_no}
-                    >
-                      {vehicle.vehical_no}
-                    </option>
-                  ))}
-              </Select>
+              <Menu>
+                <MenuButton
+                  marginRight={BILL_ITEM_MARGIN_LEFT}
+                  width={BILL_ITEM_WIDTH}
+                  marginBottom={BILL_ITEM_MARGIN_BOTTOM}
+                  as={Button}
+                  rightIcon={<AiOutlineDown />}
+                  isDisabled={isCreatedBill}
+                >
+                  {seletedVehicle ? seletedVehicle : 'Select Vehicle'}
+                </MenuButton>
+                <MenuList>
+                  <Input
+                    type="text"
+                    onChange={(e) =>
+                      setSelectedVehicleFilter(e.currentTarget.value)
+                    }
+                  />
+                  {vehicles
+                    .filter((vehicle) =>
+                      vehicle.vehical_no.startsWith(selectedVehilceFilter)
+                    )
+                    .map((vehicle) => (
+                      <MenuItem
+                        onClick={() => setSelectedVehicle(vehicle.vehical_no)}
+                      >
+                        {vehicle.vehical_no}
+                      </MenuItem>
+                    ))}
+                </MenuList>
+              </Menu>
             </div>
           </Flex>
 
@@ -413,7 +436,6 @@ const BillAddForm = () => {
                         <Input
                           type="text"
                           onKeyUp={(e) => setItemFilter(e.currentTarget.value)}
-                          
                         />
                         {allItems
                           .filter((item) => item.item_id.startsWith(itemFilter))
@@ -424,14 +446,12 @@ const BillAddForm = () => {
                               onClick={() => {
                                 setRowIndex(rowIndex);
                                 setSelectedItem(item.item_id);
-                                const selectedItemsTests = [...selectedItemText]
-                                selectedItemsTests[rowIndex] = item.item_id
-                                setSelectedItemText([
-                                  ...selectedItemsTests
-                                ]);
+                                const selectedItemsTests = [
+                                  ...selectedItemText,
+                                ];
+                                selectedItemsTests[rowIndex] = item.item_id;
+                                setSelectedItemText([...selectedItemsTests]);
                               }}
-                              
-                              
                             >
                               {item.item_id} (
                               {calculateStockitemCount(stockItems, item)})
@@ -599,7 +619,7 @@ const BillAddForm = () => {
                 type="button"
                 onClick={() => {
                   itemAppend({} as BillItem);
-                  setItemFilter('')
+                  setItemFilter("");
                 }}
               >
                 Add Item
@@ -839,9 +859,9 @@ const BillAddForm = () => {
               reset();
               setRefetchallReceivedSupplierTyres(`${Date.now()}`);
               setReFetchAllDagPayments(`${Date.now()}`);
-              setItemFilter('')
-              setSelectedItemText([])
-              setSelectedStockItem([])
+              setItemFilter("");
+              setSelectedItemText([]);
+              setSelectedStockItem([]);
             }}
           >
             Reset

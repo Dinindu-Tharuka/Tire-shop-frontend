@@ -32,7 +32,7 @@ const AddDrawerTakenTyre = () => {
         width="500px"
         onClick={onOpen}
       >
-        Add Taken Tyre
+        Add Accept Tyre
       </Button>
       <Drawer
         isOpen={isOpen}
