@@ -21,6 +21,7 @@ import BillDelete from "./BillDelete";
 import BillShowDrawer from "./BillShow/BillShowDrawer";
 import BillPageContext from "../../Contexts/Bill/BillContext";
 import getCutUrl, {
+  MAXIMUM_BILL_IN_PAGE,
   MAXIMUM_PAGES_PER_PAGE,
 } from "../../services/pagination-cut-link";
 import {
@@ -72,7 +73,7 @@ const BillTable = () => {
     setBillEndDateFilter,
   } = useContext(BillPageContext);
 
-  const numOfPages = Math.ceil(billCount / MAXIMUM_PAGES_PER_PAGE);
+  const numOfPages = Math.ceil(billCount / MAXIMUM_BILL_IN_PAGE);
 
   return (
     <Flex alignItems="center" flexDir="column">

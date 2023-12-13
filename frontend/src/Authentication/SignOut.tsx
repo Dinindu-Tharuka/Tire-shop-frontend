@@ -24,10 +24,10 @@ const SignOut = () => {
     localStorage.setItem("isReloaded", 'false')
   };
   return (
-    <Center width="100%" marginTop={7}>
+    <Center width="100%" marginTop={2}>
       <Flex
         width="90%"
-        height="40vh"
+        height="35vh"
         bg={colorMode === "light" ? "#ca5c4f" : "#0c0c12"}
         alignItems="center"
         flexDir="column"
@@ -38,27 +38,33 @@ const SignOut = () => {
         boxShadow="dark-lg"
       >
         <VStack>
-          <Heading
+          <Text
             fontSize="2xl"
             textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}
+            fontWeight='bold'
+            margin={0}
+            padding={0}
           >
             {
               userProfiles.find((user) => user.user_account_id === userMe.id)
                 ?.first_name
             }
-          </Heading>
-          <Heading
+          </Text>
+          <Text
             fontSize="2xl"
+            fontWeight='bold'
             textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}
+            padding={0}
+            margin={0}
           >
             {
               userProfiles.find((user) => user.user_account_id === userMe.id)
                 ?.last_name
             }
-          </Heading>
+          </Text>
         </VStack>
         <VStack>
-          <Text textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}>
+          <Text margin={0} padding={0} textColor={colorMode === "light" ? "#ffeee7" : "#e39f9c"}>
             {userMe.is_superuser
               ? "Superuser"
               : userMe.is_manager
@@ -71,7 +77,7 @@ const SignOut = () => {
             paddingX={10}
             fontWeight="bold"
             fontSize="xl"
-            paddingY={6}
+            paddingY={3}
             borderRadius={20}
             boxShadow="dark-lg"
             marginBottom={2}

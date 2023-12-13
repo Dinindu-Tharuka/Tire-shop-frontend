@@ -19,6 +19,7 @@ import BillAddDrawer from "../Bill/BillAddDrawer";
 import RebuildSideBarOptions from "../Rebuilt/SideBarOptions/RebuildSideBarOptions";
 import { useContext, useState } from "react";
 import UserMeContext from "../../Contexts/User/UserMe";
+import SignOut from "../../Authentication/SignOut";
 
 const BillingSidePanel = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1)

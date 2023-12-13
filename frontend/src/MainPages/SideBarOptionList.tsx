@@ -1,5 +1,6 @@
 import {
   Button,
+  Container,
   HStack,
   Icon,
   List,
@@ -187,11 +188,12 @@ const SideBarOptionList = () => {
     <>
       {/* Large Screens */}
       <Show above="lg">
-        <List marginTop={5} paddingX={5}>
-          {sideBar}
-        </List>
-        {/* Sign Out Box */}
-        <SignOut />
+        <Container overflow='auto' maxHeight='50vh' minHeight='50vh'>
+          <List marginTop={5} paddingX={5}>
+            {sideBar}
+          </List>
+        </Container>
+        <SignOut/>
       </Show>
 
       {/* Base Screen */}

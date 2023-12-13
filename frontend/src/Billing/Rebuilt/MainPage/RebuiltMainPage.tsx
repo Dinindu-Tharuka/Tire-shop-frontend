@@ -26,17 +26,17 @@ const RebuiltMainPage = () => {
 
       <TabPanels>
         <TabPanel>
-          <Flex width="60vw" height="85vh">
+          <Flex width="70vw" height="85vh" justifyContent='center'> 
             <TyreTakenTable/>
           </Flex>
         </TabPanel>
         <TabPanel>
-          <Flex width="60vw" height="80vh">
+          <Flex width="70vw" height="85vh" justifyContent='center'>
             <SendTyreTable/>
           </Flex>
         </TabPanel>
         <TabPanel>
-        <Flex width="60vw" height="80vh">
+        <Flex width="70vw" height="85vh" justifyContent='center'>
           <ReceivedTyreTable/>
         </Flex>
         </TabPanel>

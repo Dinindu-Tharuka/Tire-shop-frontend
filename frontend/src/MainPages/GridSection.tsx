@@ -1,4 +1,4 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import Navbar from "../Inventory/Navbar";
 import SideBarOptionList from "./SideBarOptionList";
 import { Outlet } from "react-router-dom";
@@ -67,6 +67,7 @@ import CustomerContext from "../Contexts/Customer/CustomerContext";
 import StockPaymentContext from "../Contexts/Stock/StockPaymentContext";
 import TakenTyreContext from "../Contexts/Rebuild/TakenTyreContext";
 import SendTyreContext from "../Contexts/Rebuild/SendTyreContext";
+import SignOut from "../Authentication/SignOut";
 
 const GridSection = () => {
   const [userMe, setUserMe] = useState<User>({} as User);
@@ -824,6 +825,7 @@ const GridSection = () => {
                                                                         }}
                                                                       >
                                                                         <Outlet />
+                                                                       
                                                                       </GridItem>
                                                                     </Grid>
                                                                   </UserContext.Provider>

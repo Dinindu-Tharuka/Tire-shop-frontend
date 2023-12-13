@@ -22,19 +22,21 @@ import AllBillContext from "../../Contexts/Bill/AllBillContext";
 import AllPaymentChequeContext from "../../Contexts/Bill/Payments/AllPaymentsChequesContext";
 import PagePaymentChequeContext from "../../Contexts/Bill/Payments/PagePaymentChequesContext";
 import getCutUrl, {
-  MAXIMUM_PAGES_PER_PAGE,
+  MAXIMUM_CHEQUES_PER_PAGE,
 } from "../../services/pagination-cut-link";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import CheckBankDateReportModel from "./Reports/CheckBankDateReportModel";
+import VehicleContext from "../../Contexts/Customer/VehicleContext";
 
 const ChequesTable = () => {
   const { allBills } = useContext(AllBillContext);
   const { allCustomers } = useContext(AllCustomerContext);
   const { billPayments } = useContext(BillPaymentContext);
   const { allPaymentCheques, setPaymentChequesBillStartDateFilter } = useContext(AllPaymentChequeContext);
+  const { vehicles } = useContext(VehicleContext)
 
   const {
     pagePaymentCheques,
@@ -50,7 +52,7 @@ const ChequesTable = () => {
   const { colorMode } = useColorMode();
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const numOfPages = Math.ceil(
-    pagePaymentChequesCount / MAXIMUM_PAGES_PER_PAGE
+    pagePaymentChequesCount / MAXIMUM_CHEQUES_PER_PAGE
   );
 
   const onChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +84,7 @@ const ChequesTable = () => {
               <Th>Cheque Number</Th>
               <Th>Bank</Th>
               <Th>Branch</Th>
-              <Th>Customer Name</Th>
+              <Th>Vehicle</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -96,8 +98,8 @@ const ChequesTable = () => {
                   <Td>{cheque.branch}</Td>
                   <Td>
                     {
-                      allCustomers.find(
-                        (customer) =>
+                      vehicles.find(
+                        (vehicle) =>
                           allBills.find(
                             (bill) =>
                               bill.invoice_id ===
@@ -106,8 +108,8 @@ const ChequesTable = () => {
                                   payment.id ===
                                   parseInt(cheque.bill_payment_id + "")
                               )?.bill_id
-                          )?.customer === customer.id
-                      )?.name
+                          )?.vehicle === vehicle.vehical_no
+                      )?.vehical_no
                     }
                   </Td>
                 </Tr>
