@@ -131,6 +131,10 @@ const StockInvoiceShowPage = ({ seletedStockInvoice }: Props) => {
                 <Td>
                   {stockInvoicePaymentTotal(stockPayments, seletedStockInvoice)}
                 </Td>
+                <Th whiteSpace="nowrap">Debit</Th>
+                <Td>
+                  {seletedStockInvoice.total_amount - stockInvoicePaymentTotal(stockPayments, seletedStockInvoice)}
+                </Td>
               </Tr>
               <Tr>
                 <Th whiteSpace="nowrap">Sub Total</Th>

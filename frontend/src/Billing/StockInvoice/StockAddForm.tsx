@@ -3,6 +3,10 @@ import {
   Flex,
   HStack,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Text,
   useColorMode,
@@ -41,11 +45,18 @@ import SupplierFilter from "../../Registration/Supplier/SupplierFilter";
 import StockInvoiceShowDrawer from "./StockInvoiceShowDrawer";
 import { GenerateBillNumber } from "../../Common/GenerateBillNumbers";
 import AllStockInvoiceContext from "../../Contexts/Stock/AllStockInvoiceContext";
+import { AiOutlineDown } from "react-icons/ai";
 
 const StockAddForm = () => {
   const [watchingCost, setWatchingCost] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
   const [stockInvoice, setStockInvoice] = useState<StockInvoice>();
+
+  // for filter items
+  const [itemFilter, setItemFilter] = useState("");
+  const [currentSelectedItems, setCurrentSelectedItems] = useState<string[]>(
+    []
+  );
 
   //for supplier menus
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier>();
@@ -70,12 +81,11 @@ const StockAddForm = () => {
   });
 
   // set rangom grnnumber
-  useEffect(()=>{
-    const randomGrnNumber = new GenerateBillNumber('GRN')
+  useEffect(() => {
+    const randomGrnNumber = new GenerateBillNumber("GRN");
     // setGrnNo(randomGrnNumber.generate())
-    setValue('invoice_no', randomGrnNumber.generate())
-
-  }, [isCreatedBill])
+    setValue("invoice_no", randomGrnNumber.generate());
+  }, [isCreatedBill]);
 
   //Refetch stock item uniques
   useEffect(() => {
@@ -111,15 +121,17 @@ const StockAddForm = () => {
   const { stockInvoices, setStockInvoices } = useContext(
     StockInvoicePageContext
   );
-  const { stockAllInvoices, setStockAllInvoices} = useContext(AllStockInvoiceContext)
+  const { stockAllInvoices, setStockAllInvoices } = useContext(
+    AllStockInvoiceContext
+  );
   const { allItems } = useAllItems();
   const { stockItems, setStockItems } = useContext(StockItemContext);
 
   const onSubmit = (data: StockInvoice) => {
-    const stockItemss = data.stock_items.map((item) =>
+    const stockItemss = data.stock_items.map((item, index) =>
       item.retail_price + "" === ""
-        ? { ...item, retail_price: "0" }
-        : { ...item }
+        ? { ...item, retail_price: "0" , item:currentSelectedItems[index]}
+        : { ...item, item:currentSelectedItems[index] }
     );
     const newly = {
       ...data,
@@ -135,9 +147,9 @@ const StockAddForm = () => {
         setStockItems([...res.data.stock_items, ...stockItems]);
         setIsCreatedBill(true);
         setStockInvoices([res.data, ...stockInvoices]);
-        setStockAllInvoices([...stockAllInvoices, res.data])
+        setStockAllInvoices([...stockAllInvoices, res.data]);
 
-        console.log(res.data)
+        console.log(res.data);
       })
       .catch((err) => setStockinvoiceCreate(err.message));
   };
@@ -195,23 +207,42 @@ const StockAddForm = () => {
               <Text width={STOCK_ITEM_WIDTH}>QTY</Text>
               <Text width={STOCK_ITEM_WIDTH}>Customer Price</Text>
             </Flex>
-            {stockItemArray.map((field, index) => (
+            {stockItemArray.map((field, rowIndex) => (
               <Flex marginBottom={STOCK_ITEM_MARIGIN_BOTTOM} flexDir="column">
-                <Flex>
-                  <Select
-                    isDisabled={isCreatedBill}
-                    width={STOCK_ITEM_WIDTH}
-                    marginRight={STOCK_ITEM_MARIGIN_RIGHT}
-                    {...register(`stock_items.${index}.item`)}
-                    className="select w-100 p-2"
-                  >
-                    <option>Select Item</option>
-                    {allItems.map((item, index) => (
-                      <option className="mt-3" key={index} value={item.item_id}>
-                        {item.item_id}
-                      </option>
-                    ))}
-                  </Select>
+                <Flex>               
+
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rightIcon={<AiOutlineDown />}
+                      isDisabled={isCreatedBill}
+                      width={STOCK_ITEM_WIDTH}
+                      marginRight={STOCK_ITEM_MARIGIN_RIGHT}
+                    >
+                      {currentSelectedItems[rowIndex]
+                        ? currentSelectedItems[rowIndex]
+                        : "Select Items"}
+                    </MenuButton>
+                    <MenuList>
+                      <Input
+                        type="text"
+                        onKeyUp={(e) => setItemFilter(e.currentTarget.value)}
+                      />
+                      {allItems
+                        .filter((item) => item.item_id.startsWith(itemFilter))
+                        .map((item, index) => (
+                          <MenuItem
+                            onClick={() => {
+                              let items = [...currentSelectedItems];
+                              items[rowIndex] = item.item_id;
+                              setCurrentSelectedItems([...items]);
+                            }}
+                          >
+                            {item.item_id}
+                          </MenuItem>
+                        ))}
+                    </MenuList>
+                  </Menu>
                   <Input
                     isDisabled={isCreatedBill}
                     width={STOCK_ITEM_WIDTH}
@@ -219,10 +250,10 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stock_items.${index}.retail_price`)}
+                    {...register(`stock_items.${rowIndex}.retail_price`)}
                     placeholder="Retail Price"
                     onChange={(e) =>
-                      onChangeRetailPrice(e, index, watch, setValue)
+                      onChangeRetailPrice(e, rowIndex, watch, setValue)
                     }
                   />
                   <Input
@@ -232,10 +263,10 @@ const StockAddForm = () => {
                     type="nubmer"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stock_items.${index}.supplier_discount`)}
+                    {...register(`stock_items.${rowIndex}.supplier_discount`)}
                     placeholder="Supplier Discount"
                     onChange={(e) =>
-                      onChangeSupplierDiscount(e, index, watch, setValue)
+                      onChangeSupplierDiscount(e, rowIndex, watch, setValue)
                     }
                   />
                   <Input
@@ -245,10 +276,10 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stock_items.${index}.customer_discount`)}
+                    {...register(`stock_items.${rowIndex}.customer_discount`)}
                     placeholder="Customer Discount"
                     onChange={(e) =>
-                      onChangeCustomerPrice(e, index, watch, setValue)
+                      onChangeCustomerPrice(e, rowIndex, watch, setValue)
                     }
                   />
 
@@ -259,7 +290,7 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stock_items.${index}.sales_discount`)}
+                    {...register(`stock_items.${rowIndex}.sales_discount`)}
                     placeholder="Sales Discount"
                   />
 
@@ -270,10 +301,10 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0"
-                    {...register(`stock_items.${index}.cost`)}
+                    {...register(`stock_items.${rowIndex}.cost`)}
                     placeholder="Cost"
                     onChange={(e) => {
-                      onchangeCostValue(e, index, watch, setValue);
+                      onchangeCostValue(e, rowIndex, watch, setValue);
                       setWatchingCost(e.currentTarget.value);
                     }}
                   />
@@ -284,7 +315,7 @@ const StockAddForm = () => {
                     marginRight={STOCK_ITEM_MARIGIN_RIGHT}
                     type="number"
                     required
-                    {...register(`stock_items.${index}.qty`)}
+                    {...register(`stock_items.${rowIndex}.qty`)}
                     placeholder="QTY"
                   />
                   <Input
@@ -294,21 +325,21 @@ const StockAddForm = () => {
                     type="number"
                     step="0.01"
                     defaultValue="0.00"
-                    {...register(`stock_items.${index}.customer_price`)}
+                    {...register(`stock_items.${rowIndex}.customer_price`)}
                     placeholder="Customer Price"
                   />
                 </Flex>
 
                 <Flex justifyContent="end" marginTop={2}>
-                  {index >= 0 && (
+                  {rowIndex >= 0 && (
                     <Button
                       isDisabled={isCreatedBill}
                       bg="#f87454"
                       padding={3}
                       type="button"
                       onClick={() => {
-                        stockItemRemove(index);
-                        reduceCostPriceIfDeleteStockItem(index);
+                        stockItemRemove(rowIndex);
+                        reduceCostPriceIfDeleteStockItem(rowIndex);
                       }}
                     >
                       Remove
@@ -324,6 +355,7 @@ const StockAddForm = () => {
                 onClick={() => {
                   setWatchingCost(0 + "");
                   stockItemAppend({} as StockItem);
+                  setItemFilter('')
                 }}
               >
                 Add Stock Item
@@ -369,29 +401,36 @@ const StockAddForm = () => {
           </div>
         </div>
         <HStack justifyContent="space-between" width="30vw">
-          <StockInvoiceSaveConfirmation onSubmit={submitForm} isDiabled={isCreatedBill}/>
+          <StockInvoiceSaveConfirmation
+            onSubmit={submitForm}
+            isDiabled={isCreatedBill}
+          />
         </HStack>
       </form>
-          <Flex marginTop={5}>
-            <Button
-            marginRight={5}
-              type="button"
-              width="10vw"
-              bg={colorMode === "light" ? "#e3a99c" : "#575757"}
-              onClick={() => {
-                setStockinvoiceCreate("");
-                setSuccess("");
-                reset();
-                setIsCreatedBill(false);
-                stockItemArray.forEach((item, index) => stockItemRemove(index));
-              }}
-            >
-              Reset
-            </Button>
-          {stockInvoice !== undefined && isCreatedBill && (
-            <StockInvoiceShowDrawer selectedStockInvoice={stockInvoice} />
-          )}
-          </Flex>
+      <Flex marginTop={5}>
+        <Button
+          marginRight={5}
+          type="button"
+          width="10vw"
+          bg={colorMode === "light" ? "#e3a99c" : "#575757"}
+          onClick={() => {
+            setStockinvoiceCreate("");
+            setSuccess("");
+            reset();
+            setIsCreatedBill(false);
+            stockItemArray.forEach((item, index) => stockItemRemove(index));
+
+            // for filtering items
+            setItemFilter('')
+            setCurrentSelectedItems([])
+          }}
+        >
+          Reset
+        </Button>
+        {stockInvoice !== undefined && isCreatedBill && (
+          <StockInvoiceShowDrawer selectedStockInvoice={stockInvoice} />
+        )}
+      </Flex>
     </>
   );
 };

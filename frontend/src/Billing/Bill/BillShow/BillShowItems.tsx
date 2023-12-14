@@ -32,7 +32,7 @@ const BillShowItems = ({ selectedBill }: Props) => {
           </Text>
           <Table variant="simple">
             <Thead>
-              <Tr>
+              <Tr >
                 <Th>Item</Th>
                 <Th paddingRight={100} textAlign="right">
                   QTY

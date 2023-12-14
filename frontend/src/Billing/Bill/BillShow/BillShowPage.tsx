@@ -53,7 +53,7 @@ const BillShowPage = ({ seletedBill }: Props) => {
           <div ref={pdfRef}>
             <Table>
               <Tbody>
-                <Tr>
+                <Tr >
                   <Th>Bill No</Th>
                   <Td>{seletedBill.invoice_id}</Td>
                 </Tr>
@@ -67,6 +67,10 @@ const BillShowPage = ({ seletedBill }: Props) => {
                     )?.customer )?.name
                     }
                   </Td>
+                </Tr>
+                <Tr>
+                  <Th>Vehicle</Th>
+                  <Td>{seletedBill.vehicle}</Td>
                 </Tr>
               </Tbody>
             </Table>
