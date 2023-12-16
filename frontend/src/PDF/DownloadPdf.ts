@@ -10,7 +10,7 @@ const DownloadPdf = (capture : HTMLDivElement | null, setLoader:React.Dispatch<S
     if (capture)
       html2canvas(capture).then(async (canvas) => {
         const imgData = canvas.toDataURL("img/png");
-        const doc = new jsPDF("p", "mm", "a4");
+        const doc = new jsPDF("p", "mm", [100, 200]);
         const pdfWidth = doc.internal.pageSize.getWidth();
         const pdfHeight = doc.internal.pageSize.getHeight();
         const imgWidth = canvas.width;

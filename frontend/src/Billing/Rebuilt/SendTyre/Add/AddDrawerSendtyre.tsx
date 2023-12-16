@@ -6,11 +6,13 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  IconButton,
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import AddSendTyreForm from "./AddSendTyreForm";
+import { IoAdd } from "react-icons/io5";
 
 const AddDrawerSendtyre = () => {
   const { colorMode } = useColorMode();
@@ -18,21 +20,17 @@ const AddDrawerSendtyre = () => {
   const btnRef = useRef(null);
   return (
     <>
-      <Button
-        textAlign="left"
-        textColor={colorMode === "light" ? "#2b2323" : "#e0d6d6"}
+      <IconButton
         bg={colorMode === "light" ? "#f1cac1" : ""}
         _hover={
           colorMode === "light"
             ? { background: "#f1cac1" }
             : { background: "#766f6f" }
         }
-        padding={2.5}
-        width="500px"
+        icon={<IoAdd />}
+        aria-label="add"
         onClick={onOpen}
-      >
-        Add Send Tyre
-      </Button>
+      />
       <Drawer
         isOpen={isOpen}
         placement="right"

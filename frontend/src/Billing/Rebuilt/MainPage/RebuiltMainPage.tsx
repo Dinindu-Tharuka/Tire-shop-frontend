@@ -1,4 +1,5 @@
 import {
+  Button,
   Flex,
   Tab,
   TabList,
@@ -12,6 +13,9 @@ import ReceivedTyreTable from "../ReceivedTyre/ReceivedTyreTable";
 import RebuiltReports from "../Report/RebuiltReports";
 import { useContext } from "react";
 import UserMeContext from "../../../Contexts/User/UserMe";
+import AddDrawerTakenTyre from "../TyreTaken/Add/AddDrawerTakenTyre";
+import AddDrawerSendtyre from "../SendTyre/Add/AddDrawerSendtyre";
+import AddDrawerReceivedTyre from "../ReceivedTyre/Add/AddDrawerReceivedTyre";
 
 const RebuiltMainPage = () => {
   const userMe = useContext(UserMeContext)
@@ -28,16 +32,19 @@ const RebuiltMainPage = () => {
         <TabPanel>
           <Flex width="70vw" height="85vh" justifyContent='center'> 
             <TyreTakenTable/>
+            <AddDrawerTakenTyre/>
           </Flex>
         </TabPanel>
         <TabPanel>
           <Flex width="70vw" height="85vh" justifyContent='center'>
             <SendTyreTable/>
+            <AddDrawerSendtyre/>
           </Flex>
         </TabPanel>
         <TabPanel>
         <Flex width="70vw" height="85vh" justifyContent='center'>
           <ReceivedTyreTable/>
+          <AddDrawerReceivedTyre/>
         </Flex>
         </TabPanel>
         {(userMe.is_superuser || userMe.is_manager) && <TabPanel>
