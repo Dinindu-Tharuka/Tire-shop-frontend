@@ -31,7 +31,7 @@ const PaymentChequeInput = ({ register, control }: Props) => {
           {fields.map((field, chequeIndex) => (
             <VStack align="start">
               <Input
-                {...register(`payment_cheques.${chequeIndex}.bill_payment`)}
+                {...register(`payment_cheques.${chequeIndex}.bill_payment_id`)}
                 placeholder="Bill"
                 type="number"
                 defaultValue={chequeIndex + 1}

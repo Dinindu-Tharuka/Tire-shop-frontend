@@ -6,6 +6,7 @@ import AllCustomerContext from "../../../Contexts/Customer/AllCustomerContext";
 import AllBillContext from "../../../Contexts/Bill/AllBillContext";
 import BillPaymentContext from "../../../Contexts/Bill/BillPaymentContext";
 import DownloadPdf from "../../../PDF/DownloadPdf";
+import VehicleContext from "../../../Contexts/Customer/VehicleContext";
 
 interface Props {
   filteredChecks: PaymentCheque[];
@@ -13,6 +14,7 @@ interface Props {
 
 const CheckBanckDateReport = ({ filteredChecks }: Props) => {
   const { allCustomers } = useContext(AllCustomerContext)
+  const { vehicles } = useContext(VehicleContext)
   const { allBills } = useContext(AllBillContext)
   const { billPayments } = useContext(BillPaymentContext)
   // For downloading pdf
@@ -53,8 +55,8 @@ const CheckBanckDateReport = ({ filteredChecks }: Props) => {
                 <td>{cheque.bank}</td>
                 <td>{cheque.branch}</td>
                 <td>{
-                      allCustomers.find(
-                        (customer) =>
+                      vehicles.find(
+                        (vehicle) =>
                           allBills.find(
                             (bill) =>
                               bill.invoice_id ===
@@ -63,8 +65,8 @@ const CheckBanckDateReport = ({ filteredChecks }: Props) => {
                                   payment.id ===
                                   parseInt(cheque.bill_payment_id + "")
                               )?.bill_id
-                          )?.customer === customer.id
-                      )?.name
+                          )?.vehicle === vehicle.vehical_no
+                      )?.vehical_no
                     }</td>
               </tr>
             ))}

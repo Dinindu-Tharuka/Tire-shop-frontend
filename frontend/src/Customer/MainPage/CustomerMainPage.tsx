@@ -37,7 +37,7 @@ const CustomerMainPage = () => {
     customerCount,
     setCustomerNameFilter,
   } = useCustomer();
-  const { vehicles, setVehicles, setVehicleNoFilter } = useVehicles();
+  const { vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch } = useVehicles();
   const { colorMode } = useColorMode();
   return (
     
@@ -57,7 +57,7 @@ const CustomerMainPage = () => {
         }}
       >
         <VehicleContext.Provider
-          value={{ vehicles, setVehicles, setVehicleNoFilter }}
+          value={{ vehicles, setVehicles, setVehicleNoFilter, errorVehicleFetch }}
         >
           <CustomerContext.Provider
             value={{
