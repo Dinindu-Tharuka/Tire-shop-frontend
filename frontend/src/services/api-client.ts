@@ -10,9 +10,12 @@ export interface UserToken{
       
 }
 
+/// http://backend.chamilatyres.com/api
+/// http://127.0.0.1:8000/api
+
 
 const axiosInstance =  axios.create({
-    baseURL:'http://127.0.0.1:8000/api',
+    baseURL:'http://backend.chamilatyres.com/api',
     headers:{
         "Authorization":`JWT ${localStorage.getItem('access') || ''}`,
         "Content-Type":'application/json',
